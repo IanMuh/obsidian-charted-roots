@@ -37,25 +37,25 @@ export class ConflictGuardModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass('crc-conflict-guard-modal');
 
-		contentEl.createEl('h2', { text: 'Replace existing value?' });
+		contentEl.createEl('h2', { text: '替换现有值？' });
 
 		const body = contentEl.createDiv({ cls: 'crc-conflict-guard-body' });
 		body.createEl('p', {
-			text: `${ctx.subjectFile.basename} already has ${ctx.fieldLabel} set to ${ctx.existingDisplay}.`,
+			text: `${ctx.subjectFile.basename} 的 ${ctx.fieldLabel} 已设置为 ${ctx.existingDisplay}。`,
 		});
 		body.createEl('p', {
-			text: `Replacing it with ${ctx.newDisplay} will remove the existing reference from the note's frontmatter.`,
+			text: `将其替换为 ${ctx.newDisplay} 将会从笔记的 frontmatter 中移除现有的引用。`,
 		});
 
 		const buttons = contentEl.createDiv({ cls: 'crc-conflict-guard-buttons' });
 		new ButtonComponent(buttons)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				this.decision = 'cancel';
 				this.close();
 			});
 		setButtonDestructive(new ButtonComponent(buttons)
-			.setButtonText(`Replace ${ctx.existingDisplay}`))
+			.setButtonText(`替换为 ${ctx.existingDisplay}`))
 			.onClick(() => {
 				this.decision = 'replace';
 				this.close();

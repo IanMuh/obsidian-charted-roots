@@ -34,7 +34,7 @@ export class DataQualityView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Data quality';
+		return '数据质量';
 	}
 
 	getIcon(): string {
@@ -83,13 +83,13 @@ export class DataQualityView extends ItemView {
 	private buildHeader(container: HTMLElement): void {
 		const header = container.createDiv({ cls: 'cr-dqv-header' });
 
-		header.createEl('h2', { text: 'Data quality', cls: 'cr-dqv-title' });
+		header.createEl('h2', { text: '数据质量', cls: 'cr-dqv-title' });
 
 		const actions = header.createDiv({ cls: 'cr-dqv-actions' });
 
 		const refreshBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.refresh());

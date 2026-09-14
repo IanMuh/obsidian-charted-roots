@@ -70,7 +70,7 @@ export class SourcesRenderer {
 		if (filtered.length === 0) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No sources linked to this note.'
+				text: '此笔记未链接任何来源。'
 			});
 			return;
 		}
@@ -84,7 +84,7 @@ export class SourcesRenderer {
 	private renderHeader(container: HTMLElement, count: number, config: DynamicBlockConfig): void {
 		const header = container.createDiv({ cls: 'cr-dynamic-block__header' });
 
-		const titleText = config.title as string || 'Sources';
+		const titleText = config.title as string || '来源';
 		const titleWithCount = count > 0 ? `${titleText} (${count})` : titleText;
 
 		const titleEl = header.createSpan({ cls: 'cr-dynamic-block__title' });
@@ -99,7 +99,7 @@ export class SourcesRenderer {
 		// Freeze button
 		const freezeBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Freeze to Markdown' }
+			attr: { 'aria-label': '冻结为 Markdown' }
 		});
 		freezeBtn.textContent = '❄️';
 		freezeBtn.addEventListener('click', () => {
@@ -175,10 +175,10 @@ export class SourcesRenderer {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Type' });
-		headerRow.createEl('th', { text: 'Title' });
-		headerRow.createEl('th', { text: 'Date' });
-		headerRow.createEl('th', { text: 'Facts' });
+		headerRow.createEl('th', { text: '类型' });
+		headerRow.createEl('th', { text: '标题' });
+		headerRow.createEl('th', { text: '日期' });
+		headerRow.createEl('th', { text: '事实' });
 
 		// Body
 		const tbody = table.createEl('tbody');
@@ -242,15 +242,15 @@ export class SourcesRenderer {
 	private generateMarkdown(): string {
 		if (!this.currentRows || !this.currentConfig) return '';
 
-		const title = this.currentConfig.title as string || 'Sources';
+		const title = this.currentConfig.title as string || '来源';
 		const lines: string[] = [`## ${title}`, ''];
 
 		if (this.currentRows.length === 0) {
-			lines.push('*No sources linked.*');
+			lines.push('*未链接任何来源。*');
 			return lines.join('\n');
 		}
 
-		lines.push('| Type | Title | Date | Facts |');
+		lines.push('| 类型 | 标题 | 日期 | 事实 |');
 		lines.push('|------|-------|------|-------|');
 
 		for (const row of this.currentRows) {

@@ -71,7 +71,7 @@ class MediaFileSuggestModal extends FuzzySuggestModal<TFile> {
 	constructor(app: App, onSelect: (file: TFile) => void) {
 		super(app);
 		this.onSelect = onSelect;
-		this.setPlaceholder('Select a media file...');
+		this.setPlaceholder('选择媒体文件…');
 	}
 
 	getItems(): TFile[] {
@@ -329,7 +329,7 @@ export class CreateSourceModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass('cr-create-source-modal');
 
-		contentEl.createEl('h2', { text: this.editMode ? 'Edit source' : 'Create source' });
+		contentEl.createEl('h2', { text: this.editMode ? '编辑来源' : '创建来源' });
 
 		// Check for persisted state (only in create mode)
 		if (this.persistence && !this.editMode) {
@@ -360,17 +360,17 @@ export class CreateSourceModal extends Modal {
 
 		// Title (required)
 		new Setting(contentEl)
-			.setName('Title')
-			.setDesc('Descriptive title for the source')
+			.setName('标题')
+			.setDesc('来源的描述性标题')
 			.addText(text => text
-				.setPlaceholder('e.g., 1900 US Census - Smith Family')
+				.setPlaceholder('例如：1900 年美国人口普查 - 史密斯家族')
 				.setValue(this.title)
 				.onChange(value => this.title = value));
 
 		// Source type (required)
 		new Setting(contentEl)
-			.setName('Source type')
-			.setDesc('Type of documentary evidence')
+			.setName('来源类型')
+			.setDesc('文献证据的类型')
 			.addDropdown(dropdown => {
 				// Group by category
 				const groupedTypes = getSourceTypesByCategory(
@@ -391,31 +391,31 @@ export class CreateSourceModal extends Modal {
 
 		// Date of document
 		new Setting(contentEl)
-			.setName('Document date')
-			.setDesc('Date of the original document')
+			.setName('文件日期')
+			.setDesc('原始文件的日期')
 			.addText(text => text
-				.setPlaceholder('e.g., 1900-06-01')
+				.setPlaceholder('例如：1900-06-01')
 				.setValue(this.date)
 				.onChange(value => this.date = value));
 
 		// Repository
 		new Setting(contentEl)
-			.setName('Repository')
-			.setDesc('Archive or website where source is held')
+			.setName('保管机构')
+			.setDesc('存放来源的档案馆或网站')
 			.addText(text => text
-				.setPlaceholder('e.g., Ancestry.com, FamilySearch, National Archives')
+				.setPlaceholder('例如：Ancestry.com、FamilySearch、国家档案馆')
 				.setValue(this.repository)
 				.onChange(value => this.repository = value));
 
 		// Confidence
 		new Setting(contentEl)
-			.setName('Confidence')
-			.setDesc('How reliable is this source?')
+			.setName('置信度')
+			.setDesc('该来源的可靠程度如何？')
 			.addDropdown(dropdown => {
-				dropdown.addOption('high', 'High - Primary source, direct evidence');
-				dropdown.addOption('medium', 'Medium - Secondary source or indirect');
-				dropdown.addOption('low', 'Low - Unverified or questionable');
-				dropdown.addOption('unknown', 'Unknown - Not yet assessed');
+				dropdown.addOption('high', '高 - 原始来源，直接证据');
+				dropdown.addOption('medium', '中 - 二手来源或间接证据');
+				dropdown.addOption('low', '低 - 未经核实或存疑');
+				dropdown.addOption('unknown', '未知 - 尚未评估');
 				dropdown.setValue(this.confidence);
 				dropdown.onChange(value => this.confidence = value as SourceConfidence);
 			});
@@ -432,11 +432,11 @@ export class CreateSourceModal extends Modal {
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-modal-buttons' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const actionBtn = buttonContainer.createEl('button', {
-			text: this.editMode ? 'Save changes' : 'Create source',
+			text: this.editMode ? '保存更改' : '创建来源',
 			cls: 'mod-cta'
 		});
 		actionBtn.addEventListener('click', () => void this.saveSource());
@@ -459,7 +459,7 @@ export class CreateSourceModal extends Modal {
 		// Create expansion link (hidden when expanded)
 		const expandLink = wrapper.createDiv({ cls: 'crc-inline-expand__trigger' });
 		const linkIcon = expandLink.createSpan({ cls: 'crc-inline-expand__icon' });
-		expandLink.createSpan({ text: 'Source classification', cls: 'crc-inline-expand__text' });
+		expandLink.createSpan({ text: '来源分类', cls: 'crc-inline-expand__text' });
 		setIcon(linkIcon, 'chevron-down');
 
 		// Create content container (hidden by default unless has data)
@@ -467,10 +467,10 @@ export class CreateSourceModal extends Modal {
 
 		// Collapse link (shown when expanded)
 		const collapseHeader = content.createDiv({ cls: 'crc-inline-expand__header' });
-		collapseHeader.createSpan({ text: 'Source classification (Mills)', cls: 'crc-inline-expand__title' });
+		collapseHeader.createSpan({ text: '来源分类（Mills）', cls: 'crc-inline-expand__title' });
 		const collapseLink = collapseHeader.createEl('button', {
 			cls: 'crc-inline-expand__collapse clickable-icon',
-			attr: { 'aria-label': 'Collapse section' }
+			attr: { 'aria-label': '折叠区块' }
 		});
 		setIcon(collapseLink, 'chevron-up');
 
@@ -491,16 +491,16 @@ export class CreateSourceModal extends Modal {
 		const fields = content.createDiv({ cls: 'crc-inline-expand__fields' });
 
 		fields.createEl('p', {
-			text: 'Classify this source using the Evidence Explained framework (all optional).',
+			text: '使用 Evidence Explained 框架对本来源进行分类（均可选）。',
 			cls: 'setting-item-description'
 		});
 
 		// Source classification dropdown
 		new Setting(fields)
-			.setName('Source classification')
-			.setDesc('What is the document itself?')
+			.setName('来源分类')
+			.setDesc('文件本身属于哪一类？')
 			.addDropdown(dropdown => {
-				dropdown.addOption('', 'Not set');
+				dropdown.addOption('', '未设置');
 				for (const [value, info] of Object.entries(SOURCE_CLASSIFICATION_LABELS)) {
 					dropdown.addOption(value, `${info.label} — ${info.description}`);
 				}
@@ -510,10 +510,10 @@ export class CreateSourceModal extends Modal {
 
 		// Information classification dropdown
 		new Setting(fields)
-			.setName('Information classification')
-			.setDesc('Who provided the information?')
+			.setName('信息分类')
+			.setDesc('信息由谁提供？')
 			.addDropdown(dropdown => {
-				dropdown.addOption('', 'Not set');
+				dropdown.addOption('', '未设置');
 				for (const [value, info] of Object.entries(INFORMATION_CLASSIFICATION_LABELS)) {
 					dropdown.addOption(value, `${info.label} — ${info.description}`);
 				}
@@ -523,10 +523,10 @@ export class CreateSourceModal extends Modal {
 
 		// Evidence classification dropdown
 		new Setting(fields)
-			.setName('Evidence classification')
-			.setDesc('How does the information relate to the research question?')
+			.setName('证据分类')
+			.setDesc('信息与研究问题有何关联？')
 			.addDropdown(dropdown => {
-				dropdown.addOption('', 'Not set');
+				dropdown.addOption('', '未设置');
 				for (const [value, info] of Object.entries(EVIDENCE_CLASSIFICATION_LABELS)) {
 					dropdown.addOption(value, `${info.label} — ${info.description}`);
 				}
@@ -559,7 +559,7 @@ export class CreateSourceModal extends Modal {
 		// Create expansion link (hidden when expanded)
 		const expandLink = wrapper.createDiv({ cls: 'crc-inline-expand__trigger' });
 		const linkIcon = expandLink.createSpan({ cls: 'crc-inline-expand__icon' });
-		expandLink.createSpan({ text: 'Additional details', cls: 'crc-inline-expand__text' });
+		expandLink.createSpan({ text: '更多详情', cls: 'crc-inline-expand__text' });
 		setIcon(linkIcon, 'chevron-down');
 
 		// Create content container (hidden by default unless has data)
@@ -567,10 +567,10 @@ export class CreateSourceModal extends Modal {
 
 		// Collapse link (shown when expanded)
 		const collapseHeader = content.createDiv({ cls: 'crc-inline-expand__header' });
-		collapseHeader.createSpan({ text: 'Additional details', cls: 'crc-inline-expand__title' });
+		collapseHeader.createSpan({ text: '更多详情', cls: 'crc-inline-expand__title' });
 		const collapseLink = collapseHeader.createEl('button', {
 			cls: 'crc-inline-expand__collapse clickable-icon',
-			attr: { 'aria-label': 'Collapse section' }
+			attr: { 'aria-label': '折叠区块' }
 		});
 		setIcon(collapseLink, 'chevron-up');
 
@@ -592,17 +592,17 @@ export class CreateSourceModal extends Modal {
 
 		// Date accessed
 		new Setting(fields)
-			.setName('Date accessed')
-			.setDesc('When you accessed this source')
+			.setName('访问日期')
+			.setDesc('你访问该来源的时间')
 			.addText(text => text
-				.setPlaceholder('e.g., 2024-03-15')
+				.setPlaceholder('例如：2024-03-15')
 				.setValue(this.dateAccessed)
 				.onChange(value => this.dateAccessed = value));
 
 		// Repository URL
 		new Setting(fields)
-			.setName('Repository URL')
-			.setDesc('Direct link to the online source')
+			.setName('保管机构 URL')
+			.setDesc('在线来源的直接链接')
 			.addText(text => text
 				.setPlaceholder('https://...')
 				.setValue(this.repositoryUrl)
@@ -610,10 +610,10 @@ export class CreateSourceModal extends Modal {
 
 		// Collection
 		new Setting(fields)
-			.setName('Collection')
-			.setDesc('Record group or collection name')
+			.setName('合集')
+			.setDesc('档案群或合集名称')
 			.addText(text => text
-				.setPlaceholder('e.g., 1900 United States Federal Census')
+				.setPlaceholder('例如：1900 年美国联邦人口普查')
 				.setValue(this.collection)
 				.onChange(value => this.collection = value));
 
@@ -622,10 +622,10 @@ export class CreateSourceModal extends Modal {
 		const existingLocations = sourceService.getUniqueLocations();
 
 		new Setting(fields)
-			.setName('Location')
-			.setDesc('Geographic location of the record')
+			.setName('地点')
+			.setDesc('记录的地理位置')
 			.addText(text => {
-				text.setPlaceholder('e.g., New York, Kings County, Brooklyn')
+				text.setPlaceholder('例如：纽约州，金斯县，布鲁克林')
 					.setValue(this.location)
 					.onChange(value => this.location = value);
 
@@ -648,13 +648,13 @@ export class CreateSourceModal extends Modal {
 			: allSources;
 
 		new Setting(fields)
-			.setName('Parent source')
-			.setDesc('Parent document (e.g., probate packet, record group)')
+			.setName('父来源')
+			.setDesc('父级文件（例如：遗嘱认证档案、档案群）')
 			.addText(text => {
 				const displayValue = this.sourceParent
 					? this.sourceParent.replace(/^\[\[|\]\]$/g, '')
 					: '';
-				text.setPlaceholder('e.g., Hardwick Probate Packet')
+				text.setPlaceholder('例如：Hardwick 遗嘱认证档案')
 					.setValue(displayValue)
 					.onChange(value => {
 						if (!value.trim()) {
@@ -692,12 +692,12 @@ export class CreateSourceModal extends Modal {
 
 		// Media files section
 		const mediaSetting = new Setting(fields)
-			.setName('Media files')
-			.setDesc('Images or documents attached to this source');
+			.setName('媒体文件')
+			.setDesc('附加到该来源的图片或文档');
 
 		// Add button
 		mediaSetting.addButton(btn => btn
-			.setButtonText('Add media')
+			.setButtonText('添加媒体')
 			.setIcon('plus')
 			.onClick(() => {
 				new MediaFileSuggestModal(this.app, (file) => {
@@ -716,10 +716,10 @@ export class CreateSourceModal extends Modal {
 		// Transcription (only for create mode - editing note body is complex)
 		if (!this.editMode) {
 			new Setting(fields)
-				.setName('Initial transcription')
-				.setDesc('Optional transcription of the source content')
+				.setName('初始转录')
+				.setDesc('可选的来源内容转录')
 				.addTextArea(textArea => textArea
-					.setPlaceholder('Enter transcription or notes...')
+					.setPlaceholder('输入转录或笔记…')
 					.setValue(this.transcription)
 					.onChange(value => this.transcription = value));
 		}
@@ -742,7 +742,7 @@ export class CreateSourceModal extends Modal {
 		// Create expansion link (hidden when expanded)
 		const expandLink = wrapper.createDiv({ cls: 'crc-inline-expand__trigger' });
 		const linkIcon = expandLink.createSpan({ cls: 'crc-inline-expand__icon' });
-		expandLink.createSpan({ text: 'Person roles', cls: 'crc-inline-expand__text' });
+		expandLink.createSpan({ text: '人物角色', cls: 'crc-inline-expand__text' });
 		setIcon(linkIcon, 'chevron-down');
 
 		// Create content container (hidden by default unless has data)
@@ -750,10 +750,10 @@ export class CreateSourceModal extends Modal {
 
 		// Collapse link (shown when expanded)
 		const collapseHeader = content.createDiv({ cls: 'crc-inline-expand__header' });
-		collapseHeader.createSpan({ text: 'Person roles', cls: 'crc-inline-expand__title' });
+		collapseHeader.createSpan({ text: '人物角色', cls: 'crc-inline-expand__title' });
 		const collapseLink = collapseHeader.createEl('button', {
 			cls: 'crc-inline-expand__collapse clickable-icon',
-			attr: { 'aria-label': 'Collapse section' }
+			attr: { 'aria-label': '折叠区块' }
 		});
 		setIcon(collapseLink, 'chevron-up');
 
@@ -775,17 +775,17 @@ export class CreateSourceModal extends Modal {
 
 		// Description
 		fields.createEl('p', {
-			text: 'Track people named in this source and their roles (witness, informant, etc.).',
+			text: '记录本来源中提及的人物及其角色（证人、告密者等）。',
 			cls: 'setting-item-description cr-person-roles-desc'
 		});
 
 		// Add person button
 		const addSetting = new Setting(fields)
-			.setName('Add person')
-			.setDesc('Select a person and assign their role in this source');
+			.setName('添加人物')
+			.setDesc('选择一个人物并指定其在该来源中的角色');
 
 		addSetting.addButton(btn => btn
-			.setButtonText('Add person')
+			.setButtonText('添加人物')
 			.setIcon('user-plus')
 			.onClick(() => {
 				this.openAddPersonRoleModal();
@@ -826,20 +826,20 @@ export class CreateSourceModal extends Modal {
 	private showRoleSelectionForPerson(person: PersonInfo): void {
 		// Create a simple modal for role selection
 		const modal = new Modal(this.app);
-		modal.titleEl.setText('Select role');
+		modal.titleEl.setText('选择角色');
 
 		const { contentEl } = modal;
 		contentEl.empty();
 		contentEl.addClass('cr-role-selection-modal');
 
 		contentEl.createEl('p', {
-			text: `Select the role for ${person.name} in this source:`
+			text: `为该来源中的 ${person.name} 选择角色：`
 		});
 
 		// Role dropdown
 		let selectedRole: PersonRoleProperty = 'principals';
 		new Setting(contentEl)
-			.setName('Role')
+			.setName('角色')
 			.addDropdown(dropdown => {
 				for (const prop of PERSON_ROLE_PROPERTIES) {
 					dropdown.addOption(prop, PERSON_ROLE_LABELS[prop]);
@@ -861,20 +861,20 @@ export class CreateSourceModal extends Modal {
 		// Optional details
 		let details = '';
 		new Setting(contentEl)
-			.setName('Details (optional)')
-			.setDesc('e.g., "Decedent", "Witness", "Administrator"')
+			.setName('详情（可选）')
+			.setDesc('例如："被继承人"、"证人"、"遗产管理人"')
 			.addText(text => text
-				.setPlaceholder('e.g., Decedent')
+				.setPlaceholder('例如：被继承人')
 				.onChange(value => details = value));
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-modal-buttons' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => modal.close());
 
 		const addBtn = buttonContainer.createEl('button', {
-			text: 'Add',
+			text: '添加',
 			cls: 'mod-cta'
 		});
 		addBtn.addEventListener('click', () => {
@@ -902,7 +902,7 @@ export class CreateSourceModal extends Modal {
 
 		if (this.personRoles.length === 0) {
 			this.personRolesListContainer.createSpan({
-				text: 'No person roles added',
+				text: '未添加人物角色',
 				cls: 'crc-text-muted'
 			});
 			return;
@@ -947,7 +947,7 @@ export class CreateSourceModal extends Modal {
 				// Remove button
 				const removeBtn = item.createEl('button', {
 					cls: 'cr-person-roles-item__remove clickable-icon',
-					attr: { 'aria-label': 'Remove' }
+					attr: { 'aria-label': '移除' }
 				});
 				setIcon(removeBtn, 'x');
 				removeBtn.addEventListener('click', () => {
@@ -1033,7 +1033,7 @@ export class CreateSourceModal extends Modal {
 
 		if (this.media.length === 0) {
 			this.mediaListContainer.createSpan({
-				text: 'No media files attached',
+				text: '未附加媒体文件',
 				cls: 'crc-text-muted'
 			});
 			return;
@@ -1071,7 +1071,7 @@ export class CreateSourceModal extends Modal {
 			// Remove button
 			const removeBtn = item.createEl('button', {
 				cls: 'cr-media-picker-remove clickable-icon',
-				attr: { 'aria-label': 'Remove' }
+				attr: { 'aria-label': '移除' }
 			});
 			setIcon(removeBtn, 'x');
 			removeBtn.addEventListener('click', () => {
@@ -1111,7 +1111,7 @@ export class CreateSourceModal extends Modal {
 
 	private async saveSource(): Promise<void> {
 		if (!this.title.trim()) {
-			new Notice('Please enter a title');
+			new Notice('请输入标题');
 			return;
 		}
 
@@ -1144,7 +1144,7 @@ export class CreateSourceModal extends Modal {
 					...roleArrays
 				});
 
-				new Notice('Source updated');
+				new Notice('来源已更新');
 			} else {
 				// Create new source
 				const file = await sourceService.createSource({
@@ -1186,7 +1186,7 @@ export class CreateSourceModal extends Modal {
 			this.close();
 			this.onSuccess();
 		} catch (error) {
-			new Notice(`Failed to ${this.editMode ? 'update' : 'create'} source: ${error}`);
+			new Notice(`无法${this.editMode ? '更新' : '创建'}来源：${error}`);
 		}
 	}
 }

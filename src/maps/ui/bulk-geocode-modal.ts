@@ -56,7 +56,7 @@ export class BulkGeocodeModal extends Modal {
 		this.modalEl.addClass('cr-bulk-geocode-modal');
 
 		// Modal title
-		contentEl.createEl('h2', { text: 'Bulk geocode places' });
+		contentEl.createEl('h2', { text: '批量地理编码地点' });
 
 		// Load places without coordinates
 		this.loadPlacesToGeocode();
@@ -66,32 +66,32 @@ export class BulkGeocodeModal extends Modal {
 
 		if (this.placesToGeocode.length === 0) {
 			description.createEl('p', {
-				text: 'All places already have coordinates.',
+				text: '所有地点均已有坐标。',
 				cls: 'cr-text-success'
 			});
 
 			new Setting(contentEl)
 				.addButton(btn => btn
-					.setButtonText('Close')
+					.setButtonText('关闭')
 					.onClick(() => this.close()));
 
 			return;
 		}
 
 		description.createEl('p', {
-			text: `Found ${this.placesToGeocode.length} place${this.placesToGeocode.length !== 1 ? 's' : ''} without coordinates.`
+			text: `发现 ${this.placesToGeocode.length} 个地点缺少坐标。`
 		});
 
 		description.createEl('p', {
-			text: 'This will use OpenStreetMap\'s Nominatim service to look up coordinates. The process respects the API rate limit (1 request per second).',
+			text: '将使用 OpenStreetMap 的 Nominatim 服务查询坐标。该过程会遵守 API 速率限制（每秒1次请求）。',
 			cls: 'cr-text-muted cr-text-small'
 		});
 
 		// Estimated time
 		const estimatedMinutes = Math.ceil(this.placesToGeocode.length / 60);
-		const timeText = estimatedMinutes === 1 ? 'about 1 minute' : `about ${estimatedMinutes} minutes`;
+		const timeText = estimatedMinutes === 1 ? '约1分钟' : `约 ${estimatedMinutes} 分钟`;
 		description.createEl('p', {
-			text: `Estimated time: ${timeText}`,
+			text: `预计耗时：${timeText}`,
 			cls: 'cr-text-muted cr-text-small'
 		});
 
@@ -99,7 +99,7 @@ export class BulkGeocodeModal extends Modal {
 		this.progressContainer = contentEl.createDiv({ cls: 'cr-bulk-geocode-progress cr-hidden' });
 
 		const progressHeader = this.progressContainer.createDiv({ cls: 'cr-progress-header' });
-		this.progressText = progressHeader.createEl('span', { text: 'Starting...' });
+		this.progressText = progressHeader.createEl('span', { text: '开始中…' });
 
 		const progressBarContainer = this.progressContainer.createDiv({ cls: 'cr-progress-bar-container' });
 		this.progressBar = progressBarContainer.createDiv({ cls: 'cr-progress-bar cr-progress-bar--good' });
@@ -113,7 +113,7 @@ export class BulkGeocodeModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+			text: ' 请先备份您的库再继续。此操作会修改现有笔记。'
 		});
 
 		// Buttons
@@ -122,12 +122,12 @@ export class BulkGeocodeModal extends Modal {
 		new Setting(buttonsContainer)
 			.addButton(btn => {
 				this.cancelButton = btn.buttonEl;
-				btn.setButtonText('Cancel')
+				btn.setButtonText('取消')
 					.onClick(() => {
 						if (this.isRunning) {
 							this.isCancelled = true;
 							btn.setDisabled(true);
-							btn.setButtonText('Cancelling...');
+							btn.setButtonText('正在取消…');
 						} else {
 							this.close();
 						}
@@ -135,7 +135,7 @@ export class BulkGeocodeModal extends Modal {
 			})
 			.addButton(btn => {
 				this.startButton = btn.buttonEl;
-				btn.setButtonText('Start geocoding')
+				btn.setButtonText('开始地理编码')
 					.setCta()
 					.onClick(() => this.startGeocoding());
 			});
@@ -179,7 +179,7 @@ export class BulkGeocodeModal extends Modal {
 		// Update UI
 		if (this.startButton) {
 			this.startButton.disabled = true;
-			this.startButton.textContent = 'Processing...';
+			this.startButton.textContent = '处理中…';
 		}
 
 		if (this.progressContainer) {
@@ -246,7 +246,7 @@ export class BulkGeocodeModal extends Modal {
 		}
 
 		if (this.progressText) {
-			this.progressText.textContent = `Processing ${current} of ${total} (${percent}%)`;
+			this.progressText.textContent = `正在处理第 ${current} / ${total} 个（${percent}%）`;
 		}
 
 		if (this.resultsList) {
@@ -256,7 +256,7 @@ export class BulkGeocodeModal extends Modal {
 			if (result.success && result.coordinates) {
 				setLucideIcon(icon, 'check', 14);
 				icon.addClass('cr-text-success');
-			} else if (result.error?.includes('Already has')) {
+			} else if (result.error?.includes('已有坐标')) {
 				setLucideIcon(icon, 'minus', 14);
 				icon.addClass('cr-text-muted');
 			} else {
@@ -270,7 +270,7 @@ export class BulkGeocodeModal extends Modal {
 			if (result.success && result.coordinates) {
 				const coords = item.createSpan({ cls: 'cr-geocode-result-coords cr-text-muted' });
 				coords.textContent = ` (${result.coordinates.lat.toFixed(4)}, ${result.coordinates.long.toFixed(4)})`;
-			} else if (result.error && !result.error.includes('Already has')) {
+			} else if (result.error && !result.error.includes('已有坐标')) {
 				const error = item.createSpan({ cls: 'cr-geocode-result-error cr-text-warning' });
 				error.textContent = ` - ${result.error}`;
 			}
@@ -286,14 +286,14 @@ export class BulkGeocodeModal extends Modal {
 	private showCompletion(result: BulkGeocodingResult, updatedCount: number): void {
 		if (this.progressText) {
 			if (result.cancelled > 0) {
-				this.progressText.textContent = `Cancelled. Processed ${result.total - result.cancelled} of ${result.total}.`;
+				this.progressText.textContent = `已取消。已处理 ${result.total - result.cancelled} / ${result.total}。`;
 			} else {
-				this.progressText.textContent = 'Complete!';
+				this.progressText.textContent = '完成！';
 			}
 		}
 
 		if (this.startButton) {
-			this.startButton.textContent = 'Done';
+			this.startButton.textContent = '完成';
 			this.startButton.disabled = false;
 			this.startButton.onclick = () => this.close();
 		}
@@ -304,8 +304,8 @@ export class BulkGeocodeModal extends Modal {
 
 		// Show summary notice
 		const message = result.cancelled > 0
-			? `Geocoding cancelled. Found ${result.success} coordinates, updated ${updatedCount} files.`
-			: `Geocoding complete! Found ${result.success} coordinates, updated ${updatedCount} files. ${result.failed} not found.`;
+			? `地理编码已取消。找到 ${result.success} 个坐标，更新了 ${updatedCount} 个文件。`
+			: `地理编码完成！找到 ${result.success} 个坐标，更新了 ${updatedCount} 个文件。${result.failed} 个未找到。`;
 
 		new Notice(message, 5000);
 	}

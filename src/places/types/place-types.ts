@@ -50,22 +50,22 @@ export interface PlaceTypeCategoryDefinition {
  * Human-readable category names for display (built-in categories)
  */
 export const PLACE_TYPE_CATEGORY_NAMES: Record<BuiltInPlaceTypeCategory, string> = {
-	geographic: 'Geographic',
-	political: 'Political divisions',
-	settlement: 'Settlements',
-	subdivision: 'Subdivisions',
-	structure: 'Structures'
+	geographic: '地理',
+	political: '行政区划',
+	settlement: '聚落',
+	subdivision: '次级区划',
+	structure: '建筑'
 };
 
 /**
  * Built-in place type categories
  */
 export const BUILT_IN_PLACE_TYPE_CATEGORIES: PlaceTypeCategoryDefinition[] = [
-	{ id: 'geographic', name: 'Geographic', sortOrder: 0 },
-	{ id: 'political', name: 'Political divisions', sortOrder: 1 },
-	{ id: 'settlement', name: 'Settlements', sortOrder: 2 },
-	{ id: 'subdivision', name: 'Subdivisions', sortOrder: 3 },
-	{ id: 'structure', name: 'Structures', sortOrder: 4 }
+	{ id: 'geographic', name: '地理', sortOrder: 0 },
+	{ id: 'political', name: '行政区划', sortOrder: 1 },
+	{ id: 'settlement', name: '聚落', sortOrder: 2 },
+	{ id: 'subdivision', name: '次级区划', sortOrder: 3 },
+	{ id: 'structure', name: '建筑', sortOrder: 4 }
 ];
 
 /**

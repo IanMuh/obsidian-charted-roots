@@ -48,6 +48,14 @@ export interface SourcesListOptions {
 type SourceFilter = SourceListFilter;
 type SourceSort = SourceListSort;
 
+/** 置信度枚举值 → 中文显示标签 */
+const CONFIDENCE_DISPLAY_LABELS: Record<string, string> = {
+	high: '高',
+	medium: '中',
+	low: '低',
+	unknown: '未知'
+};
+
 /**
  * Render the Sources tab content
  */
@@ -89,7 +97,7 @@ function renderSourcesOverviewCard(
 	closeModal: () => void
 ): void {
 	const card = createCard({
-		title: 'Source overview',
+		title: '来源概览',
 		icon: 'archive'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
@@ -105,14 +113,14 @@ function renderSourcesOverviewCard(
 		item.createDiv({ cls: 'cr-stat-label', text: label });
 	};
 
-	createStatItem('Total sources', stats.totalSources);
-	createStatItem('With media', stats.withMedia);
-	createStatItem('Without media', stats.withoutMedia);
+	createStatItem('来源总数', stats.totalSources);
+	createStatItem('含媒体', stats.withMedia);
+	createStatItem('不含媒体', stats.withoutMedia);
 
 	// Confidence breakdown
 	if (stats.totalSources > 0) {
 		const breakdown = content.createDiv({ cls: 'cr-stats-breakdown' });
-		breakdown.createEl('h4', { text: 'By confidence', cls: 'cr-subsection-heading' });
+		breakdown.createEl('h4', { text: '按置信度', cls: 'cr-subsection-heading' });
 
 		const confidenceList = breakdown.createDiv({ cls: 'cr-type-breakdown-list' });
 
@@ -129,13 +137,13 @@ function renderSourcesOverviewCard(
 			const row = confidenceList.createDiv({ cls: 'cr-type-breakdown-row' });
 			const swatch = row.createDiv({ cls: 'cr-type-swatch' });
 			swatch.style.setProperty('background-color', confidenceColors[level] || '#6b7280');
-			row.createSpan({ text: capitalize(level) });
+			row.createSpan({ text: CONFIDENCE_DISPLAY_LABELS[level] || capitalize(level) });
 			row.createSpan({ text: String(count), cls: 'crc-text-muted' });
 		}
 
 		// By type breakdown
 		if (Object.keys(stats.byType).length > 0) {
-			breakdown.createEl('h4', { text: 'By type', cls: 'cr-subsection-heading' });
+			breakdown.createEl('h4', { text: '按类型', cls: 'cr-subsection-heading' });
 			const typeList = breakdown.createDiv({ cls: 'cr-type-breakdown-list' });
 
 			for (const [typeId, count] of Object.entries(stats.byType)) {
@@ -157,7 +165,7 @@ function renderSourcesOverviewCard(
 
 	// View full statistics link
 	const statsLink = content.createDiv({ cls: 'cr-stats-link' });
-	const link = statsLink.createEl('a', { text: 'View full statistics →', cls: 'crc-text-muted' });
+	const link = statsLink.createEl('a', { text: '查看完整统计 →', cls: 'crc-text-muted' });
 	link.addEventListener('click', (e) => {
 		e.preventDefault();
 		closeModal();
@@ -178,7 +186,7 @@ function renderSourcesListCard(
 	showTab: (tabId: string) => void
 ): void {
 	const card = createCard({
-		title: 'Sources',
+		title: '来源',
 		icon: 'file-text'
 	});
 	addSourcesDockButton(card, plugin);
@@ -186,10 +194,10 @@ function renderSourcesListCard(
 
 	// Create source button
 	new Setting(content)
-		.setName('Create source')
-		.setDesc('Create a new source note to document evidence')
+		.setName('创建来源')
+		.setDesc('创建新的来源笔记以记录证据')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.setCta()
 			.onClick(() => {
 				plugin.app.commands.executeCommandById('charted-roots:create-source-note');
@@ -197,40 +205,40 @@ function renderSourcesListCard(
 
 	// Create base button
 	new Setting(content)
-		.setName('Create Sources base')
-		.setDesc('Create an Obsidian base for managing Source notes. After creating, click "Properties" to enable columns like Title, Type, Repository, Author, and Date.')
+		.setName('创建来源库')
+		.setDesc('创建一个用于管理来源笔记的 Obsidian 库。创建后点击"属性"即可启用标题、类型、保管机构、作者和日期等列。')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.onClick(() => {
 				plugin.app.commands.executeCommandById('charted-roots:create-sources-base-template');
 			}));
 
 	// Import source images button
 	new Setting(content)
-		.setName('Import source images')
-		.setDesc('Bulk import images, parse filenames to extract metadata, and create source notes')
+		.setName('导入来源图片')
+		.setDesc('批量导入图片、解析文件名以提取元数据，并创建来源笔记')
 		.addButton(button => button
-			.setButtonText('Import')
+			.setButtonText('导入')
 			.onClick(() => {
 				new SourceImageWizardModal(plugin.app, plugin).open();
 			}));
 
 	// Link media to existing sources button
 	new Setting(content)
-		.setName('Link media to sources')
-		.setDesc('Smart matching to link images to sources by filename patterns. For general media linking to any entity, use Dashboard → Media → Bulk Link Media.')
+		.setName('将媒体关联到来源')
+		.setDesc('按文件名模式智能匹配，将图片关联到来源。若需将媒体关联到任意实体，请使用 仪表盘 → 媒体 → 批量关联媒体。')
 		.addButton(button => button
-			.setButtonText('Link')
+			.setButtonText('关联')
 			.onClick(() => {
 				new SourceMediaLinkerModal(plugin.app, plugin).open();
 			}));
 
 	// View templates button
 	new Setting(content)
-		.setName('Templater templates')
-		.setDesc('Copy ready-to-use templates for Templater integration')
+		.setName('Templater 模板')
+		.setDesc('复制可直接使用的模板，用于集成 Templater')
 		.addButton(button => button
-			.setButtonText('View templates')
+			.setButtonText('查看模板')
 			.onClick(() => {
 				new TemplateSnippetsModal(plugin.app, 'source', plugin.settings.propertyAliases).open();
 			}));
@@ -240,22 +248,22 @@ function renderSourcesListCard(
 	const clipperIcon = clipperNote.createSpan({ cls: 'cr-info-box-icon' });
 	setIcon(clipperIcon, 'globe');
 	const clipperText = clipperNote.createSpan();
-	clipperText.appendText('Capture sources from the web using ');
+	clipperText.appendText('使用 ');
 	clipperText.createEl('a', {
-		text: 'Web Clipper templates',
+		text: 'Web Clipper 模板',
 		href: 'https://github.com/banisterious/obsidian-charted-roots/wiki/Web-Clipper-Integration#ready-to-use-templates'
 	});
-	clipperText.appendText(' (Find a Grave, FamilySearch, obituaries, and more).');
+	clipperText.appendText(' 从网络捕获来源（Find a Grave、FamilySearch、讣告等）。');
 
 	const allSources = sourceService.getAllSources();
 
 	if (allSources.length === 0) {
 		const emptyState = content.createDiv({ cls: 'crc-empty-state' });
 		setIcon(emptyState.createSpan({ cls: 'crc-empty-icon' }), 'archive');
-		emptyState.createEl('p', { text: 'No sources found.' });
+		emptyState.createEl('p', { text: '未找到来源。' });
 		emptyState.createEl('p', {
 			cls: 'crc-text-muted',
-			text: 'Create source notes with cr_type: source in frontmatter to document your evidence.'
+			text: '在 frontmatter 中使用 cr_type: source 创建来源笔记，以记录你的证据。'
 		});
 	} else {
 		// State for filters, sorting, and pagination
@@ -271,7 +279,7 @@ function renderSourcesListCard(
 		const filterSelect = filterContainer.createEl('select', { cls: 'dropdown crc-filter-select' });
 
 		// Build filter options
-		filterSelect.createEl('option', { value: 'all', text: 'All sources' });
+		filterSelect.createEl('option', { value: 'all', text: '全部来源' });
 
 		// Add type-based filters dynamically
 		const sourceTypes = getAllSourceTypes(
@@ -279,34 +287,34 @@ function renderSourcesListCard(
 			plugin.settings.showBuiltInSourceTypes
 		);
 		if (sourceTypes.length > 0) {
-			const typeGroup = filterSelect.createEl('optgroup', { attr: { label: 'By type' } });
+			const typeGroup = filterSelect.createEl('optgroup', { attr: { label: '按类型' } });
 			for (const st of sourceTypes) {
 				typeGroup.createEl('option', { value: `type_${st.id}`, text: st.name });
 			}
 		}
 
 		// Confidence filters
-		const confGroup = filterSelect.createEl('optgroup', { attr: { label: 'By confidence' } });
-		confGroup.createEl('option', { value: 'confidence_high', text: 'High confidence' });
-		confGroup.createEl('option', { value: 'confidence_medium', text: 'Medium confidence' });
-		confGroup.createEl('option', { value: 'confidence_low', text: 'Low confidence' });
+		const confGroup = filterSelect.createEl('optgroup', { attr: { label: '按置信度' } });
+		confGroup.createEl('option', { value: 'confidence_high', text: '高置信度' });
+		confGroup.createEl('option', { value: 'confidence_medium', text: '中置信度' });
+		confGroup.createEl('option', { value: 'confidence_low', text: '低置信度' });
 
 		// Media filters
-		const mediaGroup = filterSelect.createEl('optgroup', { attr: { label: 'By media' } });
-		mediaGroup.createEl('option', { value: 'has_media', text: 'Has media' });
-		mediaGroup.createEl('option', { value: 'no_media', text: 'No media' });
+		const mediaGroup = filterSelect.createEl('optgroup', { attr: { label: '按媒体' } });
+		mediaGroup.createEl('option', { value: 'has_media', text: '含媒体' });
+		mediaGroup.createEl('option', { value: 'no_media', text: '不含媒体' });
 
 		// Hierarchy filters (#338)
-		const hierarchyGroup = filterSelect.createEl('optgroup', { attr: { label: 'By hierarchy' } });
-		hierarchyGroup.createEl('option', { value: 'has_parent', text: 'Has parent (child sources)' });
-		hierarchyGroup.createEl('option', { value: 'no_parent', text: 'No parent (top-level)' });
+		const hierarchyGroup = filterSelect.createEl('optgroup', { attr: { label: '按层级' } });
+		hierarchyGroup.createEl('option', { value: 'has_parent', text: '有父来源（子来源）' });
+		hierarchyGroup.createEl('option', { value: 'no_parent', text: '无父来源（顶层）' });
 
 		// Add parent-specific filters for sources that have children
 		const parentSources = allSources.filter(s =>
 			allSources.some(child => child.sourceParentId === s.crId)
 		);
 		if (parentSources.length > 0) {
-			const parentGroup = filterSelect.createEl('optgroup', { attr: { label: 'Children of' } });
+			const parentGroup = filterSelect.createEl('optgroup', { attr: { label: '子来源属于' } });
 			for (const parent of parentSources) {
 				parentGroup.createEl('option', { value: `parent_${parent.crId}`, text: parent.title });
 			}
@@ -315,12 +323,12 @@ function renderSourcesListCard(
 		// Sort dropdown
 		const sortContainer = controls.createDiv({ cls: 'crc-filter-container' });
 		const sortSelect = sortContainer.createEl('select', { cls: 'dropdown crc-filter-select' });
-		sortSelect.createEl('option', { value: 'title_asc', text: 'Title A-Z' });
-		sortSelect.createEl('option', { value: 'title_desc', text: 'Title Z-A' });
-		sortSelect.createEl('option', { value: 'date_desc', text: 'Date (newest)' });
-		sortSelect.createEl('option', { value: 'date_asc', text: 'Date (oldest)' });
-		sortSelect.createEl('option', { value: 'type', text: 'Type' });
-		sortSelect.createEl('option', { value: 'confidence', text: 'Confidence' });
+		sortSelect.createEl('option', { value: 'title_asc', text: '标题 A-Z' });
+		sortSelect.createEl('option', { value: 'title_desc', text: '标题 Z-A' });
+		sortSelect.createEl('option', { value: 'date_desc', text: '日期（最新）' });
+		sortSelect.createEl('option', { value: 'date_asc', text: '日期（最旧）' });
+		sortSelect.createEl('option', { value: 'type', text: '类型' });
+		sortSelect.createEl('option', { value: 'confidence', text: '置信度' });
 
 		// Table container (for refreshing)
 		const tableContainer = content.createDiv({ cls: 'crc-source-table-container' });
@@ -395,7 +403,7 @@ function renderSourcesListCard(
 
 			if (filtered.length === 0) {
 				const noResults = tableContainer.createDiv({ cls: 'crc-empty-state' });
-				noResults.createEl('p', { text: 'No sources match the current filter.' });
+				noResults.createEl('p', { text: '没有符合当前筛选条件的来源。' });
 				return;
 			}
 
@@ -404,11 +412,11 @@ function renderSourcesListCard(
 			// Header
 			const thead = table.createEl('thead');
 			const headerRow = thead.createEl('tr');
-			headerRow.createEl('th', { text: 'Title' });
-			headerRow.createEl('th', { text: 'Type' });
-			headerRow.createEl('th', { text: 'Date' });
-			headerRow.createEl('th', { text: 'Repository' });
-			headerRow.createEl('th', { text: 'Confidence' });
+			headerRow.createEl('th', { text: '标题' });
+			headerRow.createEl('th', { text: '类型' });
+			headerRow.createEl('th', { text: '日期' });
+			headerRow.createEl('th', { text: '保管机构' });
+			headerRow.createEl('th', { text: '置信度' });
 			headerRow.createEl('th', { text: '', cls: 'cr-source-th-actions' });
 
 			// Body
@@ -421,11 +429,11 @@ function renderSourcesListCard(
 			if (filtered.length > displayLimit) {
 				const loadMoreContainer = tableContainer.createDiv({ cls: 'crc-load-more-container' });
 				loadMoreContainer.createSpan({
-					text: `Showing ${displayed.length} of ${filtered.length} sources`,
+					text: `已显示 ${filtered.length} 个来源中的 ${displayed.length} 个`,
 					cls: 'crc-text-muted'
 				});
 				const loadMoreBtn = loadMoreContainer.createEl('button', { cls: 'mod-cta' });
-				loadMoreBtn.textContent = 'Load more';
+				loadMoreBtn.textContent = '加载更多';
 				loadMoreBtn.addEventListener('click', () => {
 					displayLimit += 25;
 					renderTable();
@@ -433,7 +441,7 @@ function renderSourcesListCard(
 			} else if (filtered.length > 0) {
 				const countInfo = tableContainer.createDiv({ cls: 'crc-count-info' });
 				countInfo.createSpan({
-					text: `Showing all ${filtered.length} source${filtered.length !== 1 ? 's' : ''}`,
+					text: `已显示全部 ${filtered.length} 个来源`,
 					cls: 'crc-text-muted'
 				});
 			}
@@ -493,7 +501,7 @@ function renderSourceRow(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Edit source')
+				.setTitle('编辑来源')
 				.setIcon('edit')
 				.onClick(() => {
 					const file = plugin.app.vault.getAbstractFileByPath(source.filePath);
@@ -509,7 +517,7 @@ function renderSourceRow(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Extract events')
+				.setTitle('提取事件')
 				.setIcon('calendar-plus')
 				.onClick(() => {
 					const eventService = plugin.getEventService();
@@ -531,7 +539,7 @@ function renderSourceRow(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Open note')
+				.setTitle('打开笔记')
 				.setIcon('file')
 				.onClick(async () => {
 					const file = plugin.app.vault.getAbstractFileByPath(source.filePath);
@@ -571,7 +579,7 @@ function renderSourceRow(
 	// Confidence cell with colored indicator
 	const confCell = row.createEl('td', { cls: 'cr-source-cell-confidence' });
 	const confBadge = confCell.createSpan({ cls: `cr-confidence-badge cr-confidence-${source.confidence}` });
-	confBadge.textContent = source.confidence;
+	confBadge.textContent = CONFIDENCE_DISPLAY_LABELS[source.confidence] || source.confidence;
 
 	// Actions cell with Extract Events and Open Note buttons
 	const actionsCell = row.createEl('td', { cls: 'cr-source-cell-actions' });
@@ -579,7 +587,7 @@ function renderSourceRow(
 	// Extract events button
 	const extractBtn = actionsCell.createEl('button', {
 		cls: 'crc-btn crc-btn--small',
-		attr: { title: 'Extract events from this source' }
+		attr: { title: '从该来源提取事件' }
 	});
 	const calIcon = createLucideIcon('calendar-plus', 14);
 	extractBtn.appendChild(calIcon);
@@ -605,7 +613,7 @@ function renderSourceRow(
 	// Open note button
 	const openBtn = actionsCell.createEl('button', {
 		cls: 'crc-btn crc-btn--small',
-		attr: { title: 'Open source note' }
+		attr: { title: '打开来源笔记' }
 	});
 	const fileIcon = createLucideIcon('file-text', 14);
 	openBtn.appendChild(fileIcon);
@@ -628,7 +636,7 @@ function addSourcesDockButton(card: HTMLElement, plugin: CanvasRootsPlugin): voi
 
 	const dockBtn = activeDocument.createElement('button');
 	dockBtn.className = 'crc-card__dock-btn clickable-icon';
-	dockBtn.setAttribute('aria-label', 'Open in sidebar');
+	dockBtn.setAttribute('aria-label', '在侧边栏中打开');
 	setIcon(dockBtn, 'panel-right');
 	dockBtn.addEventListener('click', (e) => {
 		e.stopPropagation();
@@ -656,7 +664,7 @@ export function renderSourcesList(options: SourcesListOptions): void {
 
 	// Loading indicator
 	container.empty();
-	container.createEl('p', { text: 'Loading sources...', cls: 'crc-text--muted' });
+	container.createEl('p', { text: '正在加载来源…', cls: 'crc-text--muted' });
 
 	// Load data
 	const allSources = sourceService.getAllSources();
@@ -666,10 +674,10 @@ export function renderSourcesList(options: SourcesListOptions): void {
 	if (allSources.length === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		setIcon(emptyState.createSpan({ cls: 'crc-empty-icon' }), 'archive');
-		emptyState.createEl('p', { text: 'No sources found.' });
+		emptyState.createEl('p', { text: '未找到来源。' });
 		emptyState.createEl('p', {
 			cls: 'crc-text-muted',
-			text: 'Create source notes with cr_type: source in frontmatter.'
+			text: '在 frontmatter 中使用 cr_type: source 创建来源笔记。'
 		});
 		return;
 	}
@@ -687,38 +695,38 @@ export function renderSourcesList(options: SourcesListOptions): void {
 	const filterContainer = controls.createDiv({ cls: 'crc-filter-container' });
 	const filterSelect = filterContainer.createEl('select', { cls: 'dropdown crc-filter-select' });
 
-	filterSelect.createEl('option', { value: 'all', text: 'All sources' });
+	filterSelect.createEl('option', { value: 'all', text: '全部来源' });
 
 	const sourceTypes = getAllSourceTypes(
 		plugin.settings.customSourceTypes,
 		plugin.settings.showBuiltInSourceTypes
 	);
 	if (sourceTypes.length > 0) {
-		const typeGroup = filterSelect.createEl('optgroup', { attr: { label: 'By type' } });
+		const typeGroup = filterSelect.createEl('optgroup', { attr: { label: '按类型' } });
 		for (const st of sourceTypes) {
 			typeGroup.createEl('option', { value: `type_${st.id}`, text: st.name });
 		}
 	}
 
-	const confGroup = filterSelect.createEl('optgroup', { attr: { label: 'By confidence' } });
-	confGroup.createEl('option', { value: 'confidence_high', text: 'High confidence' });
-	confGroup.createEl('option', { value: 'confidence_medium', text: 'Medium confidence' });
-	confGroup.createEl('option', { value: 'confidence_low', text: 'Low confidence' });
+	const confGroup = filterSelect.createEl('optgroup', { attr: { label: '按置信度' } });
+	confGroup.createEl('option', { value: 'confidence_high', text: '高置信度' });
+	confGroup.createEl('option', { value: 'confidence_medium', text: '中置信度' });
+	confGroup.createEl('option', { value: 'confidence_low', text: '低置信度' });
 
-	const mediaGroup = filterSelect.createEl('optgroup', { attr: { label: 'By media' } });
-	mediaGroup.createEl('option', { value: 'has_media', text: 'Has media' });
-	mediaGroup.createEl('option', { value: 'no_media', text: 'No media' });
+	const mediaGroup = filterSelect.createEl('optgroup', { attr: { label: '按媒体' } });
+	mediaGroup.createEl('option', { value: 'has_media', text: '含媒体' });
+	mediaGroup.createEl('option', { value: 'no_media', text: '不含媒体' });
 
 	// Hierarchy filters (#338)
-	const hierarchyGroup2 = filterSelect.createEl('optgroup', { attr: { label: 'By hierarchy' } });
-	hierarchyGroup2.createEl('option', { value: 'has_parent', text: 'Has parent (child sources)' });
-	hierarchyGroup2.createEl('option', { value: 'no_parent', text: 'No parent (top-level)' });
+		const hierarchyGroup2 = filterSelect.createEl('optgroup', { attr: { label: '按层级' } });
+		hierarchyGroup2.createEl('option', { value: 'has_parent', text: '有父来源（子来源）' });
+		hierarchyGroup2.createEl('option', { value: 'no_parent', text: '无父来源（顶层）' });
 
 	const parentSources2 = allSources.filter(s =>
 		allSources.some(child => child.sourceParentId === s.crId)
 	);
 	if (parentSources2.length > 0) {
-		const parentGroup2 = filterSelect.createEl('optgroup', { attr: { label: 'Children of' } });
+		const parentGroup2 = filterSelect.createEl('optgroup', { attr: { label: '子来源属于' } });
 		for (const parent of parentSources2) {
 			parentGroup2.createEl('option', { value: `parent_${parent.crId}`, text: parent.title });
 		}
@@ -729,19 +737,19 @@ export function renderSourcesList(options: SourcesListOptions): void {
 	// Sort dropdown
 	const sortContainer = controls.createDiv({ cls: 'crc-filter-container' });
 	const sortSelect = sortContainer.createEl('select', { cls: 'dropdown crc-filter-select' });
-	sortSelect.createEl('option', { value: 'title_asc', text: 'Title A-Z' });
-	sortSelect.createEl('option', { value: 'title_desc', text: 'Title Z-A' });
-	sortSelect.createEl('option', { value: 'date_desc', text: 'Date (newest)' });
-	sortSelect.createEl('option', { value: 'date_asc', text: 'Date (oldest)' });
-	sortSelect.createEl('option', { value: 'type', text: 'Type' });
-	sortSelect.createEl('option', { value: 'confidence', text: 'Confidence' });
+	sortSelect.createEl('option', { value: 'title_asc', text: '标题 A-Z' });
+	sortSelect.createEl('option', { value: 'title_desc', text: '标题 Z-A' });
+	sortSelect.createEl('option', { value: 'date_desc', text: '日期（最新）' });
+	sortSelect.createEl('option', { value: 'date_asc', text: '日期（最旧）' });
+	sortSelect.createEl('option', { value: 'type', text: '类型' });
+	sortSelect.createEl('option', { value: 'confidence', text: '置信度' });
 	sortSelect.value = currentSort;
 
 	// Search input
 	const searchContainer = controls.createDiv({ cls: 'crc-filter-container' });
 	const searchInput = searchContainer.createEl('input', {
 		type: 'search',
-		placeholder: 'Search sources...',
+		placeholder: '搜索来源…',
 		cls: 'crc-filter-search',
 		value: currentSearch
 	});
@@ -833,7 +841,7 @@ export function renderSourcesList(options: SourcesListOptions): void {
 
 		if (filtered.length === 0) {
 			const noResults = tableContainer.createDiv({ cls: 'crc-empty-state' });
-			noResults.createEl('p', { text: 'No sources match the current filter.' });
+			noResults.createEl('p', { text: '没有符合当前筛选条件的来源。' });
 			return;
 		}
 
@@ -842,11 +850,11 @@ export function renderSourcesList(options: SourcesListOptions): void {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Title' });
-		headerRow.createEl('th', { text: 'Type' });
-		headerRow.createEl('th', { text: 'Date' });
-		headerRow.createEl('th', { text: 'Repository' });
-		headerRow.createEl('th', { text: 'Confidence' });
+		headerRow.createEl('th', { text: '标题' });
+		headerRow.createEl('th', { text: '类型' });
+		headerRow.createEl('th', { text: '日期' });
+		headerRow.createEl('th', { text: '保管机构' });
+		headerRow.createEl('th', { text: '置信度' });
 		headerRow.createEl('th', { text: '', cls: 'cr-source-th-actions' });
 
 		// Body
@@ -859,11 +867,11 @@ export function renderSourcesList(options: SourcesListOptions): void {
 		if (filtered.length > displayLimit) {
 			const loadMoreContainer = tableContainer.createDiv({ cls: 'crc-load-more-container' });
 			loadMoreContainer.createSpan({
-				text: `Showing ${displayed.length} of ${filtered.length} sources`,
+					text: `已显示 ${filtered.length} 个来源中的 ${displayed.length} 个`,
 				cls: 'crc-text-muted'
 			});
 			const loadMoreBtn = loadMoreContainer.createEl('button', { cls: 'mod-cta' });
-			loadMoreBtn.textContent = 'Load more';
+			loadMoreBtn.textContent = '加载更多';
 			loadMoreBtn.addEventListener('click', () => {
 				displayLimit += 25;
 				renderTable();
@@ -871,7 +879,7 @@ export function renderSourcesList(options: SourcesListOptions): void {
 		} else if (filtered.length > 0) {
 			const countInfo = tableContainer.createDiv({ cls: 'crc-count-info' });
 			countInfo.createSpan({
-				text: `Showing all ${filtered.length} source${filtered.length !== 1 ? 's' : ''}`,
+					text: `已显示全部 ${filtered.length} 个来源`,
 				cls: 'crc-text-muted'
 			});
 		}
@@ -926,7 +934,7 @@ function renderBrowseSourceRow(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Open note')
+				.setTitle('打开笔记')
 				.setIcon('file')
 				.onClick(async () => {
 					const file = plugin.app.vault.getAbstractFileByPath(source.filePath);
@@ -939,7 +947,7 @@ function renderBrowseSourceRow(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Open in new tab')
+				.setTitle('在新标签页中打开')
 				.setIcon('file-plus')
 				.onClick(async () => {
 					const file = plugin.app.vault.getAbstractFileByPath(source.filePath);
@@ -979,13 +987,13 @@ function renderBrowseSourceRow(
 	// Confidence cell with colored indicator
 	const confCell = row.createEl('td', { cls: 'cr-source-cell-confidence' });
 	const confBadge = confCell.createSpan({ cls: `cr-confidence-badge cr-confidence-${source.confidence}` });
-	confBadge.textContent = source.confidence;
+	confBadge.textContent = CONFIDENCE_DISPLAY_LABELS[source.confidence] || source.confidence;
 
 	// Actions cell — open note button only (no extract events)
 	const actionsCell = row.createEl('td', { cls: 'cr-source-cell-actions' });
 	const openBtn = actionsCell.createEl('button', {
 		cls: 'crc-btn crc-btn--small',
-		attr: { title: 'Open source note' }
+		attr: { title: '打开来源笔记' }
 	});
 	const fileIcon = createLucideIcon('file-text', 14);
 	openBtn.appendChild(fileIcon);

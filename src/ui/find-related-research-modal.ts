@@ -44,11 +44,11 @@ export class FindRelatedResearchModal extends Modal {
 		const titleEl = contentEl.createDiv({ cls: 'cr-find-research__title' });
 		const iconSpan = titleEl.createSpan({ cls: 'cr-find-research__title-icon' });
 		setIcon(iconSpan, 'folder-search');
-		titleEl.createEl('h2', { text: `Research for ${this.personName}` });
+		titleEl.createEl('h2', { text: `${this.personName} 的研究` });
 
 		// Loading
 		const loadingEl = contentEl.createDiv({ cls: 'cr-find-research__loading' });
-		loadingEl.createEl('p', { text: 'Searching vault...', cls: 'cr-text-muted' });
+		loadingEl.createEl('p', { text: '正在搜索库…', cls: 'cr-text-muted' });
 
 		// Gather results
 		const entries = this.gatherEntries();
@@ -64,7 +64,7 @@ export class FindRelatedResearchModal extends Modal {
 		// Close button
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-modal-buttons' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.onClick(() => this.close());
 	}
 
@@ -72,14 +72,14 @@ export class FindRelatedResearchModal extends Modal {
 		const emptyEl = container.createDiv({ cls: 'cr-find-research__empty' });
 		const emptyIcon = emptyEl.createSpan({ cls: 'cr-find-research__empty-icon' });
 		setIcon(emptyIcon, 'search-x');
-		emptyEl.createEl('p', { text: 'No research activity found for this person.' });
+		emptyEl.createEl('p', { text: '未找到此人的研究活动。' });
 	}
 
 	private renderResults(container: HTMLElement, groups: ProjectGroup[], totalCount: number): void {
 		// Summary
 		const summary = container.createDiv({ cls: 'cr-find-research__summary' });
 		summary.createEl('p', {
-			text: `${totalCount} item${totalCount !== 1 ? 's' : ''} across ${groups.length} project${groups.length !== 1 ? 's' : ''}`
+			text: `${groups.length} 个项目中共 ${totalCount} 条记录`
 		});
 
 		// Scrollable results
@@ -94,7 +94,7 @@ export class FindRelatedResearchModal extends Modal {
 			setIcon(folderIcon, 'folder');
 			header.createSpan({ text: group.project, cls: 'cr-find-research__group-name' });
 			header.createSpan({
-				text: `${group.entries.length} item${group.entries.length !== 1 ? 's' : ''}`,
+				text: `${group.entries.length} 条记录`,
 				cls: 'cr-find-research__group-count'
 			});
 			if (group.dateRange) {
@@ -217,7 +217,7 @@ export class FindRelatedResearchModal extends Modal {
 		const map = new Map<string, ResearchEntry[]>();
 
 		for (const entry of entries) {
-			const project = entry.project || 'Unassigned';
+			const project = entry.project || '未分配';
 			if (!map.has(project)) map.set(project, []);
 			map.get(project)!.push(entry);
 		}
@@ -246,10 +246,10 @@ export class FindRelatedResearchModal extends Modal {
 	private formatType(crType: string): string {
 		switch (crType) {
 			case 'individual_research_note': return 'IRN';
-			case 'research_log_entry': return 'Log';
-			case 'research_journal': return 'Journal';
-			case 'research_report': return 'Report';
-			case 'research_project': return 'Project';
+			case 'research_log_entry': return '日志';
+			case 'research_journal': return '期刊';
+			case 'research_report': return '报告';
+			case 'research_project': return '项目';
 			default: return crType;
 		}
 	}

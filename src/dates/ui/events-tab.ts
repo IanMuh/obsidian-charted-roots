@@ -189,18 +189,18 @@ function renderEventNotesCard(
 	createCard: (options: { title: string; icon?: LucideIconName; subtitle?: string }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Actions',
+		title: '操作',
 		icon: 'plus',
-		subtitle: 'Create and manage life events for your people'
+		subtitle: '为你的家人创建和管理生平事件'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	// Create Event button
 	new Setting(content)
-		.setName('Create event note')
-		.setDesc('Create a new event to document a life event')
+		.setName('创建事件笔记')
+		.setDesc('创建新事件以记录生平事件')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.setCta()
 			.onClick(() => {
 				const eventService = plugin.getEventService();
@@ -217,30 +217,30 @@ function renderEventNotesCard(
 
 	// Create Events base button
 	new Setting(content)
-		.setName('Create Events base')
-		.setDesc('Create an Obsidian base for managing Event notes. After creating, click "Properties" to enable columns like Title, Type, Date, Person, Place, and Confidence.')
+		.setName('创建事件 Base')
+		.setDesc('创建一个用于管理事件笔记的 Obsidian Base。创建后点击「属性」即可启用标题、类型、日期、人物、地点、置信度等列。')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.onClick(() => {
 				plugin.app.commands.executeCommandById('charted-roots:create-events-base-template');
 			}));
 
 	// Calendar view button
 	new Setting(content)
-		.setName('Open calendar view')
-		.setDesc('View significant dates on a monthly calendar')
+		.setName('打开日历视图')
+		.setDesc('在月历上查看重要日期')
 		.addButton(button => button
-			.setButtonText('Calendar')
+			.setButtonText('日历')
 			.onClick(() => {
 				void plugin.activateCalendarView();
 			}));
 
 	// Fictional date systems button (#358)
 	new Setting(content)
-		.setName('Fictional date systems')
-		.setDesc('Manage custom calendars for worldbuilding')
+		.setName('虚构日期系统')
+		.setDesc('管理用于世界构建的自定义历法')
 		.addButton(button => button
-			.setButtonText('Open settings')
+			.setButtonText('打开设置')
 			.onClick(() => {
 				// @ts-expect-error - Obsidian internal API
 				plugin.app.setting.open();
@@ -255,10 +255,10 @@ function renderEventNotesCard(
 
 	// Templater templates button
 	new Setting(content)
-		.setName('Templater templates')
-		.setDesc('Copy ready-to-use templates for Templater integration')
+		.setName('Templater 模板')
+		.setDesc('复制可直接用于 Templater 集成的模板')
 		.addButton(button => button
-			.setButtonText('View templates')
+			.setButtonText('查看模板')
 			.onClick(() => {
 				new TemplateSnippetsModal(plugin.app, 'event', plugin.settings.propertyAliases).open();
 			}));
@@ -266,17 +266,17 @@ function renderEventNotesCard(
 	// Compute sort order button
 	let computeBtn: HTMLButtonElement;
 	new Setting(content)
-		.setName('Compute sort order')
-		.setDesc('Calculate sort_order values from before/after relationships')
+		.setName('计算排序顺序')
+		.setDesc('根据 before/after 关系计算 sort_order 值')
 		.addButton(button => {
 			computeBtn = button.buttonEl;
-			button.setButtonText('Compute')
+			button.setButtonText('计算')
 				.onClick(async () => {
 					const eventService = plugin.getEventService();
 					if (!eventService) return;
 
 					computeBtn.disabled = true;
-					computeBtn.textContent = 'Computing...';
+					computeBtn.textContent = '计算中…';
 
 					try {
 						const events = eventService.getAllEvents();
@@ -288,17 +288,17 @@ function renderEventNotesCard(
 						if (result.cycleEventNotes.length > 0 || result.errors.length > 0) {
 							new SortOrderResultModal(plugin.app, result).open();
 						} else {
-							new Notice(`Successfully computed sort order for ${result.updatedCount} events.`);
+							new Notice(`已成功为 ${result.updatedCount} 个事件计算排序顺序。`);
 						}
 
 						// Invalidate cache to reload events
 						eventService.invalidateCache();
 					} catch (error) {
 						const message = error instanceof Error ? error.message : String(error);
-						new Notice(`Failed to compute sort order: ${message}`);
+						new Notice(`计算排序顺序失败：${message}`);
 					} finally {
 						computeBtn.disabled = false;
-						computeBtn.textContent = 'Compute';
+						computeBtn.textContent = '计算';
 					}
 				});
 		});
@@ -308,40 +308,40 @@ function renderEventNotesCard(
 
 	if (stats.totalEvents > 0) {
 		const statsSection = content.createDiv({ cls: 'cr-stats-section crc-mt-3' });
-		statsSection.createEl('h4', { text: 'Event statistics', cls: 'cr-subsection-heading' });
+		statsSection.createEl('h4', { text: '事件统计', cls: 'cr-subsection-heading' });
 
 		const statsList = statsSection.createEl('ul', { cls: 'cr-stats-list' });
 
 		// Total events
 		const totalItem = statsList.createEl('li');
-		totalItem.setText(`${stats.totalEvents} event notes in vault`);
+		totalItem.setText(`库中共有 ${stats.totalEvents} 条事件笔记`);
 
 		// By category breakdown
 		if (stats.byCategory.core > 0 || stats.byCategory.extended > 0 || stats.byCategory.narrative > 0) {
 			const categoryItem = statsList.createEl('li');
 			const parts: string[] = [];
-			if (stats.byCategory.core > 0) parts.push(`${stats.byCategory.core} core`);
-			if (stats.byCategory.extended > 0) parts.push(`${stats.byCategory.extended} extended`);
-			if (stats.byCategory.narrative > 0) parts.push(`${stats.byCategory.narrative} narrative`);
-			if (stats.byCategory.custom > 0) parts.push(`${stats.byCategory.custom} custom`);
-			categoryItem.setText(`By category: ${parts.join(', ')}`);
+			if (stats.byCategory.core > 0) parts.push(`${stats.byCategory.core} 核心`);
+			if (stats.byCategory.extended > 0) parts.push(`${stats.byCategory.extended} 扩展`);
+			if (stats.byCategory.narrative > 0) parts.push(`${stats.byCategory.narrative} 叙事`);
+			if (stats.byCategory.custom > 0) parts.push(`${stats.byCategory.custom} 自定义`);
+			categoryItem.setText(`按分类：${parts.join('、')}`);
 		}
 
 		// Events with dates
 		if (stats.totalEvents > 0) {
 			const datedItem = statsList.createEl('li');
 			const datedPercent = Math.round((stats.withDates / stats.totalEvents) * 100);
-			datedItem.setText(`${stats.withDates} events have dates (${datedPercent}%)`);
+			datedItem.setText(`${stats.withDates} 个事件有日期（${datedPercent}%）`);
 		}
 	} else {
 		// Empty state
 		const emptyState = content.createDiv({ cls: 'crc-empty-state crc-mt-3' });
 		emptyState.createEl('p', {
-			text: 'No event notes found.',
+			text: '未找到事件笔记。',
 			cls: 'crc-text-muted'
 		});
 		emptyState.createEl('p', {
-			text: 'Create event notes to document life events like births, deaths, marriages, and more.',
+			text: '创建事件笔记以记录出生、去世、婚姻等生平事件。',
 			cls: 'crc-text-muted'
 		});
 	}
@@ -359,7 +359,7 @@ function addEventsDockButton(card: HTMLElement, plugin: CanvasRootsPlugin): void
 
 	const dockBtn = activeDocument.createElement('button');
 	dockBtn.className = 'crc-card__dock-btn clickable-icon';
-	dockBtn.setAttribute('aria-label', 'Open in sidebar');
+	dockBtn.setAttribute('aria-label', '在侧边栏中打开');
 	setIcon(dockBtn, 'panel-right');
 	dockBtn.addEventListener('click', (e) => {
 		e.stopPropagation();
@@ -381,9 +381,9 @@ function renderTimelineCard(
 	if (!eventService) return;
 
 	const card = createCard({
-		title: 'Timeline',
+		title: '时间轴',
 		icon: 'clock',
-		subtitle: 'All events in chronological order'
+		subtitle: '按时间顺序显示所有事件'
 	});
 
 	addEventsDockButton(card, plugin);
@@ -396,11 +396,11 @@ function renderTimelineCard(
 	if (allEvents.length === 0) {
 		const emptyState = content.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No events yet.',
+			text: '暂无事件。',
 			cls: 'crc-text-muted'
 		});
 		emptyState.createEl('p', {
-			text: 'Create event notes to see them in the timeline.',
+			text: '创建事件笔记后即可在时间轴中查看。',
 			cls: 'crc-text-muted'
 		});
 		container.appendChild(card);
@@ -412,7 +412,7 @@ function renderTimelineCard(
 
 	// Event type filter
 	const typeFilter = filterRow.createEl('select', { cls: 'dropdown' });
-	typeFilter.createEl('option', { value: '', text: 'All types' });
+	typeFilter.createEl('option', { value: '', text: '所有类型' });
 
 	const eventTypes = getAllEventTypes(
 		plugin.settings.customEventTypes || [],
@@ -426,7 +426,7 @@ function renderTimelineCard(
 
 	// Person filter
 	const personFilter = filterRow.createEl('select', { cls: 'dropdown' });
-	personFilter.createEl('option', { value: '', text: 'All people' });
+	personFilter.createEl('option', { value: '', text: '所有人物' });
 
 	const uniquePeople = eventService.getUniquePeople();
 	for (const person of uniquePeople) {
@@ -440,7 +440,7 @@ function renderTimelineCard(
 		cls: 'crc-timeline-search',
 		attr: {
 			type: 'text',
-			placeholder: 'Search events...'
+			placeholder: '搜索事件…'
 		}
 	});
 
@@ -451,10 +451,10 @@ function renderTimelineCard(
 	// starts collapsed.
 	const moreFiltersToggle = filterRow.createEl('button', {
 		cls: 'crc-timeline-more-filters-toggle clickable-icon',
-		attr: { 'aria-expanded': 'false', 'aria-label': 'Toggle more filters' }
+		attr: { 'aria-expanded': 'false', 'aria-label': '切换更多筛选条件' }
 	});
 	setIcon(moreFiltersToggle, 'sliders-horizontal');
-	moreFiltersToggle.createSpan({ text: ' More filters', cls: 'crc-timeline-more-filters-label' });
+	moreFiltersToggle.createSpan({ text: ' 更多筛选', cls: 'crc-timeline-more-filters-label' });
 
 	const moreFiltersRow = content.createDiv({ cls: 'crc-timeline-more-filters crc-timeline-more-filters--collapsed' });
 
@@ -463,9 +463,9 @@ function renderTimelineCard(
 	// in the dropdown even before the user creates a dedicated universe
 	// note.
 	const universeFilter = moreFiltersRow.createEl('select', { cls: 'dropdown' });
-	universeFilter.createEl('option', { value: '', text: '(any)' });
-	universeFilter.createEl('option', { value: UNIVERSE_FILTER_REAL, text: '(real-world)' });
-	universeFilter.createEl('option', { value: UNIVERSE_FILTER_ANY_FICTIONAL, text: '(any fictional)' });
+	universeFilter.createEl('option', { value: '', text: '（任意）' });
+	universeFilter.createEl('option', { value: UNIVERSE_FILTER_REAL, text: '（现实世界）' });
+	universeFilter.createEl('option', { value: UNIVERSE_FILTER_ANY_FICTIONAL, text: '（任意虚构宇宙）' });
 	const universeNames = new Set<string>();
 	for (const e of allEvents) {
 		if (e.universe) universeNames.add(e.universe);
@@ -476,7 +476,7 @@ function renderTimelineCard(
 
 	// Place filter
 	const placeFilter = moreFiltersRow.createEl('select', { cls: 'dropdown' });
-	placeFilter.createEl('option', { value: '', text: 'All places' });
+	placeFilter.createEl('option', { value: '', text: '所有地点' });
 	for (const place of eventService.getUniquePlaces()) {
 		placeFilter.createEl('option', { value: place, text: stripWikilink(place) });
 	}
@@ -484,11 +484,11 @@ function renderTimelineCard(
 	// Date range inputs
 	const dateFromInput = moreFiltersRow.createEl('input', {
 		cls: 'crc-timeline-date-input',
-		attr: { type: 'number', placeholder: 'From year' }
+		attr: { type: 'number', placeholder: '起始年份' }
 	});
 	const dateToInput = moreFiltersRow.createEl('input', {
 		cls: 'crc-timeline-date-input',
-		attr: { type: 'number', placeholder: 'To year' }
+		attr: { type: 'number', placeholder: '结束年份' }
 	});
 
 	moreFiltersToggle.addEventListener('click', () => {
@@ -568,7 +568,7 @@ function renderEventTable(
 
 	if (events.length === 0) {
 		container.createEl('p', {
-			text: 'No matching events.',
+			text: '没有匹配的事件。',
 			cls: 'crc-text-muted crc-text-center'
 		});
 		return;
@@ -576,23 +576,23 @@ function renderEventTable(
 
 	// Hint text above table
 	const hint = container.createEl('p', { cls: 'crc-text-muted crc-text-small crc-mb-2' });
-	hint.appendText('Click a row to edit. ');
+	hint.appendText('点击某行即可编辑。');
 	const fileIconHint = createLucideIcon('file-text', 12);
 	fileIconHint.addClass('crc-icon-inline');
 	hint.appendChild(fileIconHint);
-	hint.appendText(' opens the note.');
+	hint.appendText(' 可打开笔记。');
 
 	const table = container.createEl('table', { cls: 'crc-timeline-table' });
 
 	// Header
 	const thead = table.createEl('thead');
 	const headerRow = thead.createEl('tr');
-	headerRow.createEl('th', { text: 'Date' });
-	headerRow.createEl('th', { text: 'Event' });
-	headerRow.createEl('th', { text: 'Type' });
-	headerRow.createEl('th', { text: 'Person' });
-	headerRow.createEl('th', { text: 'Place' });
-	headerRow.createEl('th', { text: 'Media', cls: 'crc-timeline-th--center' });
+	headerRow.createEl('th', { text: '日期' });
+	headerRow.createEl('th', { text: '事件' });
+	headerRow.createEl('th', { text: '类型' });
+	headerRow.createEl('th', { text: '人物' });
+	headerRow.createEl('th', { text: '地点' });
+	headerRow.createEl('th', { text: '媒体', cls: 'crc-timeline-th--center' });
 	headerRow.createEl('th', { text: '', cls: 'crc-timeline-th--actions' });
 
 	// Body
@@ -631,7 +631,7 @@ function renderEventTable(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Open note')
+					.setTitle('打开笔记')
 					.setIcon('file')
 					.onClick(async () => {
 						await plugin.trackRecentFile(event.file, 'event');
@@ -641,7 +641,7 @@ function renderEventTable(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Open in new tab')
+					.setTitle('在新标签页中打开')
 					.setIcon('file-plus')
 					.onClick(async () => {
 						await plugin.trackRecentFile(event.file, 'event');
@@ -655,7 +655,7 @@ function renderEventTable(
 			const mediaCount = event.media?.length || 0;
 			menu.addItem((item) => {
 				item
-					.setTitle('Link media...')
+					.setTitle('关联媒体…')
 					.setIcon('image-plus')
 					.onClick(() => {
 						plugin.openLinkMediaModal(event.file, 'event', event.title);
@@ -665,7 +665,7 @@ function renderEventTable(
 			if (mediaCount > 0) {
 				menu.addItem((item) => {
 					item
-						.setTitle(`Manage media (${mediaCount})...`)
+						.setTitle(`管理媒体（${mediaCount}）…`)
 						.setIcon('images')
 						.onClick(() => {
 							openManageMediaModal(plugin, event.file, 'event', event.title);
@@ -677,13 +677,13 @@ function renderEventTable(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Delete event')
+					.setTitle('删除事件')
 					.setIcon('trash')
 					.onClick(async () => {
 						const confirmed = await confirmDeleteEvent(plugin.app, event.title);
 						if (confirmed) {
 							await plugin.app.fileManager.trashFile(event.file);
-							new Notice(`Deleted event: ${event.title}`);
+							new Notice(`已删除事件：${event.title}`);
 						}
 					});
 			});
@@ -699,7 +699,7 @@ function renderEventTable(
 				dateCell.textContent += ` – ${event.dateEnd}`;
 			}
 		} else {
-			dateCell.createEl('span', { text: 'Unknown', cls: 'crc-text-muted' });
+			dateCell.createEl('span', { text: '未知', cls: 'crc-text-muted' });
 		}
 
 		// Event title cell
@@ -759,7 +759,7 @@ function renderEventTable(
 		if (mediaCount > 0) {
 			const mediaBadge = mediaCell.createEl('span', {
 				cls: 'crc-person-list-badge crc-person-list-badge--media',
-				attr: { title: `${mediaCount} media file${mediaCount !== 1 ? 's' : ''}` }
+				attr: { title: `${mediaCount} 个媒体文件` }
 			});
 			const mediaIcon = createLucideIcon('image', 12);
 			mediaBadge.appendChild(mediaIcon);
@@ -778,7 +778,7 @@ function renderEventTable(
 		const actionsCell = row.createEl('td', { cls: 'crc-timeline-cell-actions' });
 		const openBtn = actionsCell.createEl('button', {
 			cls: 'crc-timeline-open-btn clickable-icon',
-			attr: { 'aria-label': 'Open note' }
+			attr: { 'aria-label': '打开笔记' }
 		});
 		const fileIcon = createLucideIcon('file-text', 14);
 		openBtn.appendChild(fileIcon);
@@ -793,7 +793,7 @@ function renderEventTable(
 
 	// Show count
 	container.createEl('p', {
-		text: `Showing ${events.length} event${events.length !== 1 ? 's' : ''}`,
+		text: `显示 ${events.length} 个事件`,
 		cls: 'crc-text-muted crc-text-small crc-mt-2'
 	});
 }
@@ -847,7 +847,7 @@ function renderTimelineGaps(
 	if (gaps.length === 0 && unsourcedCount === 0 && orphanCount === 0) return;
 
 	const section = container.createDiv({ cls: 'crc-timeline-gaps crc-mt-4' });
-	section.createEl('h4', { text: 'Data quality insights', cls: 'cr-subsection-heading' });
+	section.createEl('h4', { text: '数据质量洞察', cls: 'cr-subsection-heading' });
 
 	const issuesList = section.createEl('ul', { cls: 'crc-timeline-gaps-list' });
 
@@ -858,17 +858,17 @@ function renderTimelineGaps(
 		gapItem.appendChild(icon);
 
 		if (gaps.length === 1) {
-			gapItem.appendText(` Timeline gap detected: ${gaps[0].years} years (${gaps[0].start} – ${gaps[0].end})`);
+			gapItem.appendText(` 检测到时间轴断层：${gaps[0].years} 年（${gaps[0].start} – ${gaps[0].end}）`);
 		} else {
-			gapItem.appendText(` ${gaps.length} timeline gaps detected (${GAP_THRESHOLD_YEARS}+ year periods with no events)`);
+			gapItem.appendText(` 检测到 ${gaps.length} 处时间轴断层（连续 ${GAP_THRESHOLD_YEARS} 年以上无事件）`);
 
 			// Show first few gaps
 			const gapDetails = issuesList.createEl('ul', { cls: 'crc-timeline-gap-details' });
 			for (const gap of gaps.slice(0, 3)) {
-				gapDetails.createEl('li', { text: `${gap.years} years: ${gap.start} – ${gap.end}` });
+				gapDetails.createEl('li', { text: `${gap.years} 年：${gap.start} – ${gap.end}` });
 			}
 			if (gaps.length > 3) {
-				gapDetails.createEl('li', { text: `...and ${gaps.length - 3} more`, cls: 'crc-text-muted' });
+				gapDetails.createEl('li', { text: `…另有 ${gaps.length - 3} 处`, cls: 'crc-text-muted' });
 			}
 		}
 	}
@@ -878,7 +878,7 @@ function renderTimelineGaps(
 		const unsourcedItem = issuesList.createEl('li', { cls: 'crc-timeline-gap-item crc-timeline-gap-item--info' });
 		const icon = createLucideIcon('info', 14);
 		unsourcedItem.appendChild(icon);
-		unsourcedItem.appendText(` ${unsourcedCount} event${unsourcedCount !== 1 ? 's' : ''} without source citations`);
+		unsourcedItem.appendText(` ${unsourcedCount} 个事件没有来源引文`);
 	}
 
 	// Orphan events
@@ -886,7 +886,7 @@ function renderTimelineGaps(
 		const orphanItem = issuesList.createEl('li', { cls: 'crc-timeline-gap-item crc-timeline-gap-item--info' });
 		const icon = createLucideIcon('user-minus', 14);
 		orphanItem.appendChild(icon);
-		orphanItem.appendText(` ${orphanCount} event${orphanCount !== 1 ? 's' : ''} not linked to any person`);
+		orphanItem.appendText(` ${orphanCount} 个事件未关联任何人物`);
 	}
 }
 
@@ -929,9 +929,9 @@ function renderExportCard(
 	const excalidrawAvailable = (plugin.app as unknown as { plugins: { enabledPlugins: Set<string> } }).plugins?.enabledPlugins?.has('obsidian-excalidraw-plugin') ?? false;
 
 	const card = createCard({
-		title: 'Export timeline',
+		title: '导出时间轴',
 		icon: 'download',
-		subtitle: 'Export events to Canvas, Excalidraw, or Markdown'
+		subtitle: '将事件导出为 Canvas、Excalidraw 或 Markdown'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
@@ -940,11 +940,11 @@ function renderExportCard(
 	const noticeIcon = createLucideIcon('info', 16);
 	deprecationNotice.appendChild(noticeIcon);
 	const noticeText = deprecationNotice.createSpan();
-	noticeText.appendText('Timeline exports are moving to ');
-	noticeText.createEl('strong', { text: 'Statistics & Reports → Reports → Timeline' });
-	noticeText.appendText(' for a unified experience with all formats and options.');
+	noticeText.appendText('时间轴导出功能正迁移至 ');
+	noticeText.createEl('strong', { text: '统计与报告 → 报告 → 时间轴' });
+	noticeText.appendText('，以提供包含所有格式与选项的统一体验。');
 	const openReportsLink = deprecationNotice.createEl('a', {
-		text: 'Open Reports',
+		text: '打开报告',
 		cls: 'crc-deprecation-notice__link'
 	});
 	openReportsLink.addEventListener('click', (e) => {
@@ -962,7 +962,7 @@ function renderExportCard(
 	if (allEvents.length === 0) {
 		const emptyState = content.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No events to export.',
+			text: '没有可导出的事件。',
 			cls: 'crc-text-muted'
 		});
 		container.appendChild(card);
@@ -991,15 +991,15 @@ function renderExportCard(
 
 	// Format selector (always visible at top)
 	const formatDescriptions: Record<ExportFormat, string> = {
-		canvas: 'Native Obsidian canvas with linked nodes',
+		canvas: '原生 Obsidian 画布，节点间可链接',
 		excalidraw: excalidrawAvailable
-			? 'Hand-drawn style diagrams (Excalidraw)'
-			: 'Requires Excalidraw plugin',
-		markdown: 'Text-based formats (callout, table, list, dataview)'
+			? '手绘风格图表（Excalidraw）'
+			: '需要 Excalidraw 插件',
+		markdown: '基于文本的格式（callout、表格、列表、dataview）'
 	};
 
 	const formatSetting = new Setting(content)
-		.setName('Export format')
+		.setName('导出格式')
 		.setDesc(formatDescriptions[exportFormat])
 		.addDropdown(dropdown => {
 			dropdown
@@ -1017,10 +1017,10 @@ function renderExportCard(
 
 	// Title (always visible)
 	new Setting(content)
-		.setName('Title')
-		.setDesc('Name for the exported file')
+		.setName('标题')
+		.setDesc('导出文件的名称')
 		.addText(text => text
-			.setPlaceholder('Event timeline')
+			.setPlaceholder('事件时间轴')
 			.setValue(titleValue)
 			.onChange(value => { titleValue = value; }));
 
@@ -1032,39 +1032,39 @@ function renderExportCard(
 
 	// Layout style
 	new Setting(canvasOptionsSection)
-		.setName('Layout')
-		.setDesc('How events are arranged')
+		.setName('布局')
+		.setDesc('事件的排列方式')
 		.addDropdown(dropdown => dropdown
-			.addOption('horizontal', 'Horizontal (left to right)')
-			.addOption('vertical', 'Vertical (top to bottom)')
-			.addOption('gantt', 'Gantt (by date and person)')
+			.addOption('horizontal', '水平（从左到右）')
+			.addOption('vertical', '垂直（从上到下）')
+			.addOption('gantt', '甘特（按日期与人物）')
 			.setValue(layoutValue)
 			.onChange(value => { layoutValue = value as TimelineLayoutStyle; }));
 
 	// Color scheme
 	new Setting(canvasOptionsSection)
-		.setName('Color by')
-		.setDesc('How to color event nodes')
+		.setName('着色依据')
+		.setDesc('事件节点的着色方式')
 		.addDropdown(dropdown => dropdown
-			.addOption('event_type', 'Event type')
-			.addOption('category', 'Category (core/extended/narrative)')
-			.addOption('confidence', 'Confidence level')
-			.addOption('monochrome', 'No color')
+			.addOption('event_type', '事件类型')
+			.addOption('category', '分类（核心/扩展/叙事）')
+			.addOption('confidence', '置信度')
+			.addOption('monochrome', '不着色')
 			.setValue(colorValue)
 			.onChange(value => { colorValue = value as TimelineColorScheme; }));
 
 	// Include ordering edges
 	new Setting(canvasOptionsSection)
-		.setName('Include ordering edges')
-		.setDesc('Draw edges for before/after relationships')
+		.setName('包含排序连线')
+		.setDesc('为 before/after 关系绘制连线')
 		.addToggle(toggle => toggle
 			.setValue(includeEdges)
 			.onChange(value => { includeEdges = value; }));
 
 	// Group by person (Canvas only)
 	const groupByPersonSetting = new Setting(canvasOptionsSection)
-		.setName('Group by person')
-		.setDesc('Visually group events by their associated person')
+		.setName('按人物分组')
+		.setDesc('按关联人物对事件进行视觉分组')
 		.addToggle(toggle => toggle
 			.setValue(groupByPerson)
 			.onChange(value => { groupByPerson = value; }));
@@ -1074,17 +1074,17 @@ function renderExportCard(
 
 	// Drawing style (roughness)
 	const roughnessDescriptions: Record<number, string> = {
-		0: 'Clean, precise lines like architectural drawings',
-		1: 'Slightly rough, natural hand-drawn appearance',
-		2: 'Very rough, expressive cartoon-like style'
+		0: '干净、精确的线条，如建筑图纸',
+		1: '略带粗糙的自然手绘风格',
+		2: '非常粗糙、富有表现力的卡通风格'
 	};
 	const roughnessSetting = new Setting(excalidrawOptionsSection)
-		.setName('Drawing style')
+		.setName('绘制风格')
 		.setDesc(roughnessDescriptions[excalidrawRoughness])
 		.addDropdown(dropdown => dropdown
-			.addOption('0', 'Architect (clean)')
-			.addOption('1', 'Artist (natural)')
-			.addOption('2', 'Cartoonist (rough)')
+			.addOption('0', '建筑师（干净）')
+			.addOption('1', '艺术家（自然）')
+			.addOption('2', '漫画家（粗糙）')
 			.setValue(String(excalidrawRoughness))
 			.onChange(value => {
 				excalidrawRoughness = parseInt(value);
@@ -1093,23 +1093,23 @@ function renderExportCard(
 
 	// Font family
 	new Setting(excalidrawOptionsSection)
-		.setName('Font')
-		.setDesc('Font style for event labels')
+		.setName('字体')
+		.setDesc('事件标签的字体样式')
 		.addDropdown(dropdown => dropdown
-			.addOption('1', 'Virgil (hand-drawn)')
-			.addOption('5', 'Excalifont (hand-drawn)')
-			.addOption('4', 'Comic Shanns (comic)')
-			.addOption('2', 'Helvetica (clean)')
-			.addOption('6', 'Nunito (rounded)')
-			.addOption('7', 'Lilita One (display)')
-			.addOption('3', 'Cascadia (monospace)')
+			.addOption('1', 'Virgil（手绘）')
+			.addOption('5', 'Excalifont（手绘）')
+			.addOption('4', 'Comic Shanns（漫画）')
+			.addOption('2', 'Helvetica（简洁）')
+			.addOption('6', 'Nunito（圆润）')
+			.addOption('7', 'Lilita One（标题）')
+			.addOption('3', 'Cascadia（等宽）')
 			.setValue(String(excalidrawFontFamily))
 			.onChange(value => { excalidrawFontFamily = parseInt(value) as 1 | 2 | 3 | 4 | 5 | 6 | 7; }));
 
 	// Font size
 	new Setting(excalidrawOptionsSection)
-		.setName('Font size')
-		.setDesc('Size of text labels (default: 16)')
+		.setName('字体大小')
+		.setDesc('文字标签的大小（默认：16）')
 		.addSlider(slider => slider
 			.setLimits(10, 32, 2)
 			.setValue(excalidrawFontSize)
@@ -1117,8 +1117,8 @@ function renderExportCard(
 
 	// Stroke width
 	new Setting(excalidrawOptionsSection)
-		.setName('Stroke width')
-		.setDesc('Thickness of lines and borders (default: 2)')
+		.setName('线条粗细')
+		.setDesc('线条与边框的粗细（默认：2）')
 		.addSlider(slider => slider
 			.setLimits(1, 6, 1)
 			.setValue(excalidrawStrokeWidth)
@@ -1126,23 +1126,23 @@ function renderExportCard(
 
 	// Fill style
 	new Setting(excalidrawOptionsSection)
-		.setName('Fill style')
-		.setDesc('How shapes are filled')
+		.setName('填充样式')
+		.setDesc('图形的填充方式')
 		.addDropdown(dropdown => dropdown
-			.addOption('solid', 'Solid')
-			.addOption('hachure', 'Hachure (diagonal lines)')
-			.addOption('cross-hatch', 'Cross-hatch')
+			.addOption('solid', '实心')
+			.addOption('hachure', '斜线填充')
+			.addOption('cross-hatch', '交叉斜线')
 			.setValue(excalidrawFillStyle)
 			.onChange(value => { excalidrawFillStyle = value as 'solid' | 'hachure' | 'cross-hatch'; }));
 
 	// Stroke style
 	new Setting(excalidrawOptionsSection)
-		.setName('Stroke style')
-		.setDesc('Style of lines and borders')
+		.setName('线条样式')
+		.setDesc('线条与边框的样式')
 		.addDropdown(dropdown => dropdown
-			.addOption('solid', 'Solid')
-			.addOption('dashed', 'Dashed')
-			.addOption('dotted', 'Dotted')
+			.addOption('solid', '实线')
+			.addOption('dashed', '虚线')
+			.addOption('dotted', '点线')
 			.setValue(excalidrawStrokeStyle)
 			.onChange(value => { excalidrawStrokeStyle = value as 'solid' | 'dashed' | 'dotted'; }));
 
@@ -1151,20 +1151,20 @@ function renderExportCard(
 
 	// Markdown format dropdown
 	const mdFormatDescriptions: Record<string, string> = {
-		callout: 'Visual timeline with year columns, colored dots, and event cards. Requires the included CSS.',
-		table: 'Compact markdown table with columns for date, event, people, place, and sources.',
-		list: 'Simple bullet list grouped by year. Maximum compatibility, no CSS required.',
-		dataview: 'Generates a Dataview query that dynamically displays events. Requires Dataview plugin.'
+		callout: '带年份分栏、彩色圆点和事件卡片的可视化时间轴。需要附带的 CSS。',
+		table: '紧凑的 Markdown 表格，包含日期、事件、人物、地点和来源等列。',
+		list: '按年份分组的简单项目符号列表。兼容性最佳，无需 CSS。',
+		dataview: '生成可动态显示事件的 Dataview 查询。需要 Dataview 插件。'
 	};
 
 	const mdFormatSetting = new Setting(markdownOptionsSection)
-		.setName('Markdown format')
+		.setName('Markdown 格式')
 		.setDesc(mdFormatDescriptions[markdownFormat])
 		.addDropdown(dropdown => dropdown
-			.addOption('callout', 'Vertical timeline (styled callouts)')
-			.addOption('table', 'Condensed table')
-			.addOption('list', 'Simple list')
-			.addOption('dataview', 'Dataview query (dynamic)')
+			.addOption('callout', '垂直时间轴（带样式 callout）')
+			.addOption('table', '精简表格')
+			.addOption('list', '简单列表')
+			.addOption('dataview', 'Dataview 查询（动态）')
 			.setValue(markdownFormat)
 			.onChange(value => {
 				markdownFormat = value as TimelineExportFormat;
@@ -1173,14 +1173,14 @@ function renderExportCard(
 
 	// --- Common filter options (always visible) ---
 	const filtersSection = content.createDiv({ cls: 'crc-export-filters crc-mt-2' });
-	filtersSection.createEl('div', { text: 'Filters', cls: 'setting-item-heading' });
+	filtersSection.createEl('div', { text: '筛选', cls: 'setting-item-heading' });
 
 	// Filter by person
 	new Setting(filtersSection)
-		.setName('Filter by person')
-		.setDesc('Show only events for a specific person')
+		.setName('按人物筛选')
+		.setDesc('仅显示指定人物的事件')
 		.addDropdown(dropdown => {
-			dropdown.addOption('', 'All people');
+			dropdown.addOption('', '所有人物');
 			const uniquePeople = eventService.getUniquePeople();
 			for (const person of uniquePeople) {
 				const displayName = extractDisplayLabel(person);
@@ -1192,10 +1192,10 @@ function renderExportCard(
 
 	// Filter by event type
 	new Setting(filtersSection)
-		.setName('Filter by type')
-		.setDesc('Show only events of a specific type')
+		.setName('按类型筛选')
+		.setDesc('仅显示指定类型的事件')
 		.addDropdown(dropdown => {
-			dropdown.addOption('', 'All types');
+			dropdown.addOption('', '所有类型');
 			const exportEventTypes = getAllEventTypes(
 				plugin.settings.customEventTypes || [],
 				plugin.settings.showBuiltInEventTypes !== false,
@@ -1211,10 +1211,10 @@ function renderExportCard(
 
 	// Filter by group
 	new Setting(filtersSection)
-		.setName('Filter by group')
-		.setDesc('Show only events in a specific group')
+		.setName('按分组筛选')
+		.setDesc('仅显示指定分组的事件')
 		.addDropdown(dropdown => {
-			dropdown.addOption('', 'All groups');
+			dropdown.addOption('', '所有分组');
 			const uniqueGroups = eventService.getUniqueGroups();
 			for (const group of uniqueGroups) {
 				dropdown.addOption(group, group);
@@ -1239,19 +1239,19 @@ function renderExportCard(
 		quickStatsRow.empty();
 		const statsText = quickStatsRow.createEl('span', { cls: 'crc-quick-stats-text' });
 
-		let mainLine = `${summary.totalEvents} events`;
+		let mainLine = `${summary.totalEvents} 个事件`;
 		if (dateRange.earliest && dateRange.latest) {
 			const span = dateRange.latest - dateRange.earliest;
-			mainLine += ` spanning ${dateRange.earliest}–${dateRange.latest} (${span} years)`;
+			mainLine += `，跨度 ${dateRange.earliest}–${dateRange.latest}（${span} 年）`;
 		}
 		statsText.createEl('span', { text: mainLine });
 
 		if (summary.uniquePeople > 0 || summary.uniquePlaces > 0) {
 			const secondaryStats: string[] = [];
-			if (summary.uniquePeople > 0) secondaryStats.push(`${summary.uniquePeople} people`);
-			if (summary.uniquePlaces > 0) secondaryStats.push(`${summary.uniquePlaces} places`);
+			if (summary.uniquePeople > 0) secondaryStats.push(`${summary.uniquePeople} 人`);
+			if (summary.uniquePlaces > 0) secondaryStats.push(`${summary.uniquePlaces} 个地点`);
 			if (summary.datedEvents < summary.totalEvents) {
-				secondaryStats.push(`${summary.datedEvents} dated`);
+				secondaryStats.push(`${summary.datedEvents} 个有日期`);
 			}
 			statsText.createEl('span', {
 				text: ` • ${secondaryStats.join(' • ')}`,
@@ -1270,20 +1270,20 @@ function renderExportCard(
 	const updateExportButton = () => {
 		exportBtn.empty();
 		let iconName: LucideIconName = 'download';
-		let buttonText = 'Export';
+		let buttonText = '导出';
 
 		switch (exportFormat) {
 			case 'canvas':
 				iconName = 'layout';
-				buttonText = 'Export to Canvas';
+				buttonText = '导出到 Canvas';
 				break;
 			case 'excalidraw':
 				iconName = 'edit';
-				buttonText = 'Export to Excalidraw';
+				buttonText = '导出到 Excalidraw';
 				break;
 			case 'markdown':
 				iconName = 'file-text';
-				buttonText = 'Export to Markdown';
+				buttonText = '导出到 Markdown';
 				break;
 		}
 
@@ -1367,7 +1367,7 @@ async function handleCanvasExport(
 	}
 
 	exportBtn.disabled = true;
-	exportBtn.textContent = 'Exporting...';
+	exportBtn.textContent = '导出中…';
 
 	try {
 		const exporter = new TimelineCanvasExporter(plugin.app, plugin.settings);
@@ -1388,23 +1388,23 @@ async function handleCanvasExport(
 					new Notice(warning, 8000);
 				}
 			}
-			new Notice(`Timeline exported to ${result.path}`);
+			new Notice(`已导出时间轴至 ${result.path}`);
 			const file = plugin.app.vault.getAbstractFileByPath(result.path);
 			if (file instanceof TFile) {
 				void plugin.app.workspace.getLeaf(false).openFile(file);
 			}
 		} else {
-			new Notice(`Export failed: ${result.error || 'Unknown error'}`);
+			new Notice(`导出失败：${result.error || '未知错误'}`);
 		}
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
-		new Notice(`Export failed: ${message}`);
+			new Notice(`导出失败：${message}`);
 	} finally {
 		exportBtn.disabled = false;
 		exportBtn.empty();
 		const icon = createLucideIcon('layout', 16);
 		exportBtn.appendChild(icon);
-		exportBtn.appendText(' Export to Canvas');
+		exportBtn.appendText(' 导出到 Canvas');
 	}
 }
 
@@ -1443,7 +1443,7 @@ async function handleExcalidrawExport(
 	}
 
 	exportBtn.disabled = true;
-	exportBtn.textContent = 'Exporting...';
+	exportBtn.textContent = '导出中…';
 
 	try {
 		const exporter = new TimelineCanvasExporter(plugin.app, plugin.settings);
@@ -1496,26 +1496,26 @@ async function handleExcalidrawExport(
 				} else {
 					await plugin.app.vault.create(excalidrawPath, excalidrawResult.excalidrawContent);
 				}
-				new Notice(`Timeline exported to ${excalidrawPath}`);
+				new Notice(`已导出时间轴至 ${excalidrawPath}`);
 				const file = plugin.app.vault.getAbstractFileByPath(excalidrawPath);
 				if (file instanceof TFile) {
 					void plugin.app.workspace.getLeaf(false).openFile(file);
 				}
 			} else {
-				new Notice(`Excalidraw export failed: ${excalidrawResult.errors.join(', ') || 'Unknown error'}`);
+				new Notice(`Excalidraw 导出失败：${excalidrawResult.errors.join('，') || '未知错误'}`);
 			}
 		} else {
-			new Notice(`Export failed: ${result.error || 'Unknown error'}`);
+			new Notice(`导出失败：${result.error || '未知错误'}`);
 		}
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
-		new Notice(`Export failed: ${message}`);
+			new Notice(`导出失败：${message}`);
 	} finally {
 		exportBtn.disabled = false;
 		exportBtn.empty();
 		const icon = createLucideIcon('edit', 16);
 		exportBtn.appendChild(icon);
-		exportBtn.appendText(' Export to Excalidraw');
+		exportBtn.appendText(' 导出到 Excalidraw');
 	}
 }
 
@@ -1544,7 +1544,7 @@ async function handleMarkdownExport(
 	}
 
 	exportBtn.disabled = true;
-	exportBtn.textContent = 'Exporting...';
+	exportBtn.textContent = '导出中…';
 
 	try {
 		const exporter = new TimelineMarkdownExporter(plugin.app, plugin.settings, plugin.getDateService());
@@ -1566,23 +1566,23 @@ async function handleMarkdownExport(
 					new Notice(warning, 8000);
 				}
 			}
-			new Notice(`Timeline exported to ${result.path}`);
+			new Notice(`已导出时间轴至 ${result.path}`);
 			const file = plugin.app.vault.getAbstractFileByPath(result.path);
 			if (file instanceof TFile) {
 				void plugin.app.workspace.getLeaf(false).openFile(file);
 			}
 		} else {
-			new Notice(`Export failed: ${result.error || 'Unknown error'}`);
+			new Notice(`导出失败：${result.error || '未知错误'}`);
 		}
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
-		new Notice(`Export failed: ${message}`);
+			new Notice(`导出失败：${message}`);
 	} finally {
 		exportBtn.disabled = false;
 		exportBtn.empty();
 		const icon = createLucideIcon('file-text', 16);
 		exportBtn.appendChild(icon);
-		exportBtn.appendText(' Export to Markdown');
+		exportBtn.appendText(' 导出到 Markdown');
 	}
 }
 
@@ -1695,7 +1695,7 @@ function renderStatisticsCard(
 	closeModal: () => void
 ): void {
 	const card = createCard({
-		title: 'Statistics',
+		title: '统计',
 		icon: 'bar-chart'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
@@ -1714,55 +1714,55 @@ function renderStatisticsCard(
 			// Empty state if no persons
 			const emptyState = content.createDiv({ cls: 'crc-empty-state' });
 			emptyState.createEl('p', {
-				text: 'No person notes found.',
+				text: '未找到人物笔记。',
 				cls: 'crc-text-muted'
 			});
 			emptyState.createEl('p', {
-				text: 'Create person notes with cr_type: person in frontmatter to see date statistics.',
+				text: '创建 frontmatter 中带 cr_type: person 的人物笔记，即可查看日期统计。',
 				cls: 'crc-text-muted'
 			});
 		} else {
 			// Date coverage section
 			const coverageSection = content.createDiv({ cls: 'cr-stats-section' });
-			coverageSection.createEl('h4', { text: 'Date coverage', cls: 'cr-subsection-heading' });
+			coverageSection.createEl('h4', { text: '日期覆盖', cls: 'cr-subsection-heading' });
 
 			const coverageList = coverageSection.createEl('ul', { cls: 'cr-stats-list' });
 
 			// Birth dates
 			const birthItem = coverageList.createEl('li');
 			const birthPercent = Math.round((stats.withBirthDates / stats.totalPersons) * 100);
-			birthItem.setText(`${stats.withBirthDates} of ${stats.totalPersons} person notes have birth dates (${birthPercent}%)`);
+			birthItem.setText(`共 ${stats.totalPersons} 条人物笔记，其中 ${stats.withBirthDates} 条有出生日期（${birthPercent}%）`);
 
 			// Death dates
 			const deathItem = coverageList.createEl('li');
 			const deathPercent = Math.round((stats.withDeathDates / stats.totalPersons) * 100);
-			deathItem.setText(`${stats.withDeathDates} of ${stats.totalPersons} person notes have death dates (${deathPercent}%)`);
+			deathItem.setText(`共 ${stats.totalPersons} 条人物笔记，其中 ${stats.withDeathDates} 条有去世日期（${deathPercent}%）`);
 
 			// Fictional dates section (only show if fictional dates are enabled)
 			if (plugin.settings.enableFictionalDates) {
 				const fictionalSection = content.createDiv({ cls: 'cr-stats-section' });
-				fictionalSection.createEl('h4', { text: 'Fictional dates', cls: 'cr-subsection-heading' });
+				fictionalSection.createEl('h4', { text: '虚构日期', cls: 'cr-subsection-heading' });
 
 				const fictionalList = fictionalSection.createEl('ul', { cls: 'cr-stats-list' });
 
 				// Count of notes using fictional dates
 				const fictionalItem = fictionalList.createEl('li');
-				fictionalItem.setText(`${stats.withFictionalDates} notes use fictional date systems`);
+				fictionalItem.setText(`${stats.withFictionalDates} 条笔记使用虚构日期系统`);
 
 				// Systems in use
 				if (stats.systemsInUse.length > 0) {
 					const systemsItem = fictionalList.createEl('li');
 					const systemsText = stats.systemsInUse
-						.map(s => `${s.name} (${s.count})`)
-						.join(', ');
-					systemsItem.setText(`Systems in use: ${systemsText}`);
+						.map(s => `${s.name}（${s.count}）`)
+						.join('，');
+					systemsItem.setText(`使用中的系统：${systemsText}`);
 				}
 			}
 		}
 
 		// View full statistics link
 		const statsLink = content.createDiv({ cls: 'cr-stats-link' });
-		const link = statsLink.createEl('a', { text: 'View full statistics →', cls: 'crc-text-muted' });
+		const link = statsLink.createEl('a', { text: '查看完整统计 →', cls: 'crc-text-muted' });
 		link.addEventListener('click', (e) => {
 			e.preventDefault();
 			closeModal();
@@ -1794,21 +1794,21 @@ function renderStatisticsCard(
 async function confirmDeleteEvent(app: App, eventTitle: string): Promise<boolean> {
 	return new Promise((resolve) => {
 		const modal = new Modal(app);
-		modal.titleEl.setText('Delete event');
+		modal.titleEl.setText('删除事件');
 		modal.contentEl.createEl('p', {
-			text: `Are you sure you want to delete "${eventTitle}"? This action cannot be undone.`
+			text: `确定要删除「${eventTitle}」吗？此操作无法撤销。`
 		});
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => {
 			modal.close();
 			resolve(false);
 		});
 
 		const deleteBtn = buttonContainer.createEl('button', {
-			text: 'Delete',
+			text: '删除',
 			cls: 'mod-warning'
 		});
 		deleteBtn.addEventListener('click', () => {
@@ -1826,24 +1826,24 @@ async function confirmDeleteEvent(app: App, eventTitle: string): Promise<boolean
 async function confirmOverwriteCanvas(app: App, canvasPath: string): Promise<boolean> {
 	return new Promise((resolve) => {
 		const modal = new Modal(app);
-		modal.titleEl.setText('Overwrite canvas?');
+		modal.titleEl.setText('覆盖画布？');
 		modal.contentEl.createEl('p', {
-			text: `A canvas file already exists at "${canvasPath}".`
+			text: `"${canvasPath}" 处已存在画布文件。`
 		});
 		modal.contentEl.createEl('p', {
-			text: 'Do you want to replace it with a new timeline export?'
+			text: '是否要用新的时间轴导出内容替换它？'
 		});
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => {
 			modal.close();
 			resolve(false);
 		});
 
 		const overwriteBtn = buttonContainer.createEl('button', {
-			text: 'Overwrite',
+			text: '覆盖',
 			cls: 'mod-warning'
 		});
 		overwriteBtn.addEventListener('click', () => {
@@ -1873,7 +1873,7 @@ export function renderEventsList(options: EventsListOptions): void {
 	const eventService = plugin.getEventService();
 	if (!eventService) {
 		container.createEl('p', {
-			text: 'Event service is not available.',
+			text: '事件服务不可用。',
 			cls: 'crc-text-muted'
 		});
 		return;
@@ -1894,11 +1894,11 @@ export function renderEventsList(options: EventsListOptions): void {
 	if (allEvents.length === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No events yet.',
+			text: '暂无事件。',
 			cls: 'crc-text-muted'
 		});
 		emptyState.createEl('p', {
-			text: 'Create event notes to see them here.',
+			text: '创建事件笔记后即可在此查看。',
 			cls: 'crc-text-muted'
 		});
 		return;
@@ -1909,7 +1909,7 @@ export function renderEventsList(options: EventsListOptions): void {
 
 	// Event type filter
 	const typeFilterEl = filterRow.createEl('select', { cls: 'dropdown' });
-	typeFilterEl.createEl('option', { value: '', text: 'All types' });
+	typeFilterEl.createEl('option', { value: '', text: '所有类型' });
 
 	const eventTypes = getAllEventTypes(
 		plugin.settings.customEventTypes || [],
@@ -1925,7 +1925,7 @@ export function renderEventsList(options: EventsListOptions): void {
 
 	// Person filter
 	const personFilterEl = filterRow.createEl('select', { cls: 'dropdown' });
-	personFilterEl.createEl('option', { value: '', text: 'All people' });
+	personFilterEl.createEl('option', { value: '', text: '所有人物' });
 
 	const uniquePeople = eventService.getUniquePeople();
 	for (const person of uniquePeople) {
@@ -1940,7 +1940,7 @@ export function renderEventsList(options: EventsListOptions): void {
 		cls: 'crc-timeline-search',
 		attr: {
 			type: 'text',
-			placeholder: 'Search events...'
+			placeholder: '搜索事件…'
 		}
 	});
 	searchInput.value = currentSearch;
@@ -1952,10 +1952,10 @@ export function renderEventsList(options: EventsListOptions): void {
 	const hasSecondaryFilter = !!(currentUniverseFilter || currentPlaceFilter || currentDateFrom !== null || currentDateTo !== null);
 	const moreFiltersToggle = filterRow.createEl('button', {
 		cls: 'crc-timeline-more-filters-toggle clickable-icon',
-		attr: { 'aria-expanded': String(hasSecondaryFilter), 'aria-label': 'Toggle more filters' }
+		attr: { 'aria-expanded': String(hasSecondaryFilter), 'aria-label': '切换更多筛选条件' }
 	});
 	setIcon(moreFiltersToggle, 'sliders-horizontal');
-	moreFiltersToggle.createSpan({ text: ' More filters', cls: 'crc-timeline-more-filters-label' });
+	moreFiltersToggle.createSpan({ text: ' 更多筛选', cls: 'crc-timeline-more-filters-label' });
 
 	const moreFiltersRow = container.createDiv({ cls: 'crc-timeline-more-filters' });
 	if (!hasSecondaryFilter) {
@@ -1963,9 +1963,9 @@ export function renderEventsList(options: EventsListOptions): void {
 	}
 
 	const universeFilterEl = moreFiltersRow.createEl('select', { cls: 'dropdown' });
-	universeFilterEl.createEl('option', { value: '', text: '(any)' });
-	universeFilterEl.createEl('option', { value: UNIVERSE_FILTER_REAL, text: '(real-world)' });
-	universeFilterEl.createEl('option', { value: UNIVERSE_FILTER_ANY_FICTIONAL, text: '(any fictional)' });
+	universeFilterEl.createEl('option', { value: '', text: '（任意）' });
+	universeFilterEl.createEl('option', { value: UNIVERSE_FILTER_REAL, text: '（现实世界）' });
+	universeFilterEl.createEl('option', { value: UNIVERSE_FILTER_ANY_FICTIONAL, text: '（任意虚构宇宙）' });
 	const universeNames = new Set<string>();
 	for (const e of allEvents) {
 		if (e.universe) universeNames.add(e.universe);
@@ -1976,7 +1976,7 @@ export function renderEventsList(options: EventsListOptions): void {
 	universeFilterEl.value = currentUniverseFilter;
 
 	const placeFilterEl = moreFiltersRow.createEl('select', { cls: 'dropdown' });
-	placeFilterEl.createEl('option', { value: '', text: 'All places' });
+	placeFilterEl.createEl('option', { value: '', text: '所有地点' });
 	for (const place of eventService.getUniquePlaces()) {
 		placeFilterEl.createEl('option', { value: place, text: stripWikilink(place) });
 	}
@@ -1984,13 +1984,13 @@ export function renderEventsList(options: EventsListOptions): void {
 
 	const dateFromInput = moreFiltersRow.createEl('input', {
 		cls: 'crc-timeline-date-input',
-		attr: { type: 'number', placeholder: 'From year' }
+		attr: { type: 'number', placeholder: '起始年份' }
 	});
 	if (currentDateFrom !== null) dateFromInput.value = String(currentDateFrom);
 
 	const dateToInput = moreFiltersRow.createEl('input', {
 		cls: 'crc-timeline-date-input',
-		attr: { type: 'number', placeholder: 'To year' }
+		attr: { type: 'number', placeholder: '结束年份' }
 	});
 	if (currentDateTo !== null) dateToInput.value = String(currentDateTo);
 
@@ -2008,7 +2008,7 @@ export function renderEventsList(options: EventsListOptions): void {
 
 		if (events.length === 0) {
 			tableContainer.createEl('p', {
-				text: 'No matching events.',
+				text: '没有匹配的事件。',
 				cls: 'crc-text-muted crc-text-center'
 			});
 			return;
@@ -2019,12 +2019,12 @@ export function renderEventsList(options: EventsListOptions): void {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Date' });
-		headerRow.createEl('th', { text: 'Event' });
-		headerRow.createEl('th', { text: 'Type' });
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Place' });
-		headerRow.createEl('th', { text: 'Media', cls: 'crc-timeline-th--center' });
+		headerRow.createEl('th', { text: '日期' });
+		headerRow.createEl('th', { text: '事件' });
+		headerRow.createEl('th', { text: '类型' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '地点' });
+		headerRow.createEl('th', { text: '媒体', cls: 'crc-timeline-th--center' });
 		headerRow.createEl('th', { text: '', cls: 'crc-timeline-th--actions' });
 
 		// Body
@@ -2040,7 +2040,7 @@ export function renderEventsList(options: EventsListOptions): void {
 
 				menu.addItem((item) => {
 					item
-						.setTitle('Open note')
+						.setTitle('打开笔记')
 						.setIcon('file')
 						.onClick(async () => {
 							await plugin.trackRecentFile(event.file, 'event');
@@ -2050,7 +2050,7 @@ export function renderEventsList(options: EventsListOptions): void {
 
 				menu.addItem((item) => {
 					item
-						.setTitle('Open in new tab')
+						.setTitle('在新标签页中打开')
 						.setIcon('file-plus')
 						.onClick(async () => {
 							await plugin.trackRecentFile(event.file, 'event');
@@ -2069,7 +2069,7 @@ export function renderEventsList(options: EventsListOptions): void {
 					dateCell.textContent += ` – ${event.dateEnd}`;
 				}
 			} else {
-				dateCell.createEl('span', { text: 'Unknown', cls: 'crc-text-muted' });
+				dateCell.createEl('span', { text: '未知', cls: 'crc-text-muted' });
 			}
 
 			// Event title cell
@@ -2125,7 +2125,7 @@ export function renderEventsList(options: EventsListOptions): void {
 			if (mediaCount > 0) {
 				const mediaBadge = mediaCell.createEl('span', {
 					cls: 'crc-person-list-badge crc-person-list-badge--media',
-					attr: { title: `${mediaCount} media file${mediaCount !== 1 ? 's' : ''}` }
+					attr: { title: `${mediaCount} 个媒体文件` }
 				});
 				const mediaIcon = createLucideIcon('image', 12);
 				mediaBadge.appendChild(mediaIcon);
@@ -2138,7 +2138,7 @@ export function renderEventsList(options: EventsListOptions): void {
 			const actionsCell = row.createEl('td', { cls: 'crc-timeline-cell-actions' });
 			const openBtn = actionsCell.createEl('button', {
 				cls: 'crc-timeline-open-btn clickable-icon',
-				attr: { 'aria-label': 'Open note' }
+				attr: { 'aria-label': '打开笔记' }
 			});
 			const fileIcon = createLucideIcon('file-text', 14);
 			openBtn.appendChild(fileIcon);
@@ -2153,7 +2153,7 @@ export function renderEventsList(options: EventsListOptions): void {
 
 		// Show count
 		tableContainer.createEl('p', {
-			text: `Showing ${events.length} event${events.length !== 1 ? 's' : ''}`,
+			text: `显示 ${events.length} 个事件`,
 			cls: 'crc-text-muted crc-text-small crc-mt-2'
 		});
 	};

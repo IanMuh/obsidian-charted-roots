@@ -34,13 +34,13 @@ export class FolderStatisticsModal extends Modal {
 
 		// Title
 		contentEl.createEl('h2', {
-			text: `Statistics: ${this.folder.name}`,
+			text: `统计：${this.folder.name}`,
 			cls: 'crc-modal-title'
 		});
 
 		// Loading state
 		const loadingEl = contentEl.createDiv({ cls: 'cr-loading' });
-		loadingEl.createEl('p', { text: 'Analyzing folder...' });
+		loadingEl.createEl('p', { text: '正在分析文件夹…' });
 
 		// Load analytics
 		try {
@@ -57,7 +57,7 @@ export class FolderStatisticsModal extends Modal {
 		} catch (error) {
 			loadingEl.empty();
 			loadingEl.createEl('p', {
-				text: `Error loading statistics: ${error}`,
+				text: `加载统计出错：${error}`,
 				cls: 'cr-error-text'
 			});
 		}
@@ -68,35 +68,35 @@ export class FolderStatisticsModal extends Modal {
 
 		// Overview section
 		const overviewSection = container.createDiv({ cls: 'cr-stats-section' });
-		overviewSection.createEl('h3', { text: 'Overview' });
+		overviewSection.createEl('h3', { text: '概览' });
 
 		const overviewGrid = overviewSection.createDiv({ cls: 'cr-stats-grid' });
 
-		this.createStatCard(overviewGrid, 'users', 'Total people', this.analytics.totalPeople.toString());
-		this.createStatCard(overviewGrid, 'home', 'Family groups', this.analytics.totalFamilies.toString());
-		this.createStatCard(overviewGrid, 'folder', 'Collections', this.analytics.totalUserCollections.toString());
+		this.createStatCard(overviewGrid, 'users', '人物总数', this.analytics.totalPeople.toString());
+		this.createStatCard(overviewGrid, 'home', '家族群组', this.analytics.totalFamilies.toString());
+		this.createStatCard(overviewGrid, 'folder', '合集', this.analytics.totalUserCollections.toString());
 
 		const dateRanges = this.analytics.dateRange.byUniverse;
 		if (dateRanges.length > 0) {
 			const dateRangeText = dateRanges.length === 1
 				? formatDateRangeLine(dateRanges[0], false)
 				: dateRanges.map(r => formatDateRangeLine(r, true)).join('; ');
-			this.createStatCard(overviewGrid, 'calendar', 'Date range', dateRangeText);
+			this.createStatCard(overviewGrid, 'calendar', '日期范围', dateRangeText);
 		}
 
 		// Data completeness section
 		const completenessSection = container.createDiv({ cls: 'cr-stats-section' });
-		completenessSection.createEl('h3', { text: 'Data completeness' });
+		completenessSection.createEl('h3', { text: '数据完整度' });
 
 		const completenessGrid = completenessSection.createDiv({ cls: 'cr-completeness-grid' });
 
-		this.createProgressBar(completenessGrid, 'Birth dates', this.analytics.dataCompleteness.birthDatePercent);
-		this.createProgressBar(completenessGrid, 'Death dates', this.analytics.dataCompleteness.deathDatePercent);
-		this.createProgressBar(completenessGrid, 'Gender/Sex', this.analytics.dataCompleteness.sexPercent);
+		this.createProgressBar(completenessGrid, '出生日期', this.analytics.dataCompleteness.birthDatePercent);
+		this.createProgressBar(completenessGrid, '去世日期', this.analytics.dataCompleteness.deathDatePercent);
+		this.createProgressBar(completenessGrid, '性别', this.analytics.dataCompleteness.sexPercent);
 
 		// Relationship health section
 		const relationshipSection = container.createDiv({ cls: 'cr-stats-section' });
-		relationshipSection.createEl('h3', { text: 'Relationship coverage' });
+		relationshipSection.createEl('h3', { text: '关系覆盖' });
 
 		const relationshipGrid = relationshipSection.createDiv({ cls: 'cr-stats-grid' });
 
@@ -113,19 +113,19 @@ export class FolderStatisticsModal extends Modal {
 		this.createStatCard(
 			relationshipGrid,
 			'users',
-			'Have parents',
+			'有父母',
 			`${this.analytics.relationshipMetrics.peopleWithParents} (${withParentsPercent}%)`
 		);
 		this.createStatCard(
 			relationshipGrid,
 			'heart',
-			'Have spouses',
+			'有配偶',
 			`${this.analytics.relationshipMetrics.peopleWithSpouses} (${withSpousesPercent}%)`
 		);
 		this.createStatCard(
 			relationshipGrid,
 			'baby',
-			'Have children',
+			'有子女',
 			`${this.analytics.relationshipMetrics.peopleWithChildren} (${withChildrenPercent}%)`
 		);
 
@@ -136,33 +136,33 @@ export class FolderStatisticsModal extends Modal {
 			warnIcon.addClass('cr-icon--warning');
 			orphanWarning.appendChild(warnIcon);
 			orphanWarning.createEl('span', {
-				text: ` ${this.analytics.relationshipMetrics.orphanedPeople} people have no relationships (isolated)`
+				text: ` ${this.analytics.relationshipMetrics.orphanedPeople} 位人物没有任何关系（孤立）`
 			});
 		}
 
 		// Collection sizes section
 		if (this.analytics.largestCollection && this.analytics.smallestCollection) {
 			const sizeSection = container.createDiv({ cls: 'cr-stats-section' });
-			sizeSection.createEl('h3', { text: 'Collection sizes' });
+			sizeSection.createEl('h3', { text: '合集规模' });
 
 			const sizeGrid = sizeSection.createDiv({ cls: 'cr-stats-grid' });
 
 			this.createStatCard(
 				sizeGrid,
 				'maximize-2',
-				'Largest',
+				'最大',
 				`${this.analytics.largestCollection.name} (${this.analytics.largestCollection.size})`
 			);
 			this.createStatCard(
 				sizeGrid,
 				'minimize-2',
-				'Smallest',
+				'最小',
 				`${this.analytics.smallestCollection.name} (${this.analytics.smallestCollection.size})`
 			);
 			this.createStatCard(
 				sizeGrid,
 				'bar-chart',
-				'Average size',
+				'平均规模',
 				this.analytics.averageCollectionSize.toString()
 			);
 		}
@@ -170,21 +170,21 @@ export class FolderStatisticsModal extends Modal {
 		// Cross-collection connections
 		if (this.analytics.crossCollectionMetrics.totalConnections > 0) {
 			const connectionsSection = container.createDiv({ cls: 'cr-stats-section' });
-			connectionsSection.createEl('h3', { text: 'Cross-collection connections' });
+			connectionsSection.createEl('h3', { text: '跨合集连接' });
 
 			const connectionsInfo = connectionsSection.createDiv({ cls: 'cr-stats-info' });
 			connectionsInfo.createEl('p', {
-				text: `${this.analytics.crossCollectionMetrics.totalConnections} connections between collections`
+				text: `合集之间有 ${this.analytics.crossCollectionMetrics.totalConnections} 条连接`
 			});
 			connectionsInfo.createEl('p', {
-				text: `${this.analytics.crossCollectionMetrics.totalBridgePeople} bridge people connecting different groups`
+				text: `${this.analytics.crossCollectionMetrics.totalBridgePeople} 位桥梁人物连接不同群体`
 			});
 
 			if (this.analytics.crossCollectionMetrics.topConnections.length > 0) {
 				const topList = connectionsSection.createEl('ul', { cls: 'cr-stats-list' });
 				for (const conn of this.analytics.crossCollectionMetrics.topConnections) {
 					topList.createEl('li', {
-						text: `${conn.from} ↔ ${conn.to}: ${conn.bridgeCount} bridge people`
+						text: `${conn.from} ↔ ${conn.to}：${conn.bridgeCount} 位桥梁人物`
 					});
 				}
 			}
@@ -193,7 +193,7 @@ export class FolderStatisticsModal extends Modal {
 		// Close button
 		const buttonContainer = container.createDiv({ cls: 'cr-modal-buttons' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.setCta()
 			.onClick(() => this.close());
 	}

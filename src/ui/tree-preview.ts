@@ -381,16 +381,16 @@ export class TreePreviewRenderer {
 		if (person.birthDate || person.deathDate) {
 			this.tooltipElement.createEl('br');
 			let dateText = '';
-			if (person.birthDate) dateText += `b. ${formatDisplayDate(person.birthDate)}`;
+			if (person.birthDate) dateText += `出生于 ${formatDisplayDate(person.birthDate)}`;
 			if (person.birthDate && person.deathDate) dateText += ' | ';
-			if (person.deathDate) dateText += `d. ${formatDisplayDate(person.deathDate)}`;
+			if (person.deathDate) dateText += `逝世于 ${formatDisplayDate(person.deathDate)}`;
 			this.tooltipElement.appendText(dateText);
 		}
 
 		// Add generation
 		if (pos.generation !== undefined) {
 			this.tooltipElement.createEl('br');
-			this.tooltipElement.createEl('em', { text: `Generation ${pos.generation}` });
+			this.tooltipElement.createEl('em', { text: `第${pos.generation}代` });
 		}
 
 		this.tooltipElement.removeClass('cr-hidden');

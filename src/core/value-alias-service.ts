@@ -103,41 +103,41 @@ export type CanonicalNoteType = typeof CANONICAL_NOTE_TYPES[number];
  * Human-readable labels for field types (for UI display)
  */
 export const VALUE_ALIAS_FIELD_LABELS: Record<ValueAliasField, string> = {
-	eventType: 'Event type',
-	sex: 'Sex',
-	gender_identity: 'Gender identity',
-	placeCategory: 'Place category',
-	noteType: 'Note type (cr_type)'
+	eventType: '事件类型',
+	sex: '生理性别',
+	gender_identity: '性别认同',
+	placeCategory: '地点分类',
+	noteType: '笔记类型（cr_type）'
 };
 
 /**
  * Human-readable labels for canonical event types
  */
 export const EVENT_TYPE_LABELS: Record<CanonicalEventType, string> = {
-	birth: 'Birth',
-	death: 'Death',
-	marriage: 'Marriage',
-	burial: 'Burial',
-	residence: 'Residence',
-	occupation: 'Occupation',
-	education: 'Education',
-	military: 'Military',
-	immigration: 'Immigration',
-	baptism: 'Baptism',
-	confirmation: 'Confirmation',
-	ordination: 'Ordination',
-	transfer: 'Transfer',
-	custom: 'Custom'
+	birth: '出生',
+	death: '去世',
+	marriage: '婚姻',
+	burial: '安葬',
+	residence: '居住',
+	occupation: '职业',
+	education: '教育',
+	military: '军旅',
+	immigration: '移民',
+	baptism: '洗礼',
+	confirmation: '坚振',
+	ordination: '授圣职',
+	transfer: '调动',
+	custom: '自定义'
 };
 
 /**
  * Human-readable labels for canonical sex values
  */
 export const SEX_LABELS: Record<CanonicalSex, string> = {
-	M: 'Male',
-	F: 'Female',
-	X: 'Non-binary/Intersex',
-	U: 'Unknown'
+	M: '男',
+	F: '女',
+	X: '非二元/间性',
+	U: '未知'
 };
 
 // Backwards compatibility alias
@@ -147,38 +147,38 @@ export const GENDER_LABELS = SEX_LABELS;
  * Human-readable labels for canonical gender_identity values
  */
 export const GENDER_IDENTITY_LABELS: Record<CanonicalGenderIdentity, string> = {
-	male: 'Male',
-	female: 'Female',
-	nonbinary: 'Non-binary',
-	genderfluid: 'Genderfluid',
-	agender: 'Agender',
-	other: 'Other'
+	male: '男',
+	female: '女',
+	nonbinary: '非二元',
+	genderfluid: '流性',
+	agender: '无性别',
+	other: '其他'
 };
 
 /**
  * Human-readable labels for canonical place categories
  */
 export const PLACE_CATEGORY_LABELS: Record<CanonicalPlaceCategory, string> = {
-	real: 'Real',
-	historical: 'Historical',
-	disputed: 'Disputed',
-	legendary: 'Legendary',
-	mythological: 'Mythological',
-	fictional: 'Fictional'
+	real: '真实',
+	historical: '历史',
+	disputed: '存疑',
+	legendary: '传说',
+	mythological: '神话',
+	fictional: '虚构'
 };
 
 /**
  * Human-readable labels for canonical note types
  */
 export const NOTE_TYPE_LABELS: Record<CanonicalNoteType, string> = {
-	person: 'Person',
-	place: 'Place',
-	event: 'Event',
-	source: 'Source',
-	organization: 'Organization',
-	map: 'Map',
-	schema: 'Schema',
-	timeline: 'Timeline'
+	person: '人物',
+	place: '地点',
+	event: '事件',
+	source: '来源',
+	organization: '组织',
+	map: '地图',
+	schema: '架构',
+	timeline: '时间轴'
 };
 
 /**

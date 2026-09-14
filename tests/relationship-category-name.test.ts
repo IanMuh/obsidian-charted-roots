@@ -24,8 +24,8 @@ function makeService(settings: {
 describe('RelationshipService.getCategoryName (#707)', () => {
 	it('resolves a built-in category to its display name', () => {
 		const service = makeService({});
-		expect(service.getCategoryName('family' as RelationshipCategory)).toBe('Family');
-		expect(service.getCategoryName('legal' as RelationshipCategory)).toBe('Legal/Guardianship');
+		expect(service.getCategoryName('family' as RelationshipCategory)).toBe('家族');
+		expect(service.getCategoryName('legal' as RelationshipCategory)).toBe('法律/监护');
 	});
 
 	it('resolves a user-created custom category to its name instead of a blank label', () => {

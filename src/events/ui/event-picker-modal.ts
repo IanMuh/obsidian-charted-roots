@@ -161,7 +161,7 @@ export class EventPickerModal extends Modal {
 		const titleSection = header.createDiv({ cls: 'crc-picker-title' });
 		const icon = createLucideIcon('calendar', 20);
 		titleSection.appendChild(icon);
-		titleSection.appendText('Select event');
+		titleSection.appendText('选择事件');
 
 		// Search section
 		const searchSection = contentEl.createDiv({ cls: 'crc-picker-search' });
@@ -170,7 +170,7 @@ export class EventPickerModal extends Modal {
 			cls: 'crc-form-input',
 			attr: {
 				type: 'text',
-				placeholder: 'Search by title, type, date...'
+				placeholder: '按标题、类型、日期搜索…'
 			}
 		});
 
@@ -184,15 +184,15 @@ export class EventPickerModal extends Modal {
 
 		// Sort dropdown
 		const sortContainer = contentEl.createDiv({ cls: 'crc-picker-sort' });
-		sortContainer.createSpan({ cls: 'crc-picker-sort__label', text: 'Sort by:' });
+		sortContainer.createSpan({ cls: 'crc-picker-sort__label', text: '排序方式：' });
 		const sortSelect = sortContainer.createEl('select', { cls: 'crc-form-select' });
 
 		const sortOptions: Array<{ value: SortOption; label: string }> = [
-			{ value: 'date-desc', label: 'Date (newest first)' },
-			{ value: 'date-asc', label: 'Date (oldest first)' },
-			{ value: 'title-asc', label: 'Title (A-Z)' },
-			{ value: 'title-desc', label: 'Title (Z-A)' },
-			{ value: 'recent', label: 'Recently modified' }
+			{ value: 'date-desc', label: '日期（最新优先）' },
+			{ value: 'date-asc', label: '日期（最早优先）' },
+			{ value: 'title-asc', label: '标题（A-Z）' },
+			{ value: 'title-desc', label: '标题（Z-A）' },
+			{ value: 'recent', label: '最近修改' }
 		];
 
 		sortOptions.forEach(opt => {
@@ -214,14 +214,14 @@ export class EventPickerModal extends Modal {
 
 		// Event type filter
 		const typeFilter = filtersContainer.createDiv({ cls: 'crc-picker-filter' });
-		typeFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Type:' });
+		typeFilter.createSpan({ cls: 'crc-picker-filter__label', text: '类型：' });
 		const typeSelect = typeFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 
 		// Get unique event types from current events
 		const eventTypes = new Set<string>();
 		this.allEvents.forEach(e => eventTypes.add(e.eventType));
 
-		typeSelect.createEl('option', { value: 'all', text: 'All types' });
+		typeSelect.createEl('option', { value: 'all', text: '全部类型' });
 		Array.from(eventTypes).sort().forEach(typeId => {
 			const typeDef = getEventType(
 				typeId,
@@ -241,7 +241,7 @@ export class EventPickerModal extends Modal {
 		// chosen person as a participant. Source values come from each event's
 		// person + persons wikilinks, deduped.
 		const personFilter = filtersContainer.createDiv({ cls: 'crc-picker-filter' });
-		personFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Person:' });
+		personFilter.createSpan({ cls: 'crc-picker-filter__label', text: '人物：' });
 		const personSelect = personFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 
 		const personMap = new Map<string, string>(); // canonical wikilink target -> display label
@@ -257,7 +257,7 @@ export class EventPickerModal extends Modal {
 			}
 		}
 
-		personSelect.createEl('option', { value: 'all', text: 'All persons' });
+		personSelect.createEl('option', { value: 'all', text: '全部人物' });
 		Array.from(personMap.entries())
 			.sort((a, b) => a[1].localeCompare(b[1]))
 			.forEach(([target, label]) => {
@@ -343,11 +343,11 @@ export class EventPickerModal extends Modal {
 			const emptyState = this.resultsContainer.createDiv({ cls: 'crc-picker-empty' });
 			const emptyIcon = createLucideIcon('calendar', 48);
 			emptyState.appendChild(emptyIcon);
-			emptyState.createEl('p', { text: 'No events found' });
+			emptyState.createEl('p', { text: '未找到事件' });
 			emptyState.createEl('p', {
 				text: this.allEvents.length === 0
-					? 'Create event notes to link them to people'
-					: 'Try a different search term or filter',
+					? '创建事件笔记以将其关联到人物'
+					: '请尝试其他搜索词或筛选条件',
 				cls: 'crc-text-muted'
 			});
 			return;

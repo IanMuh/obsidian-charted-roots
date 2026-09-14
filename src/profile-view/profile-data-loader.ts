@@ -397,7 +397,7 @@ export class ProfileDataLoader {
 					const links = Array.isArray(sourcesArr) ? sourcesArr : [sourcesArr];
 					for (const link of links) {
 						if (typeof link === 'string' && this.matchesSource(link, sourceBasename)) {
-							facts.push({ factKey: 'general', factValue: 'Referenced in sources' });
+							facts.push({ factKey: 'general', factValue: '在来源中引用' });
 							break;
 						}
 					}

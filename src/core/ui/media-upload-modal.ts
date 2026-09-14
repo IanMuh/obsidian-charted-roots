@@ -82,7 +82,7 @@ export class MediaUploadModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'crc-media-modal-header' });
 		const headerIcon = header.createDiv({ cls: 'crc-media-modal-header-icon' });
 		setIcon(headerIcon, 'upload');
-		header.createEl('h2', { text: 'Upload Media' });
+		header.createEl('h2', { text: '上传媒体' });
 
 		this.bodyEl = contentEl.createDiv({ cls: 'crc-modal-body' });
 		const body = this.bodyEl;
@@ -91,14 +91,14 @@ export class MediaUploadModal extends Modal {
 		this.dropZone = body.createDiv({ cls: 'crc-upload-drop-zone' });
 		const dropIcon = this.dropZone.createDiv({ cls: 'crc-upload-drop-icon' });
 		setIcon(dropIcon, 'folder-open');
-		this.dropZone.createDiv({ cls: 'crc-upload-drop-text', text: 'Drag files here or click to browse' });
-		this.dropZone.createDiv({ cls: 'crc-upload-drop-hint', text: 'Supports images, videos, audio, PDFs, and documents' });
+		this.dropZone.createDiv({ cls: 'crc-upload-drop-text', text: '将文件拖到此处，或点击浏览' });
+		this.dropZone.createDiv({ cls: 'crc-upload-drop-hint', text: '支持图片、视频、音频、PDF 和文档' });
 
 		// Browse button
 		const browseBtn = this.dropZone.createEl('button', { cls: 'crc-btn crc-btn--secondary crc-upload-browse-btn' });
 		const browseIcon = browseBtn.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(browseIcon, 'file-plus');
-		browseBtn.appendText(' Browse Files');
+		browseBtn.appendText(' 浏览文件');
 
 		// Drag and drop handlers
 		this.setupDragAndDrop();
@@ -118,29 +118,29 @@ export class MediaUploadModal extends Modal {
 
 		// Destination info
 		const destInfo = body.createDiv({ cls: 'crc-upload-destination' });
-		destInfo.createDiv({ cls: 'crc-upload-destination-label', text: 'Files will be uploaded to:' });
+		destInfo.createDiv({ cls: 'crc-upload-destination-label', text: '文件将上传到：' });
 		destInfo.createDiv({ cls: 'crc-upload-destination-path', text: this.getUploadDestination() });
-		destInfo.createDiv({ cls: 'crc-upload-destination-hint', text: 'This is your first configured media folder. You can move files to other locations later using Obsidian\'s file explorer.' });
+		destInfo.createDiv({ cls: 'crc-upload-destination-hint', text: '这是你配置的第一个媒体文件夹。之后可以使用 Obsidian 的文件浏览器将文件移动到其他位置。' });
 
 		// Files list
 		const filesSection = body.createDiv({ cls: 'crc-upload-files-section' });
-		filesSection.createDiv({ cls: 'crc-upload-files-header', text: 'Files to upload' });
+		filesSection.createDiv({ cls: 'crc-upload-files-header', text: '待上传文件' });
 		this.filesListContainer = filesSection.createDiv({ cls: 'crc-upload-files-list' });
 
 		this.renderFilesList();
 
 		// Footer
 		const footer = contentEl.createDiv({ cls: 'crc-modal-footer' });
-		const footerInfo = footer.createDiv({ cls: 'crc-modal-footer-info', text: 'No files selected' });
+		const footerInfo = footer.createDiv({ cls: 'crc-modal-footer-info', text: '未选择文件' });
 
 		const footerActions = footer.createDiv({ cls: 'crc-modal-footer-actions' });
 
 		new ButtonComponent(footerActions)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => this.close());
 
 		this.uploadButton = new ButtonComponent(footerActions)
-			.setButtonText('Upload')
+			.setButtonText('上传')
 			.setCta()
 			.setDisabled(true)
 			.onClick(() => { void this.handleUpload(); });
@@ -210,7 +210,7 @@ export class MediaUploadModal extends Modal {
 
 			// Validate file type
 			if (!ALL_MEDIA_EXTENSIONS.includes(ext)) {
-				new Notice(`Unsupported file type: ${file.name}`);
+				new Notice(`不支持的文件类型：${file.name}`);
 				continue;
 			}
 
@@ -242,7 +242,7 @@ export class MediaUploadModal extends Modal {
 		this.filesListContainer.empty();
 
 		if (this.uploadFiles.length === 0) {
-			this.filesListContainer.createDiv({ cls: 'crc-upload-files-empty', text: 'No files selected' });
+			this.filesListContainer.createDiv({ cls: 'crc-upload-files-empty', text: '未选择文件' });
 			return;
 		}
 
@@ -282,11 +282,11 @@ export class MediaUploadModal extends Modal {
 		const updateText = () => {
 			const count = this.uploadFiles.length;
 			if (count === 0) {
-				footerInfo.textContent = 'No files selected';
+				footerInfo.textContent = '未选择文件';
 			} else if (count === 1) {
-				footerInfo.textContent = '1 file selected';
+				footerInfo.textContent = '已选择 1 个文件';
 			} else {
-				footerInfo.textContent = `${count} files selected`;
+				footerInfo.textContent = `已选择 ${count} 个文件`;
 			}
 		};
 
@@ -335,12 +335,12 @@ export class MediaUploadModal extends Modal {
 				}
 			} catch (error) {
 				console.error('Error uploading file:', error);
-				new Notice(`Failed to upload ${uploadFile.displayName}`);
+				new Notice(`上传 ${uploadFile.displayName} 失败`);
 			}
 		}
 
 		if (uploadedCount > 0) {
-			new Notice(`Uploaded ${uploadedCount} file${uploadedCount > 1 ? 's' : ''} to ${destination}`);
+			new Notice(`已将 ${uploadedCount} 个文件上传到 ${destination}`);
 			this.close();
 		}
 	}
@@ -362,11 +362,11 @@ export class MediaUploadModal extends Modal {
 		const header = this.folderConfigContainer.createDiv({ cls: 'crc-folder-config-header' });
 		const headerIcon = header.createSpan({ cls: 'crc-folder-config-icon' });
 		setIcon(headerIcon, 'folder-cog');
-		header.createSpan({ text: 'Configure Media Folder', cls: 'crc-folder-config-title' });
+		header.createSpan({ text: '配置媒体文件夹', cls: 'crc-folder-config-title' });
 
 		// Description
 		this.folderConfigContainer.createEl('p', {
-			text: 'No media folder is configured. Enter a folder path to store uploaded media files.',
+			text: '尚未配置媒体文件夹。请输入用于存放上传媒体的文件夹路径。',
 			cls: 'crc-folder-config-desc'
 		});
 
@@ -375,7 +375,7 @@ export class MediaUploadModal extends Modal {
 
 		const inputWrapper = inputRow.createDiv({ cls: 'crc-folder-config-input-wrapper' });
 		const textComponent = new TextComponent(inputWrapper);
-		textComponent.setPlaceholder('e.g., Media or Attachments/Media');
+		textComponent.setPlaceholder('例如：媒体 或 附件/媒体');
 		textComponent.inputEl.addClass('crc-folder-config-input');
 
 		let selectedFolder = '';
@@ -392,14 +392,14 @@ export class MediaUploadModal extends Modal {
 
 		// Set folder button
 		new ButtonComponent(inputRow)
-			.setButtonText('Set folder')
+			.setButtonText('设置文件夹')
 			.setCta()
 			.onClick(() => {
 				void (async () => {
 					const folderPath = selectedFolder.trim() || textComponent.getValue().trim();
 
 					if (!folderPath) {
-						new Notice('Please enter a folder path');
+						new Notice('请输入文件夹路径');
 						return;
 					}
 
@@ -491,7 +491,7 @@ export class MediaUploadModal extends Modal {
 	private getUploadDestination(): string {
 		const folder = this.getUploadFolder();
 		if (!folder) {
-			return 'Not configured';
+			return '未配置';
 		}
 		return folder;
 	}

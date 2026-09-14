@@ -53,7 +53,7 @@ class FolderSuggest extends AbstractInputSuggest<TFolder> {
 	}
 
 	renderSuggestion(folder: TFolder, el: HTMLElement): void {
-		el.setText(folder.path || '(Root)');
+		el.setText(folder.path || '(根目录)');
 	}
 
 	selectSuggestion(folder: TFolder): void {
@@ -135,7 +135,7 @@ export class SourceImageWizardModal extends Modal {
 
 	onOpen(): void {
 		const { titleEl, modalEl } = this;
-		titleEl.setText('Import source images');
+		titleEl.setText('导入来源图片');
 		modalEl.addClass('cr-image-wizard');
 		activeDocument.body.addClass('cr-image-wizard-active');
 
@@ -188,7 +188,7 @@ export class SourceImageWizardModal extends Modal {
 	private renderProgressIndicator(): void {
 		const { contentEl } = this;
 		const steps: WizardStep[] = ['select', 'rename', 'review', 'configure', 'execute'];
-		const stepLabels = ['Select', 'Rename', 'Review', 'Configure', 'Execute'];
+		const stepLabels = ['选择', '重命名', '检查', '配置', '执行'];
 
 		const progressEl = contentEl.createDiv({ cls: 'cr-image-wizard__progress' });
 
@@ -219,13 +219,13 @@ export class SourceImageWizardModal extends Modal {
 	private renderSelectStep(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'cr-image-wizard__step-header',
-			text: 'Select source folder',
+			text: '选择来源文件夹',
 		});
 
 		// Folder selection
 		new Setting(container)
-			.setName('Folder')
-			.setDesc('Select the vault folder containing your source images')
+			.setName('文件夹')
+			.setDesc('选择包含来源图片的库文件夹')
 			.addText((text) => {
 				text.setPlaceholder('Charted Roots/Sources/Media').setValue(this.selectedFolder);
 
@@ -246,12 +246,12 @@ export class SourceImageWizardModal extends Modal {
 		// Filter options
 		container.createDiv({
 			cls: 'cr-image-wizard__section-header',
-			text: 'Filter options',
+			text: '筛选选项',
 		});
 
 		new Setting(container)
-			.setName('Exclude thumbnails')
-			.setDesc('Skip files starting with thumb_ or thumbnail_')
+			.setName('排除缩略图')
+			.setDesc('跳过以 thumb_ 或 thumbnail_ 开头的文件')
 			.addToggle((toggle) => {
 				toggle.setValue(this.excludeThumbnails).onChange((value) => {
 					this.excludeThumbnails = value;
@@ -261,8 +261,8 @@ export class SourceImageWizardModal extends Modal {
 			});
 
 		new Setting(container)
-			.setName('Exclude hidden files')
-			.setDesc('Skip files starting with a dot (.)')
+			.setName('排除隐藏文件')
+			.setDesc('跳过以点号（.）开头的文件')
 			.addToggle((toggle) => {
 				toggle.setValue(this.excludeHidden).onChange((value) => {
 					this.excludeHidden = value;
@@ -272,8 +272,8 @@ export class SourceImageWizardModal extends Modal {
 			});
 
 		new Setting(container)
-			.setName('Exclude non-images')
-			.setDesc('Skip .doc, .pdf, .txt and other non-image files')
+			.setName('排除非图片文件')
+			.setDesc('跳过 .doc、.pdf、.txt 等非图片文件')
 			.addToggle((toggle) => {
 				toggle.setValue(this.excludeNonImages).onChange((value) => {
 					this.excludeNonImages = value;
@@ -385,18 +385,18 @@ export class SourceImageWizardModal extends Modal {
 		const preview = container.createDiv({ cls: 'cr-image-wizard__preview' });
 
 		const header = preview.createDiv({ cls: 'cr-image-wizard__preview-header' });
-		header.createSpan({ text: 'Files found', cls: 'cr-image-wizard__preview-title' });
+		header.createSpan({ text: '找到的文件', cls: 'cr-image-wizard__preview-title' });
 
 		const filteredCount = this.allFiles.filter((f) => f.isFiltered).length;
 		header.createSpan({
-			text: `${this.filteredFiles.length} images${filteredCount > 0 ? ` (${filteredCount} excluded)` : ''}`,
+			text: `${this.filteredFiles.length} 张图片${filteredCount > 0 ? `（已排除 ${filteredCount} 个）` : ''}`,
 			cls: 'cr-image-wizard__preview-count',
 		});
 
 		if (this.filteredFiles.length === 0 && this.allFiles.length === 0) {
 			preview.createDiv({
 				cls: 'cr-image-wizard__empty',
-				text: 'No files found in this folder',
+				text: '该文件夹中未找到文件',
 			});
 			return;
 		}
@@ -415,7 +415,7 @@ export class SourceImageWizardModal extends Modal {
 		if (this.filteredFiles.length > 10) {
 			list.createDiv({
 				cls: 'cr-image-wizard__file-more',
-				text: `... and ${this.filteredFiles.length - 10} more files`,
+				text: `… 还有 ${this.filteredFiles.length - 10} 个文件`,
 			});
 		}
 
@@ -423,7 +423,7 @@ export class SourceImageWizardModal extends Modal {
 		const excluded = this.allFiles.filter((f) => f.isFiltered);
 		if (excluded.length > 0) {
 			const excludedHeader = preview.createDiv({ cls: 'cr-image-wizard__excluded-header' });
-			excludedHeader.createSpan({ text: `Excluded (${excluded.length})`, cls: 'crc-text-muted' });
+			excludedHeader.createSpan({ text: `已排除（${excluded.length}）`, cls: 'crc-text-muted' });
 
 			const excludedList = preview.createDiv({ cls: 'cr-image-wizard__file-list cr-image-wizard__file-list--excluded' });
 			for (const info of excluded.slice(0, 5)) {
@@ -439,12 +439,12 @@ export class SourceImageWizardModal extends Modal {
 	private renderRenameStep(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'cr-image-wizard__step-header',
-			text: 'Standardize filenames (optional)',
+			text: '规范文件名（可选）',
 		});
 
 		new Setting(container)
-			.setName('Enable file renaming')
-			.setDesc('Rename files to a consistent format based on parsed metadata')
+			.setName('启用文件重命名')
+			.setDesc('根据解析出的元数据，将文件重命名为统一格式')
 			.addToggle((toggle) => {
 				toggle.setValue(this.enableRenaming).onChange((value) => {
 					this.enableRenaming = value;
@@ -455,14 +455,14 @@ export class SourceImageWizardModal extends Modal {
 		if (!this.enableRenaming) {
 			container.createDiv({
 				cls: 'cr-image-wizard__info',
-				text: 'Files will keep their original names. Click Next to continue.',
+				text: '文件将保留原始名称。点击"下一步"继续。',
 			});
 			return;
 		}
 
 		container.createDiv({
 			cls: 'cr-image-wizard__help',
-			text: 'Format: surname_given_byyyy_type_yyyy_place.ext',
+			text: '格式：surname_given_byyyy_type_yyyy_place.ext',
 		});
 
 		// Check for conflicts
@@ -476,10 +476,10 @@ export class SourceImageWizardModal extends Modal {
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
 		headerRow.createEl('th', { text: '', cls: 'cr-image-wizard__th-checkbox' });
-		headerRow.createEl('th', { text: 'Current filename' });
+		headerRow.createEl('th', { text: '当前文件名' });
 		headerRow.createEl('th', { text: '', cls: 'cr-image-wizard__th-arrow' });
-		headerRow.createEl('th', { text: 'New filename' });
-		headerRow.createEl('th', { text: 'Status' });
+		headerRow.createEl('th', { text: '新文件名' });
+		headerRow.createEl('th', { text: '状态' });
 
 		// Body
 		const tbody = table.createEl('tbody');
@@ -520,21 +520,21 @@ export class SourceImageWizardModal extends Modal {
 			// Status
 			const statusCell = row.createEl('td', { cls: 'cr-image-wizard__cell-status' });
 			if (!info.includeInRename) {
-				statusCell.createSpan({ text: '— Skip', cls: 'crc-text-muted' });
+				statusCell.createSpan({ text: '— 跳过', cls: 'crc-text-muted' });
 			} else if (this.renameConflicts.has(info.proposedName)) {
-				statusCell.createSpan({ text: '⚠ Conflict', cls: 'cr-image-wizard__conflict' });
+				statusCell.createSpan({ text: '⚠ 冲突', cls: 'cr-image-wizard__conflict' });
 				row.addClass('cr-image-wizard__row--conflict');
 			} else if (info.file.name === info.proposedName) {
-				statusCell.createSpan({ text: '— No change', cls: 'crc-text-muted' });
+				statusCell.createSpan({ text: '— 无变化', cls: 'crc-text-muted' });
 			} else {
-				statusCell.createSpan({ text: '✓ OK', cls: 'cr-image-wizard__ok' });
+				statusCell.createSpan({ text: '✓ 正常', cls: 'cr-image-wizard__ok' });
 			}
 		}
 
 		if (this.filteredFiles.length > 50) {
 			container.createDiv({
 				cls: 'cr-image-wizard__info',
-				text: `Showing 50 of ${this.filteredFiles.length} files`,
+				text: `显示 ${this.filteredFiles.length} 个文件中的 50 个`,
 			});
 		}
 
@@ -542,13 +542,13 @@ export class SourceImageWizardModal extends Modal {
 		const toRename = this.filteredFiles.filter((f) => f.includeInRename && f.file.name !== f.proposedName);
 		container.createDiv({
 			cls: 'cr-image-wizard__summary',
-			text: `${toRename.length} files will be renamed`,
+			text: `将重命名 ${toRename.length} 个文件`,
 		});
 
 		if (this.renameConflicts.size > 0) {
 			container.createDiv({
 				cls: 'cr-image-wizard__warning',
-				text: `⚠ ${this.renameConflicts.size} filename conflict(s) detected. Edit the proposed names or uncheck to skip.`,
+				text: `⚠ 检测到 ${this.renameConflicts.size} 个文件名冲突。请编辑建议的名称，或取消勾选以跳过。`,
 			});
 		}
 	}
@@ -579,12 +579,12 @@ export class SourceImageWizardModal extends Modal {
 	private renderReviewStep(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'cr-image-wizard__step-header',
-			text: 'Review parsed metadata',
+			text: '检查解析出的元数据',
 		});
 
 		container.createDiv({
 			cls: 'cr-image-wizard__help',
-			text: 'Review and correct parsed metadata. Click any cell to edit.',
+			text: '检查并更正解析出的元数据。点击任意单元格即可编辑。',
 		});
 
 		// Confidence summary
@@ -594,11 +594,11 @@ export class SourceImageWizardModal extends Modal {
 
 		const summaryEl = container.createDiv({ cls: 'cr-image-wizard__confidence-summary' });
 		summaryEl.createSpan({ cls: 'cr-image-wizard__confidence-dot cr-image-wizard__confidence-dot--high' });
-		summaryEl.createSpan({ text: `${high} high  ` });
+		summaryEl.createSpan({ text: `${high} 高  ` });
 		summaryEl.createSpan({ cls: 'cr-image-wizard__confidence-dot cr-image-wizard__confidence-dot--medium' });
-		summaryEl.createSpan({ text: `${medium} medium  ` });
+		summaryEl.createSpan({ text: `${medium} 中  ` });
 		summaryEl.createSpan({ cls: 'cr-image-wizard__confidence-dot cr-image-wizard__confidence-dot--low' });
-		summaryEl.createSpan({ text: `${low} low` });
+		summaryEl.createSpan({ text: `${low} 低` });
 
 		// Review table
 		const tableContainer = container.createDiv({ cls: 'cr-image-wizard__table-container' });
@@ -607,12 +607,12 @@ export class SourceImageWizardModal extends Modal {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Filename' });
-		headerRow.createEl('th', { text: 'Surnames' });
-		headerRow.createEl('th', { text: 'Year' });
-		headerRow.createEl('th', { text: 'Type' });
-		headerRow.createEl('th', { text: 'Location' });
-		headerRow.createEl('th', { text: 'Multi-part', cls: 'crc-cursor-help', attr: { title: 'Multi-page documents (e.g., census_p1.jpg, census_p2.jpg) are grouped together' } });
+		headerRow.createEl('th', { text: '文件名' });
+		headerRow.createEl('th', { text: '姓氏' });
+		headerRow.createEl('th', { text: '年份' });
+		headerRow.createEl('th', { text: '类型' });
+		headerRow.createEl('th', { text: '地点' });
+		headerRow.createEl('th', { text: '多页文档', cls: 'crc-cursor-help', attr: { title: '多页文档（例如 census_p1.jpg、census_p2.jpg）会被归为一组' } });
 		headerRow.createEl('th', { text: '', cls: 'cr-image-wizard__th-confidence' });
 
 		// Body
@@ -694,14 +694,14 @@ export class SourceImageWizardModal extends Modal {
 					text: `${groupIndex}/${groupFiles.length}`,
 					cls: 'cr-image-wizard__group-badge',
 					attr: {
-						title: `Page ${groupIndex} of ${groupFiles.length} in this multi-page activeDocument. All pages will be linked to the same source note.`,
+						title: `本文档共 ${groupFiles.length} 页，这是第 ${groupIndex} 页。所有页面将关联到同一条来源笔记。`,
 					},
 				});
 			} else {
 				groupCell.createSpan({
 					text: '—',
 					cls: 'crc-text-muted',
-					attr: { title: 'Single-page document' },
+					attr: { title: '单页文档' },
 				});
 			}
 
@@ -709,14 +709,14 @@ export class SourceImageWizardModal extends Modal {
 			const confCell = row.createEl('td', { cls: 'cr-image-wizard__cell-confidence' });
 			confCell.createSpan({
 				cls: `cr-image-wizard__confidence-dot cr-image-wizard__confidence-dot--${info.parsed.confidence}`,
-				attr: { title: `${info.parsed.confidence} confidence` },
+				attr: { title: `${info.parsed.confidence} 置信度` },
 			});
 		}
 
 		if (this.filteredFiles.length > 50) {
 			container.createDiv({
 				cls: 'cr-image-wizard__info',
-				text: `Showing 50 of ${this.filteredFiles.length} files`,
+				text: `显示 ${this.filteredFiles.length} 个文件中的 50 个`,
 			});
 		}
 	}
@@ -727,16 +727,16 @@ export class SourceImageWizardModal extends Modal {
 	private renderConfigureStep(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'cr-image-wizard__step-header',
-			text: 'Configure import',
+			text: '配置导入',
 		});
 
 		// Source notes folder
 		const section = container.createDiv({ cls: 'cr-image-wizard__config-section' });
-		section.createDiv({ cls: 'cr-image-wizard__config-title', text: 'Source notes' });
+		section.createDiv({ cls: 'cr-image-wizard__config-title', text: '来源笔记' });
 
 		new Setting(section)
-			.setName('Source notes folder')
-			.setDesc('Where to create source notes')
+			.setName('来源笔记文件夹')
+			.setDesc('在何处创建来源笔记')
 			.addText((text) => {
 				text.setPlaceholder('Charted Roots/Sources').setValue(this.sourceNotesFolder);
 				new FolderSuggest(this.app, text);
@@ -747,7 +747,7 @@ export class SourceImageWizardModal extends Modal {
 
 		// Summary section
 		const summarySection = container.createDiv({ cls: 'cr-image-wizard__config-section' });
-		summarySection.createDiv({ cls: 'cr-image-wizard__config-title', text: 'Import summary' });
+		summarySection.createDiv({ cls: 'cr-image-wizard__config-title', text: '导入摘要' });
 
 		const summaryGrid = summarySection.createDiv({ cls: 'cr-image-wizard__summary-grid' });
 
@@ -770,10 +770,10 @@ export class SourceImageWizardModal extends Modal {
 			}
 		}
 
-		this.createSummaryItem(summaryGrid, 'Images to process', String(this.filteredFiles.length));
-		this.createSummaryItem(summaryGrid, 'Files to rename', String(toRename));
-		this.createSummaryItem(summaryGrid, 'Sources to create', String(sourceCount));
-		this.createSummaryItem(summaryGrid, 'Multi-part groups', String(this.multiPartGroups.size));
+		this.createSummaryItem(summaryGrid, '待处理图片', String(this.filteredFiles.length));
+		this.createSummaryItem(summaryGrid, '待重命名文件', String(toRename));
+		this.createSummaryItem(summaryGrid, '待创建来源', String(sourceCount));
+		this.createSummaryItem(summaryGrid, '多页文档分组', String(this.multiPartGroups.size));
 
 		// Warning for low confidence files
 		const lowConfidence = this.filteredFiles.filter((f) => f.parsed.confidence === 'low').length;
@@ -784,11 +784,11 @@ export class SourceImageWizardModal extends Modal {
 			const warningText = warningSection.createDiv({ cls: 'cr-image-wizard__warning-text' });
 			warningText.createDiv({
 				cls: 'cr-image-wizard__warning-title',
-				text: `${lowConfidence} files have low confidence`,
+				text: `${lowConfidence} 个文件的置信度较低`,
 			});
 			warningText.createDiv({
 				cls: 'cr-image-wizard__warning-desc',
-				text: 'Source notes will be created with minimal metadata. You may want to review these manually after import.',
+				text: '这些来源笔记将仅包含最基本的元数据。导入后你或许需要手动检查它们。',
 			});
 		}
 	}
@@ -808,7 +808,7 @@ export class SourceImageWizardModal extends Modal {
 	private renderExecuteStep(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'cr-image-wizard__step-header',
-			text: this.isExecuting ? 'Importing...' : 'Import complete',
+			text: this.isExecuting ? '正在导入…' : '导入完成',
 		});
 
 		if (this.isExecuting) {
@@ -837,10 +837,10 @@ export class SourceImageWizardModal extends Modal {
 			card.createDiv({ cls: 'cr-image-wizard__result-label', text: label });
 		};
 
-		createResultCard(String(successCount), 'Sources created');
-		createResultCard(String(totalImages), 'Images linked');
+		createResultCard(String(successCount), '已创建来源');
+		createResultCard(String(totalImages), '已关联图片');
 		if (failCount > 0) {
-			createResultCard(String(failCount), 'Failed');
+			createResultCard(String(failCount), '失败');
 		}
 
 		// Status log
@@ -852,12 +852,12 @@ export class SourceImageWizardModal extends Modal {
 			});
 
 			if (result.success) {
-				logItem.createSpan({ text: `✓ Created: ${result.sourcePath}` });
+				logItem.createSpan({ text: `✓ 已创建：${result.sourcePath}` });
 				if (result.imageCount > 1) {
-					logItem.createSpan({ text: ` (${result.imageCount} images)`, cls: 'crc-text-muted' });
+					logItem.createSpan({ text: `（${result.imageCount} 张图片）`, cls: 'crc-text-muted' });
 				}
 			} else {
-				logItem.createSpan({ text: `✗ Failed: ${result.error}` });
+				logItem.createSpan({ text: `✗ 失败：${result.error}` });
 			}
 		}
 	}
@@ -872,7 +872,7 @@ export class SourceImageWizardModal extends Modal {
 		// Done button on execute step (completed)
 		if (this.currentStep === 'execute' && !this.isExecuting) {
 			const doneBtn = buttonsEl.createEl('button', {
-				text: 'Done',
+				text: '完成',
 				cls: 'mod-cta',
 			});
 			doneBtn.addEventListener('click', () => this.close());
@@ -880,26 +880,26 @@ export class SourceImageWizardModal extends Modal {
 		}
 
 		// Cancel button
-		const cancelBtn = buttonsEl.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonsEl.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		// Back button (not on first step or during execution)
 		if (this.currentStep !== 'select' && !this.isExecuting) {
-			const backBtn = buttonsEl.createEl('button', { text: 'Back' });
+			const backBtn = buttonsEl.createEl('button', { text: '上一步' });
 			backBtn.addEventListener('click', () => this.goBack());
 		}
 
 		// Next/Start button
 		if (this.currentStep === 'configure') {
 			const startBtn = buttonsEl.createEl('button', {
-				text: 'Start import',
+				text: '开始导入',
 				cls: 'mod-cta',
 			});
 			startBtn.disabled = !this.canProceed();
 			startBtn.addEventListener('click', () => void this.executeImport());
 		} else if (this.currentStep !== 'execute') {
 			const nextBtn = buttonsEl.createEl('button', {
-				text: 'Next',
+				text: '下一步',
 				cls: 'mod-cta',
 			});
 			nextBtn.disabled = !this.canProceed();
@@ -969,7 +969,7 @@ export class SourceImageWizardModal extends Modal {
 			// Step 2: Create source notes
 			await this.createSourceNotes();
 		} catch (error) {
-			new Notice(`Import failed: ${error instanceof Error ? error.message : String(error)}`);
+			new Notice(`导入失败：${error instanceof Error ? error.message : String(error)}`);
 		}
 
 		this.isExecuting = false;

@@ -30,7 +30,7 @@ export function createIntegrationsCard(
 	}
 
 	const card = createCard({
-		title: 'Integrations',
+		title: '集成',
 		icon: 'link-2'
 	});
 
@@ -59,18 +59,18 @@ function renderCalendariumSection(
 
 	// Description
 	container.createEl('p', {
-		text: 'Import calendar definitions from Calendarium to use for fictional dates.',
+		text: '从 Calendarium 导入日历定义，用于虚构日期。',
 		cls: 'cr-text--muted cr-integrations-desc'
 	});
 
 	// Integration mode dropdown
 	new Setting(container)
-		.setName('Integration mode')
-		.setDesc('Controls how Charted Roots interacts with Calendarium')
+		.setName('集成模式')
+		.setDesc('控制 Charted Roots 与 Calendarium 的交互方式')
 		.addDropdown(dropdown => {
 			dropdown
-				.addOption('off', 'Off')
-				.addOption('read', 'Read-only (import calendars)')
+				.addOption('off', '关闭')
+				.addOption('read', '只读（导入日历）')
 				.setValue(plugin.settings.calendariumIntegration)
 				.onChange(async (value: CalendariumIntegrationMode) => {
 					plugin.settings.calendariumIntegration = value;
@@ -81,7 +81,7 @@ function renderCalendariumSection(
 					renderSyncToggle(syncSettingContainer, plugin);
 
 					if (value === 'read') {
-						new Notice('Calendarium calendars will now appear in date system dropdowns');
+						new Notice('Calendarium 日历现在会出现在日期系统下拉菜单中');
 					}
 				});
 		});
@@ -110,8 +110,8 @@ function renderSyncToggle(
 	}
 
 	new Setting(container)
-		.setName('Show Calendarium dates on timelines')
-		.setDesc('Display events with fc-date and fc-end fields on person and place timelines')
+		.setName('在时间轴上显示 Calendarium 日期')
+		.setDesc('在人物和地点时间轴上显示含 fc-date 与 fc-end 字段的事件')
 		.addToggle(toggle => {
 			toggle
 				.setValue(plugin.settings.syncCalendariumEvents)
@@ -120,7 +120,7 @@ function renderSyncToggle(
 					await plugin.saveSettings();
 
 					if (value) {
-						new Notice('Calendarium dates will now appear on timelines');
+						new Notice('Calendarium 日期现在会出现在时间轴上');
 					}
 				});
 		});
@@ -145,7 +145,7 @@ async function renderCalendariumStatus(
 
 	if (!initialized) {
 		container.createEl('p', {
-			text: 'Unable to connect to Calendarium. Make sure the plugin is enabled.',
+			text: '无法连接到 Calendarium。请确认该插件已启用。',
 			cls: 'cr-text--warning'
 		});
 		return;
@@ -155,7 +155,7 @@ async function renderCalendariumStatus(
 
 	if (calendarNames.length === 0) {
 		container.createEl('p', {
-			text: 'No calendars found in Calendarium.',
+			text: 'Calendarium 中未找到日历。',
 			cls: 'cr-text--muted'
 		});
 		return;
@@ -164,7 +164,7 @@ async function renderCalendariumStatus(
 	// Show available calendars
 	const statusEl = container.createDiv({ cls: 'cr-calendarium-calendars' });
 	statusEl.createEl('span', {
-		text: `Available calendars: `,
+		text: `可用日历：`,
 		cls: 'cr-text--muted'
 	});
 	statusEl.createEl('span', {

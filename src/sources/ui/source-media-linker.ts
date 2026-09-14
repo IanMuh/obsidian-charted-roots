@@ -159,7 +159,7 @@ export class SourceMediaLinkerModal extends Modal {
 
 	onOpen(): void {
 		const { titleEl, modalEl } = this;
-		titleEl.setText('Link media to existing sources');
+		titleEl.setText('将媒体关联到已有来源');
 		modalEl.addClass('cr-media-linker');
 		activeDocument.body.addClass('cr-media-linker-active');
 
@@ -241,7 +241,7 @@ export class SourceMediaLinkerModal extends Modal {
 	private renderProgressIndicator(): void {
 		const { contentEl } = this;
 		const steps: WizardStep[] = ['select', 'link', 'review', 'execute'];
-		const stepLabels = ['Select media', 'Link to sources', 'Review', 'Execute'];
+		const stepLabels = ['选择媒体', '关联到来源', '检查', '执行'];
 
 		const progressEl = contentEl.createDiv({ cls: 'cr-media-linker__progress' });
 
@@ -272,7 +272,7 @@ export class SourceMediaLinkerModal extends Modal {
 	private renderSelectStep(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'cr-media-linker__step-header',
-			text: 'Select media folder',
+			text: '选择媒体文件夹',
 		});
 
 		// Info about sources without media
@@ -280,7 +280,7 @@ export class SourceMediaLinkerModal extends Modal {
 		const infoIcon = createLucideIcon('info', 16);
 		infoBox.appendChild(infoIcon);
 		infoBox.createSpan({
-			text: `${this.sourcesWithoutMedia.length} source notes found without media attached`,
+			text: `找到 ${this.sourcesWithoutMedia.length} 条未附加媒体的来源笔记`,
 		});
 
 		if (this.sourcesWithoutMedia.length === 0) {
@@ -288,7 +288,7 @@ export class SourceMediaLinkerModal extends Modal {
 			const warningIcon = createLucideIcon('alert-triangle', 16);
 			warningBox.appendChild(warningIcon);
 			warningBox.createSpan({
-				text: 'All source notes already have media attached. Create sources first or use the Import wizard to create new sources from images.',
+				text: '所有来源笔记均已附加媒体。请先创建来源，或使用导入向导从图片创建新来源。',
 			});
 			return;
 		}
@@ -307,12 +307,12 @@ export class SourceMediaLinkerModal extends Modal {
 		// Filter options
 		container.createDiv({
 			cls: 'cr-media-linker__section-header',
-			text: 'Filter options',
+			text: '筛选选项',
 		});
 
 		new Setting(container)
-			.setName('Exclude thumbnails')
-			.setDesc('Skip files starting with thumb_ or thumbnail_')
+			.setName('排除缩略图')
+			.setDesc('跳过以 thumb_ 或 thumbnail_ 开头的文件')
 			.addToggle((toggle) => {
 				toggle.setValue(this.excludeThumbnails).onChange((value) => {
 					this.excludeThumbnails = value;
@@ -322,8 +322,8 @@ export class SourceMediaLinkerModal extends Modal {
 			});
 
 		new Setting(container)
-			.setName('Exclude hidden files')
-			.setDesc('Skip files starting with a dot (.)')
+			.setName('排除隐藏文件')
+			.setDesc('跳过以点号（.）开头的文件')
 			.addToggle((toggle) => {
 				toggle.setValue(this.excludeHidden).onChange((value) => {
 					this.excludeHidden = value;
@@ -346,7 +346,7 @@ export class SourceMediaLinkerModal extends Modal {
 	private renderFolderSourceOptions(container: HTMLElement, configuredFolders: string[]): void {
 		container.createDiv({
 			cls: 'cr-media-linker__section-header',
-			text: 'Media folder source',
+			text: '媒体文件夹来源',
 		});
 
 		const optionsContainer = container.createDiv({ cls: 'cr-media-linker__folder-options' });
@@ -371,7 +371,7 @@ export class SourceMediaLinkerModal extends Modal {
 			attr: { for: 'folder-source-configured' },
 		});
 		configuredLabel.createSpan({
-			text: 'Use configured media folders',
+			text: '使用已配置的媒体文件夹',
 			cls: 'cr-media-linker__folder-option-label',
 		});
 
@@ -408,7 +408,7 @@ export class SourceMediaLinkerModal extends Modal {
 		} else {
 			// Show folder count hint when not selected
 			configuredOption.createSpan({
-				text: ` (${configuredFolders.length} folder${configuredFolders.length > 1 ? 's' : ''} from Preferences)`,
+				text: `（来自偏好的 ${configuredFolders.length} 个文件夹）`,
 				cls: 'cr-media-linker__folder-option-hint',
 			});
 		}
@@ -434,7 +434,7 @@ export class SourceMediaLinkerModal extends Modal {
 			attr: { for: 'folder-source-custom' },
 		});
 		customLabel.createSpan({
-			text: 'Custom folder...',
+			text: '自定义文件夹…',
 			cls: 'cr-media-linker__folder-option-label',
 		});
 
@@ -450,8 +450,8 @@ export class SourceMediaLinkerModal extends Modal {
 	 */
 	private renderCustomFolderInput(container: HTMLElement): void {
 		new Setting(container)
-			.setName('Media folder')
-			.setDesc('Select the vault folder containing images to link')
+			.setName('媒体文件夹')
+			.setDesc('选择包含待关联图片的库文件夹')
 			.addText((text) => {
 				text.setPlaceholder('Charted Roots/Sources/Media').setValue(this.selectedFolder);
 
@@ -619,7 +619,7 @@ export class SourceMediaLinkerModal extends Modal {
 		for (const surname of parsed.surnames) {
 			if (titleLower.includes(surname.toLowerCase())) {
 				score += 30;
-				matchReasons.push(`Surname: ${surname}`);
+				matchReasons.push(`姓氏：${surname}`);
 			}
 		}
 
@@ -628,7 +628,7 @@ export class SourceMediaLinkerModal extends Modal {
 			const sourceYear = source.date.match(/\d{4}/)?.[0];
 			if (sourceYear && String(parsed.recordYear) === sourceYear) {
 				score += 25;
-				matchReasons.push(`Year: ${parsed.recordYear}`);
+				matchReasons.push(`年份：${parsed.recordYear}`);
 			}
 		}
 
@@ -649,7 +649,7 @@ export class SourceMediaLinkerModal extends Modal {
 			for (const kw of keywords) {
 				if (titleLower.includes(kw)) {
 					score += 20;
-					matchReasons.push(`Type: ${kw}`);
+					matchReasons.push(`类型：${kw}`);
 					break;
 				}
 			}
@@ -659,7 +659,7 @@ export class SourceMediaLinkerModal extends Modal {
 		if (parsed.location?.state) {
 			if (titleLower.includes(parsed.location.state.toLowerCase())) {
 				score += 15;
-				matchReasons.push(`Location: ${parsed.location.state}`);
+					matchReasons.push(`地点：${parsed.location.state}`);
 			}
 		}
 
@@ -669,7 +669,7 @@ export class SourceMediaLinkerModal extends Modal {
 			if (token.length >= 3 && titleWords.includes(token)) {
 				score += 5;
 				if (!matchReasons.some((r) => r.includes(token))) {
-					matchReasons.push(`Word: ${token}`);
+						matchReasons.push(`词：${token}`);
 				}
 			}
 		}
@@ -705,18 +705,18 @@ export class SourceMediaLinkerModal extends Modal {
 		const preview = container.createDiv({ cls: 'cr-media-linker__preview' });
 
 		const header = preview.createDiv({ cls: 'cr-media-linker__preview-header' });
-		header.createSpan({ text: 'Images found', cls: 'cr-media-linker__preview-title' });
+		header.createSpan({ text: '找到的图片', cls: 'cr-media-linker__preview-title' });
 
 		const filteredCount = this.allFiles.filter((f) => f.isFiltered).length;
 		header.createSpan({
-			text: `${this.filteredFiles.length} images${filteredCount > 0 ? ` (${filteredCount} excluded)` : ''}`,
+			text: `${this.filteredFiles.length} 张图片${filteredCount > 0 ? `（已排除 ${filteredCount} 个）` : ''}`,
 			cls: 'cr-media-linker__preview-count',
 		});
 
 		if (this.filteredFiles.length === 0) {
 			preview.createDiv({
 				cls: 'cr-media-linker__empty',
-				text: 'No image files found in this folder',
+				text: '该文件夹中未找到图片文件',
 			});
 			return;
 		}
@@ -734,14 +734,14 @@ export class SourceMediaLinkerModal extends Modal {
 			// Show suggestion count
 			if (info.suggestedSources.length > 0) {
 				const suggestionBadge = item.createSpan({ cls: 'cr-media-linker__suggestion-badge' });
-				suggestionBadge.textContent = `${info.suggestedSources.length} suggestion${info.suggestedSources.length > 1 ? 's' : ''}`;
+				suggestionBadge.textContent = `${info.suggestedSources.length} 条建议`;
 			}
 		}
 
 		if (this.filteredFiles.length > 10) {
 			list.createDiv({
 				cls: 'cr-media-linker__file-more',
-				text: `... and ${this.filteredFiles.length - 10} more files`,
+				text: `… 还有 ${this.filteredFiles.length - 10} 个文件`,
 			});
 		}
 	}
@@ -752,12 +752,12 @@ export class SourceMediaLinkerModal extends Modal {
 	private renderLinkStep(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'cr-media-linker__step-header',
-			text: 'Link media to sources',
+			text: '将媒体关联到来源',
 		});
 
 		container.createDiv({
 			cls: 'cr-media-linker__help',
-			text: 'Select a source for each image. Suggestions are based on filename analysis.',
+			text: '为每张图片选择一条来源。建议基于文件名分析得出。',
 		});
 
 		// Summary with breakdown
@@ -767,17 +767,17 @@ export class SourceMediaLinkerModal extends Modal {
 		const manualCount = this.filteredFiles.length - autoMatchedCount;
 
 		const summaryEl = container.createDiv({ cls: 'cr-media-linker__link-summary' });
-		summaryEl.createSpan({ text: `${linkedCount} of ${this.filteredFiles.length} images linked` });
+		summaryEl.createSpan({ text: `已关联 ${this.filteredFiles.length} 张图片中的 ${linkedCount} 张` });
 		if (appliedCount > 0) {
 			summaryEl.createSpan({
 				cls: 'cr-media-linker__summary-applied',
-				text: ` · ${appliedCount} already applied`,
+				text: ` · 已应用 ${appliedCount} 条`,
 			});
 		}
 		if (manualCount > 0) {
 			summaryEl.createSpan({
 				cls: 'cr-media-linker__summary-detail',
-				text: ` · ${manualCount} need manual selection`,
+				text: ` · ${manualCount} 条需手动选择`,
 			});
 		}
 
@@ -788,8 +788,8 @@ export class SourceMediaLinkerModal extends Modal {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Image' });
-		headerRow.createEl('th', { text: 'Link to source' });
+		headerRow.createEl('th', { text: '图片' });
+		headerRow.createEl('th', { text: '关联到来源' });
 		headerRow.createEl('th', { text: '', cls: 'cr-media-linker__th-status' });
 
 		// Body
@@ -807,12 +807,12 @@ export class SourceMediaLinkerModal extends Modal {
 
 			paginationEl.createSpan({
 				cls: 'cr-media-linker__pagination-info',
-				text: `Showing ${displayCount} of ${this.filteredFiles.length} files`,
+				text: `显示 ${this.filteredFiles.length} 个文件中的 ${displayCount} 个`,
 			});
 
 			const showMoreBtn = paginationEl.createEl('button', {
 				cls: 'cr-media-linker__show-more',
-				text: `Show ${Math.min(this.ROWS_PER_PAGE, remaining)} more`,
+				text: `再显示 ${Math.min(this.ROWS_PER_PAGE, remaining)} 个`,
 			});
 			showMoreBtn.addEventListener('click', () => {
 				this.displayedRowCount += this.ROWS_PER_PAGE;
@@ -822,7 +822,7 @@ export class SourceMediaLinkerModal extends Modal {
 			if (this.filteredFiles.length > this.ROWS_PER_PAGE * 2) {
 				const showAllBtn = paginationEl.createEl('button', {
 					cls: 'cr-media-linker__show-all',
-					text: `Show all (${this.filteredFiles.length})`,
+					text: `显示全部（${this.filteredFiles.length}）`,
 				});
 				showAllBtn.addEventListener('click', () => {
 					this.displayedRowCount = this.filteredFiles.length;
@@ -833,7 +833,7 @@ export class SourceMediaLinkerModal extends Modal {
 			// All rows shown, but there are more than default - show count
 			container.createDiv({
 				cls: 'cr-media-linker__pagination-info',
-				text: `Showing all ${this.filteredFiles.length} files`,
+				text: `已显示全部 ${this.filteredFiles.length} 个文件`,
 			});
 		}
 	}
@@ -874,12 +874,12 @@ export class SourceMediaLinkerModal extends Modal {
 			const confidenceDot = fileWrapper.createSpan({
 				cls: `cr-media-linker__confidence cr-media-linker__confidence--${confidence}`,
 			});
-			confidenceDot.setAttribute('aria-label', `${confidence} confidence match`);
+			confidenceDot.setAttribute('aria-label', `${confidence} 置信度匹配`);
 		} else {
 			const confidenceDot = fileWrapper.createSpan({
 				cls: 'cr-media-linker__confidence cr-media-linker__confidence--none',
 			});
-			confidenceDot.setAttribute('aria-label', 'No suggestions found');
+			confidenceDot.setAttribute('aria-label', '未找到建议');
 		}
 
 		const fileNameEl = fileWrapper.createEl('code', { cls: 'cr-media-linker__filename' });
@@ -899,13 +899,13 @@ export class SourceMediaLinkerModal extends Modal {
 		// Empty option - different text based on whether suggestions exist
 		const emptyOpt = activeDocument.createElement('option');
 		emptyOpt.value = '';
-		emptyOpt.textContent = hasSuggestions ? '— Select source —' : '— No suggestions (select manually) —';
+		emptyOpt.textContent = hasSuggestions ? '— 选择来源 —' : '— 无建议（请手动选择） —';
 		select.appendChild(emptyOpt);
 
 		// Suggestions group (if any)
 		if (hasSuggestions) {
 			const suggestGroup = activeDocument.createElement('optgroup');
-			suggestGroup.label = 'Suggestions';
+			suggestGroup.label = '建议';
 			for (const suggestion of info.suggestedSources) {
 				const opt = activeDocument.createElement('option');
 				opt.value = suggestion.source.crId;
@@ -920,7 +920,7 @@ export class SourceMediaLinkerModal extends Modal {
 
 		// All sources group
 		const allGroup = activeDocument.createElement('optgroup');
-		allGroup.label = 'All sources';
+		allGroup.label = '全部来源';
 		for (const source of this.sourcesWithoutMedia) {
 			// Skip if already in suggestions
 			if (info.suggestedSources.some((s) => s.source.crId === source.crId)) continue;
@@ -938,8 +938,8 @@ export class SourceMediaLinkerModal extends Modal {
 		// "+N more" badge if there are alternative suggestions
 		if (info.suggestedSources.length > 1) {
 			const moreBadge = selectWrapper.createSpan({ cls: 'cr-media-linker__more-badge' });
-			moreBadge.textContent = `+${info.suggestedSources.length - 1} more`;
-			moreBadge.setAttribute('aria-label', `${info.suggestedSources.length - 1} alternative suggestion${info.suggestedSources.length > 2 ? 's' : ''}`);
+			moreBadge.textContent = `还有 ${info.suggestedSources.length - 1} 条`;
+			moreBadge.setAttribute('aria-label', `${info.suggestedSources.length - 1} 条备选建议`);
 		}
 
 		// Handle selection
@@ -962,7 +962,7 @@ export class SourceMediaLinkerModal extends Modal {
 			// Has selection but not applied - show Apply button
 			const applyBtn = statusCell.createEl('button', {
 				cls: 'cr-media-linker__apply-btn',
-				text: 'Apply',
+				text: '应用',
 			});
 			applyBtn.addEventListener('click', () => {
 				void this.applyLinkForRow(info);
@@ -1005,7 +1005,7 @@ export class SourceMediaLinkerModal extends Modal {
 
 			this.render();
 		} catch (error) {
-			new Notice(`Failed to link: ${error instanceof Error ? error.message : String(error)}`);
+			new Notice(`关联失败：${error instanceof Error ? error.message : String(error)}`);
 		}
 	}
 
@@ -1015,7 +1015,7 @@ export class SourceMediaLinkerModal extends Modal {
 	private renderReviewStep(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'cr-media-linker__step-header',
-			text: 'Review changes',
+			text: '检查更改',
 		});
 
 		// Only show files that are linked but NOT already applied
@@ -1024,15 +1024,15 @@ export class SourceMediaLinkerModal extends Modal {
 
 		if (pendingFiles.length === 0 && appliedCount === 0) {
 			const emptyEl = container.createDiv({ cls: 'cr-media-linker__empty' });
-			emptyEl.createSpan({ text: 'No images have been linked to sources.' });
-			emptyEl.createSpan({ cls: 'crc-text-muted', text: ' Go back and select sources for your images.' });
+			emptyEl.createSpan({ text: '尚未将任何图片关联到来源。' });
+			emptyEl.createSpan({ cls: 'crc-text-muted', text: ' 请返回并为你的图片选择来源。' });
 			return;
 		}
 
 		if (pendingFiles.length === 0 && appliedCount > 0) {
 			const emptyEl = container.createDiv({ cls: 'cr-media-linker__empty' });
-			emptyEl.createSpan({ text: `All ${appliedCount} linked images have already been applied.` });
-			emptyEl.createSpan({ cls: 'crc-text-muted', text: ' Nothing more to do.' });
+			emptyEl.createSpan({ text: `已关联的 ${appliedCount} 张图片均已应用。` });
+			emptyEl.createSpan({ cls: 'crc-text-muted', text: ' 无需进一步操作。' });
 			return;
 		}
 
@@ -1045,14 +1045,14 @@ export class SourceMediaLinkerModal extends Modal {
 			item.createDiv({ cls: 'cr-media-linker__summary-value', text: value });
 		};
 
-		createSummaryItem('Images to link', String(pendingFiles.length));
-		createSummaryItem('Sources to update', String(new Set(pendingFiles.map((f) => f.linkedSource!.crId)).size));
+		createSummaryItem('待关联图片', String(pendingFiles.length));
+		createSummaryItem('待更新来源', String(new Set(pendingFiles.map((f) => f.linkedSource!.crId)).size));
 		if (appliedCount > 0) {
-			createSummaryItem('Already applied', String(appliedCount));
+			createSummaryItem('已应用', String(appliedCount));
 		}
 
 		// Preview list
-		container.createDiv({ cls: 'cr-media-linker__section-header', text: 'Changes to be made' });
+		container.createDiv({ cls: 'cr-media-linker__section-header', text: '将要进行的更改' });
 
 		const previewList = container.createDiv({ cls: 'cr-media-linker__review-list' });
 
@@ -1082,7 +1082,7 @@ export class SourceMediaLinkerModal extends Modal {
 	private renderExecuteStep(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'cr-media-linker__step-header',
-			text: this.isExecuting ? 'Linking...' : 'Linking complete',
+			text: this.isExecuting ? '正在关联…' : '关联完成',
 		});
 
 		if (this.isExecuting) {
@@ -1110,9 +1110,9 @@ export class SourceMediaLinkerModal extends Modal {
 			card.createDiv({ cls: 'cr-media-linker__result-label', text: label });
 		};
 
-		createResultCard(String(successCount), 'Images linked');
+		createResultCard(String(successCount), '已关联图片');
 		if (failCount > 0) {
-			createResultCard(String(failCount), 'Failed');
+			createResultCard(String(failCount), '失败');
 		}
 
 		// Status log
@@ -1124,9 +1124,9 @@ export class SourceMediaLinkerModal extends Modal {
 			});
 
 			if (result.success) {
-				logItem.createSpan({ text: `✓ Linked: ${result.mediaPath} → ${result.sourcePath}` });
+				logItem.createSpan({ text: `✓ 已关联：${result.mediaPath} → ${result.sourcePath}` });
 			} else {
-				logItem.createSpan({ text: `✗ Failed: ${result.error}` });
+				logItem.createSpan({ text: `✗ 失败：${result.error}` });
 			}
 		}
 	}
@@ -1141,7 +1141,7 @@ export class SourceMediaLinkerModal extends Modal {
 		// Done button on execute step (completed)
 		if (this.currentStep === 'execute' && !this.isExecuting) {
 			const doneBtn = buttonsEl.createEl('button', {
-				text: 'Done',
+				text: '完成',
 				cls: 'mod-cta',
 			});
 			doneBtn.addEventListener('click', () => this.close());
@@ -1149,26 +1149,26 @@ export class SourceMediaLinkerModal extends Modal {
 		}
 
 		// Cancel button
-		const cancelBtn = buttonsEl.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonsEl.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		// Back button (not on first step or during execution)
 		if (this.currentStep !== 'select' && !this.isExecuting) {
-			const backBtn = buttonsEl.createEl('button', { text: 'Back' });
+			const backBtn = buttonsEl.createEl('button', { text: '上一步' });
 			backBtn.addEventListener('click', () => this.goBack());
 		}
 
 		// Next/Start button
 		if (this.currentStep === 'review') {
 			const startBtn = buttonsEl.createEl('button', {
-				text: 'Link media',
+				text: '关联媒体',
 				cls: 'mod-cta',
 			});
 			startBtn.disabled = !this.canProceed();
 			startBtn.addEventListener('click', () => void this.executeLinking());
 		} else if (this.currentStep !== 'execute') {
 			const nextBtn = buttonsEl.createEl('button', {
-				text: 'Next',
+				text: '下一步',
 				cls: 'mod-cta',
 			});
 			nextBtn.disabled = !this.canProceed();
@@ -1255,7 +1255,7 @@ export class SourceMediaLinkerModal extends Modal {
 				this.render();
 			}
 		} catch (error) {
-			new Notice(`Linking failed: ${error instanceof Error ? error.message : String(error)}`);
+			new Notice(`关联失败：${error instanceof Error ? error.message : String(error)}`);
 		}
 
 		this.isExecuting = false;

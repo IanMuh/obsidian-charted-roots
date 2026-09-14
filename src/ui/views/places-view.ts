@@ -35,7 +35,7 @@ export class PlacesView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Places';
+		return '地点';
 	}
 
 	getIcon(): string {
@@ -86,13 +86,13 @@ export class PlacesView extends ItemView {
 	private buildHeader(container: HTMLElement): void {
 		const header = container.createDiv({ cls: 'cr-plv-header' });
 
-		header.createEl('h2', { text: 'Places', cls: 'cr-plv-title' });
+		header.createEl('h2', { text: '地点', cls: 'cr-plv-title' });
 
 		const actions = header.createDiv({ cls: 'cr-plv-actions' });
 
 		const refreshBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.refresh());

@@ -41,8 +41,8 @@ interface ExportPreset {
 const EXPORT_PRESETS: ExportPreset[] = [
 	{
 		id: 'quick-share',
-		label: 'Quick Share',
-		description: 'PNG · 1x · No avatars',
+		label: '快速分享',
+		description: 'PNG · 1x · 不含头像',
 		icon: 'zap',
 		format: 'png',
 		includeAvatars: false,
@@ -50,8 +50,8 @@ const EXPORT_PRESETS: ExportPreset[] = [
 	},
 	{
 		id: 'high-quality',
-		label: 'High Quality',
-		description: 'PNG · 2x · With avatars',
+		label: '高质量',
+		description: 'PNG · 2x · 含头像',
 		icon: 'sparkles',
 		format: 'png',
 		includeAvatars: true,
@@ -59,8 +59,8 @@ const EXPORT_PRESETS: ExportPreset[] = [
 	},
 	{
 		id: 'print-ready',
-		label: 'Print Ready',
-		description: 'PDF · Cover page',
+		label: '适合打印',
+		description: 'PDF · 含封面',
 		icon: 'printer',
 		format: 'pdf',
 		includeAvatars: true,
@@ -68,16 +68,16 @@ const EXPORT_PRESETS: ExportPreset[] = [
 	},
 	{
 		id: 'editable',
-		label: 'Editable',
-		description: 'SVG · Vector format',
+		label: '可编辑',
+		description: 'SVG · 矢量格式',
 		icon: 'pen-tool',
 		format: 'svg',
 		includeAvatars: false
 	},
 	{
 		id: 'document',
-		label: 'Document',
-		description: 'ODT · For merging',
+		label: '文档',
+		description: 'ODT · 用于合并',
 		icon: 'file-text',
 		format: 'odt',
 		includeAvatars: true,
@@ -146,8 +146,8 @@ export class FamilyChartExportWizard extends Modal {
 
 	// Step definitions
 	private readonly steps = [
-		{ number: 1, title: 'Quick Export', description: 'Choose a preset or format' },
-		{ number: 2, title: 'Customize', description: 'Fine-tune export options' }
+		{ number: 1, title: '快速导出', description: '选择预设或格式' },
+		{ number: 2, title: '自定义', description: '微调导出选项' }
 	];
 
 	constructor(plugin: CanvasRootsPlugin, chartView: FamilyChartView) {
@@ -231,7 +231,7 @@ export class FamilyChartExportWizard extends Modal {
 
 		let warningMessage: string | null = null;
 		if (isLarge) {
-			warningMessage = 'Large export — may take 10-30 seconds';
+			warningMessage = '导出内容较大——可能需要10-30秒';
 		}
 
 		return {
@@ -253,7 +253,7 @@ export class FamilyChartExportWizard extends Modal {
 
 		const titleRow = header.createDiv({ cls: 'cr-wizard-title' });
 		titleRow.appendChild(createLucideIcon('download', 24));
-		titleRow.createSpan({ text: 'Export Family Chart' });
+		titleRow.createSpan({ text: '导出家谱' });
 
 		// Close button
 		const closeBtn = header.createDiv({ cls: 'cr-export-wizard-close' });
@@ -334,7 +334,7 @@ export class FamilyChartExportWizard extends Modal {
 
 		stepInfo.createDiv({
 			cls: 'cr-export-step-counter',
-			text: `Step ${this.currentStep + 1} of ${this.steps.length}`
+			text: `第${this.currentStep + 1}步，共${this.steps.length}步`
 		});
 
 		stepInfo.createDiv({
@@ -370,7 +370,7 @@ export class FamilyChartExportWizard extends Modal {
 	private renderStep1(container: HTMLElement): void {
 		// Presets section
 		const presetsSection = container.createDiv({ cls: 'cr-export-section' });
-		presetsSection.createEl('h3', { text: 'Presets', cls: 'cr-export-section-title' });
+		presetsSection.createEl('h3', { text: '预设', cls: 'cr-export-section-title' });
 
 		const presetsGrid = presetsSection.createDiv({ cls: 'cr-export-presets-grid' });
 
@@ -397,7 +397,7 @@ export class FamilyChartExportWizard extends Modal {
 
 		// Format section
 		const formatSection = container.createDiv({ cls: 'cr-export-section' });
-		formatSection.createEl('h3', { text: 'Format', cls: 'cr-export-section-title' });
+		formatSection.createEl('h3', { text: '格式', cls: 'cr-export-section-title' });
 
 		const formatGrid = formatSection.createDiv({ cls: 'cr-export-format-grid' });
 
@@ -428,7 +428,7 @@ export class FamilyChartExportWizard extends Modal {
 
 		// Filename section
 		const filenameSection = container.createDiv({ cls: 'cr-export-section' });
-		filenameSection.createEl('h3', { text: 'Filename', cls: 'cr-export-section-title' });
+		filenameSection.createEl('h3', { text: '文件名', cls: 'cr-export-section-title' });
 
 		const filenameRow = filenameSection.createDiv({ cls: 'cr-export-filename-row' });
 
@@ -456,11 +456,11 @@ export class FamilyChartExportWizard extends Modal {
 	private renderStep2(container: HTMLElement): void {
 		// Avatars section
 		const avatarsSection = container.createDiv({ cls: 'cr-export-section' });
-		avatarsSection.createEl('h3', { text: 'Avatars', cls: 'cr-export-section-title' });
+		avatarsSection.createEl('h3', { text: '头像', cls: 'cr-export-section-title' });
 
 		const avatarOptions = [
-			{ value: true, label: 'Include avatars', desc: 'Slower, larger file' },
-			{ value: false, label: 'Exclude avatars', desc: 'Faster, smaller file' }
+			{ value: true, label: '包含头像', desc: '较慢，文件更大' },
+			{ value: false, label: '不包含头像', desc: '更快，文件更小' }
 		];
 
 		for (const opt of avatarOptions) {
@@ -483,7 +483,7 @@ export class FamilyChartExportWizard extends Modal {
 
 		// Scope section
 		const scopeSection = container.createDiv({ cls: 'cr-export-section' });
-		scopeSection.createEl('h3', { text: 'Scope', cls: 'cr-export-section-title' });
+		scopeSection.createEl('h3', { text: '范围', cls: 'cr-export-section-title' });
 
 		// Full tree option (always selected for now)
 		const fullTreeRow = scopeSection.createDiv({ cls: 'cr-export-radio-row' });
@@ -494,13 +494,13 @@ export class FamilyChartExportWizard extends Modal {
 		fullTreeRadio.checked = true;
 
 		const fullTreeLabel = fullTreeRow.createEl('label', { attr: { for: 'scope-full' } });
-		fullTreeLabel.createSpan({ text: 'Full tree', cls: 'cr-export-radio-label' });
-		fullTreeLabel.createSpan({ text: ' (uses current depth settings from toolbar)', cls: 'cr-export-radio-desc' });
+		fullTreeLabel.createSpan({ text: '完整家谱', cls: 'cr-export-radio-label' });
+		fullTreeLabel.createSpan({ text: '（使用工具栏中的当前深度设置）', cls: 'cr-export-radio-desc' });
 
 		// Note about adjusting depth
 		const scopeHint = scopeSection.createDiv({ cls: 'cr-export-scope-hint' });
 		scopeHint.createSpan({
-			text: 'Tip: Adjust tree depth using the branch icon in the toolbar before exporting.',
+			text: '提示：导出前可使用工具栏中的分支图标调整家谱深度。',
 			cls: 'cr-export-hint-text'
 		});
 
@@ -540,10 +540,10 @@ export class FamilyChartExportWizard extends Modal {
 	 */
 	private renderPngOptions(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-export-section' });
-		section.createEl('h3', { text: 'PNG Options', cls: 'cr-export-section-title' });
+		section.createEl('h3', { text: 'PNG 选项', cls: 'cr-export-section-title' });
 
 		const scaleRow = section.createDiv({ cls: 'cr-export-option-row' });
-		scaleRow.createSpan({ text: 'Scale:', cls: 'cr-export-option-label' });
+		scaleRow.createSpan({ text: '缩放：', cls: 'cr-export-option-label' });
 
 		const scaleButtons = scaleRow.createDiv({ cls: 'cr-export-scale-buttons' });
 
@@ -564,15 +564,15 @@ export class FamilyChartExportWizard extends Modal {
 	 */
 	private renderPdfOptions(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-export-section' });
-		section.createEl('h3', { text: 'PDF Options', cls: 'cr-export-section-title' });
+		section.createEl('h3', { text: 'PDF 选项', cls: 'cr-export-section-title' });
 
 		// Page size
 		const pageSizeRow = section.createDiv({ cls: 'cr-export-option-row' });
-		pageSizeRow.createSpan({ text: 'Page size:', cls: 'cr-export-option-label' });
+		pageSizeRow.createSpan({ text: '页面尺寸：', cls: 'cr-export-option-label' });
 
 		const pageSizeSelect = pageSizeRow.createEl('select', { cls: 'cr-export-select' });
 		const pageSizes = [
-			{ value: 'fit', label: 'Fit to content' },
+			{ value: 'fit', label: '适应内容' },
 			{ value: 'a4', label: 'A4' },
 			{ value: 'letter', label: 'Letter' },
 			{ value: 'legal', label: 'Legal' },
@@ -595,12 +595,12 @@ export class FamilyChartExportWizard extends Modal {
 		// Layout (only for non-fit page sizes)
 		if (this.formData.pageSize !== 'fit') {
 			const layoutRow = section.createDiv({ cls: 'cr-export-option-row' });
-			layoutRow.createSpan({ text: 'Layout:', cls: 'cr-export-option-label' });
+			layoutRow.createSpan({ text: '布局：', cls: 'cr-export-option-label' });
 
 			const layoutSelect = layoutRow.createEl('select', { cls: 'cr-export-select' });
 			const layouts = [
-				{ value: 'single', label: 'Single page' },
-				{ value: 'tiled', label: 'Tiled pages' }
+				{ value: 'single', label: '单页' },
+				{ value: 'tiled', label: '平铺多页' }
 			];
 
 			for (const layout of layouts) {
@@ -619,13 +619,13 @@ export class FamilyChartExportWizard extends Modal {
 			// Orientation (only for tiled layout)
 			if (this.formData.layout === 'tiled') {
 				const orientationRow = section.createDiv({ cls: 'cr-export-option-row' });
-				orientationRow.createSpan({ text: 'Orientation:', cls: 'cr-export-option-label' });
+				orientationRow.createSpan({ text: '方向：', cls: 'cr-export-option-label' });
 
 				const orientationSelect = orientationRow.createEl('select', { cls: 'cr-export-select' });
 				const orientations = [
-					{ value: 'auto', label: 'Auto' },
-					{ value: 'portrait', label: 'Portrait' },
-					{ value: 'landscape', label: 'Landscape' }
+					{ value: 'auto', label: '自动' },
+					{ value: 'portrait', label: '纵向' },
+					{ value: 'landscape', label: '横向' }
 				];
 
 				for (const orientation of orientations) {
@@ -651,7 +651,7 @@ export class FamilyChartExportWizard extends Modal {
 	 */
 	private renderOdtOptions(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-export-section' });
-		section.createEl('h3', { text: 'ODT Options', cls: 'cr-export-section-title' });
+		section.createEl('h3', { text: 'ODT 选项', cls: 'cr-export-section-title' });
 
 		// Cover page
 		this.renderCoverPageOptions(section);
@@ -670,7 +670,7 @@ export class FamilyChartExportWizard extends Modal {
 		checkbox.checked = this.formData.includeCoverPage;
 
 		coverRow.createEl('label', {
-			text: 'Include cover page',
+			text: '包含封面',
 			attr: { for: 'cover-page' }
 		});
 
@@ -682,7 +682,7 @@ export class FamilyChartExportWizard extends Modal {
 		// Title/subtitle fields when cover page enabled
 		if (this.formData.includeCoverPage) {
 			const titleRow = container.createDiv({ cls: 'cr-export-option-row' });
-			titleRow.createSpan({ text: 'Title:', cls: 'cr-export-option-label' });
+			titleRow.createSpan({ text: '标题：', cls: 'cr-export-option-label' });
 
 			const titleInput = titleRow.createEl('input', {
 				type: 'text',
@@ -695,13 +695,13 @@ export class FamilyChartExportWizard extends Modal {
 			});
 
 			const subtitleRow = container.createDiv({ cls: 'cr-export-option-row' });
-			subtitleRow.createSpan({ text: 'Subtitle:', cls: 'cr-export-option-label' });
+			subtitleRow.createSpan({ text: '副标题：', cls: 'cr-export-option-label' });
 
 			const subtitleInput = subtitleRow.createEl('input', {
 				type: 'text',
 				cls: 'cr-export-input',
 				value: this.formData.coverSubtitle,
-				placeholder: 'Optional'
+				placeholder: '可选'
 			});
 
 			subtitleInput.addEventListener('input', (e) => {
@@ -717,25 +717,25 @@ export class FamilyChartExportWizard extends Modal {
 		if (!this.estimate) return;
 
 		const section = container.createDiv({ cls: 'cr-export-section cr-export-estimate' });
-		section.createEl('h3', { text: 'Estimate', cls: 'cr-export-section-title' });
+		section.createEl('h3', { text: '预估', cls: 'cr-export-section-title' });
 
 		const statsRow = section.createDiv({ cls: 'cr-export-stats-row' });
 
 		statsRow.createDiv({
 			cls: 'cr-fcx-stat',
-			text: `People: ${this.estimate.peopleCount}`
+			text: `人物：${this.estimate.peopleCount}`
 		});
 
 		if (this.formData.includeAvatars) {
 			statsRow.createDiv({
 				cls: 'cr-fcx-stat',
-				text: `Avatars: ${this.estimate.avatarCount}`
+				text: `头像：${this.estimate.avatarCount}`
 			});
 		}
 
 		statsRow.createDiv({
 			cls: 'cr-fcx-stat',
-			text: `Est. size: ${this.formatFileSize(this.estimate.estimatedSizeBytes)}`
+			text: `预估大小：${this.formatFileSize(this.estimate.estimatedSizeBytes)}`
 		});
 
 		// Warning message
@@ -757,7 +757,7 @@ export class FamilyChartExportWizard extends Modal {
 		if (this.currentStep === 0) {
 			const cancelBtn = footer.createEl('button', {
 				cls: 'cr-btn',
-				text: 'Cancel'
+				text: '取消'
 			});
 			cancelBtn.addEventListener('click', () => this.close());
 		} else {
@@ -765,7 +765,7 @@ export class FamilyChartExportWizard extends Modal {
 				cls: 'cr-btn'
 			});
 			backBtn.appendChild(createLucideIcon('chevron-left', 16));
-			backBtn.appendText('Back');
+			backBtn.appendText('上一步');
 			backBtn.addEventListener('click', () => {
 				this.currentStep = 0;
 				this.renderCurrentStep();
@@ -780,7 +780,7 @@ export class FamilyChartExportWizard extends Modal {
 			const nextBtn = rightBtns.createEl('button', {
 				cls: 'cr-btn cr-btn--outline'
 			});
-			nextBtn.appendText('Customize');
+			nextBtn.appendText('自定义');
 			nextBtn.appendChild(createLucideIcon('arrow-right', 16));
 			nextBtn.addEventListener('click', () => {
 				this.currentStep = 1;
@@ -790,7 +790,7 @@ export class FamilyChartExportWizard extends Modal {
 			const exportBtn = rightBtns.createEl('button', {
 				cls: 'cr-btn cr-btn--primary'
 			});
-			exportBtn.appendText('Export');
+			exportBtn.appendText('导出');
 			exportBtn.appendChild(createLucideIcon('download', 16));
 			exportBtn.addEventListener('click', () => { void this.doExport(); });
 		} else {
@@ -798,7 +798,7 @@ export class FamilyChartExportWizard extends Modal {
 			const exportBtn = footer.createEl('button', {
 				cls: 'cr-btn cr-btn--primary'
 			});
-			exportBtn.appendText('Export');
+			exportBtn.appendText('导出');
 			exportBtn.appendChild(createLucideIcon('download', 16));
 			exportBtn.addEventListener('click', () => { void this.doExport(); });
 		}
@@ -907,7 +907,7 @@ export class FamilyChartExportWizard extends Modal {
 
 		} catch (error) {
 			console.error('Export failed:', error);
-			new Notice(`Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`导出失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 

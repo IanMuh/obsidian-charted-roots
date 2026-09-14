@@ -53,7 +53,7 @@ export class RelationshipsProcessor {
 			// If cr_id not found, the metadata cache may not be ready yet
 			// Show loading state and wait for the 'changed' event to re-render
 			if (!context.crId || !context.person) {
-				renderBlockLoading(el, 'Waiting for metadata...');
+				renderBlockLoading(el, '等待元数据…');
 
 				// Register for metadata changes - will re-render when cache is ready
 				const metadataHandler = async (changedFile: TFile) => {
@@ -66,9 +66,9 @@ export class RelationshipsProcessor {
 						if (freshContext.crId && freshContext.person) {
 							await this.renderer.render(el, freshContext, config, component);
 						} else if (!freshContext.crId) {
-							renderBlockError(el, 'This note does not have a cr_id. Relationships can only be rendered in person notes.');
+							renderBlockError(el, '此笔记没有 cr_id。关系只能在人物笔记中渲染。');
 						} else {
-							renderBlockError(el, 'Could not find person data for this note.');
+							renderBlockError(el, '找不到此笔记的人物数据。');
 						}
 					}
 				};
@@ -101,7 +101,7 @@ export class RelationshipsProcessor {
 
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			renderBlockError(el, `Error rendering relationships: ${message}`);
+			renderBlockError(el, `渲染关系失败：${message}`);
 		}
 	}
 

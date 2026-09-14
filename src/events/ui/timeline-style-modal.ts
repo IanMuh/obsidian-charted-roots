@@ -44,7 +44,7 @@ export class TimelineStyleModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass('cr-timeline-style-modal');
 
-		contentEl.createEl('h2', { text: 'Customize timeline styles' });
+		contentEl.createEl('h2', { text: '自定义时间轴样式' });
 
 		// Load current metadata
 		try {
@@ -62,7 +62,7 @@ export class TimelineStyleModal extends Modal {
 
 		// Description
 		contentEl.createEl('p', {
-			text: 'Customize styles for this timeline canvas. Changes will be applied when you regenerate the timeline.',
+			text: '自定义此时间轴画布的样式。更改将在你重新生成时间轴时应用。',
 			cls: 'setting-item-description'
 		});
 
@@ -70,19 +70,19 @@ export class TimelineStyleModal extends Modal {
 		if (this.currentMetadata) {
 			const infoEl = contentEl.createDiv({ cls: 'cr-timeline-info' });
 			infoEl.createEl('p', {
-				text: `Events: ${this.currentMetadata.eventCount} • Layout: ${this.currentMetadata.layoutStyle} • Color: ${this.currentMetadata.colorScheme}`,
+				text: `事件：${this.currentMetadata.eventCount} • 布局：${this.currentMetadata.layoutStyle} • 颜色：${this.currentMetadata.colorScheme}`,
 				cls: 'setting-item-description'
 			});
 			if (this.currentMetadata.filterPerson || this.currentMetadata.filterEventType) {
 				const filters: string[] = [];
 				if (this.currentMetadata.filterPerson) {
-					filters.push(`Person: ${this.currentMetadata.filterPerson.replace(/^\[\[|\]\]$/g, '')}`);
+					filters.push(`人物：${this.currentMetadata.filterPerson.replace(/^\[\[|\]\]$/g, '')}`);
 				}
 				if (this.currentMetadata.filterEventType) {
-					filters.push(`Type: ${this.currentMetadata.filterEventType}`);
+					filters.push(`类型：${this.currentMetadata.filterEventType}`);
 				}
 				infoEl.createEl('p', {
-					text: `Filters: ${filters.join(', ')}`,
+					text: `筛选条件：${filters.join('，')}`,
 					cls: 'setting-item-description'
 				});
 			}
@@ -101,15 +101,15 @@ export class TimelineStyleModal extends Modal {
 
 		// Color scheme
 		new Setting(contentEl)
-			.setName('Color scheme')
-			.setDesc('How to color event nodes')
+			.setName('配色方案')
+			.setDesc('如何为事件节点着色')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', `(Default: ${TIMELINE_STYLE_DEFAULTS.colorScheme})`)
-					.addOption('event_type', 'Event type')
-					.addOption('category', 'Category (core/extended/narrative)')
-					.addOption('confidence', 'Confidence level')
-					.addOption('monochrome', 'No color')
+					.addOption('', `（默认：${TIMELINE_STYLE_DEFAULTS.colorScheme}）`)
+					.addOption('event_type', '事件类型')
+					.addOption('category', '分类（核心/扩展/叙事）')
+					.addOption('confidence', '置信度')
+					.addOption('monochrome', '无颜色')
 					.setValue(colorScheme || '')
 					.onChange(value => {
 						colorScheme = value ? value as TimelineColorScheme : undefined;
@@ -118,14 +118,14 @@ export class TimelineStyleModal extends Modal {
 
 		// Layout style
 		new Setting(contentEl)
-			.setName('Layout style')
-			.setDesc('How to arrange events on the canvas')
+			.setName('布局样式')
+			.setDesc('如何在画布上排列事件')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', `(Default: ${TIMELINE_STYLE_DEFAULTS.layoutStyle})`)
-					.addOption('horizontal', 'Horizontal (left to right)')
-					.addOption('vertical', 'Vertical (top to bottom)')
-					.addOption('gantt', 'Gantt (by date and person)')
+					.addOption('', `（默认：${TIMELINE_STYLE_DEFAULTS.layoutStyle}）`)
+					.addOption('horizontal', '水平（从左到右）')
+					.addOption('vertical', '垂直（从上到下）')
+					.addOption('gantt', '甘特（按日期和人物）')
 					.setValue(layoutStyle || '')
 					.onChange(value => {
 						layoutStyle = value ? value as TimelineLayoutStyle : undefined;
@@ -133,12 +133,12 @@ export class TimelineStyleModal extends Modal {
 			});
 
 		// Node dimensions section
-		contentEl.createEl('h3', { text: 'Node dimensions', cls: 'setting-item-heading' });
+		contentEl.createEl('h3', { text: '节点尺寸', cls: 'setting-item-heading' });
 
 		// Node width
 		new Setting(contentEl)
-			.setName('Node width')
-			.setDesc(`Width of event nodes in pixels (default: ${TIMELINE_STYLE_DEFAULTS.nodeWidth})`)
+			.setName('节点宽度')
+			.setDesc(`事件节点宽度（像素，默认：${TIMELINE_STYLE_DEFAULTS.nodeWidth}）`)
 			.addText(text => {
 				text
 					.setPlaceholder(String(TIMELINE_STYLE_DEFAULTS.nodeWidth))
@@ -151,8 +151,8 @@ export class TimelineStyleModal extends Modal {
 
 		// Node height
 		new Setting(contentEl)
-			.setName('Node height')
-			.setDesc(`Height of event nodes in pixels (default: ${TIMELINE_STYLE_DEFAULTS.nodeHeight})`)
+			.setName('节点高度')
+			.setDesc(`事件节点高度（像素，默认：${TIMELINE_STYLE_DEFAULTS.nodeHeight}）`)
 			.addText(text => {
 				text
 					.setPlaceholder(String(TIMELINE_STYLE_DEFAULTS.nodeHeight))
@@ -164,12 +164,12 @@ export class TimelineStyleModal extends Modal {
 			});
 
 		// Spacing section
-		contentEl.createEl('h3', { text: 'Spacing', cls: 'setting-item-heading' });
+		contentEl.createEl('h3', { text: '间距', cls: 'setting-item-heading' });
 
 		// Horizontal spacing
 		new Setting(contentEl)
-			.setName('Horizontal spacing')
-			.setDesc(`Space between nodes horizontally in pixels (default: ${TIMELINE_STYLE_DEFAULTS.spacingX})`)
+			.setName('水平间距')
+			.setDesc(`节点之间的水平间距（像素，默认：${TIMELINE_STYLE_DEFAULTS.spacingX}）`)
 			.addText(text => {
 				text
 					.setPlaceholder(String(TIMELINE_STYLE_DEFAULTS.spacingX))
@@ -182,8 +182,8 @@ export class TimelineStyleModal extends Modal {
 
 		// Vertical spacing
 		new Setting(contentEl)
-			.setName('Vertical spacing')
-			.setDesc(`Space between nodes vertically in pixels (default: ${TIMELINE_STYLE_DEFAULTS.spacingY})`)
+			.setName('垂直间距')
+			.setDesc(`节点之间的垂直间距（像素，默认：${TIMELINE_STYLE_DEFAULTS.spacingY}）`)
 			.addText(text => {
 				text
 					.setPlaceholder(String(TIMELINE_STYLE_DEFAULTS.spacingY))
@@ -195,17 +195,17 @@ export class TimelineStyleModal extends Modal {
 			});
 
 		// Options section
-		contentEl.createEl('h3', { text: 'Options', cls: 'setting-item-heading' });
+		contentEl.createEl('h3', { text: '选项', cls: 'setting-item-heading' });
 
 		// Include ordering edges
 		new Setting(contentEl)
-			.setName('Show ordering edges')
-			.setDesc('Display edges for before/after relationships between events')
+			.setName('显示顺序连线')
+			.setDesc('显示事件之间前后关系的连线')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', `(Default: ${TIMELINE_STYLE_DEFAULTS.includeOrderingEdges ? 'Enabled' : 'Disabled'})`)
-					.addOption('true', 'Enabled')
-					.addOption('false', 'Disabled')
+					.addOption('', `（默认：${TIMELINE_STYLE_DEFAULTS.includeOrderingEdges ? '启用' : '禁用'}）`)
+					.addOption('true', '启用')
+					.addOption('false', '禁用')
 					.setValue(includeOrderingEdges === undefined ? '' : String(includeOrderingEdges))
 					.onChange(value => {
 						includeOrderingEdges = value === '' ? undefined : value === 'true';
@@ -214,13 +214,13 @@ export class TimelineStyleModal extends Modal {
 
 		// Group by person
 		new Setting(contentEl)
-			.setName('Group by person')
-			.setDesc('Organize events into swimlanes by person')
+			.setName('按人物分组')
+			.setDesc('将事件按人物组织成泳道')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', `(Default: ${TIMELINE_STYLE_DEFAULTS.groupByPerson ? 'Enabled' : 'Disabled'})`)
-					.addOption('true', 'Enabled')
-					.addOption('false', 'Disabled')
+					.addOption('', `（默认：${TIMELINE_STYLE_DEFAULTS.groupByPerson ? '启用' : '禁用'}）`)
+					.addOption('true', '启用')
+					.addOption('false', '禁用')
 					.setValue(groupByPerson === undefined ? '' : String(groupByPerson))
 					.onChange(value => {
 						groupByPerson = value === '' ? undefined : value === 'true';
@@ -229,18 +229,18 @@ export class TimelineStyleModal extends Modal {
 
 		// Ordering edge color
 		new Setting(contentEl)
-			.setName('Ordering edge color')
-			.setDesc('Color for before/after relationship edges')
+			.setName('顺序连线颜色')
+			.setDesc('前后关系连线的颜色')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', '(Default: Theme default)')
-					.addOption('none', 'Theme default')
-					.addOption('1', 'Red')
-					.addOption('2', 'Orange')
-					.addOption('3', 'Yellow')
-					.addOption('4', 'Green')
-					.addOption('5', 'Cyan')
-					.addOption('6', 'Purple')
+					.addOption('', '（默认：主题默认）')
+					.addOption('none', '主题默认')
+					.addOption('1', '红色')
+					.addOption('2', '橙色')
+					.addOption('3', '黄色')
+					.addOption('4', '绿色')
+					.addOption('5', '青色')
+					.addOption('6', '紫色')
 					.setValue(orderingEdgeColor || '')
 					.onChange(value => {
 						orderingEdgeColor = value ? value as CanvasColor : undefined;
@@ -252,7 +252,7 @@ export class TimelineStyleModal extends Modal {
 
 		// Save button
 		buttonContainer.createEl('button', {
-			text: 'Save styles',
+			text: '保存样式',
 			cls: 'mod-cta'
 		}).addEventListener('click', () => {
 			void this.saveStyleOverrides({
@@ -270,14 +270,14 @@ export class TimelineStyleModal extends Modal {
 
 		// Clear all button
 		buttonContainer.createEl('button', {
-			text: 'Clear all overrides'
+			text: '清除所有覆盖设置'
 		}).addEventListener('click', () => {
 			void this.saveStyleOverrides({});
 		});
 
 		// Cancel button
 		buttonContainer.createEl('button', {
-			text: 'Cancel'
+			text: '取消'
 		}).addEventListener('click', () => {
 			this.close();
 		});
@@ -324,11 +324,11 @@ export class TimelineStyleModal extends Modal {
 			const formattedJson = this.formatCanvasJson(canvasData);
 			await this.app.vault.modify(this.canvasFile, formattedJson);
 
-			new Notice('Timeline styles updated! Regenerate the timeline to see changes.');
+			new Notice('时间轴样式已更新！重新生成时间轴以查看更改。');
 			this.close();
 		} catch (error: unknown) {
 			logger.error('style-modal', 'Failed to save timeline style overrides', error);
-			new Notice('Failed to save style overrides. Check console for details.');
+			new Notice('保存样式覆盖设置失败。请查看控制台了解详情。');
 		}
 	}
 

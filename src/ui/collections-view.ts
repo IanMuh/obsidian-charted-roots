@@ -34,7 +34,7 @@ export class CollectionsView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Collections';
+		return '合集';
 	}
 
 	getIcon(): string {
@@ -83,13 +83,13 @@ export class CollectionsView extends ItemView {
 	private buildHeader(container: HTMLElement): void {
 		const header = container.createDiv({ cls: 'cr-cv-header' });
 
-		header.createEl('h2', { text: 'Collections', cls: 'cr-cv-title' });
+		header.createEl('h2', { text: '合集', cls: 'cr-cv-title' });
 
 		const actions = header.createDiv({ cls: 'cr-cv-actions' });
 
 		const refreshBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.refresh());

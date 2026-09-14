@@ -36,7 +36,7 @@ export class UniversesView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Universes';
+		return '宇宙';
 	}
 
 	getIcon(): string {
@@ -87,13 +87,13 @@ export class UniversesView extends ItemView {
 	private buildHeader(container: HTMLElement): void {
 		const header = container.createDiv({ cls: 'cr-uv-header' });
 
-		header.createEl('h2', { text: 'Universes', cls: 'cr-uv-title' });
+		header.createEl('h2', { text: '宇宙', cls: 'cr-uv-title' });
 
 		const actions = header.createDiv({ cls: 'cr-uv-actions' });
 
 		const refreshBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.refresh());

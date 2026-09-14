@@ -109,7 +109,7 @@ export class MembersRenderer {
 		if (entries.length === 0) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No members found.'
+				text: '未找到成员。'
 			});
 			return;
 		}
@@ -138,7 +138,7 @@ export class MembersRenderer {
 	private renderHeader(container: HTMLElement, config: DynamicBlockConfig): void {
 		const header = container.createDiv({ cls: 'cr-dynamic-block__header' });
 
-		const title = config.title as string || 'Members';
+		const title = config.title as string || '成员';
 		header.createSpan({ cls: 'cr-dynamic-block__title', text: title });
 
 		const toolbar = header.createDiv({ cls: 'cr-dynamic-block__toolbar' });
@@ -146,7 +146,7 @@ export class MembersRenderer {
 		// Freeze button
 		const freezeBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Freeze to Markdown' }
+			attr: { 'aria-label': '冻结为 Markdown' }
 		});
 		freezeBtn.textContent = '❄️';
 		freezeBtn.addEventListener('click', () => {
@@ -201,13 +201,13 @@ export class MembersRenderer {
 			// Build date range
 			if (showDates && (member.from || member.to)) {
 				if (member.from && member.to) {
-					entry.dateRange = `(${member.from}–${member.to})`;
+					entry.dateRange = `（${member.from}–${member.to}）`;
 				} else if (member.from && member.isCurrent) {
-					entry.dateRange = `(${member.from}–present)`;
+					entry.dateRange = `（${member.from}–至今）`;
 				} else if (member.from) {
-					entry.dateRange = `(${member.from})`;
+					entry.dateRange = `（${member.from}）`;
 				} else if (member.to) {
-					entry.dateRange = `(until ${member.to})`;
+					entry.dateRange = `（至 ${member.to}）`;
 				}
 			}
 
@@ -322,11 +322,11 @@ export class MembersRenderer {
 			return '';
 		}
 
-		const title = this.currentConfig.title as string || 'Members';
+		const title = this.currentConfig.title as string || '成员';
 		const lines: string[] = [`## ${title}`, ''];
 
 		if (this.currentEntries.length === 0) {
-			lines.push('*No members found.*');
+			lines.push('*未找到成员。*');
 			return lines.join('\n');
 		}
 

@@ -112,39 +112,39 @@ interface CategoryInfo {
 const WIZARD_CATEGORIES: CategoryInfo[] = [
 	{
 		category: 'genealogical',
-		name: 'Genealogical',
+		name: '谱系',
 		icon: 'users',
 		reportCount: 7
 	},
 	{
 		category: 'research',
-		name: 'Research',
+		name: '研究',
 		icon: 'search',
 		reportCount: 6
 	},
 	{
 		category: 'timeline',
-		name: 'Timeline',
+		name: '时间轴',
 		icon: 'calendar',
 		reportCount: 1,
 		directReport: 'timeline-report'
 	},
 	{
 		category: 'geographic',
-		name: 'Geographic',
+		name: '地理',
 		icon: 'map-pin',
 		reportCount: 1,
 		directReport: 'place-summary'
 	},
 	{
 		category: 'summary',
-		name: 'Summary',
+		name: '摘要',
 		icon: 'bar-chart-2',
 		reportCount: 2
 	},
 	{
 		category: 'visual-trees',
-		name: 'Visual Trees',
+		name: '可视化树',
 		icon: 'git-branch',
 		reportCount: 4
 	}
@@ -279,10 +279,10 @@ export class ReportWizardModal extends Modal {
 
 	// Step definitions
 	private readonly steps = [
-		{ number: 1, title: 'Select', description: 'Choose report type and subject' },
-		{ number: 2, title: 'Format', description: 'Choose output format' },
-		{ number: 3, title: 'Customize', description: 'Fine-tune report options' },
-		{ number: 4, title: 'Generate', description: 'Review and generate' }
+		{ number: 1, title: '选择', description: '选择报告类型与对象' },
+		{ number: 2, title: '格式', description: '选择输出格式' },
+		{ number: 3, title: '自定义', description: '微调报告选项' },
+		{ number: 4, title: '生成', description: '确认并生成' }
 	];
 
 	constructor(plugin: CanvasRootsPlugin, options?: ReportWizardOptions) {
@@ -406,7 +406,7 @@ export class ReportWizardModal extends Modal {
 
 		const titleRow = header.createDiv({ cls: 'cr-wizard-title' });
 		titleRow.appendChild(createLucideIcon('file-text', 24));
-		titleRow.createSpan({ text: 'Generate Report' });
+		titleRow.createSpan({ text: '生成报告' });
 
 		// Step progress indicator
 		this.renderStepProgress(contentEl);
@@ -479,7 +479,7 @@ export class ReportWizardModal extends Modal {
 
 		stepInfo.createDiv({
 			cls: 'cr-report-step-counter',
-			text: `Step ${this.currentStep + 1} of ${this.steps.length}`
+			text: `第 ${this.currentStep + 1} 步，共 ${this.steps.length} 步`
 		});
 
 		stepInfo.createDiv({
@@ -521,7 +521,7 @@ export class ReportWizardModal extends Modal {
 	private renderStep1(container: HTMLElement): void {
 		// Report Type section with dropdown
 		const reportSection = container.createDiv({ cls: 'cr-report-section' });
-		reportSection.createEl('h3', { text: 'Report Type', cls: 'cr-report-section-title' });
+		reportSection.createEl('h3', { text: '报告类型', cls: 'cr-report-section-title' });
 
 		this.renderReportTypeDropdown(reportSection);
 
@@ -537,7 +537,7 @@ export class ReportWizardModal extends Modal {
 	private renderStep2(container: HTMLElement): void {
 		// Format section
 		const formatSection = container.createDiv({ cls: 'cr-report-section' });
-		formatSection.createEl('h3', { text: 'Output Format', cls: 'cr-report-section-title' });
+		formatSection.createEl('h3', { text: '输出格式', cls: 'cr-report-section-title' });
 
 		// Timeline reports have special format selection
 		if (this.isTimelineReport()) {
@@ -558,7 +558,7 @@ export class ReportWizardModal extends Modal {
 		// Default option
 		const defaultOption = select.createEl('option', {
 			value: '',
-			text: 'Select a report type...'
+			text: '选择报告类型…'
 		});
 		defaultOption.disabled = true;
 		if (!this.formData.reportType) {
@@ -614,7 +614,7 @@ export class ReportWizardModal extends Modal {
 		const bookIcon = createLucideIcon('book-open', 16);
 		bookBuilderRow.appendChild(bookIcon);
 		const bookLink = bookBuilderRow.createEl('a', {
-			text: 'Compile multiple reports into a book',
+			text: '将多份报告汇编成一本书',
 			href: '#'
 		});
 		bookLink.addEventListener('click', (e) => {
@@ -635,7 +635,7 @@ export class ReportWizardModal extends Modal {
 		if (!reportMeta) return;
 
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Subject', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '对象', cls: 'cr-report-section-title' });
 
 		if (!reportMeta.requiresPerson) {
 			// Special case for research-report-export: needs a note picker
@@ -646,7 +646,7 @@ export class ReportWizardModal extends Modal {
 			// No subject needed
 			section.createDiv({
 				cls: 'cr-report-no-subject',
-				text: 'This report analyzes the entire vault.'
+				text: '该报告将分析整个库。'
 			});
 			return;
 		}
@@ -693,14 +693,14 @@ export class ReportWizardModal extends Modal {
 		// Description
 		pickerContainer.createDiv({
 			cls: 'cr-report-note-picker-desc',
-			text: 'Select a research report note to export:'
+			text: '选择要导出的研究报告笔记：'
 		});
 
 		// Selected note display or picker button
 		const pickerRow = pickerContainer.createDiv({ cls: 'cr-report-subject-picker' });
 
 		const noteName = this.formData.subject.noteName;
-		const placeholder = 'Select research report...';
+		const placeholder = '选择研究报告…';
 
 		const pickerButton = pickerRow.createEl('button', {
 			cls: 'cr-report-subject-button',
@@ -739,7 +739,7 @@ export class ReportWizardModal extends Modal {
 		}
 
 		if (researchReports.length === 0) {
-			new Notice('No research report notes found. Create a note with cr_type: research_report in frontmatter.');
+			new Notice('未找到研究报告笔记。请创建一份 frontmatter 含 cr_type: research_report 的笔记。');
 			return;
 		}
 
@@ -785,7 +785,7 @@ export class ReportWizardModal extends Modal {
 
 		const searchInput = searchWrapper.createEl('input', {
 			type: 'text',
-			placeholder: 'Search by name...',
+			placeholder: '按名称搜索…',
 			cls: 'crc-wizard-search-input'
 		});
 		searchInput.value = this.searchQuery;
@@ -801,10 +801,10 @@ export class ReportWizardModal extends Modal {
 		const sortSelect = sortContainer.createEl('select', { cls: 'crc-wizard-select' });
 
 		const sortOptions: { value: PersonSortOption; label: string }[] = [
-			{ value: 'name-asc', label: 'Name A-Z' },
-			{ value: 'name-desc', label: 'Name Z-A' },
-			{ value: 'birth-asc', label: 'Birth (oldest)' },
-			{ value: 'birth-desc', label: 'Birth (newest)' }
+			{ value: 'name-asc', label: '名称 A-Z' },
+			{ value: 'name-desc', label: '名称 Z-A' },
+			{ value: 'birth-asc', label: '出生（最早）' },
+			{ value: 'birth-desc', label: '出生（最晚）' }
 		];
 
 		for (const opt of sortOptions) {
@@ -820,7 +820,7 @@ export class ReportWizardModal extends Modal {
 
 		// Results count
 		const resultsCount = container.createDiv({ cls: 'crc-wizard-results-count' });
-		resultsCount.createSpan({ text: `${this.filteredPeople.length} of ${this.allPeople.length} people` });
+		resultsCount.createSpan({ text: `${this.allPeople.length} 位人物中的 ${this.filteredPeople.length} 位` });
 
 		// Person list container
 		this.personListContainer = container.createDiv({ cls: 'crc-wizard-person-results' });
@@ -837,13 +837,13 @@ export class ReportWizardModal extends Modal {
 
 		// Sex filter
 		const sexFilter = filterRow.createDiv({ cls: 'crc-wizard-filter-group' });
-		sexFilter.createSpan({ text: 'Sex:', cls: 'crc-wizard-filter-label' });
+		sexFilter.createSpan({ text: '性别：', cls: 'crc-wizard-filter-label' });
 
 		const sexOptions: { value: 'all' | 'male' | 'female' | 'unknown'; label: string }[] = [
-			{ value: 'all', label: 'All' },
-			{ value: 'male', label: 'Male' },
-			{ value: 'female', label: 'Female' },
-			{ value: 'unknown', label: 'Unknown' }
+			{ value: 'all', label: '全部' },
+			{ value: 'male', label: '男' },
+			{ value: 'female', label: '女' },
+			{ value: 'unknown', label: '未知' }
 		];
 
 		for (const opt of sexOptions) {
@@ -868,7 +868,7 @@ export class ReportWizardModal extends Modal {
 		const connectionsLabel = connectionsFilter.createEl('label', { cls: 'crc-wizard-filter-toggle' });
 		const connectionsCheckbox = connectionsLabel.createEl('input', { type: 'checkbox' });
 		connectionsCheckbox.checked = this.filterOptions.hasConnections;
-		connectionsLabel.appendText('Has family connections');
+		connectionsLabel.appendText('有家族关系');
 
 		connectionsCheckbox.addEventListener('change', () => {
 			this.filterOptions.hasConnections = connectionsCheckbox.checked;
@@ -889,7 +889,7 @@ export class ReportWizardModal extends Modal {
 		card.appendChild(createLucideIcon('user', 20));
 
 		const info = card.createDiv({ cls: 'crc-wizard-selected-info' });
-		info.createDiv({ cls: 'crc-wizard-selected-name', text: subject.personName || 'Unknown' });
+		info.createDiv({ cls: 'crc-wizard-selected-name', text: subject.personName || '未知' });
 
 		// Try to find birth/death dates from the person info
 		const person = this.allPeople.find(p => p.crId === subject.personCrId);
@@ -902,7 +902,7 @@ export class ReportWizardModal extends Modal {
 
 		const clearBtn = card.createEl('button', {
 			cls: 'crc-wizard-clear-btn',
-			attr: { type: 'button', 'aria-label': 'Clear selection' }
+			attr: { type: 'button', 'aria-label': '清除选择' }
 		});
 		setLucideIcon(clearBtn, 'x', 16);
 		clearBtn.addEventListener('click', () => {
@@ -1003,7 +1003,7 @@ export class ReportWizardModal extends Modal {
 		const resultsDiv = container.querySelector('.crc-wizard-results-count');
 		if (resultsDiv) {
 			resultsDiv.empty();
-			(resultsDiv as HTMLElement).createSpan({ text: `${this.filteredPeople.length} of ${this.allPeople.length} people` });
+			(resultsDiv as HTMLElement).createSpan({ text: `${this.allPeople.length} 位人物中的 ${this.filteredPeople.length} 位` });
 		}
 	}
 
@@ -1016,7 +1016,7 @@ export class ReportWizardModal extends Modal {
 		if (!this.peopleLoaded) {
 			container.createDiv({
 				cls: 'crc-wizard-empty',
-				text: 'Loading people...'
+				text: '正在加载人物…'
 			});
 			return;
 		}
@@ -1024,7 +1024,7 @@ export class ReportWizardModal extends Modal {
 		if (this.filteredPeople.length === 0) {
 			container.createDiv({
 				cls: 'crc-wizard-empty',
-				text: this.searchQuery ? 'No people match your search.' : 'No people found in vault.'
+				text: this.searchQuery ? '没有匹配的人物。' : '库中未找到人物。'
 			});
 			return;
 		}
@@ -1068,7 +1068,7 @@ export class ReportWizardModal extends Modal {
 		if (this.filteredPeople.length > displayLimit) {
 			container.createDiv({
 				cls: 'crc-wizard-more',
-				text: `Showing ${displayLimit} of ${this.filteredPeople.length} people. Refine your search to see more.`
+				text: `已显示 ${this.filteredPeople.length} 位人物中的 ${displayLimit} 位。请细化搜索以查看更多。`
 			});
 		}
 	}
@@ -1096,11 +1096,11 @@ export class ReportWizardModal extends Modal {
 	 */
 	private getSubjectPlaceholder(entityType?: string): string {
 		switch (entityType) {
-			case 'person': return 'Select a person...';
-			case 'place': return 'Select a place...';
-			case 'universe': return 'Select a universe...';
-			case 'collection': return 'Select a collection...';
-			default: return 'Select...';
+			case 'person': return '选择人物…';
+			case 'place': return '选择地点…';
+			case 'universe': return '选择宇宙…';
+			case 'collection': return '选择合集…';
+			default: return '选择…';
 		}
 	}
 
@@ -1166,7 +1166,7 @@ export class ReportWizardModal extends Modal {
 		const universes = universeService.getAllUniverses();
 
 		if (universes.length === 0) {
-			new Notice('No universes found. Create a universe first.');
+			new Notice('未找到宇宙。请先创建一个宇宙。');
 			return;
 		}
 
@@ -1207,7 +1207,7 @@ export class ReportWizardModal extends Modal {
 		}
 
 		if (collections.size === 0) {
-			new Notice('No collections found. Set a collection on person notes first.');
+			new Notice('未找到合集。请先在人物笔记上设置合集。');
 			return;
 		}
 
@@ -1259,15 +1259,15 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderFormatSection(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Format', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '格式', cls: 'cr-report-section-title' });
 
 		const formatGrid = section.createDiv({ cls: 'cr-report-format-grid' });
 
 		const formats: { id: OutputFormat; label: string; icon: string; desc: string }[] = [
-			{ id: 'vault', label: 'Vault', icon: 'file', desc: 'Save as markdown' },
-			{ id: 'pdf', label: 'PDF', icon: 'file-text', desc: 'Download PDF' },
-			{ id: 'odt', label: 'ODT', icon: 'file', desc: 'Editable document' },
-			{ id: 'md', label: 'MD', icon: 'download', desc: 'Download markdown' }
+			{ id: 'vault', label: '库', icon: 'file', desc: '保存为 Markdown' },
+			{ id: 'pdf', label: 'PDF', icon: 'file-text', desc: '下载 PDF' },
+			{ id: 'odt', label: 'ODT', icon: 'file', desc: '可编辑文档' },
+			{ id: 'md', label: 'MD', icon: 'download', desc: '下载 Markdown' }
 		];
 
 		for (const format of formats) {
@@ -1294,34 +1294,34 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderTimelineFormatSection(container: HTMLElement): void {
 		// Visual Exports category
-		this.renderTimelineFormatCategory(container, 'Visual Exports', [
+		this.renderTimelineFormatCategory(container, '可视化导出', [
 			{
 				id: 'canvas' as TimelineExportFormat,
 				label: 'Canvas',
 				icon: 'layout-grid',
-				desc: 'Interactive Obsidian canvas with linked nodes'
+				desc: '带链接节点的交互式 Obsidian 画布'
 			},
 			{
 				id: 'excalidraw' as TimelineExportFormat,
 				label: 'Excalidraw',
 				icon: 'pencil',
-				desc: 'Hand-drawn style diagram (requires Excalidraw)'
+				desc: '手绘风格图示（需要 Excalidraw）'
 			}
 		]);
 
 		// Documents category
-		this.renderTimelineFormatCategory(container, 'Documents', [
+		this.renderTimelineFormatCategory(container, '文档', [
 			{
 				id: 'pdf' as TimelineExportFormat,
 				label: 'PDF',
 				icon: 'file-text',
-				desc: 'Professional document for printing/sharing'
+				desc: '适合打印/分享的专业文档'
 			},
 			{
 				id: 'odt' as TimelineExportFormat,
 				label: 'ODT',
 				icon: 'file',
-				desc: 'Editable document (LibreOffice, Word)'
+				desc: '可编辑文档（LibreOffice、Word）'
 			}
 		]);
 
@@ -1329,27 +1329,27 @@ export class ReportWizardModal extends Modal {
 		this.renderTimelineFormatCategory(container, 'Markdown', [
 			{
 				id: 'markdown_callout' as TimelineExportFormat,
-				label: 'Vertical Timeline',
+				label: '垂直时间轴',
 				icon: 'list',
-				desc: 'Styled callouts with year columns (plugin styling)'
+				desc: '带年份分栏的样式化 callout（插件样式）'
 			},
 			{
 				id: 'markdown_table' as TimelineExportFormat,
-				label: 'Table',
+				label: '表格',
 				icon: 'table',
-				desc: 'Compact data table'
+				desc: '紧凑的数据表格'
 			},
 			{
 				id: 'markdown_list' as TimelineExportFormat,
-				label: 'Simple List',
+				label: '简单列表',
 				icon: 'list-minus',
-				desc: 'Maximum compatibility, no styling required'
+				desc: '兼容性最佳，无需样式'
 			},
 			{
 				id: 'markdown_dataview' as TimelineExportFormat,
-				label: 'Dataview Query',
+				label: 'Dataview 查询',
 				icon: 'database',
-				desc: 'Dynamic, auto-updating (requires Dataview)'
+				desc: '动态自动更新（需要 Dataview）'
 			}
 		]);
 	}
@@ -1436,7 +1436,7 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderFilenameSection(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Filename', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '文件名', cls: 'cr-report-section-title' });
 
 		const filenameRow = section.createDiv({ cls: 'cr-report-filename-row' });
 
@@ -1554,17 +1554,17 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderTimelineVisualOptions(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Visual Options', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '可视化选项', cls: 'cr-report-section-title' });
 
 		// Layout style
 		const layoutRow = section.createDiv({ cls: 'cr-report-option-row' });
-		layoutRow.createSpan({ text: 'Layout:', cls: 'cr-report-option-label' });
+		layoutRow.createSpan({ text: '布局：', cls: 'cr-report-option-label' });
 
 		const layoutSelect = layoutRow.createEl('select', { cls: 'cr-report-select' });
 		const layoutOptions: { value: TimelineLayoutStyle; label: string }[] = [
-			{ value: 'horizontal', label: 'Horizontal' },
-			{ value: 'vertical', label: 'Vertical' },
-			{ value: 'gantt', label: 'Gantt (by date and person)' }
+			{ value: 'horizontal', label: '水平' },
+			{ value: 'vertical', label: '垂直' },
+			{ value: 'gantt', label: '甘特图（按日期与人物）' }
 		];
 		for (const opt of layoutOptions) {
 			const option = layoutSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -1576,14 +1576,14 @@ export class ReportWizardModal extends Modal {
 
 		// Color scheme
 		const colorRow = section.createDiv({ cls: 'cr-report-option-row' });
-		colorRow.createSpan({ text: 'Color scheme:', cls: 'cr-report-option-label' });
+		colorRow.createSpan({ text: '配色方案：', cls: 'cr-report-option-label' });
 
 		const colorSelect = colorRow.createEl('select', { cls: 'cr-report-select' });
 		const colorOptions: { value: TimelineColorScheme; label: string }[] = [
-			{ value: 'event_type', label: 'By event type' },
-			{ value: 'category', label: 'By category' },
-			{ value: 'confidence', label: 'By confidence' },
-			{ value: 'monochrome', label: 'Monochrome' }
+			{ value: 'event_type', label: '按事件类型' },
+			{ value: 'category', label: '按分类' },
+			{ value: 'confidence', label: '按置信度' },
+			{ value: 'monochrome', label: '单色' }
 		];
 		for (const opt of colorOptions) {
 			const option = colorSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -1595,15 +1595,15 @@ export class ReportWizardModal extends Modal {
 
 		// Grouping
 		const groupingRow = section.createDiv({ cls: 'cr-report-option-row' });
-		groupingRow.createSpan({ text: 'Group by:', cls: 'cr-report-option-label' });
+		groupingRow.createSpan({ text: '分组方式：', cls: 'cr-report-option-label' });
 
 		const groupingSelect = groupingRow.createEl('select', { cls: 'cr-report-select' });
 		const groupingOptions: { value: typeof this.formData.timelineGrouping; label: string }[] = [
-			{ value: 'none', label: 'None (flat timeline)' },
-			{ value: 'by_year', label: 'By year' },
-			{ value: 'by_decade', label: 'By decade' },
-			{ value: 'by_person', label: 'By person (swim lanes)' },
-			{ value: 'by_place', label: 'By place' }
+			{ value: 'none', label: '无（平铺时间轴）' },
+			{ value: 'by_year', label: '按年' },
+			{ value: 'by_decade', label: '按年代' },
+			{ value: 'by_person', label: '按人物（泳道）' },
+			{ value: 'by_place', label: '按地点' }
 		];
 		for (const opt of groupingOptions) {
 			const option = groupingSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -1614,7 +1614,7 @@ export class ReportWizardModal extends Modal {
 		});
 
 		// Include ordering edges toggle
-		this.renderToggleOption(section, 'Include ordering edges (before/after relationships)',
+		this.renderToggleOption(section, '包含排序连线（前后关系）',
 			this.formData.timelineIncludeOrderingEdges, (value) => {
 				this.formData.timelineIncludeOrderingEdges = value;
 			});
@@ -1625,17 +1625,17 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderExcalidrawStyleOptions(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Excalidraw Style', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: 'Excalidraw 样式', cls: 'cr-report-section-title' });
 
 		// Drawing style
 		const styleRow = section.createDiv({ cls: 'cr-report-option-row' });
-		styleRow.createSpan({ text: 'Drawing style:', cls: 'cr-report-option-label' });
+		styleRow.createSpan({ text: '绘制风格：', cls: 'cr-report-option-label' });
 
 		const styleSelect = styleRow.createEl('select', { cls: 'cr-report-select' });
 		const styleOptions: { value: typeof this.formData.excalidrawDrawingStyle; label: string }[] = [
-			{ value: 'architect', label: 'Architect (clean)' },
-			{ value: 'artist', label: 'Artist (natural)' },
-			{ value: 'cartoonist', label: 'Cartoonist (rough)' }
+			{ value: 'architect', label: '建筑师（整洁）' },
+			{ value: 'artist', label: '艺术家（自然）' },
+			{ value: 'cartoonist', label: '漫画家（粗犷）' }
 		];
 		for (const opt of styleOptions) {
 			const option = styleSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -1647,7 +1647,7 @@ export class ReportWizardModal extends Modal {
 
 		// Font family
 		const fontRow = section.createDiv({ cls: 'cr-report-option-row' });
-		fontRow.createSpan({ text: 'Font:', cls: 'cr-report-option-label' });
+		fontRow.createSpan({ text: '字体：', cls: 'cr-report-option-label' });
 
 		const fontSelect = fontRow.createEl('select', { cls: 'cr-report-select' });
 		const fontOptions = ['Virgil', 'Excalifont', 'Comic Shanns', 'Helvetica', 'Nunito', 'Lilita One', 'Cascadia'];
@@ -1661,14 +1661,14 @@ export class ReportWizardModal extends Modal {
 
 		// Stroke width
 		const strokeRow = section.createDiv({ cls: 'cr-report-option-row' });
-		strokeRow.createSpan({ text: 'Stroke width:', cls: 'cr-report-option-label' });
+		strokeRow.createSpan({ text: '线条粗细：', cls: 'cr-report-option-label' });
 
 		const strokeSelect = strokeRow.createEl('select', { cls: 'cr-report-select' });
 		const strokeOptions: { value: typeof this.formData.excalidrawStrokeWidth; label: string }[] = [
-			{ value: 'thin', label: 'Thin' },
-			{ value: 'normal', label: 'Normal' },
-			{ value: 'bold', label: 'Bold' },
-			{ value: 'extra-bold', label: 'Extra Bold' }
+			{ value: 'thin', label: '细' },
+			{ value: 'normal', label: '正常' },
+			{ value: 'bold', label: '粗' },
+			{ value: 'extra-bold', label: '特粗' }
 		];
 		for (const opt of strokeOptions) {
 			const option = strokeSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -1684,19 +1684,19 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderTimelineMarkdownOptions(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Markdown Options', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: 'Markdown 选项', cls: 'cr-report-section-title' });
 
 		// Grouping
 		const groupingRow = section.createDiv({ cls: 'cr-report-option-row' });
-		groupingRow.createSpan({ text: 'Group by:', cls: 'cr-report-option-label' });
+		groupingRow.createSpan({ text: '分组方式：', cls: 'cr-report-option-label' });
 
 		const groupingSelect = groupingRow.createEl('select', { cls: 'cr-report-select' });
 		const groupingOptions: { value: typeof this.formData.timelineGrouping; label: string }[] = [
-			{ value: 'none', label: 'None (flat list)' },
-			{ value: 'by_year', label: 'By year' },
-			{ value: 'by_decade', label: 'By decade' },
-			{ value: 'by_person', label: 'By person' },
-			{ value: 'by_place', label: 'By place' }
+			{ value: 'none', label: '无（平铺列表）' },
+			{ value: 'by_year', label: '按年' },
+			{ value: 'by_decade', label: '按年代' },
+			{ value: 'by_person', label: '按人物' },
+			{ value: 'by_place', label: '按地点' }
 		];
 		for (const opt of groupingOptions) {
 			const option = groupingSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -1707,13 +1707,13 @@ export class ReportWizardModal extends Modal {
 		});
 
 		// Include descriptions toggle
-		this.renderToggleOption(section, 'Include event descriptions',
+		this.renderToggleOption(section, '包含事件描述',
 			this.formData.timelineIncludeDescriptions, (value) => {
 				this.formData.timelineIncludeDescriptions = value;
 			});
 
 		// Include sources toggle
-		this.renderToggleOption(section, 'Include sources',
+		this.renderToggleOption(section, '包含来源',
 			this.formData.includeSources, (value) => {
 				this.formData.includeSources = value;
 			});
@@ -1724,19 +1724,19 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderTimelineCalloutOptions(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Callout Style', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: 'Callout 样式', cls: 'cr-report-section-title' });
 
 		// Callout type selector
 		const calloutRow = section.createDiv({ cls: 'cr-report-option-row' });
-		calloutRow.createSpan({ text: 'Callout type:', cls: 'cr-report-option-label' });
+		calloutRow.createSpan({ text: 'Callout 类型：', cls: 'cr-report-option-label' });
 
 		const calloutSelect = calloutRow.createEl('select', { cls: 'cr-report-select' });
 		const calloutOptions = [
-			{ value: 'cr-timeline', label: 'cr-timeline (plugin default)' },
+			{ value: 'cr-timeline', label: 'cr-timeline（插件默认）' },
 			{ value: 'timeline', label: 'timeline' },
 			{ value: 'event', label: 'event' },
-			{ value: 'note', label: 'note (Obsidian built-in)' },
-			{ value: 'custom', label: 'Custom...' }
+			{ value: 'note', label: 'note（Obsidian 内置）' },
+			{ value: 'custom', label: '自定义…' }
 		];
 		for (const opt of calloutOptions) {
 			const option = calloutSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -1748,11 +1748,11 @@ export class ReportWizardModal extends Modal {
 
 		// Custom input (hidden by default)
 		const customInputRow = section.createDiv({ cls: 'cr-report-option-row cr-report-custom-callout' });
-		customInputRow.createSpan({ text: 'Custom name:', cls: 'cr-report-option-label' });
+		customInputRow.createSpan({ text: '自定义名称：', cls: 'cr-report-option-label' });
 		const customInput = customInputRow.createEl('input', {
 			type: 'text',
 			cls: 'cr-report-input',
-			placeholder: 'Enter callout type name',
+			placeholder: '输入 callout 类型名称',
 			value: calloutOptions.slice(0, -1).some(o => o.value === this.formData.timelineCalloutType)
 				? '' : this.formData.timelineCalloutType
 		});
@@ -1789,7 +1789,7 @@ export class ReportWizardModal extends Modal {
 
 		// Filename section
 		const filenameSection = container.createDiv({ cls: 'cr-report-section' });
-		filenameSection.createEl('h3', { text: 'Filename', cls: 'cr-report-section-title' });
+		filenameSection.createEl('h3', { text: '文件名', cls: 'cr-report-section-title' });
 		this.renderFilenameSection(filenameSection);
 	}
 
@@ -1798,28 +1798,28 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderTimelineEstimatePanel(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Summary', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '摘要', cls: 'cr-report-section-title' });
 
 		const panel = section.createDiv({ cls: 'cr-report-estimate-panel' });
 
 		// Format
 		const formatRow = panel.createDiv({ cls: 'cr-report-estimate-row' });
-		formatRow.createSpan({ cls: 'cr-report-estimate-label', text: 'Format:' });
+		formatRow.createSpan({ cls: 'cr-report-estimate-label', text: '格式：' });
 		formatRow.createSpan({ cls: 'cr-report-estimate-value', text: this.getFormatDisplayName() });
 
 		// Grouping
 		const groupingRow = panel.createDiv({ cls: 'cr-report-estimate-row' });
-		groupingRow.createSpan({ cls: 'cr-report-estimate-label', text: 'Grouping:' });
+		groupingRow.createSpan({ cls: 'cr-report-estimate-label', text: '分组：' });
 		const groupingLabels: Record<string, string> = {
-			'none': 'None',
-			'by_year': 'By year',
-			'by_decade': 'By decade',
-			'by_person': 'By person',
-			'by_place': 'By place'
+			'none': '无',
+			'by_year': '按年',
+			'by_decade': '按年代',
+			'by_person': '按人物',
+			'by_place': '按地点'
 		};
 		groupingRow.createSpan({
 			cls: 'cr-report-estimate-value',
-			text: groupingLabels[this.formData.timelineGrouping] || 'None'
+			text: groupingLabels[this.formData.timelineGrouping] || '无'
 		});
 
 		// Filters summary (if any filters are set)
@@ -1828,21 +1828,21 @@ export class ReportWizardModal extends Modal {
 			this.formData.timelinePlaceFilter.length > 0;
 		if (hasFilters) {
 			const filtersRow = panel.createDiv({ cls: 'cr-report-estimate-row' });
-			filtersRow.createSpan({ cls: 'cr-report-estimate-label', text: 'Filters:' });
+			filtersRow.createSpan({ cls: 'cr-report-estimate-label', text: '筛选：' });
 			const filterParts: string[] = [];
 			if (this.formData.timelineDateFrom || this.formData.timelineDateTo) {
 				const from = this.formData.timelineDateFrom || '...';
 				const to = this.formData.timelineDateTo || '...';
-				filterParts.push(`${from} to ${to}`);
+				filterParts.push(`${from} 至 ${to}`);
 			}
 			if (this.formData.timelineEventTypes.length > 0) {
-				filterParts.push(`${this.formData.timelineEventTypes.length} event types`);
+				filterParts.push(`${this.formData.timelineEventTypes.length} 种事件类型`);
 			}
 			if (this.formData.timelinePersonFilter.length > 0) {
-				filterParts.push(`${this.formData.timelinePersonFilter.length} people`);
+				filterParts.push(`${this.formData.timelinePersonFilter.length} 位人物`);
 			}
 			if (this.formData.timelinePlaceFilter.length > 0) {
-				filterParts.push(`${this.formData.timelinePlaceFilter.length} places`);
+				filterParts.push(`${this.formData.timelinePlaceFilter.length} 个地点`);
 			}
 			filtersRow.createSpan({ cls: 'cr-report-estimate-value', text: filterParts.join(', ') });
 		}
@@ -1859,7 +1859,7 @@ export class ReportWizardModal extends Modal {
 
 		const summary = detailsEl.createEl('summary', { cls: 'cr-report-data-quality-summary' });
 		summary.appendChild(createLucideIcon('alert-triangle', 16));
-		summary.createSpan({ text: 'Data Quality Insights' });
+		summary.createSpan({ text: '数据质量洞察' });
 
 		const content = detailsEl.createDiv({ cls: 'cr-report-data-quality-content' });
 
@@ -1867,17 +1867,17 @@ export class ReportWizardModal extends Modal {
 		// For now, we show placeholder guidance text
 		const placeholderMsg = content.createDiv({ cls: 'cr-report-data-quality-placeholder' });
 		placeholderMsg.createEl('p', {
-			text: 'Data quality insights will be calculated during generation.'
+			text: '数据质量洞察将在生成时计算。'
 		});
 		placeholderMsg.createEl('p', {
-			text: 'The report will include warnings for:',
+			text: '报告将包含以下警告：',
 			cls: 'cr-report-data-quality-subtitle'
 		});
 
 		const list = placeholderMsg.createEl('ul', { cls: 'cr-report-data-quality-list' });
-		list.createEl('li', { text: 'Timeline gaps (5+ year periods with no events)' });
-		list.createEl('li', { text: 'Unsourced events (events without citations)' });
-		list.createEl('li', { text: 'Orphan events (events not linked to any person)' });
+		list.createEl('li', { text: '时间轴空白（连续 5 年以上无事件）' });
+		list.createEl('li', { text: '无来源事件（缺少引文的事件）' });
+		list.createEl('li', { text: '孤立事件（未关联任何人物的事件）' });
 	}
 
 	/**
@@ -1885,7 +1885,7 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderEstimatePanel(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Summary', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '摘要', cls: 'cr-report-section-title' });
 
 		const panel = section.createDiv({ cls: 'cr-report-estimate-panel' });
 
@@ -1893,7 +1893,7 @@ export class ReportWizardModal extends Modal {
 		const reportMeta = this.formData.reportType ? REPORT_METADATA[this.formData.reportType] : null;
 		if (reportMeta) {
 			const reportRow = panel.createDiv({ cls: 'cr-report-estimate-row' });
-			reportRow.createSpan({ cls: 'cr-report-estimate-label', text: 'Report:' });
+			reportRow.createSpan({ cls: 'cr-report-estimate-label', text: '报告：' });
 			reportRow.createSpan({ cls: 'cr-report-estimate-value', text: reportMeta.name });
 		}
 
@@ -1901,25 +1901,25 @@ export class ReportWizardModal extends Modal {
 		const subjectName = this.getSubjectDisplayName();
 		if (subjectName) {
 			const subjectRow = panel.createDiv({ cls: 'cr-report-estimate-row' });
-			subjectRow.createSpan({ cls: 'cr-report-estimate-label', text: 'Subject:' });
+			subjectRow.createSpan({ cls: 'cr-report-estimate-label', text: '对象：' });
 			subjectRow.createSpan({ cls: 'cr-report-estimate-value', text: subjectName });
 		}
 
 		// Format
 		const formatRow = panel.createDiv({ cls: 'cr-report-estimate-row' });
-		formatRow.createSpan({ cls: 'cr-report-estimate-label', text: 'Format:' });
+		formatRow.createSpan({ cls: 'cr-report-estimate-label', text: '格式：' });
 		formatRow.createSpan({ cls: 'cr-report-estimate-value', text: this.getFormatDisplayName() });
 
 		// Generations (if applicable)
 		if (this.shouldShowOption('generations')) {
 			const genRow = panel.createDiv({ cls: 'cr-report-estimate-row' });
-			genRow.createSpan({ cls: 'cr-report-estimate-label', text: 'Generations:' });
+			genRow.createSpan({ cls: 'cr-report-estimate-label', text: '世代：' });
 			genRow.createSpan({ cls: 'cr-report-estimate-value', text: String(this.formData.maxGenerations) });
 		}
 
 		// Estimated people count (placeholder - can be enhanced later)
 		const countRow = panel.createDiv({ cls: 'cr-report-estimate-row' });
-		countRow.createSpan({ cls: 'cr-report-estimate-label', text: 'Est. people:' });
+		countRow.createSpan({ cls: 'cr-report-estimate-label', text: '预计人物数：' });
 		const estimatedPeople = this.estimatePeopleCount();
 		countRow.createSpan({ cls: 'cr-report-estimate-value', text: estimatedPeople });
 	}
@@ -1933,19 +1933,19 @@ export class ReportWizardModal extends Modal {
 			switch (this.formData.timelineFormat) {
 				case 'canvas': return 'Canvas';
 				case 'excalidraw': return 'Excalidraw';
-				case 'pdf': return 'PDF Document';
-				case 'odt': return 'ODT Document';
-				case 'markdown_callout': return 'Vertical Timeline (Callout)';
-				case 'markdown_table': return 'Markdown Table';
-				case 'markdown_list': return 'Simple List';
-				case 'markdown_dataview': return 'Dataview Query';
+				case 'pdf': return 'PDF 文档';
+				case 'odt': return 'ODT 文档';
+				case 'markdown_callout': return '垂直时间轴（Callout）';
+				case 'markdown_table': return 'Markdown 表格';
+				case 'markdown_list': return '简单列表';
+				case 'markdown_dataview': return 'Dataview 查询';
 			}
 		}
 		switch (this.formData.outputFormat) {
-			case 'vault': return 'Save to Vault';
-			case 'pdf': return 'PDF Document';
-			case 'odt': return 'ODT Document';
-			case 'md': return 'Markdown File';
+			case 'vault': return '保存到库';
+			case 'pdf': return 'PDF 文档';
+			case 'odt': return 'ODT 文档';
+			case 'md': return 'Markdown 文件';
 		}
 	}
 
@@ -1980,32 +1980,32 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderContentOptionsSection(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Content Options', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '内容选项', cls: 'cr-report-section-title' });
 
 		const optionsGrid = section.createDiv({ cls: 'cr-report-options-grid' });
 
 		// Include spouses (for applicable reports)
 		if (this.shouldShowOption('spouses')) {
-			this.renderToggleOption(optionsGrid, 'Include spouses', this.formData.includeSpouses, (value) => {
+			this.renderToggleOption(optionsGrid, '包含配偶', this.formData.includeSpouses, (value) => {
 				this.formData.includeSpouses = value;
 			});
 		}
 
 		// Include sources
-		this.renderToggleOption(optionsGrid, 'Include sources', this.formData.includeSources, (value) => {
+		this.renderToggleOption(optionsGrid, '包含来源', this.formData.includeSources, (value) => {
 			this.formData.includeSources = value;
 		});
 
 		// Include details
 		if (this.shouldShowOption('details')) {
-			this.renderToggleOption(optionsGrid, 'Include details', this.formData.includeDetails, (value) => {
+			this.renderToggleOption(optionsGrid, '包含详细信息', this.formData.includeDetails, (value) => {
 				this.formData.includeDetails = value;
 			});
 		}
 
 		// Include children (for family group sheet)
 		if (this.shouldShowOption('children')) {
-			this.renderToggleOption(optionsGrid, 'Include children', this.formData.includeChildren, (value) => {
+			this.renderToggleOption(optionsGrid, '包含子女', this.formData.includeChildren, (value) => {
 				this.formData.includeChildren = value;
 			});
 		}
@@ -2013,7 +2013,7 @@ export class ReportWizardModal extends Modal {
 		// Generations (for ancestor/descendant reports)
 		if (this.shouldShowOption('generations')) {
 			const genRow = section.createDiv({ cls: 'cr-report-option-row' });
-			genRow.createSpan({ text: 'Generations:', cls: 'cr-report-option-label' });
+			genRow.createSpan({ text: '世代：', cls: 'cr-report-option-label' });
 
 			const genInput = genRow.createEl('input', {
 				cls: 'cr-report-input',
@@ -2035,13 +2035,13 @@ export class ReportWizardModal extends Modal {
 		// Sort order (for brick wall report)
 		if (this.formData.reportType === 'brick-wall-report') {
 			const sortRow = section.createDiv({ cls: 'cr-report-option-row' });
-			sortRow.createSpan({ text: 'Sort by:', cls: 'cr-report-option-label' });
+			sortRow.createSpan({ text: '排序方式：', cls: 'cr-report-option-label' });
 
 			const sortSelect = sortRow.createEl('select', { cls: 'cr-report-select' });
 			const sortOptions: { value: BrickWallSortOrder; label: string }[] = [
-				{ value: 'generation', label: 'Generation (nearest first)' },
-				{ value: 'name', label: 'Name (alphabetical)' },
-				{ value: 'research_level', label: 'Research level (least researched first)' }
+				{ value: 'generation', label: '世代（由近及远）' },
+				{ value: 'name', label: '名称（字母顺序）' },
+				{ value: 'research_level', label: '研究等级（研究最少在前）' }
 			];
 			for (const opt of sortOptions) {
 				const option = sortSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -2056,7 +2056,7 @@ export class ReportWizardModal extends Modal {
 		if (this.formData.reportType === 'kinship-report') {
 			// Max degree
 			const degreeRow = section.createDiv({ cls: 'cr-report-option-row' });
-			degreeRow.createSpan({ text: 'Max degree:', cls: 'cr-report-option-label' });
+			degreeRow.createSpan({ text: '最大度数：', cls: 'cr-report-option-label' });
 
 			const degreeInput = degreeRow.createEl('input', {
 				cls: 'cr-report-input',
@@ -2075,13 +2075,13 @@ export class ReportWizardModal extends Modal {
 
 			// Sort order
 			const sortRow = section.createDiv({ cls: 'cr-report-option-row' });
-			sortRow.createSpan({ text: 'Sort by:', cls: 'cr-report-option-label' });
+			sortRow.createSpan({ text: '排序方式：', cls: 'cr-report-option-label' });
 
 			const sortSelect = sortRow.createEl('select', { cls: 'cr-report-select' });
 			const kinshipSortOptions: { value: KinshipSortOrder; label: string }[] = [
-				{ value: 'degree', label: 'Degree (closest first)' },
-				{ value: 'name', label: 'Name (alphabetical)' },
-				{ value: 'relationship', label: 'Relationship type' }
+				{ value: 'degree', label: '亲等（最近在前）' },
+				{ value: 'name', label: '名称（字母顺序）' },
+				{ value: 'relationship', label: '关系类型' }
 			];
 			for (const opt of kinshipSortOptions) {
 				const option = sortSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -2096,24 +2096,24 @@ export class ReportWizardModal extends Modal {
 		if (this.formData.reportType === 'gaps-report') {
 			// Fields to check
 			const fieldsSection = section.createDiv({ cls: 'cr-report-subsection' });
-			fieldsSection.createEl('h4', { text: 'Fields to check', cls: 'cr-report-subsection-title' });
+			fieldsSection.createEl('h4', { text: '要检查的字段', cls: 'cr-report-subsection-title' });
 
-			this.renderToggleOption(fieldsSection, 'Missing birth dates', this.formData.gapsFieldsToCheck.birthDate, (value) => {
+			this.renderToggleOption(fieldsSection, '缺失的出生日期', this.formData.gapsFieldsToCheck.birthDate, (value) => {
 				this.formData.gapsFieldsToCheck.birthDate = value;
 			});
-			this.renderToggleOption(fieldsSection, 'Missing death dates', this.formData.gapsFieldsToCheck.deathDate, (value) => {
+			this.renderToggleOption(fieldsSection, '缺失的去世日期', this.formData.gapsFieldsToCheck.deathDate, (value) => {
 				this.formData.gapsFieldsToCheck.deathDate = value;
 			});
-			this.renderToggleOption(fieldsSection, 'Missing parents', this.formData.gapsFieldsToCheck.parents, (value) => {
+			this.renderToggleOption(fieldsSection, '缺失的父母', this.formData.gapsFieldsToCheck.parents, (value) => {
 				this.formData.gapsFieldsToCheck.parents = value;
 			});
-			this.renderToggleOption(fieldsSection, 'Unsourced people', this.formData.gapsFieldsToCheck.sources, (value) => {
+			this.renderToggleOption(fieldsSection, '无来源的人物', this.formData.gapsFieldsToCheck.sources, (value) => {
 				this.formData.gapsFieldsToCheck.sources = value;
 			});
 
 			// Max items per category
 			const maxItemsRow = section.createDiv({ cls: 'cr-report-option-row' });
-			maxItemsRow.createSpan({ text: 'Max items per category:', cls: 'cr-report-option-label' });
+			maxItemsRow.createSpan({ text: '每类最大条目数：', cls: 'cr-report-option-label' });
 
 			const maxItemsInput = maxItemsRow.createEl('input', {
 				cls: 'cr-report-input',
@@ -2132,17 +2132,17 @@ export class ReportWizardModal extends Modal {
 
 			// Research level filter
 			const researchRow = section.createDiv({ cls: 'cr-report-option-row' });
-			researchRow.createSpan({ text: 'Research level filter:', cls: 'cr-report-option-label' });
+			researchRow.createSpan({ text: '研究等级筛选：', cls: 'cr-report-option-label' });
 
 			const researchSelect = researchRow.createEl('select', { cls: 'cr-report-select' });
 			const researchOptions: { value: string; label: string }[] = [
-				{ value: '', label: 'All levels' },
-				{ value: '0', label: 'Level 0 only (unidentified)' },
-				{ value: '1', label: 'Level 0–1 (minimal info)' },
-				{ value: '2', label: 'Level 0–2 (basic)' },
-				{ value: '3', label: 'Level 0–3 (moderate)' },
-				{ value: '4', label: 'Level 0–4 (detailed)' },
-				{ value: '5', label: 'Level 0–5 (comprehensive)' }
+				{ value: '', label: '全部等级' },
+				{ value: '0', label: '仅等级 0（未识别）' },
+				{ value: '1', label: '等级 0–1（信息极少）' },
+				{ value: '2', label: '等级 0–2（基础）' },
+				{ value: '3', label: '等级 0–3（中等）' },
+				{ value: '4', label: '等级 0–4（详细）' },
+				{ value: '5', label: '等级 0–5（全面）' }
 			];
 			for (const opt of researchOptions) {
 				const option = researchSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -2153,12 +2153,12 @@ export class ReportWizardModal extends Modal {
 			});
 
 			// Include unassessed
-			this.renderToggleOption(section, 'Include unassessed people', this.formData.gapsIncludeUnassessed, (value) => {
+			this.renderToggleOption(section, '包含未评估者', this.formData.gapsIncludeUnassessed, (value) => {
 				this.formData.gapsIncludeUnassessed = value;
 			});
 
 			// Sort by research level
-			this.renderToggleOption(section, 'Sort by research level', this.formData.gapsSortByResearchLevel, (value) => {
+			this.renderToggleOption(section, '按研究等级排序', this.formData.gapsSortByResearchLevel, (value) => {
 				this.formData.gapsSortByResearchLevel = value;
 			});
 		}
@@ -2232,11 +2232,11 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderPdfOptions(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'PDF Options', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: 'PDF 选项', cls: 'cr-report-section-title' });
 
 		// Page size
 		const pageSizeRow = section.createDiv({ cls: 'cr-report-option-row' });
-		pageSizeRow.createSpan({ text: 'Page size:', cls: 'cr-report-option-label' });
+		pageSizeRow.createSpan({ text: '页面大小：', cls: 'cr-report-option-label' });
 
 		const pageSizeSelect = pageSizeRow.createEl('select', { cls: 'cr-report-select' });
 		for (const size of ['A4', 'LETTER']) {
@@ -2253,7 +2253,7 @@ export class ReportWizardModal extends Modal {
 
 		// Date format
 		const dateFormatRow = section.createDiv({ cls: 'cr-report-option-row' });
-		dateFormatRow.createSpan({ text: 'Date format:', cls: 'cr-report-option-label' });
+		dateFormatRow.createSpan({ text: '日期格式：', cls: 'cr-report-option-label' });
 
 		const dateFormatSelect = dateFormatRow.createEl('select', { cls: 'cr-report-select' });
 		const dateFormats: { value: 'mdy' | 'dmy' | 'ymd'; label: string }[] = [
@@ -2274,7 +2274,7 @@ export class ReportWizardModal extends Modal {
 		});
 
 		// Cover page
-		this.renderToggleOption(section, 'Include cover page', this.formData.pdfIncludeCoverPage, (value) => {
+		this.renderToggleOption(section, '包含封面', this.formData.pdfIncludeCoverPage, (value) => {
 			this.formData.pdfIncludeCoverPage = value;
 			this.renderCurrentStep();
 		});
@@ -2282,7 +2282,7 @@ export class ReportWizardModal extends Modal {
 		// Cover page details (if enabled)
 		if (this.formData.pdfIncludeCoverPage) {
 			const titleRow = section.createDiv({ cls: 'cr-report-option-row' });
-			titleRow.createSpan({ text: 'Title:', cls: 'cr-report-option-label' });
+			titleRow.createSpan({ text: '标题：', cls: 'cr-report-option-label' });
 
 			const titleInput = titleRow.createEl('input', {
 				type: 'text',
@@ -2296,13 +2296,13 @@ export class ReportWizardModal extends Modal {
 			});
 
 			const subtitleRow = section.createDiv({ cls: 'cr-report-option-row' });
-			subtitleRow.createSpan({ text: 'Subtitle:', cls: 'cr-report-option-label' });
+			subtitleRow.createSpan({ text: '副标题：', cls: 'cr-report-option-label' });
 
 			const subtitleInput = subtitleRow.createEl('input', {
 				type: 'text',
 				cls: 'cr-report-input',
 				value: this.formData.pdfCoverSubtitle,
-				placeholder: 'Optional'
+				placeholder: '可选'
 			});
 
 			subtitleInput.addEventListener('input', (e) => {
@@ -2311,12 +2311,12 @@ export class ReportWizardModal extends Modal {
 
 			// Cover notes textarea
 			const notesRow = section.createDiv({ cls: 'cr-report-option-row cr-report-option-row--vertical' });
-			notesRow.createSpan({ text: 'Cover notes:', cls: 'cr-report-option-label' });
+			notesRow.createSpan({ text: '封面说明：', cls: 'cr-report-option-label' });
 
 			const notesTextarea = notesRow.createEl('textarea', {
 				cls: 'cr-report-textarea',
 				value: this.formData.pdfCoverNotes,
-				placeholder: 'Optional dedication, preface, or notes...',
+				placeholder: '可选的献词、序言或说明…',
 				attr: { rows: '3' }
 			});
 			notesTextarea.value = this.formData.pdfCoverNotes;
@@ -2328,11 +2328,11 @@ export class ReportWizardModal extends Modal {
 
 		// Table formatting options
 		const tableSection = container.createDiv({ cls: 'cr-report-section' });
-		tableSection.createEl('h4', { text: 'Table formatting', cls: 'cr-report-subsection-title' });
+		tableSection.createEl('h4', { text: '表格格式', cls: 'cr-report-subsection-title' });
 
 		this.renderToggleOption(
 			tableSection,
-			'Keep table rows together',
+			'保持表格行不拆分',
 			this.formData.pdfTableKeepRowsTogether,
 			(value) => {
 				this.formData.pdfTableKeepRowsTogether = value;
@@ -2341,7 +2341,7 @@ export class ReportWizardModal extends Modal {
 
 		this.renderToggleOption(
 			tableSection,
-			'Repeat table headers',
+			'重复表格表头',
 			this.formData.pdfTableRepeatHeaders,
 			(value) => {
 				this.formData.pdfTableRepeatHeaders = value;
@@ -2353,7 +2353,7 @@ export class ReportWizardModal extends Modal {
 	 * Get default cover title
 	 */
 	private getDefaultCoverTitle(): string {
-		if (!this.formData.reportType) return 'Report';
+		if (!this.formData.reportType) return '报告';
 		const reportMeta = REPORT_METADATA[this.formData.reportType];
 		const subjectName = this.getSubjectDisplayName();
 		if (subjectName) {
@@ -2367,10 +2367,10 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderOdtOptions(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'ODT Options', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: 'ODT 选项', cls: 'cr-report-section-title' });
 
 		// Cover page toggle
-		this.renderToggleOption(section, 'Include cover page', this.formData.odtIncludeCoverPage, (value) => {
+		this.renderToggleOption(section, '包含封面', this.formData.odtIncludeCoverPage, (value) => {
 			this.formData.odtIncludeCoverPage = value;
 			this.renderCurrentStep();
 		});
@@ -2378,7 +2378,7 @@ export class ReportWizardModal extends Modal {
 		// Cover page details (if enabled)
 		if (this.formData.odtIncludeCoverPage) {
 			const titleRow = section.createDiv({ cls: 'cr-report-option-row' });
-			titleRow.createSpan({ text: 'Title:', cls: 'cr-report-option-label' });
+			titleRow.createSpan({ text: '标题：', cls: 'cr-report-option-label' });
 
 			const titleInput = titleRow.createEl('input', {
 				type: 'text',
@@ -2392,13 +2392,13 @@ export class ReportWizardModal extends Modal {
 			});
 
 			const subtitleRow = section.createDiv({ cls: 'cr-report-option-row' });
-			subtitleRow.createSpan({ text: 'Subtitle:', cls: 'cr-report-option-label' });
+			subtitleRow.createSpan({ text: '副标题：', cls: 'cr-report-option-label' });
 
 			const subtitleInput = subtitleRow.createEl('input', {
 				type: 'text',
 				cls: 'cr-report-input',
 				value: this.formData.odtCoverSubtitle,
-				placeholder: 'Optional'
+				placeholder: '可选'
 			});
 
 			subtitleInput.addEventListener('input', (e) => {
@@ -2407,12 +2407,12 @@ export class ReportWizardModal extends Modal {
 
 			// Cover notes textarea
 			const notesRow = section.createDiv({ cls: 'cr-report-option-row cr-report-option-row--vertical' });
-			notesRow.createSpan({ text: 'Cover notes:', cls: 'cr-report-option-label' });
+			notesRow.createSpan({ text: '封面说明：', cls: 'cr-report-option-label' });
 
 			const notesTextarea = notesRow.createEl('textarea', {
 				cls: 'cr-report-textarea',
 				value: this.formData.odtCoverNotes,
-				placeholder: 'Optional dedication, preface, or notes...',
+				placeholder: '可选的献词、序言或说明…',
 				attr: { rows: '3' }
 			});
 			notesTextarea.value = this.formData.odtCoverNotes;
@@ -2428,16 +2428,16 @@ export class ReportWizardModal extends Modal {
 	 */
 	private renderVaultOptions(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Vault Options', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '库选项', cls: 'cr-report-section-title' });
 
 		const folderRow = section.createDiv({ cls: 'cr-report-option-row' });
-		folderRow.createSpan({ text: 'Output folder:', cls: 'cr-report-option-label' });
+		folderRow.createSpan({ text: '输出文件夹：', cls: 'cr-report-option-label' });
 
 		const folderInput = folderRow.createEl('input', {
 			type: 'text',
 			cls: 'cr-report-input',
 			value: this.formData.outputFolder,
-			placeholder: 'Root of vault'
+			placeholder: '库根目录'
 		});
 
 		folderInput.addEventListener('input', (e) => {
@@ -2457,7 +2457,7 @@ export class ReportWizardModal extends Modal {
 		if (this.currentStep === 0) {
 			const cancelBtn = footer.createEl('button', {
 				cls: 'cr-btn',
-				text: 'Cancel'
+				text: '取消'
 			});
 			cancelBtn.addEventListener('click', () => this.close());
 		} else {
@@ -2465,7 +2465,7 @@ export class ReportWizardModal extends Modal {
 				cls: 'cr-btn'
 			});
 			backBtn.appendChild(createLucideIcon('chevron-left', 16));
-			backBtn.appendText('Back');
+			backBtn.appendText('上一步');
 			backBtn.addEventListener('click', () => {
 				this.currentStep--;
 				this.renderCurrentStep();
@@ -2480,7 +2480,7 @@ export class ReportWizardModal extends Modal {
 			const nextBtn = rightBtns.createEl('button', {
 				cls: 'cr-btn cr-btn--primary'
 			});
-			nextBtn.appendText('Next');
+			nextBtn.appendText('下一步');
 			nextBtn.appendChild(createLucideIcon('arrow-right', 16));
 
 			// Determine if Next should be enabled
@@ -2498,7 +2498,7 @@ export class ReportWizardModal extends Modal {
 			const generateBtn = rightBtns.createEl('button', {
 				cls: 'cr-btn cr-btn--primary'
 			});
-			generateBtn.appendText('Generate');
+			generateBtn.appendText('生成');
 			generateBtn.appendChild(createLucideIcon('file-text', 16));
 			generateBtn.addEventListener('click', () => { void this.doGenerate(); });
 		}
@@ -2535,7 +2535,7 @@ export class ReportWizardModal extends Modal {
 	 */
 	private async doGenerate(): Promise<void> {
 		if (!this.formData.reportType) {
-			new Notice('Please select a report type');
+			new Notice('请选择报告类型');
 			return;
 		}
 
@@ -2565,7 +2565,7 @@ export class ReportWizardModal extends Modal {
 			);
 
 			if (!result.success) {
-				new Notice(`Report generation failed: ${result.error}`);
+				new Notice(`报告生成失败：${result.error}`);
 				return;
 			}
 
@@ -2577,11 +2577,11 @@ export class ReportWizardModal extends Modal {
 
 			// Show success notice
 			const formatName = this.formData.outputFormat.toUpperCase();
-			new Notice(`${formatName} report generated successfully`);
+			new Notice(`${formatName} 报告生成成功`);
 
 		} catch (error) {
 			console.error('Report generation failed:', error);
-			new Notice(`Report generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`报告生成失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -2614,7 +2614,7 @@ export class ReportWizardModal extends Modal {
 			}
 
 			if (!result.success) {
-				new Notice(`Export failed: ${result.error || 'Unknown error'}`);
+				new Notice(`导出失败：${result.error || '未知错误'}`);
 				return;
 			}
 
@@ -2630,7 +2630,7 @@ export class ReportWizardModal extends Modal {
 
 			// Show success notice
 			const formatName = this.formData.timelineFormat === 'canvas' ? 'Canvas' : 'Excalidraw';
-			new Notice(`${formatName} timeline exported to ${result.path}`);
+			new Notice(`${formatName} 时间轴已导出到 ${result.path}`);
 
 			// Open the created file
 			if (result.path) {
@@ -2642,7 +2642,7 @@ export class ReportWizardModal extends Modal {
 
 		} catch (error) {
 			console.error('Visual timeline export failed:', error);
-			new Notice(`Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`导出失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -2970,13 +2970,13 @@ class ResearchReportPickerModal extends Modal {
 
 		// Header
 		const header = contentEl.createDiv({ cls: 'cr-report-picker-header' });
-		header.createEl('h3', { text: 'Select research report' });
+		header.createEl('h3', { text: '选择研究报告' });
 
 		// Search
 		const searchRow = contentEl.createDiv({ cls: 'cr-report-picker-search' });
 		const searchInput = searchRow.createEl('input', {
 			type: 'text',
-			placeholder: 'Search reports...',
+			placeholder: '搜索报告…',
 			cls: 'cr-report-picker-search-input'
 		});
 		searchInput.addEventListener('input', (e) => {
@@ -3008,7 +3008,7 @@ class ResearchReportPickerModal extends Modal {
 		if (this.filteredReports.length === 0) {
 			this.listContainer.createDiv({
 				cls: 'cr-report-picker-empty',
-				text: this.searchQuery ? 'No matching reports found' : 'No research reports available'
+				text: this.searchQuery ? '未找到匹配的报告' : '暂无研究报告'
 			});
 			return;
 		}
@@ -3051,7 +3051,7 @@ class UniversePickerModal extends FuzzySuggestModal<{ crId: string; name: string
 		super(app);
 		this.items = items;
 		this.onChoose = onChoose;
-		this.setPlaceholder('Select a universe');
+		this.setPlaceholder('选择宇宙');
 	}
 
 	getItems(): { crId: string; name: string }[] {
@@ -3082,7 +3082,7 @@ class CollectionPickerModal extends FuzzySuggestModal<string> {
 		super(app);
 		this.items = items;
 		this.onChoose = onChoose;
-		this.setPlaceholder('Select a collection');
+		this.setPlaceholder('选择合集');
 	}
 
 	getItems(): string[] {

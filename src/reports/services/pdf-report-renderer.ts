@@ -188,7 +188,7 @@ export class PdfReportRenderer {
 	public async ensurePdfMake(): Promise<void> {
 		if (this._pdfMake) return;
 
-		new Notice('Preparing PDF export...');
+		new Notice('正在准备 PDF 导出…');
 
 		// Load our bundled font VFS (includes Roboto + Roboto Mono)
 		const { vfsFonts } = await import('../fonts/vfs_fonts_all');
@@ -845,7 +845,7 @@ export class PdfReportRenderer {
 		const filename = `Family-Group-Sheet-${husbandName.replace(/\s+/g, '-')}-${wifeName.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -932,7 +932,7 @@ export class PdfReportRenderer {
 		const filename = `Ahnentafel-${result.rootPerson.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -1014,7 +1014,7 @@ export class PdfReportRenderer {
 		const filename = `Individual-Summary-${result.person.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -1118,7 +1118,7 @@ export class PdfReportRenderer {
 		const filename = `Gaps-Report-${new Date().toISOString().split('T')[0]}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -1225,7 +1225,7 @@ export class PdfReportRenderer {
 		const filename = `Register-Report-${result.rootPerson.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -1283,7 +1283,7 @@ export class PdfReportRenderer {
 		const filename = `Pedigree-Chart-${result.rootPerson.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -1361,7 +1361,7 @@ export class PdfReportRenderer {
 		const filename = `Descendant-Chart-${result.rootPerson.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -1504,7 +1504,7 @@ export class PdfReportRenderer {
 		const filename = `Source-Summary-${result.person.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -1595,7 +1595,7 @@ export class PdfReportRenderer {
 		const filename = `Timeline-Report-${new Date().toISOString().split('T')[0]}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -1726,7 +1726,7 @@ export class PdfReportRenderer {
 		const filename = `Place-Summary-${result.place.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -1852,7 +1852,7 @@ export class PdfReportRenderer {
 		const filename = `Media-Inventory-${new Date().toISOString().split('T')[0]}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -1979,7 +1979,7 @@ export class PdfReportRenderer {
 		const filename = `Universe-Overview-${result.universe.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -2093,7 +2093,7 @@ export class PdfReportRenderer {
 		const filename = `Collection-Overview-${result.collection.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -2173,7 +2173,7 @@ export class PdfReportRenderer {
 		const filename = `${layout.rootPerson.name.replace(/\s+/g, '-')}-${layout.type}-tree.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -2186,7 +2186,7 @@ export class PdfReportRenderer {
 		options: VisualTreeOptions
 	): Promise<void> {
 		if (layouts.length === 0) {
-			new Notice('No layouts to render');
+			new Notice('没有可渲染的版面');
 			return;
 		}
 
@@ -2266,7 +2266,7 @@ export class PdfReportRenderer {
 		const filename = `${firstLayout.rootPerson.name.replace(/\s+/g, '-')}-${firstLayout.type}-tree.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -2344,7 +2344,7 @@ export class PdfReportRenderer {
 		const filename = result.suggestedFilename || `${result.noteTitle.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -2426,7 +2426,7 @@ export class PdfReportRenderer {
 		const filename = `Brick-Wall-Report-${result.rootPerson.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -2529,7 +2529,7 @@ export class PdfReportRenderer {
 		const filename = `Unconnected-People-${result.rootPerson.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**
@@ -2608,7 +2608,7 @@ export class PdfReportRenderer {
 		const filename = `Kinship-Report-${result.rootPerson.name.replace(/\s+/g, '-')}.pdf`;
 		this.pdfMake.createPdf(docDefinition).download(filename);
 
-		new Notice('PDF downloaded');
+		new Notice('PDF 已下载');
 	}
 
 	/**

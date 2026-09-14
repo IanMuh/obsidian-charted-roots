@@ -162,7 +162,7 @@ export class CreateMapWizardModal extends Modal {
 		const { contentEl } = this;
 		contentEl.empty();
 
-		this.renderHeader('Resume previous session?');
+		this.renderHeader('恢复上次会话？');
 
 		const timeAgo = this.persistence.getTimeAgoString({ ...existingState, modalType: 'map-wizard' });
 
@@ -190,15 +190,15 @@ export class CreateMapWizardModal extends Modal {
 		const data = existingState.formData as unknown as MapWizardFormData;
 
 		if (data.mapConfig?.name) {
-			previewSection.createDiv({ cls: 'crc-wizard-resume-preview-item', text: `Map: ${data.mapConfig.name}` });
+			previewSection.createDiv({ cls: 'crc-wizard-resume-preview-item', text: `地图：${data.mapConfig.name}` });
 		}
 		if (data.mapConfig?.imagePath) {
 			const imagePath = extractWikilinkPath(data.mapConfig.imagePath);
 			const filename = imagePath.split('/').pop() || imagePath;
-			previewSection.createDiv({ cls: 'crc-wizard-resume-preview-item', text: `Image: ${filename}` });
+			previewSection.createDiv({ cls: 'crc-wizard-resume-preview-item', text: `图片：${filename}` });
 		}
 		if (data.pendingPlaces && data.pendingPlaces.length > 0) {
-			previewSection.createDiv({ cls: 'crc-wizard-resume-preview-item', text: `Places: ${data.pendingPlaces.length} pending` });
+			previewSection.createDiv({ cls: 'crc-wizard-resume-preview-item', text: `地点：${data.pendingPlaces.length} 个待创建` });
 		}
 	}
 
@@ -238,7 +238,7 @@ export class CreateMapWizardModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('map', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Create custom map');
+		titleContainer.appendText('创建自定义地图');
 
 		// Subtitle
 		header.createDiv({ cls: 'crc-modal-subtitle', text: subtitle });
@@ -252,10 +252,10 @@ export class CreateMapWizardModal extends Modal {
 		const indicator = contentEl.createDiv({ cls: 'crc-wizard-step-indicator' });
 
 		const steps = [
-			{ num: 1, label: 'Image' },
-			{ num: 2, label: 'Configure' },
-			{ num: 3, label: 'Places' },
-			{ num: 4, label: 'Review' }
+			{ num: 1, label: '图片' },
+			{ num: 2, label: '配置' },
+			{ num: 3, label: '地点' },
+			{ num: 4, label: '确认' }
 		];
 
 		steps.forEach((step, index) => {
@@ -296,12 +296,12 @@ export class CreateMapWizardModal extends Modal {
 
 		if (options.onBack) {
 			new ButtonComponent(footer)
-				.setButtonText(options.backLabel || 'Back')
+				.setButtonText(options.backLabel || '上一步')
 				.onClick(options.onBack);
 		} else {
 			// Cancel button
 			new ButtonComponent(footer)
-				.setButtonText('Cancel')
+				.setButtonText('取消')
 				.onClick(() => this.close());
 		}
 
@@ -309,13 +309,13 @@ export class CreateMapWizardModal extends Modal {
 
 		if (options.showSkip && options.onSkip) {
 			new ButtonComponent(rightButtons)
-				.setButtonText('Skip')
+				.setButtonText('跳过')
 				.onClick(options.onSkip);
 		}
 
 		if (options.onNext) {
 			const nextBtn = new ButtonComponent(rightButtons)
-				.setButtonText(options.nextLabel || 'Next')
+				.setButtonText(options.nextLabel || '下一步')
 				.setCta()
 				.onClick(options.onNext);
 			if (options.nextDisabled) {
@@ -331,16 +331,16 @@ export class CreateMapWizardModal extends Modal {
 	private renderStep1(): void {
 		const { contentEl } = this;
 
-		this.renderHeader('Step 1 of 4: Select image');
+		this.renderHeader('第1步，共4步：选择图片');
 		this.renderStepIndicator(1);
 
 		const content = contentEl.createDiv({ cls: 'crc-wizard-content' });
 
 		const sectionTitle = content.createEl('h3', { cls: 'crc-wizard-section-title' });
-		sectionTitle.setText('Map image');
+		sectionTitle.setText('地图图片');
 
 		const sectionDesc = content.createEl('p', { cls: 'crc-wizard-section-desc' });
-		sectionDesc.setText('Select an image from your vault to use as the map background.');
+		sectionDesc.setText('从库中选择一张图片作为地图背景。');
 
 		// Image selection area
 		if (this.mapConfig.imagePath) {
@@ -355,7 +355,7 @@ export class CreateMapWizardModal extends Modal {
 		this.renderFooter({
 			onNext: () => {
 				if (!this.mapConfig.imagePath) {
-					new Notice('Please select an image');
+					new Notice('请选择一张图片');
 					return;
 				}
 				this.currentStep = 'step2';
@@ -371,8 +371,8 @@ export class CreateMapWizardModal extends Modal {
 		const pickerIcon = picker.createDiv({ cls: 'crc-wizard-image-picker-icon' });
 		setIcon(pickerIcon, 'image');
 
-		picker.createDiv({ cls: 'crc-wizard-image-picker-text', text: 'Click to browse vault for an image' });
-		picker.createDiv({ cls: 'crc-wizard-image-picker-hint', text: 'Supports PNG, JPG, WebP, SVG' });
+		picker.createDiv({ cls: 'crc-wizard-image-picker-text', text: '点击浏览库中的图片' });
+		picker.createDiv({ cls: 'crc-wizard-image-picker-hint', text: '支持 PNG、JPG、WebP、SVG' });
 
 		picker.addEventListener('click', () => {
 			this.browseForImage();
@@ -408,7 +408,7 @@ export class CreateMapWizardModal extends Modal {
 		// Change button
 		const changeLink = info.createEl('a', {
 			cls: 'crc-wizard-image-preview-change',
-			text: 'Change image'
+			text: '更换图片'
 		});
 		changeLink.addEventListener('click', (e) => {
 			e.preventDefault();
@@ -424,7 +424,7 @@ export class CreateMapWizardModal extends Modal {
 		);
 
 		if (imageFiles.length === 0) {
-			new Notice('No image files found in vault');
+			new Notice('库中未找到图片文件');
 			return;
 		}
 
@@ -464,7 +464,7 @@ export class CreateMapWizardModal extends Modal {
 	private renderStep2(): void {
 		const { contentEl } = this;
 
-		this.renderHeader('Step 2 of 4: Configure');
+		this.renderHeader('第2步，共4步：配置');
 		this.renderStepIndicator(2);
 
 		const content = contentEl.createDiv({ cls: 'crc-wizard-content' });
@@ -473,10 +473,10 @@ export class CreateMapWizardModal extends Modal {
 
 		// Name (required)
 		new Setting(form)
-			.setName('Map name')
-			.setDesc('This will be used as the note filename')
+			.setName('地图名称')
+			.setDesc('将用作笔记的文件名')
 			.addText(text => {
-				text.setPlaceholder('e.g., Middle-earth Map')
+				text.setPlaceholder('例如：Middle-earth 地图')
 					.setValue(this.mapConfig.name)
 					.onChange(value => {
 						this.mapConfig.name = value;
@@ -489,13 +489,13 @@ export class CreateMapWizardModal extends Modal {
 		// Universe (optional)
 		const universes = this.getExistingUniverses();
 		const universeSetting = new Setting(form)
-			.setName('Universe')
-			.setDesc('Associate this map with a universe (optional)');
+			.setName('宇宙')
+			.setDesc('将此地图关联到一个宇宙（可选）');
 
 		if (universes.length === 0 || this.showNewUniverseInput) {
 			// No existing universes or user chose to create new - show text input
 			universeSetting.addText(text => {
-				text.setPlaceholder('Enter universe name...')
+				text.setPlaceholder('输入宇宙名称……')
 					.setValue(this.mapConfig.universe)
 					.onChange(value => {
 						this.mapConfig.universe = value;
@@ -506,7 +506,7 @@ export class CreateMapWizardModal extends Modal {
 			if (universes.length > 0) {
 				const switchLink = universeSetting.controlEl.createEl('a', {
 					cls: 'crc-wizard-switch-link',
-					text: 'Choose existing'
+					text: '选择现有宇宙'
 				});
 				switchLink.addEventListener('click', (e) => {
 					e.preventDefault();
@@ -517,11 +517,11 @@ export class CreateMapWizardModal extends Modal {
 		} else {
 			// Show dropdown with existing universes
 			universeSetting.addDropdown(dropdown => {
-				dropdown.addOption('', 'Select universe...');
+				dropdown.addOption('', '选择宇宙……');
 				for (const u of universes) {
 					dropdown.addOption(u, u);
 				}
-				dropdown.addOption('__new__', '+ Create new...');
+				dropdown.addOption('__new__', '+ 创建新宇宙……');
 				dropdown.setValue(this.mapConfig.universe)
 					.onChange(value => {
 						if (value === '__new__') {
@@ -539,10 +539,10 @@ export class CreateMapWizardModal extends Modal {
 		const existingMaps = this.getExistingMaps();
 		if (existingMaps.length > 0) {
 			new Setting(form)
-				.setName('Parent map')
-				.setDesc('Nest this map under another map (optional, enables breadcrumb navigation)')
+				.setName('父级地图')
+				.setDesc('将此地图嵌套在另一地图下（可选，启用面包屑导航）')
 				.addDropdown(dropdown => {
-					dropdown.addOption('', 'None');
+					dropdown.addOption('', '无');
 					for (const map of existingMaps) {
 						dropdown.addOption(map.id, map.name);
 					}
@@ -560,14 +560,14 @@ export class CreateMapWizardModal extends Modal {
 			// Draw region button (only when parent map is selected) (#362)
 			if (this.mapConfig.parentMap) {
 				const regionSetting = new Setting(form)
-					.setName('Parent region')
+					.setName('父级区域')
 					.setDesc(this.mapConfig.parentRegion
-						? `Region: x=${this.mapConfig.parentRegion.x}, y=${this.mapConfig.parentRegion.y}, w=${this.mapConfig.parentRegion.w}, h=${this.mapConfig.parentRegion.h}`
-						: 'Draw the region on the parent map where this child map sits (optional)');
+						? `区域：x=${this.mapConfig.parentRegion.x}, y=${this.mapConfig.parentRegion.y}, w=${this.mapConfig.parentRegion.w}, h=${this.mapConfig.parentRegion.h}`
+						: '在父级地图上绘制此子地图所在的区域（可选）');
 
 				regionSetting.addButton(button => {
 					button
-						.setButtonText(this.mapConfig.parentRegion ? 'Edit region' : 'Draw region')
+						.setButtonText(this.mapConfig.parentRegion ? '编辑区域' : '绘制区域')
 						.onClick(() => {
 							this.openRegionDrawingModal();
 						});
@@ -576,7 +576,7 @@ export class CreateMapWizardModal extends Modal {
 				if (this.mapConfig.parentRegion) {
 					regionSetting.addButton(button => {
 						button
-							.setButtonText('Clear')
+							.setButtonText('清除')
 							.onClick(() => {
 								this.mapConfig.parentRegion = undefined;
 								this.render();
@@ -588,12 +588,12 @@ export class CreateMapWizardModal extends Modal {
 
 		// Coordinate system
 		new Setting(form)
-			.setName('Coordinate system')
-			.setDesc('Pixel coordinates recommended for fantasy maps')
+			.setName('坐标系统')
+			.setDesc('奇幻地图推荐使用像素坐标')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('pixel', 'Pixel coordinates (recommended)')
-					.addOption('geographic', 'Geographic (lat/lng)')
+					.addOption('pixel', '像素坐标（推荐）')
+					.addOption('geographic', '地理坐标（纬度/经度）')
 					.setValue(this.mapConfig.coordinateSystem)
 					.onChange(value => {
 						this.mapConfig.coordinateSystem = value as CoordinateSystem;
@@ -604,13 +604,13 @@ export class CreateMapWizardModal extends Modal {
 		// Geographic bounds (only for geographic mode)
 		if (this.mapConfig.coordinateSystem === 'geographic') {
 			const boundsSection = form.createDiv({ cls: 'crc-wizard-bounds-section' });
-			boundsSection.createEl('h4', { text: 'Map bounds', cls: 'crc-wizard-bounds-title' });
+			boundsSection.createEl('h4', { text: '地图边界', cls: 'crc-wizard-bounds-title' });
 
 			const boundsGrid = boundsSection.createDiv({ cls: 'crc-wizard-bounds-grid' });
 
 			// North
 			new Setting(boundsGrid)
-				.setName('North')
+				.setName('北')
 				.addText(text => text
 					.setPlaceholder('90')
 					.setValue(this.mapConfig.boundsNorth?.toString() || '')
@@ -620,7 +620,7 @@ export class CreateMapWizardModal extends Modal {
 
 			// South
 			new Setting(boundsGrid)
-				.setName('South')
+				.setName('南')
 				.addText(text => text
 					.setPlaceholder('-90')
 					.setValue(this.mapConfig.boundsSouth?.toString() || '')
@@ -630,7 +630,7 @@ export class CreateMapWizardModal extends Modal {
 
 			// East
 			new Setting(boundsGrid)
-				.setName('East')
+				.setName('东')
 				.addText(text => text
 					.setPlaceholder('180')
 					.setValue(this.mapConfig.boundsEast?.toString() || '')
@@ -640,7 +640,7 @@ export class CreateMapWizardModal extends Modal {
 
 			// West
 			new Setting(boundsGrid)
-				.setName('West')
+				.setName('西')
 				.addText(text => text
 					.setPlaceholder('-180')
 					.setValue(this.mapConfig.boundsWest?.toString() || '')
@@ -652,7 +652,7 @@ export class CreateMapWizardModal extends Modal {
 		// Advanced options (collapsible)
 		const advancedHeader = form.createDiv({ cls: 'crc-wizard-collapsible-header' });
 		const advancedArrow = advancedHeader.createSpan({ text: '▶' });
-		advancedHeader.createSpan({ text: ' Advanced options' });
+		advancedHeader.createSpan({ text: ' 高级选项' });
 
 		const advancedContent = form.createDiv({ cls: 'crc-wizard-collapsible-content crc-hidden' });
 
@@ -668,7 +668,7 @@ export class CreateMapWizardModal extends Modal {
 
 		// Default zoom
 		new Setting(advancedContent)
-			.setName('Default zoom')
+			.setName('默认缩放')
 			.addText(text => text
 				.setPlaceholder('1')
 				.setValue(this.mapConfig.defaultZoom?.toString() || '')
@@ -680,7 +680,7 @@ export class CreateMapWizardModal extends Modal {
 		const zoomRow = advancedContent.createDiv({ cls: 'crc-form-row-inline' });
 
 		new Setting(zoomRow)
-			.setName('Min zoom')
+			.setName('最小缩放')
 			.addText(text => text
 				.setPlaceholder('0')
 				.setValue(this.mapConfig.minZoom?.toString() || '')
@@ -689,7 +689,7 @@ export class CreateMapWizardModal extends Modal {
 				}));
 
 		new Setting(zoomRow)
-			.setName('Max zoom')
+			.setName('最大缩放')
 			.addText(text => text
 				.setPlaceholder('4')
 				.setValue(this.mapConfig.maxZoom?.toString() || '')
@@ -705,13 +705,13 @@ export class CreateMapWizardModal extends Modal {
 			},
 			onNext: () => {
 				if (!this.mapConfig.name.trim()) {
-					new Notice('Please enter a map name');
+					new Notice('请输入地图名称');
 					return;
 				}
 				this.currentStep = 'step3';
 				this.render();
 			},
-			nextLabel: 'Next: Add Places'
+			nextLabel: '下一步：添加地点'
 		});
 	}
 
@@ -768,11 +768,11 @@ export class CreateMapWizardModal extends Modal {
 		// Find the parent map's config from frontmatter
 		const parentConfig = this.getMapConfigFromFrontmatter(parentMapId);
 		if (!parentConfig) {
-			new Notice('Could not find parent map configuration');
+			new Notice('无法找到父级地图配置');
 			return;
 		}
 
-		const childName = this.mapConfig.name || 'New map';
+		const childName = this.mapConfig.name || '新地图';
 		new RegionDrawingModal(
 			this.app,
 			parentConfig,
@@ -844,13 +844,13 @@ export class CreateMapWizardModal extends Modal {
 	private renderStep3(): void {
 		const { contentEl } = this;
 
-		this.renderHeader('Step 3 of 4: Add places (optional)');
+		this.renderHeader('第3步，共4步：添加地点（可选）');
 		this.renderStepIndicator(3);
 
 		const content = contentEl.createDiv({ cls: 'crc-wizard-content crc-wizard-content--map' });
 
 		const sectionDesc = content.createEl('p', { cls: 'crc-wizard-section-desc' });
-		sectionDesc.setText('Click on the map to add places. You can skip this step and add places later.');
+		sectionDesc.setText('点击地图以添加地点。你可以跳过此步骤，稍后再添加。');
 
 		// Map preview container
 		this.mapPreviewContainer = content.createDiv({ cls: 'crc-wizard-map-preview-container' });
@@ -859,7 +859,7 @@ export class CreateMapWizardModal extends Modal {
 		// Instructions overlay
 		const instructions = mapPreview.createDiv({ cls: 'crc-wizard-map-instructions' });
 		setIcon(instructions, 'map-pin');
-		instructions.createSpan({ text: 'Click on the map to add a place' });
+		instructions.createSpan({ text: '点击地图以添加地点' });
 
 		// Load map image
 		const displayPath = extractWikilinkPath(this.mapConfig.imagePath);
@@ -914,7 +914,7 @@ export class CreateMapWizardModal extends Modal {
 				this.currentStep = 'step4';
 				this.render();
 			},
-			nextLabel: 'Review',
+			nextLabel: '确认',
 			showSkip: this.pendingPlaces.length === 0,
 			onSkip: () => {
 				this.currentStep = 'step4';
@@ -962,7 +962,7 @@ export class CreateMapWizardModal extends Modal {
 				imgEl.addEventListener('load', updateMarkerPosition, { once: true });
 			}
 
-			marker.setAttribute('title', `${place.name} (drag to move)`);
+			marker.setAttribute('title', `${place.name}（拖动以移动）`);
 
 			// Make marker draggable
 			this.makeDraggable(marker, place, imgEl);
@@ -1064,12 +1064,12 @@ export class CreateMapWizardModal extends Modal {
 
 		const input = inputContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Place name...'
+			placeholder: '地点名称……'
 		});
 
 		const addBtn = inputContainer.createEl('button', {
 			cls: 'crc-btn crc-btn--primary crc-btn--small',
-			text: 'Add'
+			text: '添加'
 		});
 
 		const cancelBtn = inputContainer.createEl('button', {
@@ -1106,8 +1106,8 @@ export class CreateMapWizardModal extends Modal {
 		const section = container.createDiv({ cls: 'crc-wizard-pending-places' });
 
 		const header = section.createDiv({ cls: 'crc-wizard-pending-places-header' });
-		header.createSpan({ cls: 'crc-wizard-pending-places-title', text: 'Places to create' });
-		header.createSpan({ cls: 'crc-wizard-pending-places-count', text: `${this.pendingPlaces.length} places` });
+		header.createSpan({ cls: 'crc-wizard-pending-places-title', text: '待创建地点' });
+		header.createSpan({ cls: 'crc-wizard-pending-places-count', text: `${this.pendingPlaces.length} 个地点` });
 
 		this.pendingPlaces.forEach((place, index) => {
 			const item = section.createDiv({ cls: 'crc-wizard-pending-place-item' });
@@ -1133,7 +1133,7 @@ export class CreateMapWizardModal extends Modal {
 	private renderStep4(): void {
 		const { contentEl } = this;
 
-		this.renderHeader('Step 4 of 4: Review & create');
+		this.renderHeader('第4步，共4步：确认并创建');
 		this.renderStepIndicator(4);
 
 		const content = contentEl.createDiv({ cls: 'crc-wizard-content' });
@@ -1146,33 +1146,33 @@ export class CreateMapWizardModal extends Modal {
 
 		const placeCount = this.pendingPlaces.length;
 		const subtitle = placeCount > 0
-			? `Ready to create 1 map note and ${placeCount} place note${placeCount > 1 ? 's' : ''}`
-			: 'Ready to create 1 map note';
+			? `准备创建 1 个地图笔记和 ${placeCount} 个地点笔记`
+			: '准备创建 1 个地图笔记';
 		summaryHeader.createDiv({ cls: 'crc-wizard-summary-subtitle', text: subtitle });
 
 		// Summary list
 		const summaryList = content.createDiv({ cls: 'crc-wizard-summary-list' });
 
 		// Map note
-		this.renderSummaryItem(summaryList, 'map', 'Map note', `${this.mapConfig.name}.md`, 'success');
+		this.renderSummaryItem(summaryList, 'map', '地图笔记', `${this.mapConfig.name}.md`, 'success');
 
 		// Image
 		const displayPath = extractWikilinkPath(this.mapConfig.imagePath);
-		this.renderSummaryItem(summaryList, 'image', 'Image', displayPath, 'muted');
+		this.renderSummaryItem(summaryList, 'image', '图片', displayPath, 'muted');
 
 		// Universe
 		if (this.mapConfig.universe) {
-			this.renderSummaryItem(summaryList, 'globe', 'Universe', this.mapConfig.universe, 'normal');
+			this.renderSummaryItem(summaryList, 'globe', '宇宙', this.mapConfig.universe, 'normal');
 		}
 
 		// Coordinate system
-		const coordLabel = this.mapConfig.coordinateSystem === 'pixel' ? 'Pixel coordinates' : 'Geographic (lat/lng)';
-		this.renderSummaryItem(summaryList, 'ruler', 'Coordinates', coordLabel, 'normal');
+		const coordLabel = this.mapConfig.coordinateSystem === 'pixel' ? '像素坐标' : '地理坐标（纬度/经度）';
+		this.renderSummaryItem(summaryList, 'ruler', '坐标', coordLabel, 'normal');
 
 		// Places to create
 		if (this.pendingPlaces.length > 0) {
 			const placesSection = content.createDiv({ cls: 'crc-wizard-summary-places' });
-			placesSection.createDiv({ cls: 'crc-wizard-summary-places-label', text: `Places to create (${this.pendingPlaces.length}):` });
+			placesSection.createDiv({ cls: 'crc-wizard-summary-places-label', text: `待创建地点（${this.pendingPlaces.length}）：` });
 
 			const placesTags = placesSection.createDiv({ cls: 'crc-wizard-summary-place-tags' });
 			this.pendingPlaces.forEach(place => {
@@ -1191,7 +1191,7 @@ export class CreateMapWizardModal extends Modal {
 			onNext: () => {
 				void this.createMap();
 			},
-			nextLabel: 'Create map'
+			nextLabel: '创建地图'
 		});
 	}
 
@@ -1223,9 +1223,9 @@ export class CreateMapWizardModal extends Modal {
 		const successIcon = content.createDiv({ cls: 'crc-wizard-completion-icon' });
 		setIcon(successIcon, 'check-circle');
 
-		content.createEl('h2', { cls: 'crc-wizard-completion-title' }).setText('Map created!');
+		content.createEl('h2', { cls: 'crc-wizard-completion-title' }).setText('地图已创建！');
 		content.createEl('p', { cls: 'crc-wizard-completion-message' }).setText(
-			'Your custom map has been created and is ready to use.'
+			'你的自定义地图已创建，可以使用了。'
 		);
 
 		// Stats
@@ -1233,18 +1233,18 @@ export class CreateMapWizardModal extends Modal {
 
 		const mapStat = stats.createDiv({ cls: 'crc-wizard-completion-stat' });
 		mapStat.createDiv({ cls: 'crc-wizard-completion-stat-value' }).setText('1');
-		mapStat.createDiv({ cls: 'crc-wizard-completion-stat-label' }).setText('Map created');
+		mapStat.createDiv({ cls: 'crc-wizard-completion-stat-label' }).setText('已创建地图');
 
 		if (this.pendingPlaces.length > 0) {
 			const placesStat = stats.createDiv({ cls: 'crc-wizard-completion-stat' });
 			placesStat.createDiv({ cls: 'crc-wizard-completion-stat-value' }).setText(String(this.pendingPlaces.length));
-			placesStat.createDiv({ cls: 'crc-wizard-completion-stat-label' }).setText('Places created');
+			placesStat.createDiv({ cls: 'crc-wizard-completion-stat-label' }).setText('已创建地点');
 		}
 
 		// Created notes list
 		if (this.createdFiles.length > 0) {
 			const listSection = content.createDiv({ cls: 'crc-wizard-created-notes-list' });
-			listSection.createEl('h5').setText('Created notes:');
+			listSection.createEl('h5').setText('已创建的笔记：');
 
 			this.createdFiles.forEach(file => {
 				const item = listSection.createDiv({ cls: 'crc-wizard-created-note-item' });
@@ -1253,7 +1253,7 @@ export class CreateMapWizardModal extends Modal {
 				item.createDiv({ cls: 'crc-wizard-created-note-name' }).setText(file.basename);
 
 				const openLink = item.createEl('span', { cls: 'crc-wizard-created-note-link' });
-				openLink.setText('Open');
+				openLink.setText('打开');
 				openLink.addEventListener('click', () => {
 					void this.app.workspace.openLinkText(file.path, '', false);
 				});
@@ -1264,7 +1264,7 @@ export class CreateMapWizardModal extends Modal {
 		const footer = contentEl.createDiv({ cls: 'crc-modal-buttons crc-modal-buttons--center' });
 
 		new ButtonComponent(footer)
-			.setButtonText('Open in Map View')
+			.setButtonText('在地图视图中打开')
 			.setCta()
 			.onClick(() => {
 				// Open the map in Map View
@@ -1273,7 +1273,7 @@ export class CreateMapWizardModal extends Modal {
 			});
 
 		new ButtonComponent(footer)
-			.setButtonText('Done')
+			.setButtonText('完成')
 			.onClick(() => this.close());
 	}
 
@@ -1302,7 +1302,7 @@ export class CreateMapWizardModal extends Modal {
 			// Check if file already exists
 			const existingFile = this.app.vault.getAbstractFileByPath(filepath);
 			if (existingFile) {
-				new Notice(`A file already exists at ${filepath}`);
+				new Notice(`文件已存在于 ${filepath}`);
 				return;
 			}
 
@@ -1317,7 +1317,7 @@ export class CreateMapWizardModal extends Modal {
 				await this.createPlaceNotes();
 			}
 
-			new Notice(`Created map: ${this.mapConfig.name}`);
+			new Notice(`已创建地图：${this.mapConfig.name}`);
 
 			// Mark as saved and clear persistence
 			this.savedSuccessfully = true;
@@ -1329,7 +1329,7 @@ export class CreateMapWizardModal extends Modal {
 
 		} catch (error) {
 			logger.error('create-map', 'Failed to create map', { error });
-			new Notice(`Failed to create map: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建地图失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -1471,13 +1471,13 @@ class ImagePickerModal extends Modal {
 		contentEl.addClass('crc-image-picker-modal');
 
 		// Header
-		contentEl.createEl('h3', { text: 'Select map image' });
+		contentEl.createEl('h3', { text: '选择地图图片' });
 
 		// Search input
 		const searchContainer = contentEl.createDiv({ cls: 'crc-search-container' });
 		this.searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search images...',
+			placeholder: '搜索图片……',
 			cls: 'crc-search-input'
 		});
 		this.searchInput.addEventListener('input', () => this.filterFiles());
@@ -1510,7 +1510,7 @@ class ImagePickerModal extends Modal {
 
 		if (files.length === 0) {
 			this.listContainer.createEl('p', {
-				text: 'No matching images found',
+				text: '未找到匹配的图片',
 				cls: 'crc-no-results'
 			});
 			return;
@@ -1530,7 +1530,7 @@ class ImagePickerModal extends Modal {
 		for (const [folder, folderFiles] of byFolder.entries()) {
 			if (byFolder.size > 1) {
 				this.listContainer.createEl('div', {
-					text: folder || 'Root',
+					text: folder || '根目录',
 					cls: 'crc-folder-header'
 				});
 			}

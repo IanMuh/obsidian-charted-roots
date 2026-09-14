@@ -61,11 +61,11 @@ export class RelationshipCalculatorModal extends Modal {
 		const titleSection = header.createDiv({ cls: 'cr-relcalc-title' });
 		const icon = createLucideIcon('git-compare', 20);
 		titleSection.appendChild(icon);
-		titleSection.appendText('Relationship calculator');
+		titleSection.appendText('关系计算器');
 
 		// Description
 		contentEl.createEl('p', {
-			text: 'Select two people to calculate their family relationship.',
+			text: '选择两个人来计算他们的家族关系。',
 			cls: 'cr-relcalc-description'
 		});
 
@@ -74,7 +74,7 @@ export class RelationshipCalculatorModal extends Modal {
 
 		// Person A
 		const personASection = selectionSection.createDiv({ cls: 'cr-relcalc-person' });
-		personASection.createDiv({ cls: 'cr-relcalc-person__label', text: 'Person A' });
+		personASection.createDiv({ cls: 'cr-relcalc-person__label', text: '人物 A' });
 		this.personAContainer = personASection.createDiv({ cls: 'cr-relcalc-person__card' });
 		this.renderPersonCard(this.personAContainer, this.personA, 'A');
 
@@ -85,7 +85,7 @@ export class RelationshipCalculatorModal extends Modal {
 
 		// Person B
 		const personBSection = selectionSection.createDiv({ cls: 'cr-relcalc-person' });
-		personBSection.createDiv({ cls: 'cr-relcalc-person__label', text: 'Person B' });
+		personBSection.createDiv({ cls: 'cr-relcalc-person__label', text: '人物 B' });
 		this.personBContainer = personBSection.createDiv({ cls: 'cr-relcalc-person__card' });
 		this.renderPersonCard(this.personBContainer, this.personB, 'B');
 
@@ -93,7 +93,7 @@ export class RelationshipCalculatorModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-relcalc-actions' });
 		this.calculateButton = buttonContainer.createEl('button', {
 			cls: 'crc-btn crc-btn--primary crc-btn--large',
-			text: 'Calculate relationship'
+			text: '计算关系'
 		});
 		this.calculateButton.disabled = true;
 		this.calculateButton.addEventListener('click', () => void this.calculateRelationship());
@@ -118,8 +118,8 @@ export class RelationshipCalculatorModal extends Modal {
 				const dates = person.birthDate && person.deathDate
 					? `${person.birthDate} – ${person.deathDate}`
 					: person.birthDate
-						? `b. ${person.birthDate}`
-						: `d. ${person.deathDate}`;
+						? `出生于 ${person.birthDate}`
+						: `逝世于 ${person.deathDate}`;
 				cardMeta.createSpan({ cls: 'cr-relcalc-badge', text: dates });
 			} else {
 				cardMeta.createSpan({ cls: 'cr-relcalc-badge cr-relcalc-badge--id', text: person.crId });
@@ -128,7 +128,7 @@ export class RelationshipCalculatorModal extends Modal {
 			// Change button
 			const changeBtn = card.createEl('button', {
 				cls: 'crc-btn crc-btn--text cr-relcalc-card__change',
-				text: 'Change'
+				text: '更改'
 			});
 			changeBtn.addEventListener('click', () => this.selectPerson(slot));
 		} else {
@@ -139,7 +139,7 @@ export class RelationshipCalculatorModal extends Modal {
 			emptyIcon.addClass('cr-relcalc-card__icon');
 			emptyCard.appendChild(emptyIcon);
 
-			emptyCard.createDiv({ cls: 'cr-relcalc-card__empty-text', text: 'Click to select' });
+			emptyCard.createDiv({ cls: 'cr-relcalc-card__empty-text', text: '点击选择' });
 
 			emptyCard.addEventListener('click', () => this.selectPerson(slot));
 		}
@@ -177,13 +177,13 @@ export class RelationshipCalculatorModal extends Modal {
 
 	private calculateRelationship(): void {
 		if (!this.personA || !this.personB) {
-			new Notice('Please select both people first');
+			new Notice('请先选择两个人');
 			return;
 		}
 
 		// Show loading state
 		this.calculateButton.disabled = true;
-		this.calculateButton.setText('Calculating...');
+		this.calculateButton.setText('计算中…');
 
 		try {
 			this.result = this.calculator.calculateRelationship(
@@ -194,14 +194,14 @@ export class RelationshipCalculatorModal extends Modal {
 			if (this.result) {
 				this.renderResults();
 			} else {
-				new Notice('Could not calculate relationship');
+				new Notice('无法计算关系');
 			}
 		} catch (error: unknown) {
 			console.error('Error calculating relationship:', error);
-			new Notice('Error calculating relationship');
+			new Notice('计算关系时出错');
 		} finally {
 			this.calculateButton.disabled = false;
-			this.calculateButton.setText('Calculate relationship');
+			this.calculateButton.setText('计算关系');
 		}
 	}
 
@@ -229,37 +229,37 @@ export class RelationshipCalculatorModal extends Modal {
 		// Generations info
 		if (this.result.generationsUp > 0 || this.result.generationsDown > 0) {
 			const genInfo = resultDetails.createDiv({ cls: 'cr-relcalc-result-stat' });
-			genInfo.createSpan({ cls: 'cr-relcalc-result-stat__label', text: 'Generations:' });
+			genInfo.createSpan({ cls: 'cr-relcalc-result-stat__label', text: '世代：' });
 			const genText = [];
 			if (this.result.generationsUp > 0) {
-				genText.push(`${this.result.generationsUp} up`);
+				genText.push(`上溯 ${this.result.generationsUp} 代`);
 			}
 			if (this.result.generationsDown > 0) {
-				genText.push(`${this.result.generationsDown} down`);
+				genText.push(`下延 ${this.result.generationsDown} 代`);
 			}
 			genInfo.createSpan({ cls: 'cr-relcalc-result-stat__value', text: genText.join(', ') });
 		}
 
 		// Blood relation
 		const bloodInfo = resultDetails.createDiv({ cls: 'cr-relcalc-result-stat' });
-		bloodInfo.createSpan({ cls: 'cr-relcalc-result-stat__label', text: 'Blood relation:' });
+		bloodInfo.createSpan({ cls: 'cr-relcalc-result-stat__label', text: '血缘关系：' });
 		bloodInfo.createSpan({
 			cls: `cr-relcalc-result-stat__value ${this.result.isBloodRelation ? 'cr-text--success' : ''}`,
-			text: this.result.isBloodRelation ? 'Yes' : 'No'
+			text: this.result.isBloodRelation ? '是' : '否'
 		});
 
 		// Direct line
 		const directInfo = resultDetails.createDiv({ cls: 'cr-relcalc-result-stat' });
-		directInfo.createSpan({ cls: 'cr-relcalc-result-stat__label', text: 'Direct line:' });
+		directInfo.createSpan({ cls: 'cr-relcalc-result-stat__label', text: '直系：' });
 		directInfo.createSpan({
 			cls: `cr-relcalc-result-stat__value ${this.result.isDirectLine ? 'cr-text--success' : ''}`,
-			text: this.result.isDirectLine ? 'Yes' : 'No'
+			text: this.result.isDirectLine ? '是' : '否'
 		});
 
 		// Common ancestor (if applicable)
 		if (this.result.commonAncestor && !this.result.isDirectLine) {
 			const ancestorInfo = resultDetails.createDiv({ cls: 'cr-relcalc-result-stat' });
-			ancestorInfo.createSpan({ cls: 'cr-relcalc-result-stat__label', text: 'Common ancestor:' });
+			ancestorInfo.createSpan({ cls: 'cr-relcalc-result-stat__label', text: '共同祖先：' });
 			ancestorInfo.createSpan({
 				cls: 'cr-relcalc-result-stat__value',
 				text: this.result.commonAncestor.name
@@ -285,7 +285,7 @@ export class RelationshipCalculatorModal extends Modal {
 		});
 		const searchIcon = createLucideIcon('search', 14);
 		findMoreBtn.appendChild(searchIcon);
-		findMoreBtn.appendText('Find more relationships');
+		findMoreBtn.appendText('查找更多关系');
 		findMoreBtn.addEventListener('click', () => this.findMoreRelationships());
 
 		const copyBtn = actionButtons.createEl('button', {
@@ -293,7 +293,7 @@ export class RelationshipCalculatorModal extends Modal {
 		});
 		const copyIcon = createLucideIcon('copy', 14);
 		copyBtn.appendChild(copyIcon);
-		copyBtn.appendText('Copy result');
+		copyBtn.appendText('复制结果');
 		copyBtn.addEventListener('click', () => this.copyResult());
 	}
 
@@ -304,7 +304,7 @@ export class RelationshipCalculatorModal extends Modal {
 		const section = container.createDiv({ cls: 'cr-relcalc-additional' });
 		section.createDiv({
 			cls: 'cr-relcalc-additional__title',
-			text: `Additional relationships (${grouped.length})`
+			text: `其他关系（${grouped.length}）`
 		});
 
 		for (const group of grouped) {
@@ -324,19 +324,19 @@ export class RelationshipCalculatorModal extends Modal {
 			if (ancestorNames.length > 0) {
 				row.createSpan({
 					cls: 'cr-relcalc-additional__ancestor',
-					text: ` via ${ancestorNames.join(' & ')}`
+						text: ` 经由 ${ancestorNames.join(' & ')}`
 				});
 			}
 
 			if (result.isBloodRelation) {
 				row.createSpan({
 					cls: 'cr-relcalc-badge cr-relcalc-badge--blood',
-					text: 'blood'
+						text: '血缘'
 				});
 			} else {
 				row.createSpan({
 					cls: 'cr-relcalc-badge cr-relcalc-badge--marriage',
-					text: 'by marriage'
+						text: '姻亲'
 				});
 			}
 
@@ -437,12 +437,12 @@ export class RelationshipCalculatorModal extends Modal {
 		);
 
 		if (newResults.length === 0) {
-			new Notice('No additional relationships found');
+			new Notice('未找到其他关系');
 			return;
 		}
 
 		this.additionalResults.push(...newResults);
-		new Notice(`Found ${newResults.length} additional relationship${newResults.length !== 1 ? 's' : ''}`);
+		new Notice(`找到 ${newResults.length} 个其他关系`);
 
 		// Re-render results to show the new ones
 		this.renderResults();
@@ -452,7 +452,7 @@ export class RelationshipCalculatorModal extends Modal {
 		if (!this.result || this.result.path.length <= 1) return;
 
 		const pathSection = container.createDiv({ cls: 'cr-relcalc-path' });
-		pathSection.createDiv({ cls: 'cr-relcalc-path__title', text: 'Relationship path' });
+		pathSection.createDiv({ cls: 'cr-relcalc-path__title', text: '关系路径' });
 
 		const pathContainer = pathSection.createDiv({ cls: 'cr-relcalc-path__container' });
 
@@ -478,7 +478,7 @@ export class RelationshipCalculatorModal extends Modal {
 	}
 
 	private getRelationshipIcon(result: RelationshipResult): HTMLElement {
-		if (result.relationshipDescription === 'Spouse') {
+		if (result.relationshipDescription === '配偶') {
 			return createLucideIcon('heart', 18);
 		}
 		if (result.isDirectLine && result.generationsUp > 0) {
@@ -487,10 +487,10 @@ export class RelationshipCalculatorModal extends Modal {
 		if (result.isDirectLine && result.generationsDown > 0) {
 			return createLucideIcon('arrow-down', 18);
 		}
-		if (result.relationshipDescription.includes('Sibling')) {
+		if (result.relationshipDescription.includes('兄弟姐妹')) {
 			return createLucideIcon('users', 18);
 		}
-		if (result.relationshipDescription.includes('Cousin')) {
+		if (result.relationshipDescription.includes('堂/表亲')) {
 			return createLucideIcon('git-branch', 18);
 		}
 		return createLucideIcon('link', 18);
@@ -512,25 +512,25 @@ export class RelationshipCalculatorModal extends Modal {
 	private getRelationshipLabel(relationship: RelationshipStep['relationship']): string {
 		switch (relationship) {
 			case 'father':
-				return 'Father';
+				return '父亲';
 			case 'mother':
-				return 'Mother';
+				return '母亲';
 			case 'spouse':
-				return 'Spouse';
+				return '配偶';
 			case 'child':
-				return 'Child';
+				return '子女';
 			case 'stepfather':
-				return 'Stepfather';
+				return '继父';
 			case 'stepmother':
-				return 'Stepmother';
+				return '继母';
 			case 'stepchild':
-				return 'Stepchild';
+				return '继子女';
 			case 'adoptive_father':
-				return 'Adoptive father';
+				return '养父';
 			case 'adoptive_mother':
-				return 'Adoptive mother';
+				return '养母';
 			case 'adopted_child':
-				return 'Adopted child';
+				return '养子女';
 			default:
 				return '';
 		}
@@ -540,25 +540,25 @@ export class RelationshipCalculatorModal extends Modal {
 		if (!this.result || !this.personA || !this.personB) return;
 
 		const lines = [
-			`Relationship: ${this.personA.name} → ${this.personB.name}`,
-			`Result: ${this.result.relationshipDescription}`,
+			`关系：${this.personA.name} → ${this.personB.name}`,
+			`结果：${this.result.relationshipDescription}`,
 			''
 		];
 
 		if (this.result.generationsUp > 0 || this.result.generationsDown > 0) {
-			lines.push(`Generations: ${this.result.generationsUp} up, ${this.result.generationsDown} down`);
+			lines.push(`世代：上溯 ${this.result.generationsUp} 代，下延 ${this.result.generationsDown} 代`);
 		}
 
-		lines.push(`Blood relation: ${this.result.isBloodRelation ? 'Yes' : 'No'}`);
-		lines.push(`Direct line: ${this.result.isDirectLine ? 'Yes' : 'No'}`);
+		lines.push(`血缘关系：${this.result.isBloodRelation ? '是' : '否'}`);
+		lines.push(`直系：${this.result.isDirectLine ? '是' : '否'}`);
 
 		if (this.result.commonAncestor && !this.result.isDirectLine) {
-			lines.push(`Common ancestor: ${this.result.commonAncestor.name}`);
+			lines.push(`共同祖先：${this.result.commonAncestor.name}`);
 		}
 
 		if (this.result.path.length > 1) {
 			lines.push('');
-			lines.push('Path:');
+			lines.push('路径：');
 			this.result.path.forEach((step, index) => {
 				if (index === 0) {
 					lines.push(`  ${step.person.name}`);
@@ -569,6 +569,6 @@ export class RelationshipCalculatorModal extends Modal {
 		}
 
 		void navigator.clipboard.writeText(lines.join('\n'));
-		new Notice('Result copied to clipboard');
+		new Notice('结果已复制到剪贴板');
 	}
 }

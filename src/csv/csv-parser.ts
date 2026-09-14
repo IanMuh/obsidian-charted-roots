@@ -107,7 +107,7 @@ export class CsvParser {
 		const lines = content.split(/\r?\n/);
 
 		if (lines.length === 0) {
-			result.errors.push({ row: 0, message: 'Empty CSV file' });
+			result.errors.push({ row: 0, message: 'CSV 文件为空' });
 			return result;
 		}
 
@@ -155,7 +155,7 @@ export class CsvParser {
 				if (values.length > result.headers.length) {
 					result.errors.push({
 						row: i + 1,
-						message: `Row has ${values.length} columns but header has ${result.headers.length}`
+						message: `该行有 ${values.length} 列，但表头有 ${result.headers.length} 列`
 					});
 
 					// Add extra columns with generated names
@@ -170,7 +170,7 @@ export class CsvParser {
 			} catch (error) {
 				result.errors.push({
 					row: i + 1,
-					message: `Parse error: ${error instanceof Error ? error.message : String(error)}`
+					message: `解析错误：${error instanceof Error ? error.message : String(error)}`
 				});
 			}
 		}
@@ -245,7 +245,7 @@ export class CsvParser {
 
 		if (!content || content.trim() === '') {
 			result.valid = false;
-			result.errors.push({ message: 'CSV content is empty' });
+			result.errors.push({ message: 'CSV 内容为空' });
 			return result;
 		}
 
@@ -265,7 +265,7 @@ export class CsvParser {
 		// Validate headers exist
 		if (parseResult.headers.length === 0) {
 			result.valid = false;
-			result.errors.push({ message: 'No headers found in CSV' });
+			result.errors.push({ message: 'CSV 中未找到表头' });
 		}
 
 		// Check for required columns (name or cr_id)
@@ -275,14 +275,14 @@ export class CsvParser {
 		if (!hasNameColumn && !hasCrIdColumn) {
 			result.valid = false;
 			result.errors.push({
-				message: 'CSV must contain at least a "name" or "cr_id" column'
+				message: 'CSV 必须至少包含 "name" 或 "cr_id" 列'
 			});
 		}
 
 		// Warn about empty data
 		if (parseResult.rowCount === 0) {
 			result.valid = false;
-			result.errors.push({ message: 'CSV contains no data rows' });
+			result.errors.push({ message: 'CSV 不包含数据行' });
 		}
 
 		// Check for duplicate headers
@@ -295,7 +295,7 @@ export class CsvParser {
 		for (const [header, count] of headerCounts) {
 			if (count > 1) {
 				result.warnings.push({
-					message: `Duplicate header "${header}" found ${count} times`
+					message: `表头 "${header}" 重复出现 ${count} 次`
 				});
 			}
 		}

@@ -246,6 +246,6 @@ describe('calculateDateStatistics — system attribution on abbreviation collisi
 		const stats = calculateDateStatistics(plugin);
 
 		expect(stats.withFictionalDates).toBe(1);
-		expect(stats.systemsInUse).toEqual([{ name: 'Galactic Standard Calendar', count: 1 }]);
+		expect(stats.systemsInUse).toEqual([{ name: '银河标准历法', count: 1 }]);
 	});
 });

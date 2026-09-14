@@ -127,28 +127,28 @@ const IMPORT_FORMATS: FormatConfig[] = [
 	{
 		id: 'gedcom',
 		name: 'GEDCOM 5.5.1',
-		description: 'Standard genealogy format (.ged)',
+		description: '标准家谱格式（.ged）',
 		extension: '.ged',
 		icon: 'file-text'
 	},
 	{
 		id: 'gedcomx',
 		name: 'GEDCOM X (JSON)',
-		description: 'Modern JSON-based format',
+		description: '现代 JSON 格式',
 		extension: '.json',
 		icon: 'file-json'
 	},
 	{
 		id: 'gramps',
 		name: 'Gramps XML/.gpkg',
-		description: 'Gramps software (.gpkg includes media)',
+		description: 'Gramps 软件（.gpkg 包含媒体）',
 		extension: '.gpkg,.gramps',
 		icon: 'file-archive'
 	},
 	{
 		id: 'csv',
 		name: 'CSV',
-		description: 'Spreadsheet data (.csv)',
+		description: '电子表格数据（.csv）',
 		extension: '.csv',
 		icon: 'table'
 	}
@@ -169,13 +169,13 @@ export class ImportWizardModal extends Modal {
 
 	// Step definitions
 	private readonly steps = [
-		{ number: 1, title: 'Format', description: 'Choose import format' },
-		{ number: 2, title: 'File', description: 'Select file to import' },
-		{ number: 3, title: 'Options', description: 'Configure import options' },
-		{ number: 4, title: 'Preview', description: 'Review before importing' },
-		{ number: 5, title: 'Import', description: 'Importing data...' },
-		{ number: 6, title: 'Numbering', description: 'Assign reference numbers' },
-		{ number: 7, title: 'Complete', description: 'Import finished' }
+		{ number: 1, title: '格式', description: '选择导入格式' },
+		{ number: 2, title: '文件', description: '选择要导入的文件' },
+		{ number: 3, title: '选项', description: '配置导入选项' },
+		{ number: 4, title: '预览', description: '导入前确认' },
+		{ number: 5, title: '导入', description: '正在导入数据……' },
+		{ number: 6, title: '编号', description: '分配参考编号' },
+		{ number: 7, title: '完成', description: '导入完成' }
 	];
 
 	constructor(app: App, plugin: CanvasRootsPlugin) {
@@ -265,7 +265,7 @@ export class ImportWizardModal extends Modal {
 		const titleRow = header.createDiv({ cls: 'crc-wizard-title' });
 		const iconEl = titleRow.createDiv({ cls: 'crc-wizard-title-icon' });
 		setIcon(iconEl, 'download');
-		titleRow.createSpan({ text: 'Import Data' });
+		titleRow.createSpan({ text: '导入数据' });
 
 		// Step progress indicator
 		this.renderStepProgress(contentEl);
@@ -379,7 +379,7 @@ export class ImportWizardModal extends Modal {
 	 */
 	private renderStep1Format(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'crc-import-section' });
-		section.createEl('h3', { text: 'Choose import format', cls: 'crc-import-section-title' });
+		section.createEl('h3', { text: '选择导入格式', cls: 'crc-import-section-title' });
 
 		const formatGrid = section.createDiv({ cls: 'crc-import-format-grid' });
 
@@ -409,7 +409,7 @@ export class ImportWizardModal extends Modal {
 	private renderStep2File(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'crc-import-section' });
 		const selectedFormat = IMPORT_FORMATS.find(f => f.id === this.formData.format);
-		section.createEl('h3', { text: `Select ${selectedFormat?.name || ''} file`, cls: 'crc-import-section-title' });
+		section.createEl('h3', { text: `选择 ${selectedFormat?.name || ''} 文件`, cls: 'crc-import-section-title' });
 
 		// File dropzone
 		const dropzone = section.createDiv({ cls: 'crc-import-dropzone' });
@@ -444,11 +444,11 @@ export class ImportWizardModal extends Modal {
 
 			dropzoneContent.createDiv({
 				cls: 'crc-import-dropzone-text',
-				text: 'Drag and drop your file here'
+				text: '将文件拖放到此处'
 			});
 			dropzoneContent.createDiv({
 				cls: 'crc-import-dropzone-subtext',
-				text: 'or click to browse'
+				text: '或点击浏览'
 			});
 		}
 
@@ -505,29 +505,29 @@ export class ImportWizardModal extends Modal {
 		const section = container.createDiv({ cls: 'crc-import-section' });
 
 		// Entity types
-		section.createEl('h4', { text: 'Entity types to import', cls: 'crc-import-options-title' });
+		section.createEl('h4', { text: '要导入的实体类型', cls: 'crc-import-options-title' });
 
 		const entityOptions = section.createDiv({ cls: 'crc-import-options-grid' });
 
-		this.renderToggleOption(entityOptions, 'People', 'Individual and family records', this.formData.importPeople, (val) => {
+		this.renderToggleOption(entityOptions, '人物', '个人与家族记录', this.formData.importPeople, (val) => {
 			this.formData.importPeople = val;
 		});
 
-		this.renderToggleOption(entityOptions, 'Places', 'Location records', this.formData.importPlaces, (val) => {
+		this.renderToggleOption(entityOptions, '地点', '地点记录', this.formData.importPlaces, (val) => {
 			this.formData.importPlaces = val;
 		});
 
-		this.renderToggleOption(entityOptions, 'Sources', 'Source citations', this.formData.importSources, (val) => {
+		this.renderToggleOption(entityOptions, '来源', '来源引文', this.formData.importSources, (val) => {
 			this.formData.importSources = val;
 		});
 
-		this.renderToggleOption(entityOptions, 'Events', 'Historical events', this.formData.importEvents, (val) => {
+		this.renderToggleOption(entityOptions, '事件', '历史事件', this.formData.importEvents, (val) => {
 			this.formData.importEvents = val;
 		});
 
 		// Notes and Media toggles for GEDCOM format
 		if (this.formData.format === 'gedcom') {
-			this.renderToggleOption(entityOptions, 'Notes', 'Append GEDCOM notes to person content', this.formData.importNotes, (val) => {
+			this.renderToggleOption(entityOptions, '笔记', '将 GEDCOM 笔记追加到人物内容', this.formData.importNotes, (val) => {
 				this.formData.importNotes = val;
 				// Refresh to show/hide dependent option
 				this.renderCurrentStep();
@@ -535,13 +535,13 @@ export class ImportWizardModal extends Modal {
 
 			// Show separate note files option only when Notes is enabled
 			if (this.formData.importNotes) {
-				this.renderToggleOption(entityOptions, 'Create separate note files', 'Create individual note files instead of embedding content', this.formData.createSeparateNoteFiles, (val) => {
+				this.renderToggleOption(entityOptions, '创建单独的笔记文件', '创建独立的笔记文件而非嵌入内容', this.formData.createSeparateNoteFiles, (val) => {
 					this.formData.createSeparateNoteFiles = val;
 				});
 			}
 
 			// Media toggle for GEDCOM
-			this.renderToggleOption(entityOptions, 'Media references', 'Link OBJE media references as wikilinks', this.formData.importMedia, (val) => {
+			this.renderToggleOption(entityOptions, '媒体引用', '将 OBJE 媒体引用链接为 Wiki 链接', this.formData.importMedia, (val) => {
 				this.formData.importMedia = val;
 				// Refresh to show/hide path prefix field
 				this.renderCurrentStep();
@@ -551,14 +551,14 @@ export class ImportWizardModal extends Modal {
 			if (this.formData.importMedia) {
 				const prefixRow = entityOptions.createDiv({ cls: 'crc-import-option-row crc-mt-1' });
 				prefixRow.createEl('label', {
-					text: 'External media path prefix to strip',
+					text: '要剥离的外部媒体路径前缀',
 					cls: 'crc-import-option-label'
 				});
 				const prefixInput = prefixRow.createEl('input', {
 					type: 'text',
 					cls: 'crc-import-input',
 					value: this.formData.mediaPathPrefix,
-					placeholder: 'e.g., /media/photos/ancestors'
+					placeholder: '例如：/media/photos/ancestors'
 				});
 
 				// Container for preview (will update dynamically)
@@ -578,7 +578,7 @@ export class ImportWizardModal extends Modal {
 					if (samplesToShow > 0) {
 						const previewEl = previewContainer.createDiv({ cls: 'crc-media-preview' });
 						previewEl.createEl('div', {
-							text: 'Preview:',
+							text: '预览：',
 							cls: 'crc-media-preview-label'
 						});
 
@@ -622,7 +622,7 @@ export class ImportWizardModal extends Modal {
 
 						if (mediaEntries.length > samplesToShow) {
 							previewEl.createEl('div', {
-								text: `...and ${mediaEntries.length - samplesToShow} more`,
+								text: `……以及另外 ${mediaEntries.length - samplesToShow} 个`,
 								cls: 'crc-media-preview-more'
 							});
 						}
@@ -640,16 +640,16 @@ export class ImportWizardModal extends Modal {
 
 				// Add hint text
 				const hintEl = entityOptions.createDiv({ cls: 'crc-import-option-hint crc-mt-1' });
-				hintEl.textContent = 'If your GEDCOM has full paths like "/media/photos/ancestors/smith/photo.jpg", enter the prefix to strip. Only the filename will be used as a wikilink.';
+				hintEl.textContent = '如果你的 GEDCOM 包含「/media/photos/ancestors/smith/photo.jpg」这样的完整路径，请输入要剥离的前缀。将只使用文件名作为 Wiki 链接。';
 			}
 		}
 
 		if (this.formData.format === 'gramps') {
-			this.renderToggleOption(entityOptions, 'Media', 'Attached media files', this.formData.importMedia, (val) => {
+			this.renderToggleOption(entityOptions, '媒体', '附加的媒体文件', this.formData.importMedia, (val) => {
 				this.formData.importMedia = val;
 			});
 
-			this.renderToggleOption(entityOptions, 'Notes', 'Append Gramps notes to entity content', this.formData.importNotes, (val) => {
+			this.renderToggleOption(entityOptions, '笔记', '将 Gramps 笔记追加到实体内容', this.formData.importNotes, (val) => {
 				this.formData.importNotes = val;
 				// Refresh to show/hide dependent option
 				this.renderCurrentStep();
@@ -657,18 +657,18 @@ export class ImportWizardModal extends Modal {
 
 			// Show separate note files option only when Notes is enabled
 			if (this.formData.importNotes) {
-				this.renderToggleOption(entityOptions, 'Create separate note files', 'Create individual note files instead of embedding content', this.formData.createSeparateNoteFiles, (val) => {
+				this.renderToggleOption(entityOptions, '创建单独的笔记文件', '创建独立的笔记文件而非嵌入内容', this.formData.createSeparateNoteFiles, (val) => {
 					this.formData.createSeparateNoteFiles = val;
 				});
 			}
 		}
 
-		this.renderToggleOption(entityOptions, 'Dynamic blocks', 'Timeline, relationships, and media renderers in notes', this.formData.includeDynamicBlocks, (val) => {
+		this.renderToggleOption(entityOptions, '动态块', '笔记中的时间轴、关系和媒体渲染器', this.formData.includeDynamicBlocks, (val) => {
 			this.formData.includeDynamicBlocks = val;
 		});
 
 		// Target folder
-		section.createEl('h4', { text: 'Target folder', cls: 'crc-import-options-title crc-mt-3' });
+		section.createEl('h4', { text: '目标文件夹', cls: 'crc-import-options-title crc-mt-3' });
 
 		const folderRow = section.createDiv({ cls: 'crc-import-option-row' });
 		const folderInput = folderRow.createEl('input', {
@@ -682,14 +682,14 @@ export class ImportWizardModal extends Modal {
 		});
 
 		// Conflict handling
-		section.createEl('h4', { text: 'Duplicate handling', cls: 'crc-import-options-title crc-mt-3' });
+		section.createEl('h4', { text: '重复处理', cls: 'crc-import-options-title crc-mt-3' });
 
 		const conflictOptions = section.createDiv({ cls: 'crc-import-conflict-options' });
 
 		const conflictChoices: Array<{ id: ConflictHandling; label: string; description: string }> = [
-			{ id: 'skip', label: 'Skip duplicates', description: 'Keep existing notes, skip new ones with same cr_id' },
-			{ id: 'overwrite', label: 'Overwrite', description: 'Replace existing notes with imported data' },
-			{ id: 'rename', label: 'Create new', description: 'Import as new notes with different names' }
+			{ id: 'skip', label: '跳过重复项', description: '保留现有笔记，跳过 cr_id 相同的新笔记' },
+			{ id: 'overwrite', label: '覆盖', description: '用导入的数据替换现有笔记' },
+			{ id: 'rename', label: '创建新笔记', description: '以不同名称导入为新笔记' }
 		];
 
 		for (const choice of conflictChoices) {
@@ -710,12 +710,12 @@ export class ImportWizardModal extends Modal {
 		}
 
 		// Large Import Mode (advanced option)
-		section.createEl('h4', { text: 'Performance', cls: 'crc-import-options-title crc-mt-3' });
+		section.createEl('h4', { text: '性能', cls: 'crc-import-options-title crc-mt-3' });
 
 		this.renderToggleOption(
 			section,
-			'Large import mode',
-			'Suspends relationship syncing during import to prevent timeouts. Recommended for imports with 500+ people.',
+			'大型导入模式',
+			'导入期间暂停关系同步以防止超时。建议用于 500 人以上的导入。',
 			this.formData.largeImportMode,
 			(val) => {
 				this.formData.largeImportMode = val;
@@ -728,7 +728,7 @@ export class ImportWizardModal extends Modal {
 	 */
 	private renderStep4Preview(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'crc-import-section' });
-		section.createEl('h3', { text: 'Preview', cls: 'crc-import-section-title' });
+		section.createEl('h3', { text: '预览', cls: 'crc-import-section-title' });
 
 		// File info
 		const fileCard = section.createDiv({ cls: 'crc-import-preview-card' });
@@ -753,7 +753,7 @@ export class ImportWizardModal extends Modal {
 
 			// Show loading state
 			const loadingEl = section.createDiv({ cls: 'crc-import-preview-loading' });
-			loadingEl.textContent = 'Parsing file...';
+			loadingEl.textContent = '正在解析文件……';
 
 			// Parse the file asynchronously
 			void this.parseFileForPreview();
@@ -763,7 +763,7 @@ export class ImportWizardModal extends Modal {
 		// Show loading state if parsing is in progress
 		if (this.isParsing) {
 			const loadingEl = section.createDiv({ cls: 'crc-import-preview-loading' });
-			loadingEl.textContent = 'Parsing file...';
+			loadingEl.textContent = '正在解析文件……';
 			return;
 		}
 
@@ -772,10 +772,10 @@ export class ImportWizardModal extends Modal {
 
 		const { previewCounts } = this.formData;
 		const countItems = [
-			{ label: 'People', count: previewCounts.people, icon: 'users', enabled: this.formData.importPeople },
-			{ label: 'Places', count: previewCounts.places, icon: 'map-pin', enabled: this.formData.importPlaces },
-			{ label: 'Sources', count: previewCounts.sources, icon: 'archive', enabled: this.formData.importSources },
-			{ label: 'Events', count: previewCounts.events, icon: 'calendar', enabled: this.formData.importEvents }
+			{ label: '人物', count: previewCounts.people, icon: 'users', enabled: this.formData.importPeople },
+			{ label: '地点', count: previewCounts.places, icon: 'map-pin', enabled: this.formData.importPlaces },
+			{ label: '来源', count: previewCounts.sources, icon: 'archive', enabled: this.formData.importSources },
+			{ label: '事件', count: previewCounts.events, icon: 'calendar', enabled: this.formData.importEvents }
 		];
 
 		for (const item of countItems) {
@@ -809,7 +809,7 @@ export class ImportWizardModal extends Modal {
 		const totalIcon = totalEl.createDiv({ cls: 'crc-import-preview-count-icon' });
 		setIcon(totalIcon, 'layers');
 		totalEl.createDiv({ cls: 'crc-import-preview-count-value', text: sizeEstimate.totalNotes.toLocaleString() });
-		totalEl.createDiv({ cls: 'crc-import-preview-count-label', text: 'Total notes' });
+		totalEl.createDiv({ cls: 'crc-import-preview-count-label', text: '笔记总数' });
 
 		if (sizeEstimate.isLarge) {
 			const sizeWarn = section.createDiv({ cls: 'crc-import-preview-warning' });
@@ -818,11 +818,11 @@ export class ImportWizardModal extends Modal {
 			setIcon(sizeWarnIcon, 'alert-triangle');
 			sizeWarnHeader.createDiv({
 				cls: 'crc-import-preview-warning-text',
-				text: `Large import: about ${sizeEstimate.totalNotes.toLocaleString()} notes`
+				text: `大型导入：约 ${sizeEstimate.totalNotes.toLocaleString()} 个笔记`
 			});
 			sizeWarn.createDiv({
 				cls: 'crc-import-preview-warning-details',
-				text: 'Vaults this large can slow Obsidian noticeably — it often begins to lag in the low thousands of notes. Consider narrowing your file (for example, to your direct lines plus a few generations) before importing.'
+				text: '如此规模的库可能明显拖慢 Obsidian——通常笔记数量达到低四位数时就会开始卡顿。建议在导入前缩小文件范围（例如仅保留你的直系血脉加上少数几个世代）。'
 			});
 		}
 
@@ -835,7 +835,7 @@ export class ImportWizardModal extends Modal {
 			const mediaCount = this.formData.gpkgExtractionResult.mediaFiles.size;
 			const mediaFolderSection = section.createDiv({ cls: 'crc-import-media-folder-section crc-mt-3' });
 			mediaFolderSection.createEl('h4', {
-				text: `Media destination (${mediaCount} files)`,
+				text: `媒体目标（${mediaCount} 个文件）`,
 				cls: 'crc-import-options-title'
 			});
 
@@ -859,7 +859,7 @@ export class ImportWizardModal extends Modal {
 			if (!configuredFolders.includes(defaultFolder)) {
 				const option = mediaFolderSelect.createEl('option', {
 					value: defaultFolder,
-					text: `${defaultFolder} (default)`
+					text: `${defaultFolder}（默认）`
 				});
 				if (this.formData.mediaFolder === defaultFolder) {
 					option.selected = true;
@@ -867,7 +867,7 @@ export class ImportWizardModal extends Modal {
 			}
 
 			// Option 3: Custom folder
-			const customOption = mediaFolderSelect.createEl('option', { value: '__custom__', text: 'Custom folder...' });
+			const customOption = mediaFolderSelect.createEl('option', { value: '__custom__', text: '自定义文件夹……' });
 			const isCustom = !configuredFolders.includes(this.formData.mediaFolder) &&
 				this.formData.mediaFolder !== defaultFolder;
 			if (isCustom) {
@@ -879,7 +879,7 @@ export class ImportWizardModal extends Modal {
 			const customFolderInput = customFolderRow.createEl('input', {
 				type: 'text',
 				cls: 'crc-import-input',
-				placeholder: 'Enter custom folder path',
+				placeholder: '输入自定义文件夹路径',
 				value: isCustom ? this.formData.mediaFolder : ''
 			});
 
@@ -908,7 +908,7 @@ export class ImportWizardModal extends Modal {
 
 			const preserveLabel = preserveStructureRow.createEl('label', {
 				cls: 'crc-import-checkbox-label',
-				text: 'Preserve folder structure from package'
+				text: '保留包中的文件夹结构'
 			});
 			preserveLabel.setAttribute('for', 'preserve-media-structure');
 
@@ -920,7 +920,7 @@ export class ImportWizardModal extends Modal {
 				const pathParts = firstPath.split('/');
 				if (pathParts.length > 1) {
 					const folderPath = pathParts.slice(0, -1).join('/');
-					exampleEl.textContent = `e.g., ${this.formData.mediaFolder}/${folderPath}/...`;
+					exampleEl.textContent = `例如：${this.formData.mediaFolder}/${folderPath}/……`;
 				}
 			}
 
@@ -948,7 +948,7 @@ export class ImportWizardModal extends Modal {
 			setIcon(warningIcon, 'alert-triangle');
 			warningHeader.createDiv({
 				cls: 'crc-import-preview-warning-text',
-				text: `${warnings.length} warning(s) found during parsing`
+				text: `解析时发现 ${warnings.length} 个警告`
 			});
 			const expandIcon = warningHeader.createDiv({ cls: 'crc-import-preview-warning-expand' });
 			setIcon(expandIcon, 'chevron-down');
@@ -961,7 +961,7 @@ export class ImportWizardModal extends Modal {
 			if (warnings.length > 10) {
 				warningDetails.createDiv({
 					cls: 'crc-import-preview-warning-more',
-					text: `...and ${warnings.length - 10} more`
+					text: `……以及另外 ${warnings.length - 10} 个`
 				});
 			}
 
@@ -981,7 +981,7 @@ export class ImportWizardModal extends Modal {
 			setIcon(errorIcon, 'x-circle');
 			errorEl.createDiv({
 				cls: 'crc-import-preview-error-text',
-				text: `${this.formData.parseErrors.length} error(s) found. Import may fail.`
+				text: `发现 ${this.formData.parseErrors.length} 个错误。导入可能失败。`
 			});
 			for (const error of this.formData.parseErrors.slice(0, 3)) {
 				errorEl.createDiv({ cls: 'crc-import-preview-error-detail', text: error });
@@ -991,7 +991,7 @@ export class ImportWizardModal extends Modal {
 		// Ready message
 		if (this.formData.parseErrors.length === 0) {
 			const readyEl = section.createDiv({ cls: 'crc-import-preview-ready' });
-			readyEl.createSpan({ text: 'Ready to import. Click Next to proceed.' });
+			readyEl.createSpan({ text: '可以导入了。点击「下一步」继续。' });
 		}
 	}
 
@@ -1109,7 +1109,7 @@ export class ImportWizardModal extends Modal {
 				this.formData.parseWarnings = validation.warnings.map(w => w.message);
 			}
 		} catch (error) {
-			this.formData.parseErrors = [`Failed to read file: ${error instanceof Error ? error.message : 'Unknown error'}`];
+			this.formData.parseErrors = [`读取文件失败：${error instanceof Error ? error.message : '未知错误'}`];
 		} finally {
 			// Clear the parsing flag before re-rendering
 			this.isParsing = false;
@@ -1123,7 +1123,7 @@ export class ImportWizardModal extends Modal {
 	 */
 	private renderStep5Import(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'crc-import-section' });
-		section.createEl('h3', { text: 'Importing...', cls: 'crc-import-section-title' });
+		section.createEl('h3', { text: '正在导入……', cls: 'crc-import-section-title' });
 
 		// Progress bar
 		const progressBar = section.createDiv({ cls: 'crc-import-progress-bar' });
@@ -1132,7 +1132,7 @@ export class ImportWizardModal extends Modal {
 
 		// Status text
 		const statusEl = section.createDiv({ cls: 'crc-import-progress-status' });
-		statusEl.textContent = 'Starting import...';
+		statusEl.textContent = '正在开始导入……';
 
 		// Log area
 		const logArea = section.createDiv({ cls: 'crc-import-log' });
@@ -1163,7 +1163,7 @@ export class ImportWizardModal extends Modal {
 
 		try {
 			if (this.formData.format === 'gedcom') {
-				addLogEntry('Starting GEDCOM import...');
+				addLogEntry('正在开始 GEDCOM 导入……');
 
 				if (!this.formData.fileContent) {
 					throw new Error('No file content available');
@@ -1175,8 +1175,8 @@ export class ImportWizardModal extends Modal {
 				// to the first created file. The bidirectional linker would then add children
 				// to the wrong parent before Phase 2 corrects the wikilinks.
 				if (this.formData.largeImportMode) {
-					addLogEntry('Large import mode enabled - suspending relationship sync');
-					new Notice('Large import mode: relationship sync suspended');
+					addLogEntry('已启用大型导入模式 - 暂停关系同步');
+					new Notice('大型导入模式：关系同步已暂停');
 				}
 				this.plugin.disableBidirectionalSync();
 				this.plugin.bidirectionalLinker?.suspend();
@@ -1231,19 +1231,19 @@ export class ImportWizardModal extends Modal {
 
 					if (result.success) {
 						progressFill.setCssProps({ width: '100%' });
-						addLogEntry(`Import complete! ${result.individualsImported} people imported.`, 'success');
+						addLogEntry(`导入完成！已导入 ${result.individualsImported} 位人物。`, 'success');
 
 						if (result.eventsCreated > 0) {
-							addLogEntry(`Created ${result.eventsCreated} event notes.`, 'success');
+							addLogEntry(`已创建 ${result.eventsCreated} 个事件笔记。`, 'success');
 						}
 						if (result.sourcesCreated > 0) {
-							addLogEntry(`Created ${result.sourcesCreated} source notes.`, 'success');
+							addLogEntry(`已创建 ${result.sourcesCreated} 个来源笔记。`, 'success');
 						}
 						if (result.placesCreated > 0) {
-							addLogEntry(`Created ${result.placesCreated} place notes.`, 'success');
+							addLogEntry(`已创建 ${result.placesCreated} 个地点笔记。`, 'success');
 						}
 						if (result.separateNoteFilesCreated && result.separateNoteFilesCreated > 0) {
-							addLogEntry(`Created ${result.separateNoteFilesCreated} separate note files.`, 'success');
+							addLogEntry(`已创建 ${result.separateNoteFilesCreated} 个单独的笔记文件。`, 'success');
 						}
 
 						// Show any warnings (cap the log, but never hide the count -
@@ -1255,7 +1255,7 @@ export class ImportWizardModal extends Modal {
 						}
 						if (result.warnings.length > WARNING_LOG_CAP) {
 							addLogEntry(
-								`…and ${result.warnings.length - WARNING_LOG_CAP} more warnings (${result.warnings.length} total).`,
+								`……以及另外 ${result.warnings.length - WARNING_LOG_CAP} 个警告（共 ${result.warnings.length} 个）。`,
 								'warning'
 							);
 						}
@@ -1267,7 +1267,7 @@ export class ImportWizardModal extends Modal {
 							this.renderCurrentStep();
 						}, 1500);
 					} else {
-						addLogEntry('Import failed!', 'error');
+						addLogEntry('导入失败！', 'error');
 						for (const error of result.errors) {
 							addLogEntry(error, 'error');
 						}
@@ -1283,12 +1283,12 @@ export class ImportWizardModal extends Modal {
 					this.plugin.enableBidirectionalSync();
 					this.plugin.bidirectionalLinker?.resume();
 					if (this.formData.largeImportMode) {
-						addLogEntry('Large import mode complete - relationship sync restored');
-						new Notice('Import complete: relationship sync restored');
+						addLogEntry('大型导入模式已完成 - 关系同步已恢复');
+						new Notice('导入完成：关系同步已恢复');
 					}
 				}
 			} else if (this.formData.format === 'gramps') {
-				addLogEntry('Starting Gramps import...');
+				addLogEntry('正在开始 Gramps 导入……');
 
 				if (!this.formData.fileContent) {
 					throw new Error('No file content available');
@@ -1298,8 +1298,8 @@ export class ImportWizardModal extends Modal {
 				// The file watcher would otherwise trigger syncRelationships before Phase 2 replaces Gramps handles with cr_ids.
 				// Show notice if user explicitly enabled Large Import Mode.
 				if (this.formData.largeImportMode) {
-					addLogEntry('Large import mode enabled - suspending relationship sync');
-					new Notice('Large import mode: relationship sync suspended');
+					addLogEntry('已启用大型导入模式 - 暂停关系同步');
+					new Notice('大型导入模式：关系同步已暂停');
 				}
 				this.plugin.disableBidirectionalSync();
 				this.plugin.bidirectionalLinker?.suspend();
@@ -1358,22 +1358,22 @@ export class ImportWizardModal extends Modal {
 
 					if (result.success) {
 						progressFill.setCssProps({ width: '100%' });
-						addLogEntry(`Import complete! ${result.individualsImported} people imported.`, 'success');
+						addLogEntry(`导入完成！已导入 ${result.individualsImported} 位人物。`, 'success');
 
 						if (result.mediaFilesExtracted && result.mediaFilesExtracted > 0) {
-							addLogEntry(`Extracted ${result.mediaFilesExtracted} media files.`, 'success');
+							addLogEntry(`已提取 ${result.mediaFilesExtracted} 个媒体文件。`, 'success');
 						}
 						if (result.placeNotesCreated && result.placeNotesCreated > 0) {
-							addLogEntry(`Created ${result.placeNotesCreated} place notes.`, 'success');
+							addLogEntry(`已创建 ${result.placeNotesCreated} 个地点笔记。`, 'success');
 						}
 						if (result.sourceNotesCreated && result.sourceNotesCreated > 0) {
-							addLogEntry(`Created ${result.sourceNotesCreated} source notes.`, 'success');
+							addLogEntry(`已创建 ${result.sourceNotesCreated} 个来源笔记。`, 'success');
 						}
 						if (result.eventNotesCreated && result.eventNotesCreated > 0) {
-							addLogEntry(`Created ${result.eventNotesCreated} event notes.`, 'success');
+							addLogEntry(`已创建 ${result.eventNotesCreated} 个事件笔记。`, 'success');
 						}
 						if (result.duplicateEventsSkipped && result.duplicateEventsSkipped > 0) {
-							addLogEntry(`Skipped ${result.duplicateEventsSkipped} duplicate event(s) in source file.`, 'warning');
+							addLogEntry(`跳过了源文件中 ${result.duplicateEventsSkipped} 个重复事件。`, 'warning');
 						}
 
 						// Show any errors as warnings
@@ -1388,7 +1388,7 @@ export class ImportWizardModal extends Modal {
 							this.renderCurrentStep();
 						}, 1500);
 					} else {
-						addLogEntry('Import failed!', 'error');
+						addLogEntry('导入失败！', 'error');
 						for (const error of result.errors) {
 							addLogEntry(error, 'error');
 						}
@@ -1405,18 +1405,18 @@ export class ImportWizardModal extends Modal {
 					this.plugin.bidirectionalLinker?.resume();
 					// Show completion notice if Large Import Mode was enabled
 					if (this.formData.largeImportMode) {
-						addLogEntry('Large import mode complete - relationship sync restored');
-						new Notice('Import complete: relationship sync restored');
+						addLogEntry('大型导入模式已完成 - 关系同步已恢复');
+						new Notice('导入完成：关系同步已恢复');
 					}
 				}
 			} else {
 				// Other formats not yet implemented
-				addLogEntry(`Import format '${this.formData.format}' is not yet supported.`, 'warning');
+				addLogEntry(`导入格式「${this.formData.format}」尚不支持。`, 'warning');
 				this.isImporting = false;
 			}
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Unknown error';
-			addLogEntry(`Import failed: ${message}`, 'error');
+			const message = error instanceof Error ? error.message : '未知错误';
+			addLogEntry(`导入失败：${message}`, 'error');
 			this.isImporting = false;
 		}
 	}
@@ -1431,24 +1431,24 @@ export class ImportWizardModal extends Modal {
 		const successEl = section.createDiv({ cls: 'crc-import-success' });
 		const successIcon = successEl.createDiv({ cls: 'crc-import-success-icon' });
 		setIcon(successIcon, 'check-circle');
-		successEl.createDiv({ cls: 'crc-import-success-text', text: 'Import successful!' });
-		successEl.createDiv({ cls: 'crc-import-success-count', text: `${this.formData.importedCount} people imported` });
+		successEl.createDiv({ cls: 'crc-import-success-text', text: '导入成功！' });
+		successEl.createDiv({ cls: 'crc-import-success-count', text: `已导入 ${this.formData.importedCount} 位人物` });
 
-		section.createEl('h3', { text: 'Assign reference numbers?', cls: 'crc-import-section-title crc-mt-3' });
+		section.createEl('h3', { text: '是否分配参考编号？', cls: 'crc-import-section-title crc-mt-3' });
 
 		const helpText = section.createDiv({ cls: 'crc-import-help-text' });
-		helpText.textContent = 'Reference numbers help organize and cite individuals in your tree. You can also do this later from the context menu.';
+		helpText.textContent = '参考编号有助于在树中组织和引用个人。你也可以稍后从上下文菜单执行此操作。';
 
 		// Numbering system options
-		section.createEl('h4', { text: 'Numbering system', cls: 'crc-import-options-title crc-mt-3' });
+		section.createEl('h4', { text: '编号系统', cls: 'crc-import-options-title crc-mt-3' });
 
 		const numberingOptions = section.createDiv({ cls: 'crc-import-numbering-options' });
 
 		const systems: Array<{ id: NumberingSystem; label: string; description: string }> = [
-			{ id: 'ahnentafel', label: 'Ahnentafel', description: 'Ancestor numbering: self=1, father=2, mother=3, paternal grandfather=4, etc.' },
-			{ id: 'daboville', label: "d'Aboville", description: 'Descendant numbering with dots: 1, 1.1, 1.2, 1.1.1, etc.' },
-			{ id: 'henry', label: 'Henry', description: 'Compact descendant numbering: 1, 11, 12, 111, etc.' },
-			{ id: 'generation', label: 'Generation', description: 'Relative generation depth: 0=self, -1=parents, +1=children' }
+			{ id: 'ahnentafel', label: 'Ahnentafel', description: '祖先编号：自己=1，父亲=2，母亲=3，祖父=4，等等。' },
+			{ id: 'daboville', label: "d'Aboville", description: '带点号的后代编号：1、1.1、1.2、1.1.1，等等。' },
+			{ id: 'henry', label: 'Henry', description: '紧凑的后代编号：1、11、12、111，等等。' },
+			{ id: 'generation', label: '世代', description: '相对世代深度：0=自己，-1=父母，+1=子女' }
 		];
 
 		for (const system of systems) {
@@ -1470,10 +1470,10 @@ export class ImportWizardModal extends Modal {
 
 		// Root person picker (if a numbering system is selected)
 		if (this.formData.numberingSystem !== 'none') {
-			section.createEl('h4', { text: 'Root person', cls: 'crc-import-options-title crc-mt-3' });
+			section.createEl('h4', { text: '根人物', cls: 'crc-import-options-title crc-mt-3' });
 
 			const rootPersonNote = section.createDiv({ cls: 'crc-import-help-text' });
-			rootPersonNote.textContent = 'Numbers are assigned relative to this person.';
+			rootPersonNote.textContent = '编号将相对于此人物进行分配。';
 
 			// Person picker button
 			const pickerContainer = section.createDiv({ cls: 'crc-import-person-picker' });
@@ -1487,7 +1487,7 @@ export class ImportWizardModal extends Modal {
 
 				const changeBtn = selectedPerson.createEl('button', {
 					cls: 'crc-btn crc-btn--small crc-btn--secondary',
-					text: 'Change'
+					text: '更改'
 				});
 				changeBtn.addEventListener('click', () => this.openPersonPicker());
 			} else {
@@ -1497,7 +1497,7 @@ export class ImportWizardModal extends Modal {
 				});
 				const btnIcon = pickerBtn.createSpan({ cls: 'crc-btn-icon' });
 				setIcon(btnIcon, 'user-plus');
-				pickerBtn.createSpan({ text: 'Select root person' });
+				pickerBtn.createSpan({ text: '选择根人物' });
 
 				pickerBtn.addEventListener('click', () => this.openPersonPicker());
 			}
@@ -1516,8 +1516,8 @@ export class ImportWizardModal extends Modal {
 				this.renderCurrentStep();
 			},
 			{
-				title: 'Select root person',
-				subtitle: 'Choose the person to use as the root for numbering'
+				title: '选择根人物',
+				subtitle: '选择用作编号起点的人物'
 			}
 		);
 		picker.open();
@@ -1559,15 +1559,15 @@ export class ImportWizardModal extends Modal {
 			}
 
 			this.formData.numberingStats = stats;
-			new Notice(`Assigned ${stats.totalAssigned} ${this.getNumberingSystemName()} numbers`);
+			new Notice(`已分配 ${stats.totalAssigned} 个${this.getNumberingSystemName()}编号`);
 
 			// Advance to complete step
 			this.formData.isAssigningNumbers = false;
 			this.currentStep = 6;
 			this.renderCurrentStep();
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Unknown error';
-			new Notice(`Failed to assign numbers: ${message}`);
+			const message = error instanceof Error ? error.message : '未知错误';
+			new Notice(`分配编号失败：${message}`);
 			this.formData.isAssigningNumbers = false;
 			this.renderCurrentStep();
 		}
@@ -1583,8 +1583,8 @@ export class ImportWizardModal extends Modal {
 		const completeEl = section.createDiv({ cls: 'crc-import-complete' });
 		const completeIcon = completeEl.createDiv({ cls: 'crc-import-complete-icon' });
 		setIcon(completeIcon, 'check-circle');
-		completeEl.createDiv({ cls: 'crc-import-complete-title', text: 'Import Complete!' });
-		completeEl.createDiv({ cls: 'crc-import-complete-message', text: 'Your data has been successfully imported.' });
+		completeEl.createDiv({ cls: 'crc-import-complete-title', text: '导入完成！' });
+		completeEl.createDiv({ cls: 'crc-import-complete-message', text: '你的数据已成功导入。' });
 
 		// Summary stats - use actual imported counts from result, not file preview counts
 		const stats = section.createDiv({ cls: 'crc-import-complete-stats' });
@@ -1597,10 +1597,10 @@ export class ImportWizardModal extends Modal {
 		const actualEvents = this.formData.importEvents ? (this.getImportedEventCount() ?? 0) : 0;
 
 		const statItems = [
-			{ label: 'People', value: actualPeople, color: 'blue', enabled: this.formData.importPeople },
-			{ label: 'Places', value: actualPlaces, color: 'green', enabled: this.formData.importPlaces },
-			{ label: 'Sources', value: actualSources, color: 'purple', enabled: this.formData.importSources },
-			{ label: 'Events', value: actualEvents, color: 'orange', enabled: this.formData.importEvents }
+			{ label: '人物', value: actualPeople, color: 'blue', enabled: this.formData.importPeople },
+			{ label: '地点', value: actualPlaces, color: 'green', enabled: this.formData.importPlaces },
+			{ label: '来源', value: actualSources, color: 'purple', enabled: this.formData.importSources },
+			{ label: '事件', value: actualEvents, color: 'orange', enabled: this.formData.importEvents }
 		];
 
 		for (const stat of statItems) {
@@ -1619,28 +1619,28 @@ export class ImportWizardModal extends Modal {
 			const preprocessingTitle = preprocessingEl.createDiv({ cls: 'crc-import-preprocessing-title' });
 			const preprocessingIcon = preprocessingTitle.createSpan({ cls: 'crc-import-preprocessing-icon' });
 			setIcon(preprocessingIcon, 'wrench');
-			preprocessingTitle.createSpan({ text: 'Compatibility Fixes Applied' });
+			preprocessingTitle.createSpan({ text: '已应用兼容性修复' });
 
 			const fixesList = preprocessingEl.createEl('ul', { cls: 'crc-import-preprocessing-fixes' });
 
 			if (gedcomResult.preprocessingFixes.bomRemoved) {
-				fixesList.createEl('li', { text: 'Removed UTF-8 byte order mark (BOM)' });
+				fixesList.createEl('li', { text: '已移除 UTF-8 字节顺序标记（BOM）' });
 			}
 
 			if (gedcomResult.preprocessingFixes.concFieldsNormalized > 0) {
 				fixesList.createEl('li', {
-					text: `Fixed ${gedcomResult.preprocessingFixes.concFieldsNormalized} fields with HTML encoding issues`
+					text: `修复了 ${gedcomResult.preprocessingFixes.concFieldsNormalized} 个存在 HTML 编码问题的字段`
 				});
 			}
 
 			const preprocessingNote = preprocessingEl.createDiv({ cls: 'crc-import-preprocessing-note' });
-			preprocessingNote.createSpan({ text: 'MyHeritage GEDCOM issues were automatically corrected. Your original file was not modified.' });
+			preprocessingNote.createSpan({ text: 'MyHeritage GEDCOM 问题已自动修正。你的原始文件未被修改。' });
 		}
 
 		// Skipped/duplicates info
 		if (this.formData.skippedCount > 0) {
 			const skippedEl = section.createDiv({ cls: 'crc-import-complete-skipped' });
-			skippedEl.textContent = `${this.formData.skippedCount} duplicates were skipped.`;
+			skippedEl.textContent = `已跳过 ${this.formData.skippedCount} 个重复项。`;
 		}
 
 		// Numbering result
@@ -1649,7 +1649,7 @@ export class ImportWizardModal extends Modal {
 			const checkIcon = numberingEl.createSpan({ cls: 'crc-import-complete-numbering-icon' });
 			setIcon(checkIcon, 'check');
 			numberingEl.createSpan({
-				text: `${this.getNumberingSystemName()} numbers assigned to ${this.formData.numberingStats.totalAssigned} people from ${this.formData.rootPersonName}`
+				text: `已为来自 ${this.formData.rootPersonName} 的 ${this.formData.numberingStats.totalAssigned} 位人物分配${this.getNumberingSystemName()}编号`
 			});
 		}
 
@@ -1659,7 +1659,7 @@ export class ImportWizardModal extends Modal {
 		const infoIcon = cleanupNote.createSpan({ cls: 'crc-import-cleanup-note-icon' });
 		setIcon(infoIcon, 'info');
 		cleanupNote.createSpan({
-			text: 'Run the Cleanup Wizard to fix data quality issues like date formats, missing relationships, and place standardization.'
+			text: '运行清理向导以修复数据质量问题，例如日期格式、缺失关系和地点标准化。'
 		});
 
 		const cleanupBtn = cleanupSection.createEl('button', {
@@ -1667,7 +1667,7 @@ export class ImportWizardModal extends Modal {
 		});
 		const cleanupBtnIcon = cleanupBtn.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(cleanupBtnIcon, 'sparkles');
-		cleanupBtn.createSpan({ text: 'Run Cleanup Wizard' });
+		cleanupBtn.createSpan({ text: '运行清理向导' });
 		cleanupBtn.addEventListener('click', () => {
 			this.close();
 			void import('./cleanup-wizard-modal').then(({ CleanupWizardModal }) => {
@@ -1682,7 +1682,7 @@ export class ImportWizardModal extends Modal {
 			const stagingInfoIcon = stagingNote.createSpan({ cls: 'crc-import-staging-note-icon' });
 			setIcon(stagingInfoIcon, 'archive');
 			stagingNote.createSpan({
-				text: 'Data imported to staging. Review and promote to your main tree when ready.'
+				text: '数据已导入到暂存区。准备就绪后请审核并提升到主树。'
 			});
 
 			const stagingBtn = stagingSection.createEl('button', {
@@ -1690,7 +1690,7 @@ export class ImportWizardModal extends Modal {
 			});
 			const stagingBtnIcon = stagingBtn.createSpan({ cls: 'crc-btn-icon' });
 			setIcon(stagingBtnIcon, 'archive');
-			stagingBtn.createSpan({ text: 'Manage Staging' });
+			stagingBtn.createSpan({ text: '管理暂存区' });
 			stagingBtn.addEventListener('click', () => {
 				this.close();
 				void import('./staging-management-modal').then(({ StagingManagementModal }) => {
@@ -1821,12 +1821,12 @@ export class ImportWizardModal extends Modal {
 		if (this.currentStep === 0) {
 			// Step 0: Show Cancel button
 			new ButtonComponent(leftBtns)
-				.setButtonText('Cancel')
+				.setButtonText('取消')
 				.onClick(() => this.close());
 		} else if (this.currentStep < 4) {
 			// Steps 1-3: Show Back button
 			new ButtonComponent(leftBtns)
-				.setButtonText('Back')
+				.setButtonText('上一步')
 				.onClick(() => {
 					this.currentStep--;
 					this.renderCurrentStep();
@@ -1834,7 +1834,7 @@ export class ImportWizardModal extends Modal {
 		} else if (this.currentStep === 5) {
 			// Step 5 (Numbering): Show Skip button
 			new ButtonComponent(leftBtns)
-				.setButtonText('Skip')
+				.setButtonText('跳过')
 				.onClick(() => {
 					this.formData.numberingSystem = 'none';
 					this.currentStep = 6;
@@ -1848,7 +1848,7 @@ export class ImportWizardModal extends Modal {
 		if (this.currentStep < 3) {
 			// Steps 0-2: Show Next button
 			const nextBtn = new ButtonComponent(rightBtns)
-				.setButtonText('Next')
+				.setButtonText('下一步')
 				.setCta()
 				.onClick(() => {
 					if (this.canProceedToNextStep()) {
@@ -1865,7 +1865,7 @@ export class ImportWizardModal extends Modal {
 		} else if (this.currentStep === 3) {
 			// Step 3: Show Import button
 			new ButtonComponent(rightBtns)
-				.setButtonText('Import')
+				.setButtonText('导入')
 				.setCta()
 				.onClick(() => {
 					this.currentStep = 4;
@@ -1875,7 +1875,7 @@ export class ImportWizardModal extends Modal {
 		} else if (this.currentStep === 5) {
 			// Step 5 (Numbering): Show Assign Numbers button
 			const assignBtn = new ButtonComponent(rightBtns)
-				.setButtonText(this.formData.isAssigningNumbers ? 'Assigning...' : 'Assign Numbers')
+				.setButtonText(this.formData.isAssigningNumbers ? '正在分配……' : '分配编号')
 				.setCta()
 				.onClick(() => {
 					void this.assignReferenceNumbers();
@@ -1888,7 +1888,7 @@ export class ImportWizardModal extends Modal {
 		} else if (this.currentStep === 6) {
 			// Step 6 (Complete): Show Done and Import Another buttons
 			new ButtonComponent(rightBtns)
-				.setButtonText('Import Another')
+				.setButtonText('再导入一个')
 				.onClick(() => {
 					this.formData = this.getDefaultFormData();
 					this.currentStep = 0;
@@ -1896,7 +1896,7 @@ export class ImportWizardModal extends Modal {
 				});
 
 			new ButtonComponent(rightBtns)
-				.setButtonText('Done')
+				.setButtonText('完成')
 				.setCta()
 				.onClick(() => this.close());
 		}
@@ -1972,10 +1972,10 @@ export class ImportWizardModal extends Modal {
 		}
 
 		const box = section.createDiv({ cls: 'crc-import-date-interpretation' });
-		box.createEl('div', { cls: 'crc-import-options-title crc-mt-3', text: 'Date interpretation' });
+		box.createEl('div', { cls: 'crc-import-options-title crc-mt-3', text: '日期解读' });
 		box.createEl('small', {
 			cls: 'crc-text-muted',
-			text: 'Some dates can be read more than one way. Choose how to handle them; the defaults match a non-US file.'
+			text: '有些日期可以有多种解读方式。请选择如何处理；默认值符合非美国文件。'
 		});
 
 		// Ambiguous slash dates: read as day/month (default) or month/day.
@@ -1983,12 +1983,12 @@ export class ImportWizardModal extends Modal {
 			const row = box.createDiv({ cls: 'crc-import-toggle-row' });
 			const labelEl = row.createDiv({ cls: 'crc-import-toggle-label' });
 			labelEl.createSpan({
-				text: `${summary.ambiguousSlashCount} ambiguous slash date${summary.ambiguousSlashCount === 1 ? '' : 's'}`
+				text: `${summary.ambiguousSlashCount} 个有歧义的斜杠日期`
 			});
-			labelEl.createEl('small', { text: 'e.g. 05/06/1990 — which part is the day?' });
+			labelEl.createEl('small', { text: '例如 05/06/1990 — 哪部分是日？' });
 			const select = row.createEl('select', { cls: 'dropdown' });
-			select.createEl('option', { value: 'day-month', text: 'Day/month (DD/MM)' });
-			select.createEl('option', { value: 'month-day', text: 'Month/day (MM/DD)' });
+			select.createEl('option', { value: 'day-month', text: '日/月（DD/MM）' });
+			select.createEl('option', { value: 'month-day', text: '月/日（MM/DD）' });
 			select.value = this.formData.dateSlashOrder;
 			select.addEventListener('change', () => {
 				this.formData.dateSlashOrder = select.value === 'month-day' ? 'month-day' : 'day-month';
@@ -2004,16 +2004,16 @@ export class ImportWizardModal extends Modal {
 			const row = box.createDiv({ cls: 'crc-import-toggle-row' });
 			const labelEl = row.createDiv({ cls: 'crc-import-toggle-label' });
 			labelEl.createSpan({
-				text: `${summary.eventLabelCount} event-label date${summary.eventLabelCount === 1 ? '' : 's'}`
+				text: `${summary.eventLabelCount} 个事件标签日期`
 			});
 			labelEl.createEl('small', {
 				text: breakdown
-					? `${breakdown} — dates carrying a label like "Bapt" or "Buried"`
-					: 'dates carrying a label like "Bapt" or "Buried"'
+					? `${breakdown} — 带有「Bapt」或「Buried」等标签的日期`
+					: '带有「Bapt」或「Buried」等标签的日期'
 			});
 			const select = row.createEl('select', { cls: 'dropdown' });
-			select.createEl('option', { value: 'import', text: 'Import the date' });
-			select.createEl('option', { value: 'skip', text: 'Skip it (leave blank)' });
+			select.createEl('option', { value: 'import', text: '导入该日期' });
+			select.createEl('option', { value: 'skip', text: '跳过（留空）' });
 			select.value = this.formData.dateEventLabel;
 			select.addEventListener('change', () => {
 				this.formData.dateEventLabel = select.value === 'skip' ? 'skip' : 'import';
@@ -2025,7 +2025,7 @@ export class ImportWizardModal extends Modal {
 		if (summary.unparsedCount > 0) {
 			box.createEl('small', {
 				cls: 'crc-text-muted',
-				text: `${summary.unparsedCount} date${summary.unparsedCount === 1 ? '' : 's'} couldn't be parsed and will be left blank.`
+				text: `${summary.unparsedCount} 个日期无法解析，将留空。`
 			});
 		}
 	}
@@ -2034,7 +2034,7 @@ export class ImportWizardModal extends Modal {
 	 * Format file size for display
 	 */
 	private formatFileSize(bytes: number): string {
-		if (bytes < 1024) return `${bytes} bytes`;
+		if (bytes < 1024) return `${bytes} 字节`;
 		if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
 		return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 	}
@@ -2047,7 +2047,7 @@ export class ImportWizardModal extends Modal {
 			case 'ahnentafel': return 'Ahnentafel';
 			case 'daboville': return "d'Aboville";
 			case 'henry': return 'Henry';
-			case 'generation': return 'Generation';
+			case 'generation': return '世代';
 			default: return '';
 		}
 	}

@@ -113,7 +113,7 @@ export class ExtractEventsModal extends Modal {
 				id: `event-${index}`,
 				selected: index === 0, // Select first by default
 				eventType,
-				title: eventTypeDef ? `${eventTypeDef.name} from ${this.source.title}` : this.source.title,
+				title: eventTypeDef ? `${eventTypeDef.name}（来自 ${this.source.title}）` : this.source.title,
 				date: this.defaultDate,
 				datePrecision: this.defaultDate ? 'exact' : 'unknown',
 				person: '',
@@ -144,7 +144,7 @@ export class ExtractEventsModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('calendar-plus', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Extract events from source');
+		titleContainer.appendText('从来源提取事件');
 
 		// Source info
 		const sourceInfo = contentEl.createDiv({ cls: 'crc-extract-source-info' });
@@ -155,7 +155,7 @@ export class ExtractEventsModal extends Modal {
 
 		// Instructions
 		contentEl.createEl('p', {
-			text: 'Select events to create from this source. Each event will be linked to this source automatically.',
+			text: '选择要从此来源创建的事件。每个事件都会自动关联到此来源。',
 			cls: 'crc-text--muted crc-mb-3'
 		});
 
@@ -174,7 +174,7 @@ export class ExtractEventsModal extends Modal {
 		});
 		const plusIcon = createLucideIcon('plus', 16);
 		addBtn.appendChild(plusIcon);
-		addBtn.appendText(' Add another event');
+		addBtn.appendText(' 添加另一个事件');
 		addBtn.addEventListener('click', () => {
 			const newEvent: SuggestedEvent = {
 				id: `event-${Date.now()}`,
@@ -196,7 +196,7 @@ export class ExtractEventsModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				this.close();
 			});
@@ -208,7 +208,7 @@ export class ExtractEventsModal extends Modal {
 			});
 		const calIcon = createLucideIcon('calendar-check', 16);
 		extractBtn.buttonEl.appendChild(calIcon);
-		extractBtn.buttonEl.appendText(' Create selected events');
+		extractBtn.buttonEl.appendText(' 创建所选事件');
 	}
 
 	/**
@@ -224,7 +224,7 @@ export class ExtractEventsModal extends Modal {
 		const headerRow = eventCard.createDiv({ cls: 'crc-extract-event-header' });
 
 		new Setting(headerRow)
-			.setName('Include this event')
+			.setName('包含此事件')
 			.addToggle(toggle => toggle
 				.setValue(event.selected)
 				.onChange(value => {
@@ -239,7 +239,7 @@ export class ExtractEventsModal extends Modal {
 		);
 
 		new Setting(eventCard)
-			.setName('Event type')
+			.setName('事件类型')
 			.addDropdown(dropdown => {
 				for (const [category, types] of Object.entries(eventTypes)) {
 					if (types.length === 0) continue;
@@ -272,8 +272,8 @@ export class ExtractEventsModal extends Modal {
 						event.eventType = value;
 						// Update title if it's the default pattern
 						const typeDef = this.getEventTypeDef(value);
-						if (typeDef && (!event.title || event.title.includes(' from '))) {
-							event.title = `${typeDef.name} from ${this.source.title}`;
+						if (typeDef && (!event.title || event.title.includes('（来自 '))) {
+							event.title = `${typeDef.name}（来自 ${this.source.title}）`;
 							// Re-render to update title field
 							const titleInput = eventCard.querySelector('.crc-extract-event-title input') as HTMLInputElement;
 							if (titleInput) titleInput.value = event.title;
@@ -285,9 +285,9 @@ export class ExtractEventsModal extends Modal {
 		// Title
 		new Setting(eventCard)
 			.setClass('crc-extract-event-title')
-			.setName('Title')
+			.setName('标题')
 			.addText(text => text
-				.setPlaceholder('Event title')
+				.setPlaceholder('事件标题')
 				.setValue(event.title)
 				.onChange(value => {
 					event.title = value;
@@ -297,7 +297,7 @@ export class ExtractEventsModal extends Modal {
 		const dateRow = eventCard.createDiv({ cls: 'crc-extract-event-row' });
 
 		new Setting(dateRow)
-			.setName('Date')
+			.setName('日期')
 			.addText(text => text
 				.setPlaceholder('YYYY-MM-DD')
 				.setValue(event.date)
@@ -307,13 +307,13 @@ export class ExtractEventsModal extends Modal {
 
 		// Person picker
 		const personSetting = new Setting(eventCard)
-			.setName('Person')
-			.setDesc(event.person ? `Linked: ${event.person}` : 'Primary person for this event');
+			.setName('人物')
+			.setDesc(event.person ? `已关联：${event.person}` : '此事件的主要人物');
 
 		let personInput: HTMLInputElement;
 		personSetting.addText(text => {
 			personInput = text.inputEl;
-			text.setPlaceholder('Click Link to select')
+			text.setPlaceholder('点击"关联"以选择')
 				.setValue(event.person);
 			text.inputEl.readOnly = true;
 		});
@@ -324,11 +324,11 @@ export class ExtractEventsModal extends Modal {
 			if (event.person) {
 				const unlinkIcon = createLucideIcon('unlink', 16);
 				btn.buttonEl.appendChild(unlinkIcon);
-				btn.buttonEl.appendText(' Unlink');
+				btn.buttonEl.appendText(' 取消关联');
 			} else {
 				const linkIcon = createLucideIcon('link', 16);
 				btn.buttonEl.appendChild(linkIcon);
-				btn.buttonEl.appendText(' Link');
+				btn.buttonEl.appendText(' 关联');
 			}
 
 			btn.onClick(() => {
@@ -336,25 +336,25 @@ export class ExtractEventsModal extends Modal {
 					event.person = '';
 					event.personCrId = '';
 					personInput.value = '';
-					personSetting.setDesc('Primary person for this event');
+					personSetting.setDesc('此事件的主要人物');
 					// Re-render button
 					btn.buttonEl.empty();
 					btn.buttonEl.addClass('crc-btn', 'crc-btn--secondary');
 					const linkIcon = createLucideIcon('link', 16);
 					btn.buttonEl.appendChild(linkIcon);
-					btn.buttonEl.appendText(' Link');
+					btn.buttonEl.appendText(' 关联');
 				} else {
 					const picker = new PersonPickerModal(this.app, (person: PersonInfo) => {
 						event.person = person.name;
 						event.personCrId = person.crId;
 						personInput.value = person.name;
-						personSetting.setDesc(`Linked: ${person.name}`);
+						personSetting.setDesc(`已关联：${person.name}`);
 						// Re-render button
 						btn.buttonEl.empty();
 						btn.buttonEl.addClass('crc-btn', 'crc-btn--secondary');
 						const unlinkIcon = createLucideIcon('unlink', 16);
 						btn.buttonEl.appendChild(unlinkIcon);
-						btn.buttonEl.appendText(' Unlink');
+						btn.buttonEl.appendText(' 取消关联');
 					});
 					picker.open();
 				}
@@ -363,9 +363,9 @@ export class ExtractEventsModal extends Modal {
 
 		// Place
 		new Setting(eventCard)
-			.setName('Place')
+			.setName('地点')
 			.addText(text => text
-				.setPlaceholder('[[Place Name]]')
+				.setPlaceholder('[[地点名称]]')
 				.setValue(event.place)
 				.onChange(value => {
 					event.place = value;
@@ -374,7 +374,7 @@ export class ExtractEventsModal extends Modal {
 		// Remove button
 		const removeBtn = eventCard.createEl('button', {
 			cls: 'crc-extract-event-remove',
-			attr: { title: 'Remove this event' }
+			attr: { title: '移除此事件' }
 		});
 		const removeIcon = createLucideIcon('x', 16);
 		removeBtn.appendChild(removeIcon);
@@ -394,14 +394,14 @@ export class ExtractEventsModal extends Modal {
 		const selectedEvents = this.suggestedEvents.filter(e => e.selected);
 
 		if (selectedEvents.length === 0) {
-			new Notice('No events selected. Please select at least one event to create.');
+			new Notice('未选择事件。请至少选择一个要创建的事件。');
 			return;
 		}
 
 		// Validate
 		for (const event of selectedEvents) {
 			if (!event.title.trim()) {
-				new Notice('Please enter a title for all selected events');
+				new Notice('请为所有所选事件输入标题');
 				return;
 			}
 		}
@@ -432,7 +432,7 @@ export class ExtractEventsModal extends Modal {
 				createdCount++;
 			}
 
-			new Notice(`Created ${createdCount} event${createdCount !== 1 ? 's' : ''} from source`);
+			new Notice(`已从来源创建 ${createdCount} 个事件`);
 
 			if (this.onComplete) {
 				this.onComplete();
@@ -441,7 +441,7 @@ export class ExtractEventsModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to create events:', error);
-			new Notice(`Failed to create events: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建事件失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 

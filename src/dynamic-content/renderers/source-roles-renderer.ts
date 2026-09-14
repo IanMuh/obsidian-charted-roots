@@ -79,7 +79,7 @@ export class SourceRolesRenderer {
 		if (rows.length === 0) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No person roles found in this source.'
+				text: '此来源中未找到人物角色。'
 			});
 			return;
 		}
@@ -94,7 +94,7 @@ export class SourceRolesRenderer {
 	private renderHeader(container: HTMLElement, config: DynamicBlockConfig): void {
 		const header = container.createDiv({ cls: 'cr-dynamic-block__header' });
 
-		const title = config.title as string || 'Person roles';
+		const title = config.title as string || '人物角色';
 		header.createSpan({ cls: 'cr-dynamic-block__title', text: title });
 
 		const toolbar = header.createDiv({ cls: 'cr-dynamic-block__toolbar' });
@@ -102,7 +102,7 @@ export class SourceRolesRenderer {
 		// Freeze button
 		const freezeBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Freeze to Markdown' }
+			attr: { 'aria-label': '冻结为 Markdown' }
 		});
 		freezeBtn.textContent = '❄️';
 		freezeBtn.addEventListener('click', () => {
@@ -163,9 +163,9 @@ export class SourceRolesRenderer {
 		// Header row
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Role' });
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Details' });
+		headerRow.createEl('th', { text: '角色' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '详情' });
 
 		// Body rows
 		const tbody = table.createEl('tbody');
@@ -224,16 +224,16 @@ export class SourceRolesRenderer {
 			return '';
 		}
 
-		const title = this.currentConfig.title as string || 'Person roles';
+		const title = this.currentConfig.title as string || '人物角色';
 		const lines: string[] = [`## ${title}`, ''];
 
 		if (this.currentRows.length === 0) {
-			lines.push('*No person roles found.*');
+			lines.push('*未找到人物角色。*');
 			return lines.join('\n');
 		}
 
 		// Generate markdown table
-		lines.push('| Role | Person | Details |');
+		lines.push('| 角色 | 人物 | 详情 |');
 		lines.push('|------|--------|---------|');
 
 		for (const row of this.currentRows) {

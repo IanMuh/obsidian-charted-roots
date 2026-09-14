@@ -55,12 +55,12 @@ export function renderResearchSection(
 	const projectCount = groups.length;
 
 	const summary = totalEntries === 0
-		? 'No research'
-		: `${totalEntries} item${totalEntries !== 1 ? 's' : ''} across ${projectCount} project${projectCount !== 1 ? 's' : ''}`;
+		? '无研究'
+		: `共 ${totalEntries} 项，涉及 ${projectCount} 个项目`;
 
 	const content = renderProfileSection(parent, {
 		sectionId,
-		title: 'Research activity',
+		title: '研究活动',
 		summary,
 		expanded: options.sectionStates[sectionId] ?? false,
 		onToggle: options.onToggle,
@@ -165,7 +165,7 @@ function groupByProject(entries: ResearchEntry[]): ProjectGroup[] {
 	const map = new Map<string, ResearchEntry[]>();
 
 	for (const entry of entries) {
-		const project = entry.project || 'Unassigned';
+		const project = entry.project || '未分配';
 		if (!map.has(project)) {
 			map.set(project, []);
 		}
@@ -215,7 +215,7 @@ function renderResearchContent(
 			cls: 'cr-profile__research-group-name'
 		});
 		header.createSpan({
-			text: `${group.entries.length} item${group.entries.length !== 1 ? 's' : ''}`,
+			text: `${group.entries.length} 项`,
 			cls: 'cr-profile__research-group-count'
 		});
 		if (group.dateRange) {
@@ -266,10 +266,10 @@ function renderResearchContent(
 function formatType(crType: string): string {
 	switch (crType) {
 		case 'individual_research_note': return 'IRN';
-		case 'research_log_entry': return 'Log';
-		case 'research_journal': return 'Journal';
-		case 'research_report': return 'Report';
-		case 'research_project': return 'Project';
+		case 'research_log_entry': return '日志';
+		case 'research_journal': return '日志';
+		case 'research_report': return '报告';
+		case 'research_project': return '项目';
 		default: return crType;
 	}
 }

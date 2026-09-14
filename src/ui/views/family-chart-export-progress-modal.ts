@@ -26,12 +26,12 @@ export interface FamilyChartExportProgress {
  * Phase display configuration
  */
 const PHASE_CONFIG: Record<FamilyChartExportPhase, { label: string; icon: LucideIconName }> = {
-	preparing: { label: 'Preparing chart', icon: 'git-branch' },
-	embedding: { label: 'Embedding avatars', icon: 'image' },
-	rendering: { label: 'Rendering image', icon: 'layout' },
-	encoding: { label: 'Encoding output', icon: 'file-code' },
-	saving: { label: 'Saving file', icon: 'download' },
-	complete: { label: 'Complete', icon: 'check' }
+	preparing: { label: '正在准备图表', icon: 'git-branch' },
+	embedding: { label: '正在嵌入头像', icon: 'image' },
+	rendering: { label: '正在渲染图像', icon: 'layout' },
+	encoding: { label: '正在编码输出', icon: 'file-code' },
+	saving: { label: '正在保存文件', icon: 'download' },
+	complete: { label: '完成', icon: 'check' }
 };
 
 /**
@@ -73,7 +73,7 @@ export class FamilyChartExportProgressModal extends Modal {
 
 		// Title
 		contentEl.createEl('h2', {
-			text: `Exporting ${this.formatName}`,
+			text: `正在导出 ${this.formatName}`,
 			cls: 'crc-modal-title'
 		});
 
@@ -82,7 +82,7 @@ export class FamilyChartExportProgressModal extends Modal {
 		this.phaseIcon = phaseContainer.createDiv({ cls: 'cr-fcv-export-phase__icon' });
 		this.phaseLabel = phaseContainer.createEl('span', {
 			cls: 'cr-fcv-export-phase__label',
-			text: 'Preparing chart…'
+			text: '正在准备图表…'
 		});
 
 		// Progress bar container
@@ -94,18 +94,18 @@ export class FamilyChartExportProgressModal extends Modal {
 		// Progress text
 		this.progressText = contentEl.createDiv({
 			cls: 'cr-fcv-export-progress__text',
-			text: 'Starting…'
+			text: '正在开始…'
 		});
 
 		// Cancel button container
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-fcv-export-buttons' });
 		this.cancelButton = buttonContainer.createEl('button', {
 			cls: 'cr-btn cr-btn--secondary',
-			text: 'Cancel'
+			text: '取消'
 		});
 		this.cancelButton.addEventListener('click', () => {
 			this._cancelled = true;
-			this.cancelButton?.setText('Cancelling…');
+			this.cancelButton?.setText('正在取消…');
 			this.cancelButton?.setAttribute('disabled', 'true');
 		});
 
@@ -142,9 +142,9 @@ export class FamilyChartExportProgressModal extends Modal {
 		if (progress.message) {
 			this.progressText.textContent = progress.message;
 		} else if (progress.total > 0) {
-			this.progressText.textContent = `${progress.current} of ${progress.total}`;
+			this.progressText.textContent = `第${progress.current}项，共${progress.total}项`;
 		} else {
-			this.progressText.textContent = 'Processing…';
+			this.progressText.textContent = '正在处理…';
 		}
 	}
 
@@ -155,10 +155,10 @@ export class FamilyChartExportProgressModal extends Modal {
 		if (!this.progressBar || !this.progressText || !this.phaseLabel) return;
 
 		this.currentPhase = 'complete';
-		this.phaseLabel.textContent = 'Export complete';
+		this.phaseLabel.textContent = '导出完成';
 		this.updatePhaseIcon('complete');
 		this.progressBar.setCssProps({ '--progress-width': '100%' });
-		this.progressText.textContent = 'Done!';
+		this.progressText.textContent = '完成！';
 
 		// Hide cancel button on completion
 		if (this.cancelButton) {
@@ -172,7 +172,7 @@ export class FamilyChartExportProgressModal extends Modal {
 	markCancelled(): void {
 		if (!this.progressText || !this.phaseLabel) return;
 
-		this.phaseLabel.textContent = 'Export cancelled';
+		this.phaseLabel.textContent = '导出已取消';
 		this.progressText.textContent = '';
 
 		if (this.cancelButton) {

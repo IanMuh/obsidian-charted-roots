@@ -45,18 +45,40 @@ export interface BookBuilderOptions {
 
 /** Chapter type display metadata */
 const CHAPTER_TYPE_META: Record<BookChapterType, { label: string; icon: string }> = {
-	'report': { label: 'Report', icon: 'file-text' },
-	'visual-tree': { label: 'Visual tree', icon: 'git-branch' },
-	'vault-note': { label: 'Vault note', icon: 'file' },
-	'section-divider': { label: 'Section divider', icon: 'minus' },
+	'report': { label: '报告', icon: 'file-text' },
+	'visual-tree': { label: '视觉树', icon: 'git-branch' },
+	'vault-note': { label: '库笔记', icon: 'file' },
+	'section-divider': { label: '分节符', icon: 'minus' },
+};
+
+/**
+ * Default chapter titles written to generated book output.
+ * Kept in English per translation boundary (book正文不译); used only when the
+ * user leaves the chapter title blank.
+ */
+const CHAPTER_TYPE_DEFAULT_TITLES: Record<BookChapterType, string> = {
+	'report': 'Report',
+	'visual-tree': 'Visual tree',
+	'vault-note': 'Vault note',
+	'section-divider': 'Section divider',
 };
 
 /** Visual tree chart type labels */
 const CHART_TYPE_LABELS: Record<VisualTreeChartType, string> = {
-	'pedigree': 'Pedigree chart',
-	'descendant': 'Descendant chart',
-	'hourglass': 'Hourglass chart',
-	'fan': 'Fan chart',
+	'pedigree': '谱系图',
+	'descendant': '后代图',
+	'hourglass': '沙漏图',
+	'fan': '扇形图',
+};
+
+/** Report category display labels for optgroups */
+const REPORT_CATEGORY_LABELS: Record<ReportCategory, string> = {
+	'genealogical': '谱系',
+	'research': '研究',
+	'timeline': '时间轴',
+	'geographic': '地理',
+	'summary': '摘要',
+	'visual-trees': '可视化树',
 };
 
 /**
@@ -90,10 +112,10 @@ export class BookBuilderModal extends Modal {
 
 	// Step definitions
 	private readonly steps = [
-		{ number: 1, title: 'Setup', description: 'Book metadata and template' },
-		{ number: 2, title: 'Chapters', description: 'Add and arrange chapters' },
-		{ number: 3, title: 'Output', description: 'Format and options' },
-		{ number: 4, title: 'Generate', description: 'Generate book' },
+		{ number: 1, title: '设置', description: '书籍元数据与模板' },
+		{ number: 2, title: '章节', description: '添加并排列章节' },
+		{ number: 3, title: '输出', description: '格式与选项' },
+		{ number: 4, title: '生成', description: '生成书籍' },
 	];
 
 	constructor(plugin: CanvasRootsPlugin, options?: BookBuilderOptions) {
@@ -139,7 +161,7 @@ export class BookBuilderModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'cr-book-builder-header' });
 		const titleRow = header.createDiv({ cls: 'cr-wizard-title' });
 		titleRow.appendChild(createLucideIcon('book-open', 24));
-		titleRow.createSpan({ text: 'Book builder' });
+		titleRow.createSpan({ text: '书籍构建器' });
 
 		// Step progress
 		this.renderStepProgress(contentEl);
@@ -198,7 +220,7 @@ export class BookBuilderModal extends Modal {
 		const currentStepData = this.steps[this.currentStep];
 		stepInfo.createDiv({
 			cls: 'cr-report-step-counter',
-			text: `Step ${this.currentStep + 1} of ${this.steps.length}`
+			text: `第${this.currentStep + 1}步，共${this.steps.length}步`
 		});
 		stepInfo.createDiv({
 			cls: 'cr-report-step-description',
@@ -233,35 +255,35 @@ export class BookBuilderModal extends Modal {
 
 	private renderStep1_Setup(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Book metadata', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '书籍元数据', cls: 'cr-report-section-title' });
 
 		// Title
-		this.renderTextInput(section, 'Title', this.metadata.title, (val) => {
+		this.renderTextInput(section, '标题', this.metadata.title, (val) => {
 			this.metadata.title = val;
-		}, 'e.g., Smith Family History');
+		}, '例如：史密斯家族史');
 
 		// Subtitle
-		this.renderTextInput(section, 'Subtitle', this.metadata.subtitle || '', (val) => {
+		this.renderTextInput(section, '副标题', this.metadata.subtitle || '', (val) => {
 			this.metadata.subtitle = val || undefined;
-		}, 'Optional subtitle');
+		}, '可选副标题');
 
 		// Author
-		this.renderTextInput(section, 'Author', this.metadata.author || '', (val) => {
+		this.renderTextInput(section, '作者', this.metadata.author || '', (val) => {
 			this.metadata.author = val || undefined;
-		}, 'e.g., John Smith');
+		}, '例如：约翰·史密斯');
 
 		// Date
-		this.renderTextInput(section, 'Date', this.metadata.date || '', (val) => {
+		this.renderTextInput(section, '日期', this.metadata.date || '', (val) => {
 			this.metadata.date = val || undefined;
-		}, 'e.g., 2026-03-14');
+		}, '例如：2026-03-14');
 
 		// Template section
 		container.createEl('hr', { cls: 'cr-report-separator' });
 		const templateSection = container.createDiv({ cls: 'cr-report-section' });
-		templateSection.createEl('h3', { text: 'Start from template', cls: 'cr-report-section-title' });
+		templateSection.createEl('h3', { text: '从模板开始', cls: 'cr-report-section-title' });
 		templateSection.createEl('p', {
 			cls: 'cr-text-muted',
-			text: 'Templates pre-populate the chapter list. You can customize chapters in the next step.'
+			text: '模板会预填章节列表。你可以在下一步自定义章节。'
 		});
 
 		this.renderTemplateCards(templateSection);
@@ -291,21 +313,21 @@ export class BookBuilderModal extends Modal {
 		const templates = [
 			{
 				id: 'family-history',
-				label: 'Family history book',
+				label: '家族史书籍',
 				icon: 'book-open',
-				description: 'Polished document for sharing with relatives. Includes pedigree chart, individual summaries, family group sheets, and descendant register.',
+				description: '用于与亲属分享的精致文档。包含谱系图、个人摘要、家族群组表和后代名录。',
 			},
 			{
 				id: 'research-compilation',
-				label: 'Research compilation',
+				label: '研究汇编',
 				icon: 'search',
-				description: 'Working document for researchers. Includes gaps report, source summaries, individual summaries, and ahnentafel.',
+				description: '供研究者使用的工作文档。包含缺口报告、来源摘要、个人摘要和 Ahnentafel。',
 			},
 			{
 				id: 'blank',
-				label: 'Blank book',
+				label: '空白书',
 				icon: 'file-plus',
-				description: 'Start with an empty chapter list and build from scratch.',
+				description: '从空章节列表开始，从头构建。',
 			},
 		];
 
@@ -600,11 +622,11 @@ export class BookBuilderModal extends Modal {
 
 		// Header with add button
 		const headerRow = section.createDiv({ cls: 'cr-book-chapters-header' });
-		headerRow.createEl('h3', { text: 'Chapters', cls: 'cr-report-section-title' });
+		headerRow.createEl('h3', { text: '章节', cls: 'cr-report-section-title' });
 
 		const addBtn = headerRow.createEl('button', { cls: 'cr-btn cr-btn--small' });
 		addBtn.appendChild(createLucideIcon('plus', 14));
-		addBtn.appendText('Add chapter');
+		addBtn.appendText('添加章节');
 		addBtn.addEventListener('click', () => this.showAddChapterMenu(addBtn));
 
 		// Chapter list
@@ -624,10 +646,10 @@ export class BookBuilderModal extends Modal {
 		const empty = this.chapterListContainer.createDiv({ cls: 'cr-book-empty-state' });
 		const iconEl = empty.createDiv();
 		iconEl.appendChild(createLucideIcon('book-open', 32));
-		empty.createEl('p', { text: 'No chapters yet' });
+		empty.createEl('p', { text: '还没有章节' });
 		empty.createEl('p', {
 			cls: 'cr-text-muted',
-			text: 'Click "Add chapter" to start building your book, or go back and select a template.'
+			text: '点击「添加章节」开始构建你的书，或返回并选择一个模板。'
 		});
 	}
 
@@ -663,7 +685,7 @@ export class BookBuilderModal extends Modal {
 
 		// Info
 		const info = row.createDiv({ cls: 'cr-book-chapter-row__info' });
-		info.createDiv({ cls: 'cr-book-chapter-row__title', text: chapter.title || '(untitled)' });
+		info.createDiv({ cls: 'cr-book-chapter-row__title', text: chapter.title || '(未命名)' });
 		const subtitle = this.getChapterSubtitle(chapter);
 		if (subtitle) {
 			info.createDiv({ cls: 'cr-book-chapter-row__subtitle', text: subtitle });
@@ -675,7 +697,7 @@ export class BookBuilderModal extends Modal {
 		// Edit button
 		const editBtn = actions.createDiv({ cls: 'cr-book-chapter-row__action' });
 		setIcon(editBtn, 'pencil');
-		editBtn.setAttribute('aria-label', 'Edit chapter');
+		editBtn.setAttribute('aria-label', '编辑章节');
 		editBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			this.editChapter(index);
@@ -684,7 +706,7 @@ export class BookBuilderModal extends Modal {
 		// Remove button
 		const removeBtn = actions.createDiv({ cls: 'cr-book-chapter-row__action' });
 		setIcon(removeBtn, 'x');
-		removeBtn.setAttribute('aria-label', 'Remove chapter');
+		removeBtn.setAttribute('aria-label', '移除章节');
 		removeBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			this.removeChapter(index);
@@ -739,10 +761,10 @@ export class BookBuilderModal extends Modal {
 		menu.style.right = `${modalRect.right - rect.right}px`;
 
 		const options: { type: BookChapterType; label: string; icon: string }[] = [
-			{ type: 'report', label: 'Add report', icon: 'file-text' },
-			{ type: 'visual-tree', label: 'Add visual tree', icon: 'git-branch' },
-			{ type: 'vault-note', label: 'Add vault note', icon: 'file' },
-			{ type: 'section-divider', label: 'Add section divider', icon: 'minus' },
+			{ type: 'report', label: '添加报告', icon: 'file-text' },
+			{ type: 'visual-tree', label: '添加视觉树', icon: 'git-branch' },
+			{ type: 'vault-note', label: '添加库笔记', icon: 'file' },
+			{ type: 'section-divider', label: '添加分节符', icon: 'minus' },
 		];
 
 		for (const opt of options) {
@@ -924,11 +946,11 @@ export class BookBuilderModal extends Modal {
 
 	private renderStep3_Output(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Output settings', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '输出设置', cls: 'cr-report-section-title' });
 
 		// Format
 		const formatRow = section.createDiv({ cls: 'cr-report-option-row' });
-		formatRow.createSpan({ text: 'Format:', cls: 'cr-report-option-label' });
+		formatRow.createSpan({ text: '格式：', cls: 'cr-report-option-label' });
 		const formatSelect = formatRow.createEl('select', { cls: 'cr-report-select' });
 		for (const fmt of [{ value: 'pdf', label: 'PDF' }, { value: 'odt', label: 'ODT' }]) {
 			const option = formatSelect.createEl('option', { value: fmt.value, text: fmt.label });
@@ -940,7 +962,7 @@ export class BookBuilderModal extends Modal {
 
 		// Page size
 		const sizeRow = section.createDiv({ cls: 'cr-report-option-row' });
-		sizeRow.createSpan({ text: 'Page size:', cls: 'cr-report-option-label' });
+		sizeRow.createSpan({ text: '页面尺寸：', cls: 'cr-report-option-label' });
 		const sizeSelect = sizeRow.createEl('select', { cls: 'cr-report-select' });
 		for (const size of [{ value: 'A4', label: 'A4' }, { value: 'LETTER', label: 'Letter' }]) {
 			const option = sizeSelect.createEl('option', { value: size.value, text: size.label });
@@ -952,9 +974,9 @@ export class BookBuilderModal extends Modal {
 
 		// Font style
 		const fontRow = section.createDiv({ cls: 'cr-report-option-row' });
-		fontRow.createSpan({ text: 'Font style:', cls: 'cr-report-option-label' });
+		fontRow.createSpan({ text: '字体样式：', cls: 'cr-report-option-label' });
 		const fontSelect = fontRow.createEl('select', { cls: 'cr-report-select' });
-		for (const font of [{ value: 'serif', label: 'Serif' }, { value: 'sans-serif', label: 'Sans-serif' }]) {
+		for (const font of [{ value: 'serif', label: '衬线' }, { value: 'sans-serif', label: '无衬线' }]) {
 			const option = fontSelect.createEl('option', { value: font.value, text: font.label });
 			if (font.value === this.outputOptions.fontStyle) option.selected = true;
 		}
@@ -964,12 +986,12 @@ export class BookBuilderModal extends Modal {
 
 		// Date format
 		const dateRow = section.createDiv({ cls: 'cr-report-option-row' });
-		dateRow.createSpan({ text: 'Date format:', cls: 'cr-report-option-label' });
+		dateRow.createSpan({ text: '日期格式：', cls: 'cr-report-option-label' });
 		const dateSelect = dateRow.createEl('select', { cls: 'cr-report-select' });
 		for (const df of [
-			{ value: 'mdy', label: 'Month Day, Year' },
-			{ value: 'dmy', label: 'Day Month Year' },
-			{ value: 'ymd', label: 'Year-Month-Day' }
+			{ value: 'mdy', label: '月 日, 年' },
+			{ value: 'dmy', label: '日 月 年' },
+			{ value: 'ymd', label: '年-月-日' }
 		]) {
 			const option = dateSelect.createEl('option', { value: df.value, text: df.label });
 			if (df.value === this.outputOptions.dateFormat) option.selected = true;
@@ -981,33 +1003,33 @@ export class BookBuilderModal extends Modal {
 		// Toggles
 		container.createEl('hr', { cls: 'cr-report-separator' });
 		const toggleSection = container.createDiv({ cls: 'cr-report-section' });
-		toggleSection.createEl('h3', { text: 'Include', cls: 'cr-report-section-title' });
+		toggleSection.createEl('h3', { text: '包含', cls: 'cr-report-section-title' });
 
-		this.renderToggle(toggleSection, 'Cover page', this.outputOptions.includeCoverPage, (val) => {
+		this.renderToggle(toggleSection, '封面', this.outputOptions.includeCoverPage, (val) => {
 			this.outputOptions.includeCoverPage = val;
 		});
-		this.renderToggle(toggleSection, 'Table of contents', this.outputOptions.includeTableOfContents, (val) => {
+		this.renderToggle(toggleSection, '目录', this.outputOptions.includeTableOfContents, (val) => {
 			this.outputOptions.includeTableOfContents = val;
 		});
-		this.renderToggle(toggleSection, 'Consolidated bibliography', this.outputOptions.includeBibliography, (val) => {
+		this.renderToggle(toggleSection, '合并参考文献', this.outputOptions.includeBibliography, (val) => {
 			this.outputOptions.includeBibliography = val;
 		});
-		this.renderToggle(toggleSection, 'Name index', this.outputOptions.includeNameIndex, (val) => {
+		this.renderToggle(toggleSection, '姓名索引', this.outputOptions.includeNameIndex, (val) => {
 			this.outputOptions.includeNameIndex = val;
 		});
 
 		// Chapter numbering
 		container.createEl('hr', { cls: 'cr-report-separator' });
 		const numberingSection = container.createDiv({ cls: 'cr-report-section' });
-		numberingSection.createEl('h3', { text: 'Chapter numbering', cls: 'cr-report-section-title' });
+		numberingSection.createEl('h3', { text: '章节编号', cls: 'cr-report-section-title' });
 
 		const numberingRow = numberingSection.createDiv({ cls: 'cr-report-option-row' });
-		numberingRow.createSpan({ text: 'Style:', cls: 'cr-report-option-label' });
+		numberingRow.createSpan({ text: '样式：', cls: 'cr-report-option-label' });
 		const numberingSelect = numberingRow.createEl('select', { cls: 'cr-report-select' });
 		for (const opt of [
-			{ value: 'none', label: 'None' },
-			{ value: 'numeric', label: 'Numeric (1, 2, 3...)' },
-			{ value: 'roman', label: 'Roman numerals (I, II, III...)' }
+			{ value: 'none', label: '无' },
+			{ value: 'numeric', label: '数字（1, 2, 3…）' },
+			{ value: 'roman', label: '罗马数字（I, II, III…）' }
 		]) {
 			const option = numberingSelect.createEl('option', { value: opt.value, text: opt.label });
 			if (opt.value === this.outputOptions.chapterNumbering) option.selected = true;
@@ -1034,14 +1056,14 @@ export class BookBuilderModal extends Modal {
 
 	private renderStep4_Generate(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'cr-report-section' });
-		section.createEl('h3', { text: 'Review', cls: 'cr-report-section-title' });
+		section.createEl('h3', { text: '检查', cls: 'cr-report-section-title' });
 
 		// Summary
 		const summary = section.createDiv({ cls: 'cr-book-generate-summary' });
-		summary.createDiv({ text: `Title: ${this.metadata.title || '(untitled)'}` });
-		summary.createDiv({ text: `Chapters: ${this.chapters.length}` });
-		summary.createDiv({ text: `Format: ${this.outputOptions.format.toUpperCase()}` });
-		summary.createDiv({ text: `Page size: ${this.outputOptions.pageSize}` });
+		summary.createDiv({ text: `标题：${this.metadata.title || '(未命名)'}` });
+		summary.createDiv({ text: `章节数：${this.chapters.length}` });
+		summary.createDiv({ text: `格式：${this.outputOptions.format.toUpperCase()}` });
+		summary.createDiv({ text: `页面尺寸：${this.outputOptions.pageSize}` });
 
 		// Chapter breakdown
 		const breakdown = section.createDiv({ cls: 'cr-book-chapter-breakdown' });
@@ -1053,7 +1075,7 @@ export class BookBuilderModal extends Modal {
 			const meta = CHAPTER_TYPE_META[type];
 			const item = breakdown.createDiv({ cls: 'cr-book-breakdown-item' });
 			item.appendChild(createLucideIcon(meta.icon as LucideIconName, 14));
-			item.createSpan({ text: `${count} ${meta.label.toLowerCase()}${count > 1 ? 's' : ''}` });
+			item.createSpan({ text: `${count} 个${meta.label}` });
 		}
 
 		// Progress area (hidden until generation starts)
@@ -1062,7 +1084,7 @@ export class BookBuilderModal extends Modal {
 		progressSection.id = 'book-progress-section';
 		progressSection.hide();
 
-		progressSection.createEl('h3', { text: 'Generating...', cls: 'cr-report-section-title' });
+		progressSection.createEl('h3', { text: '正在生成…', cls: 'cr-report-section-title' });
 
 		const progressBar = progressSection.createDiv({ cls: 'cr-book-progress-bar' });
 		const progressFill = progressBar.createDiv({ cls: 'cr-book-progress-fill' });
@@ -1074,16 +1096,16 @@ export class BookBuilderModal extends Modal {
 		// Save definition section
 		container.createEl('hr', { cls: 'cr-report-separator' });
 		const saveSection = container.createDiv({ cls: 'cr-report-section' });
-		saveSection.createEl('h3', { text: 'Save book definition', cls: 'cr-report-section-title' });
+		saveSection.createEl('h3', { text: '保存书籍定义', cls: 'cr-report-section-title' });
 		saveSection.createEl('p', {
 			cls: 'cr-text-muted',
-			text: 'Save as .book.json to re-generate later as your vault data changes.'
+			text: '保存为 .book.json，以便在库数据变化后重新生成。'
 		});
 
 		const saveRow = saveSection.createDiv({ cls: 'cr-book-save-row' });
 		const saveBtn = saveRow.createEl('button', { cls: 'cr-btn' });
 		saveBtn.appendChild(createLucideIcon('save', 16));
-		saveBtn.appendText('Save definition');
+		saveBtn.appendText('保存定义');
 		saveBtn.addEventListener('click', () => { void this.saveDefinition(); });
 	}
 
@@ -1094,12 +1116,12 @@ export class BookBuilderModal extends Modal {
 
 		// Left: Cancel or Back
 		if (this.currentStep === 0) {
-			const cancelBtn = footer.createEl('button', { cls: 'cr-btn', text: 'Cancel' });
+			const cancelBtn = footer.createEl('button', { cls: 'cr-btn', text: '取消' });
 			cancelBtn.addEventListener('click', () => this.close());
 		} else {
 			const backBtn = footer.createEl('button', { cls: 'cr-btn' });
 			backBtn.appendChild(createLucideIcon('chevron-left', 16));
-			backBtn.appendText('Back');
+			backBtn.appendText('上一步');
 			backBtn.addEventListener('click', () => {
 				this.currentStep--;
 				this.renderCurrentStep();
@@ -1111,7 +1133,7 @@ export class BookBuilderModal extends Modal {
 
 		if (this.currentStep < 3) {
 			const nextBtn = rightBtns.createEl('button', { cls: 'cr-btn cr-btn--primary' });
-			nextBtn.appendText('Next');
+			nextBtn.appendText('下一步');
 			nextBtn.appendChild(createLucideIcon('arrow-right', 16));
 
 			const canProceed = this.canProceedToNextStep();
@@ -1126,7 +1148,7 @@ export class BookBuilderModal extends Modal {
 		} else {
 			// Generate button
 			const generateBtn = rightBtns.createEl('button', { cls: 'cr-btn cr-btn--primary' });
-			generateBtn.appendText('Generate');
+			generateBtn.appendText('生成');
 			generateBtn.appendChild(createLucideIcon('book-open', 16));
 
 			if (this.chapters.length === 0 || this.isGenerating) {
@@ -1171,22 +1193,22 @@ export class BookBuilderModal extends Modal {
 
 			if (result.success && result.blob) {
 				BookGenerationService.downloadBook(result.blob, result.suggestedFilename);
-				new Notice(`Book generated: ${result.suggestedFilename}`);
+				new Notice(`书籍已生成：${result.suggestedFilename}`);
 
 				// Show warnings if any
 				if (result.warnings.length > 0) {
-					new Notice(`${result.warnings.length} warning(s) during generation`);
+					new Notice(`生成过程中有 ${result.warnings.length} 条警告`);
 				}
 
 				this.close();
 			} else {
 				const errorMsg = result.errors.join('\n');
-				new Notice(`Book generation failed: ${errorMsg}`);
+				new Notice(`书籍生成失败：${errorMsg}`);
 				logger.error('generate-book', 'Book generation failed', result.errors);
 			}
 		} catch (error) {
 			logger.error('Book generation error', error);
-			new Notice(`Book generation error: ${error instanceof Error ? error.message : String(error)}`);
+			new Notice(`书籍生成出错：${error instanceof Error ? error.message : String(error)}`);
 		} finally {
 			this.isGenerating = false;
 		}
@@ -1201,7 +1223,7 @@ export class BookBuilderModal extends Modal {
 			fill.style.width = `${pct}%`;
 		}
 		if (text) {
-			const phaseLabel = progress.phase === 'generating' ? 'Generating' : 'Rendering';
+			const phaseLabel = progress.phase === 'generating' ? '正在生成' : '正在渲染';
 			text.textContent = `${phaseLabel}: ${progress.chapterTitle} (${progress.currentChapter}/${progress.totalChapters})`;
 		}
 	}
@@ -1247,10 +1269,10 @@ export class BookBuilderModal extends Modal {
 			}
 
 			this.sourceFilePath = path;
-			new Notice(`Book definition saved: ${path}`);
+			new Notice(`书籍定义已保存：${path}`);
 		} catch (error) {
 			logger.error('Failed to save book definition', error);
-			new Notice(`Failed to save: ${error instanceof Error ? error.message : String(error)}`);
+			new Notice(`保存失败：${error instanceof Error ? error.message : String(error)}`);
 		}
 	}
 
@@ -1341,14 +1363,14 @@ class ChapterConfigModal extends Modal {
 		const titleSection = header.createDiv({ cls: 'crc-picker-title' });
 		const icon = titleSection.createSpan();
 		setIcon(icon, meta.icon);
-		titleSection.appendText(this.existingChapter ? `Edit ${meta.label.toLowerCase()}` : `Add ${meta.label.toLowerCase()}`);
+		titleSection.appendText(this.existingChapter ? `编辑${meta.label}` : `添加${meta.label}`);
 
 		const section = contentEl.createDiv({ cls: 'cr-report-section cr-chapter-config-body' });
 
 		// Title input
-		this.renderConfigTextInput(section, 'Title', this.title, (val) => {
+		this.renderConfigTextInput(section, '标题', this.title, (val) => {
 			this.title = val;
-		}, `Chapter title`);
+		}, `章节标题`);
 
 		// Type-specific fields
 		switch (this.chapterType) {
@@ -1365,10 +1387,10 @@ class ChapterConfigModal extends Modal {
 
 		// Footer
 		const footer = contentEl.createDiv({ cls: 'crc-picker-footer' });
-		const cancelBtn = footer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = footer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
-		const saveBtn = footer.createEl('button', { cls: 'mod-cta', text: this.existingChapter ? 'Save' : 'Add' });
+		const saveBtn = footer.createEl('button', { cls: 'mod-cta', text: this.existingChapter ? '保存' : '添加' });
 		saveBtn.addEventListener('click', () => this.save());
 	}
 
@@ -1397,10 +1419,10 @@ class ChapterConfigModal extends Modal {
 	private renderReportConfig(container: HTMLElement): void {
 		// Report type dropdown
 		const typeRow = container.createDiv({ cls: 'cr-report-option-row' });
-		typeRow.createSpan({ text: 'Report type:', cls: 'cr-report-option-label' });
+		typeRow.createSpan({ text: '报告类型：', cls: 'cr-report-option-label' });
 
 		const select = typeRow.createEl('select', { cls: 'cr-report-select' });
-		const defaultOpt = select.createEl('option', { value: '', text: 'Select report type...' });
+		const defaultOpt = select.createEl('option', { value: '', text: '选择报告类型…' });
 		defaultOpt.disabled = true;
 		if (!this.reportType) defaultOpt.selected = true;
 
@@ -1410,7 +1432,7 @@ class ChapterConfigModal extends Modal {
 			const reports = getReportsByCategory(cat);
 			if (reports.length === 0) continue;
 			const optgroup = select.createEl('optgroup');
-			optgroup.label = cat.charAt(0).toUpperCase() + cat.slice(1);
+			optgroup.label = REPORT_CATEGORY_LABELS[cat];
 			for (const report of reports) {
 				const opt = optgroup.createEl('option', { value: report.type, text: report.name });
 				if (report.type === this.reportType) opt.selected = true;
@@ -1427,11 +1449,11 @@ class ChapterConfigModal extends Modal {
 
 		// Subject (person picker button)
 		const subjectRow = container.createDiv({ cls: 'cr-report-option-row' });
-		subjectRow.createSpan({ text: 'Subject:', cls: 'cr-report-option-label' });
+		subjectRow.createSpan({ text: '对象：', cls: 'cr-report-option-label' });
 
 		const subjectBtn = subjectRow.createEl('button', {
 			cls: 'cr-btn cr-btn--small',
-			text: this.subjectName || 'Select person...'
+			text: this.subjectName || '选择人物…'
 		});
 		subjectBtn.addEventListener('click', () => {
 			const picker = new PersonPickerModal(this.app, (person: PersonInfo) => {
@@ -1446,7 +1468,7 @@ class ChapterConfigModal extends Modal {
 	private renderVisualTreeConfig(container: HTMLElement): void {
 		// Chart type dropdown
 		const typeRow = container.createDiv({ cls: 'cr-report-option-row' });
-		typeRow.createSpan({ text: 'Chart type:', cls: 'cr-report-option-label' });
+		typeRow.createSpan({ text: '图表类型：', cls: 'cr-report-option-label' });
 
 		const select = typeRow.createEl('select', { cls: 'cr-report-select' });
 		for (const [value, label] of Object.entries(CHART_TYPE_LABELS)) {
@@ -1459,11 +1481,11 @@ class ChapterConfigModal extends Modal {
 
 		// Root person
 		const personRow = container.createDiv({ cls: 'cr-report-option-row' });
-		personRow.createSpan({ text: 'Root person:', cls: 'cr-report-option-label' });
+		personRow.createSpan({ text: '根人物：', cls: 'cr-report-option-label' });
 
 		const personBtn = personRow.createEl('button', {
 			cls: 'cr-btn cr-btn--small',
-			text: this.subjectName || 'Select person...'
+			text: this.subjectName || '选择人物…'
 		});
 		personBtn.addEventListener('click', () => {
 			const picker = new PersonPickerModal(this.app, (person: PersonInfo) => {
@@ -1476,7 +1498,7 @@ class ChapterConfigModal extends Modal {
 
 		// Max generations
 		const genRow = container.createDiv({ cls: 'cr-report-option-row' });
-		genRow.createSpan({ text: 'Generations:', cls: 'cr-report-option-label' });
+		genRow.createSpan({ text: '世代数：', cls: 'cr-report-option-label' });
 		const genInput = genRow.createEl('input', {
 			cls: 'cr-report-input',
 			type: 'number',
@@ -1494,16 +1516,16 @@ class ChapterConfigModal extends Modal {
 	}
 
 	private renderSectionDividerConfig(container: HTMLElement): void {
-		this.renderConfigTextInput(container, 'Subtitle', this.subtitle, (val) => {
+		this.renderConfigTextInput(container, '副标题', this.subtitle, (val) => {
 			this.subtitle = val;
-		}, 'Optional subtitle text');
+		}, '可选副标题文本');
 	}
 
 	private save(): void {
 		const chapter: BookChapter = {
 			id: this.existingChapter?.id || `ch-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
 			type: this.chapterType,
-			title: this.title || CHAPTER_TYPE_META[this.chapterType].label,
+			title: this.title || CHAPTER_TYPE_DEFAULT_TITLES[this.chapterType],
 			pageBreakBefore: this.pageBreakBefore,
 			config: this.buildConfig(),
 		};
@@ -1566,14 +1588,14 @@ class FilePickerModal extends Modal {
 		const titleSection = header.createDiv({ cls: 'crc-picker-title' });
 		const icon = titleSection.createSpan();
 		setIcon(icon, 'file');
-		titleSection.appendText('Select vault note');
+		titleSection.appendText('选择库笔记');
 
 		// Search
 		const searchContainer = contentEl.createDiv({ cls: 'cr-file-picker-search' });
 		const searchInput = searchContainer.createEl('input', {
 			cls: 'cr-report-input cr-report-input--text',
 			type: 'text',
-			placeholder: 'Search notes...'
+			placeholder: '搜索笔记…'
 		});
 		searchInput.addEventListener('input', () => {
 			this.searchQuery = searchInput.value.toLowerCase();
@@ -1605,7 +1627,7 @@ class FilePickerModal extends Modal {
 		if (displayFiles.length === 0) {
 			this.resultsContainer.createDiv({
 				cls: 'cr-file-picker-empty',
-				text: 'No matching notes found'
+				text: '未找到匹配的笔记'
 			});
 			return;
 		}
@@ -1625,7 +1647,7 @@ class FilePickerModal extends Modal {
 		if (this.filteredFiles.length > 100) {
 			this.resultsContainer.createDiv({
 				cls: 'cr-text-muted',
-				text: `Showing 100 of ${this.filteredFiles.length} results. Refine your search.`
+				text: `显示 100 / ${this.filteredFiles.length} 条结果。请优化搜索。`
 			});
 		}
 	}

@@ -84,13 +84,13 @@ export function renderRelationshipsSection(
 	const adjustedFamilyCount = options.familyCount - otherTargetCrIds.size + familyCustoms.length;
 	const totalCount = adjustedFamilyCount + allOther.length;
 	const summaryParts: string[] = [];
-	if (adjustedFamilyCount > 0) summaryParts.push(`${adjustedFamilyCount} family`);
-	if (allOther.length > 0) summaryParts.push(`${allOther.length} other`);
-	const summary = summaryParts.length > 0 ? summaryParts.join(', ') : 'None';
+	if (adjustedFamilyCount > 0) summaryParts.push(`家族 ${adjustedFamilyCount}`);
+	if (allOther.length > 0) summaryParts.push(`其他 ${allOther.length}`);
+	const summary = summaryParts.length > 0 ? summaryParts.join('，') : '无';
 
 	const content = renderProfileSection(parent, {
 		sectionId: 'relationships',
-		title: 'Relationships',
+		title: '关系',
 		summary,
 		expanded: options.sectionStates['relationships'] ?? true,
 		onToggle: options.onToggle,
@@ -122,49 +122,49 @@ function renderFamilySubsection(
 	// Parents — skip IDs already covered by a custom relationship in the Other section
 	const parentEntries: { label: string; crId: string }[] = [];
 	if (node.fatherCrId && !otherTargetCrIds.has(node.fatherCrId)) {
-		parentEntries.push({ label: 'Father', crId: node.fatherCrId });
+		parentEntries.push({ label: '父亲', crId: node.fatherCrId });
 	}
 	if (node.motherCrId && !otherTargetCrIds.has(node.motherCrId)) {
-		parentEntries.push({ label: 'Mother', crId: node.motherCrId });
+		parentEntries.push({ label: '母亲', crId: node.motherCrId });
 	}
 	for (const id of node.parentCrIds || []) {
 		if (id !== node.fatherCrId && id !== node.motherCrId && !otherTargetCrIds.has(id)) {
-			parentEntries.push({ label: 'Parent', crId: id });
+				parentEntries.push({ label: '父母', crId: id });
 		}
 	}
 	for (const id of node.stepfatherCrIds || []) {
 		if (!otherTargetCrIds.has(id)) {
-			parentEntries.push({ label: 'Step-father', crId: id });
+				parentEntries.push({ label: '继父', crId: id });
 		}
 	}
 	for (const id of node.stepmotherCrIds || []) {
 		if (!otherTargetCrIds.has(id)) {
-			parentEntries.push({ label: 'Step-mother', crId: id });
+				parentEntries.push({ label: '继母', crId: id });
 		}
 	}
 	if (node.adoptiveFatherCrId && !otherTargetCrIds.has(node.adoptiveFatherCrId)) {
-		parentEntries.push({ label: 'Adoptive father', crId: node.adoptiveFatherCrId });
+		parentEntries.push({ label: '养父', crId: node.adoptiveFatherCrId });
 	}
 	if (node.adoptiveMotherCrId && !otherTargetCrIds.has(node.adoptiveMotherCrId)) {
-		parentEntries.push({ label: 'Adoptive mother', crId: node.adoptiveMotherCrId });
+		parentEntries.push({ label: '养母', crId: node.adoptiveMotherCrId });
 	}
 	for (const id of node.adoptiveParentCrIds || []) {
 		if (id !== node.adoptiveFatherCrId && id !== node.adoptiveMotherCrId && !otherTargetCrIds.has(id)) {
-			parentEntries.push({ label: 'Adoptive parent', crId: id });
+			parentEntries.push({ label: '养父母', crId: id });
 		}
 	}
 
 	if (parentEntries.length > 0) {
-		renderRelGroup(familyEl, 'Parents', parentEntries, options);
+		renderRelGroup(familyEl, '父母', parentEntries, options);
 	}
 
 	// Spouses — skip IDs already covered by a custom relationship in the Other section
 	if (node.spouseCrIds && node.spouseCrIds.length > 0) {
 		const spouseEntries = node.spouseCrIds
 			.filter(id => !otherTargetCrIds.has(id))
-			.map(id => ({ label: 'Spouse', crId: id }));
+			.map(id => ({ label: '配偶', crId: id }));
 		if (spouseEntries.length > 0) {
-			renderRelGroup(familyEl, 'Spouses', spouseEntries, options);
+			renderRelGroup(familyEl, '配偶', spouseEntries, options);
 		}
 	}
 
@@ -177,16 +177,16 @@ function renderFamilySubsection(
 	const stepchildSet = new Set(node.stepchildrenCrIds || []);
 	for (const id of node.childrenCrIds || []) {
 		if (otherTargetCrIds.has(id) || adoptedSet.has(id) || stepchildSet.has(id)) continue;
-		childEntries.push({ label: 'Child', crId: id });
+		childEntries.push({ label: '子女', crId: id });
 	}
 	for (const id of node.adoptedChildCrIds || []) {
 		if (!otherTargetCrIds.has(id)) {
-			childEntries.push({ label: 'Adopted child', crId: id });
+			childEntries.push({ label: '养子女', crId: id });
 		}
 	}
 	for (const id of node.stepchildrenCrIds || []) {
 		if (!otherTargetCrIds.has(id)) {
-			childEntries.push({ label: 'Stepchild', crId: id });
+			childEntries.push({ label: '继子女', crId: id });
 		}
 	}
 	if (childEntries.length > 0) {
@@ -198,7 +198,7 @@ function renderFamilySubsection(
 		// merged in the sort — the relationship label is preserved on each row,
 		// but the order is "by age," not "by relationship type."
 		sortChildrenByBirthDate(childEntries, node.universe, options.plugin);
-		renderRelGroup(familyEl, 'Children', childEntries, options);
+		renderRelGroup(familyEl, '子女', childEntries, options);
 	}
 
 	// Family-category custom relationships (#533): grouped by type name
@@ -206,7 +206,7 @@ function renderFamilySubsection(
 	if (familyCustoms.length > 0) {
 		const byType = new Map<string, ParsedRelationship[]>();
 		for (const rel of familyCustoms) {
-			const typeKey = rel.type?.name || rel.type?.id || 'Related';
+			const typeKey = rel.type?.name || rel.type?.id || '相关';
 			if (!byType.has(typeKey)) byType.set(typeKey, []);
 			byType.get(typeKey)!.push(rel);
 		}
@@ -276,7 +276,7 @@ function renderOtherSubsection(
 	const otherEl = container.createDiv({ cls: 'cr-profile__relationships-other' });
 
 	const header = otherEl.createDiv({ cls: 'cr-profile__rel-group-header' });
-	header.createSpan({ text: 'Other relationships', cls: 'cr-profile__rel-group-title' });
+	header.createSpan({ text: '其他关系', cls: 'cr-profile__rel-group-title' });
 
 	// Group by category
 	const byCategory = new Map<string, ParsedRelationship[]>();
@@ -308,7 +308,7 @@ function renderOtherSubsection(
 
 			const row = item.createDiv({ cls: 'cr-profile__rel-row' });
 			row.createSpan({
-				text: rel.type?.name || rel.type?.id || 'Related',
+				text: rel.type?.name || rel.type?.id || '相关',
 				cls: 'cr-profile__rel-type-label'
 			});
 

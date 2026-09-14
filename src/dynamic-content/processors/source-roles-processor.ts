@@ -55,7 +55,7 @@ export class SourceRolesProcessor {
 			const context = this.resolveSourceContext(config, ctx, sourceService);
 
 			if (!context) {
-				renderBlockError(el, 'Could not find source note. Specify a source with `source: "[[Source Name]]"` or use this block in a source note.');
+				renderBlockError(el, '找不到来源笔记。请使用 `source: "[[来源名称]]"` 指定来源，或将此块放在来源笔记中。');
 				return;
 			}
 
@@ -83,7 +83,7 @@ export class SourceRolesProcessor {
 
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			renderBlockError(el, `Error rendering source roles: ${message}`);
+			renderBlockError(el, `渲染人物角色失败：${message}`);
 		}
 	}
 

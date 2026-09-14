@@ -7,7 +7,6 @@
 
 import { App, Modal } from 'obsidian';
 import { createLucideIcon, type LucideIconName } from './lucide-icons';
-import { pluralize } from '../utils/format-utils';
 
 /**
  * User decision from the privacy notice
@@ -39,25 +38,25 @@ export class PrivacyNoticeModal extends Modal {
 		iconContainer.appendChild(infoIcon);
 
 		header.createEl('h2', {
-			text: 'Privacy Protection Available',
+			text: '隐私保护可用',
 			cls: 'cr-privacy-notice__title'
 		});
 
 		// Description
 		const description = contentEl.createDiv({ cls: 'cr-privacy-notice__description' });
 		description.createEl('p', {
-			text: `Charted Roots detected ${this.livingCount} ${pluralize(this.livingCount, 'person', 'people')} who may be living.`
+			text: `Charted Roots 检测到 ${this.livingCount} 位可能健在的人物。`
 		});
 		description.createEl('p', {
-			text: 'Privacy protection can hide or anonymize living persons in exports to protect their personal information.'
+			text: '隐私保护可在导出时隐藏或匿名化健在人物，以保护其个人信息。'
 		});
 
 		// Features list
 		const featuresList = contentEl.createDiv({ cls: 'cr-privacy-notice__features' });
 		const features: Array<{ icon: LucideIconName; text: string }> = [
-			{ icon: 'eye-off', text: 'Exclude or redact living persons from exports' },
-			{ icon: 'lock', text: 'Mark sensitive fields as private' },
-			{ icon: 'user', text: 'Override living status per person' }
+			{ icon: 'eye-off', text: '从导出中排除或遮盖健在人物' },
+			{ icon: 'lock', text: '将敏感字段标记为私密' },
+			{ icon: 'user', text: '按人物覆盖健在状态' }
 		];
 
 		for (const feature of features) {
@@ -72,7 +71,7 @@ export class PrivacyNoticeModal extends Modal {
 
 		// Configure button (primary)
 		const configureBtn = buttonContainer.createEl('button', {
-			text: 'Configure Privacy Settings',
+			text: '配置隐私设置',
 			cls: 'mod-cta'
 		});
 		configureBtn.addEventListener('click', () => {
@@ -81,7 +80,7 @@ export class PrivacyNoticeModal extends Modal {
 
 		// Later button
 		const laterBtn = buttonContainer.createEl('button', {
-			text: 'Remind Me Later'
+			text: '稍后提醒'
 		});
 		laterBtn.addEventListener('click', () => {
 			this.resolve('later');
@@ -89,7 +88,7 @@ export class PrivacyNoticeModal extends Modal {
 
 		// Dismiss button
 		const dismissBtn = buttonContainer.createEl('button', {
-			text: "Don't Show Again",
+			text: '不再显示',
 			cls: 'mod-muted'
 		});
 		dismissBtn.addEventListener('click', () => {

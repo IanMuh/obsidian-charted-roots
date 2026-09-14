@@ -23,7 +23,6 @@ import { FixMistypedValuesModal } from './fix-mistyped-values-modal';
 import { BulkMediaLinkModal } from '../core/ui/bulk-media-link-modal';
 import { TemplateSnippetsModal } from './template-snippets-modal';
 import { getErrorMessage } from '../core/error-utils';
-import { pluralize } from '../utils/format-utils';
 import {
 	EvidenceService,
 	FACT_KEY_LABELS,
@@ -81,24 +80,24 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 
 	// Quick Start Guidance Card
 	const quickStartCard = options.createCard({
-		title: 'Quick start',
+		title: '快速开始',
 		icon: 'info',
-		subtitle: 'Where to find data quality tools'
+		subtitle: '在哪里找到数据质量工具'
 	});
 	const quickStartContent = quickStartCard.querySelector('.crc-card__content') as HTMLElement;
 
 	const guidanceText = quickStartContent.createEl('p', {
 		cls: 'crc-text-muted'
 	});
-	guidanceText.appendText('Data quality tools are organized by entity type for convenience. This tab provides vault-wide analysis and cross-domain operations.');
+	guidanceText.appendText('数据质量工具按实体类型组织以便使用。此标签页提供全库分析和跨域操作。');
 
 	// Domain-specific links
 	const linksList = quickStartContent.createEl('ul', { cls: 'crc-text-muted' });
 
 	const peopleItem = linksList.createEl('li');
-	peopleItem.appendText('For person-specific batch operations, see the ');
+	peopleItem.appendText('人物专属的批量操作，请参阅 ');
 	const peopleLink = peopleItem.createEl('a', {
-		text: 'People tab',
+		text: '人物标签页',
 		href: '#',
 		cls: 'crc-text-link'
 	});
@@ -108,9 +107,9 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 	});
 
 	const placesItem = linksList.createEl('li');
-	placesItem.appendText('For place-specific data quality, see the ');
+	placesItem.appendText('地点专属的数据质量，请参阅 ');
 	const placesLink = placesItem.createEl('a', {
-		text: 'Places tab',
+		text: '地点标签页',
 		href: '#',
 		cls: 'crc-text-link'
 	});
@@ -120,9 +119,9 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 	});
 
 	const schemasItem = linksList.createEl('li');
-	schemasItem.appendText('For schema validation, see the ');
+	schemasItem.appendText('架构验证，请参阅 ');
 	const schemasLink = schemasItem.createEl('a', {
-		text: 'Schemas tab',
+		text: '架构标签页',
 		href: '#',
 		cls: 'crc-text-link'
 	});
@@ -143,7 +142,7 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 		});
 	const wizardIcon = wizardBtn.buttonEl.createSpan({ cls: 'crc-btn-icon' });
 	setIcon(wizardIcon, 'sparkles');
-	wizardBtn.buttonEl.createSpan({ text: 'Run Cleanup Wizard' });
+	wizardBtn.buttonEl.createSpan({ text: '运行清理向导' });
 
 	container.appendChild(quickStartCard);
 
@@ -172,17 +171,17 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 
 	// === VAULT-WIDE ANALYSIS ===
 	const analysisCard = options.createCard({
-		title: 'Vault-wide analysis',
+		title: '全库分析',
 		icon: 'search',
-		subtitle: 'Comprehensive data quality report across all entities'
+		subtitle: '跨所有实体的全面数据质量报告'
 	});
 	const analysisContent = analysisCard.querySelector('.crc-card__content') as HTMLElement;
 
 	// Explanation
 	const analysisExplanation = analysisContent.createDiv({ cls: 'crc-info-callout crc-mb-3' });
 	analysisExplanation.createEl('p', {
-		text: 'Scan your genealogy data to identify data issues like missing dates, invalid values, ' +
-			'circular relationships, and orphaned parent references.',
+		text: '扫描你的谱系数据，识别缺失日期、无效值、' +
+			'循环关系、孤立父母引用等数据问题。',
 		cls: 'crc-text--small'
 	});
 
@@ -190,11 +189,11 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 	const selectedFolder = '';
 
 	new Setting(analysisContent)
-		.setName('Analysis scope')
-		.setDesc('Choose which records to analyze')
+		.setName('分析范围')
+		.setDesc('选择要分析的记录')
 		.addDropdown(dropdown => dropdown
-			.addOption('all', 'All records (main tree)')
-			.addOption('staging', 'Staging folder only')
+			.addOption('all', '所有记录（主树）')
+			.addOption('staging', '仅暂存文件夹')
 			.setValue(selectedScope)
 			.onChange(value => {
 				selectedScope = value as 'all' | 'staging' | 'folder';
@@ -206,10 +205,10 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 
 	// Run analysis button
 	new Setting(analysisContent)
-		.setName('Run analysis')
-		.setDesc('Scan records for data quality issues')
+		.setName('运行分析')
+		.setDesc('扫描记录以查找数据质量问题')
 		.addButton(button => button
-			.setButtonText('Analyze')
+			.setButtonText('分析')
 			.setCta()
 			.onClick(() => {
 				runDataQualityAnalysis(resultsContainer, selectedScope, selectedFolder, options);
@@ -220,98 +219,98 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 
 	// === CROSS-DOMAIN BATCH OPERATIONS ===
 	const batchCard = options.createCard({
-		title: 'Cross-domain batch operations',
+		title: '跨域批量操作',
 		icon: 'zap',
-		subtitle: 'Standardization operations across all entity types'
+		subtitle: '跨所有实体类型的标准化操作'
 	});
 	const batchContent = batchCard.querySelector('.crc-card__content') as HTMLElement;
 
 	// Explanation
 	const batchExplanation = batchContent.createDiv({ cls: 'crc-info-callout crc-mb-3' });
 	batchExplanation.createEl('p', {
-		text: 'These operations work across people, places, events, and sources. Use Preview to see what will change before applying. For entity-specific operations, see the domain tabs (People, Places, etc.).',
+		text: '这些操作作用于人物、地点、事件和来源。应用前请使用预览查看将要更改的内容。实体专属操作请参阅各领域标签页（人物、地点等）。',
 		cls: 'crc-text--small'
 	});
 
 	// Normalize dates
 	new Setting(batchContent)
-		.setName('Normalize date formats')
-		.setDesc('Convert dates to standard YYYY-MM-DD format')
+		.setName('规范化日期格式')
+		.setDesc('将日期转换为标准的 YYYY-MM-DD 格式')
 		.addButton(btn => btn
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => {
 				void previewBatchOperation('dates', selectedScope, selectedFolder, options);
 			})
 		)
 		.addButton(btn => btn
-			.setButtonText('Apply')
+			.setButtonText('应用')
 			.setCta()
 			.onClick(() => void runBatchOperation('dates', selectedScope, selectedFolder, options))
 		);
 
 	// Normalize sex
 	new Setting(batchContent)
-		.setName('Normalize sex values')
-		.setDesc('Standardize to M/F format. Uses biological sex to match historical records and GEDCOM standards.')
+		.setName('规范化性别值')
+		.setDesc('标准化为 M/F 格式。使用生理性别以匹配历史记录和 GEDCOM 标准。')
 		.addButton(btn => btn
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => void previewBatchOperation('sex', selectedScope, selectedFolder, options))
 		)
 		.addButton(btn => btn
-			.setButtonText('Apply')
+			.setButtonText('应用')
 			.setCta()
 			.onClick(() => void runBatchOperation('sex', selectedScope, selectedFolder, options))
 		);
 
 	// Clear orphan references
 	new Setting(batchContent)
-		.setName('Clear orphan references')
-		.setDesc('Remove parent references that point to non-existent records')
+		.setName('清除孤立引用')
+		.setDesc('移除指向不存在记录的父母引用')
 		.addButton(btn => btn
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => void previewBatchOperation('orphans', selectedScope, selectedFolder, options))
 		)
-		.addButton(btn => setButtonDestructive(btn.setButtonText('Apply'))
+		.addButton(btn => setButtonDestructive(btn.setButtonText('应用'))
 			.onClick(() => void runBatchOperation('orphans', selectedScope, selectedFolder, options))
 		);
 
 	// Repair missing relationship IDs
 	new Setting(batchContent)
-		.setName('Repair missing relationship IDs')
-		.setDesc('Populate _id fields from resolvable wikilinks (e.g., father_id from father)')
+		.setName('修复缺失的关系 ID')
+		.setDesc('从可解析的 wikilink 填充 _id 字段（例：从 father 填充 father_id）')
 		.addButton(btn => btn
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => void previewBatchOperation('missing_ids', selectedScope, selectedFolder, options))
 		)
 		.addButton(btn => btn
-			.setButtonText('Apply')
+			.setButtonText('应用')
 			.setCta()
 			.onClick(() => void runBatchOperation('missing_ids', selectedScope, selectedFolder, options))
 		);
 
 	// Repair misaligned children arrays
 	new Setting(batchContent)
-		.setName('Repair misaligned children')
-		.setDesc('Rebuild children and children_id arrays that have fallen out of alignment, recovering dropped children from their parent links')
+		.setName('修复错位的子女数组')
+		.setDesc('重建错位的 children 和 children_id 数组，从父母链接中恢复丢失的子女')
 		.addButton(btn => btn
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => void previewRepairMisalignedChildren(options.plugin, options.app, options.showTab))
 		)
-		.addButton(btn => setButtonDestructive(btn.setButtonText('Apply'))
+		.addButton(btn => setButtonDestructive(btn.setButtonText('应用'))
 			.onClick(() => void repairMisalignedChildren(options.plugin, options.app, options.showTab))
 		);
 
 	// Migrate legacy type property (only show if cr_type is the primary)
 	if (plugin.settings.noteTypeDetection?.primaryTypeProperty === 'cr_type') {
 		new Setting(batchContent)
-			.setName('Migrate legacy type property')
-			.setDesc('Convert type to cr_type for all Charted Roots notes')
+			.setName('迁移旧版 type 属性')
+			.setDesc('将所有 Charted Roots 笔记的 type 转换为 cr_type')
 			.addButton(btn => btn
-				.setButtonText('Preview')
+				.setButtonText('预览')
 				.onClick(() => void previewBatchOperation('legacy_type', selectedScope, selectedFolder, options))
 			)
 			.addButton(btn => btn
-				.setButtonText('Apply')
+				.setButtonText('应用')
 				.setCta()
 				.onClick(() => void runBatchOperation('legacy_type', selectedScope, selectedFolder, options))
 			);
@@ -319,10 +318,10 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 
 	// Flatten nested properties
 	new Setting(batchContent)
-		.setName('Flatten nested properties')
-		.setDesc('Convert nested YAML (e.g., coordinates: { lat, long }) to flat properties')
+		.setName('扁平化嵌套属性')
+		.setDesc('将嵌套 YAML（例：coordinates: { lat, long }）转换为扁平属性')
 		.addButton(btn => btn
-			.setButtonText('Open')
+			.setButtonText('打开')
 			.setCta()
 			.onClick(() => {
 				new FlattenNestedPropertiesModal(app).open();
@@ -331,10 +330,10 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 
 	// Fix mistyped property values (#758)
 	new Setting(batchContent)
-		.setName('Fix mistyped property values')
-		.setDesc('Convert type fields stored as a number or date (e.g., event_type: 1850) back to text')
+		.setName('修复类型错误的属性值')
+		.setDesc('将以数字或日期存储的类型字段（例：event_type: 1850）转换回文本')
 		.addButton(btn => btn
-			.setButtonText('Open')
+			.setButtonText('打开')
 			.setCta()
 			.onClick(() => {
 				new FixMistypedValuesModal(app).open();
@@ -346,26 +345,26 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 	// === DATA ENHANCEMENT ===
 	// Data Enhancement card
 	const enhancementCard = options.createCard({
-		title: 'Data enhancement',
+		title: '数据增强',
 		icon: 'sparkles',
-		subtitle: 'Create missing notes from existing data'
+		subtitle: '基于现有数据创建缺失的笔记'
 	});
 	const enhancementContent = enhancementCard.querySelector('.crc-card__content') as HTMLElement;
 
 	// Explanation
 	const enhancementExplanation = enhancementContent.createDiv({ cls: 'crc-info-callout crc-mb-3' });
 	enhancementExplanation.createEl('p', {
-		text: 'Enhance your notes by generating place notes from place strings in person and event notes. ' +
-			'Useful for data imported from CSV, manually entered records, or vaults created before place notes were supported.',
+		text: '通过从人物和事件笔记中的地点字符串生成地点笔记来增强你的笔记。' +
+			'对于从 CSV 导入的数据、手动录入的记录，或在不支持地点笔记之前创建的库很有用。',
 		cls: 'crc-text--small'
 	});
 
 	// Generate place notes
 	new Setting(enhancementContent)
-		.setName('Generate place notes')
-		.setDesc('Create place notes from place strings and update references to use wikilinks')
+		.setName('生成地点笔记')
+		.setDesc('从地点字符串创建地点笔记，并更新引用以使用 wikilink')
 		.addButton(btn => btn
-			.setButtonText('Open')
+			.setButtonText('打开')
 			.setCta()
 			.onClick(() => {
 				new PlaceGeneratorModal(app, plugin.settings, {}, plugin.createPlaceGraphService()).open();
@@ -376,34 +375,34 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 
 	// Data Tools card
 	const toolsCard = options.createCard({
-		title: 'Data tools',
+		title: '数据工具',
 		icon: 'sliders',
-		subtitle: 'Utility tools for managing your data'
+		subtitle: '管理数据的实用工具'
 	});
 	const toolsContent = toolsCard.querySelector('.crc-card__content') as HTMLElement;
 
 	// Explanation
 	const toolsExplanation = toolsContent.createDiv({ cls: 'crc-info-callout crc-mb-3' });
 	toolsExplanation.createEl('p', {
-		text: 'Create Obsidian Bases to view and manage your data in spreadsheet-like table views.',
+		text: '创建 Obsidian Bases，以类似电子表格的表视图查看和管理数据。',
 		cls: 'crc-text--small'
 	});
 
 	const baseTypes = [
-		{ value: 'people', label: 'People', command: 'charted-roots:create-base-template' },
-		{ value: 'places', label: 'Places', command: 'charted-roots:create-places-base-template' },
-		{ value: 'events', label: 'Events', command: 'charted-roots:create-events-base-template' },
-		{ value: 'organizations', label: 'Organizations', command: 'charted-roots:create-organizations-base-template' },
-		{ value: 'sources', label: 'Sources', command: 'charted-roots:create-sources-base-template' },
-		{ value: 'universes', label: 'Universes', command: 'charted-roots:create-universes-base-template' },
-		{ value: 'research', label: 'Research', command: 'charted-roots:create-research-base-template' }
+		{ value: 'people', label: '人物', command: 'charted-roots:create-base-template' },
+		{ value: 'places', label: '地点', command: 'charted-roots:create-places-base-template' },
+		{ value: 'events', label: '事件', command: 'charted-roots:create-events-base-template' },
+		{ value: 'organizations', label: '组织', command: 'charted-roots:create-organizations-base-template' },
+		{ value: 'sources', label: '来源', command: 'charted-roots:create-sources-base-template' },
+		{ value: 'universes', label: '宇宙', command: 'charted-roots:create-universes-base-template' },
+		{ value: 'research', label: '研究', command: 'charted-roots:create-research-base-template' }
 	];
 
 	let selectedBaseType = baseTypes[0];
 
 	new Setting(toolsContent)
-		.setName('Create base')
-		.setDesc('Create an Obsidian Base for managing your data in table view')
+		.setName('创建 base')
+		.setDesc('创建 Obsidian Base 以便用表格视图管理数据')
 		.addDropdown(dropdown => dropdown
 			.addOptions(Object.fromEntries(baseTypes.map(t => [t.value, t.label])))
 			.setValue(selectedBaseType.value)
@@ -412,7 +411,7 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 			})
 		)
 		.addButton(btn => btn
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.setCta()
 			.onClick(() => {
 				options.closeModal();
@@ -422,10 +421,10 @@ export function renderDataQualityTab(options: DataQualityTabOptions): void {
 
 	// Bulk media linking
 	new Setting(toolsContent)
-		.setName('Bulk link media')
-		.setDesc('Link media files to multiple entities (people, events, places, etc.) at once')
+		.setName('批量关联媒体')
+		.setDesc('一次将媒体文件关联到多个实体（人物、事件、地点等）')
 		.addButton(btn => btn
-			.setButtonText('Open')
+			.setButtonText('打开')
 			.onClick(() => {
 				new BulkMediaLinkModal(app, plugin).open();
 			})
@@ -519,9 +518,9 @@ function renderResearchNeededSection(container: HTMLElement, options: DataQualit
 
 	// Create card
 	const card = options.createCard({
-		title: 'Research needed',
+		title: '待研究',
 		icon: 'help-circle',
-		subtitle: 'Entities flagged for additional research'
+		subtitle: '已标记需进一步研究的实体'
 	});
 	const section = card.querySelector('.crc-card__content') as HTMLElement;
 	section.addClass('crc-research-needed-section');
@@ -533,7 +532,7 @@ function renderResearchNeededSection(container: HTMLElement, options: DataQualit
 	const totalStat = statsRow.createDiv({ cls: 'crc-schema-stat' });
 	setIcon(totalStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'flag');
 	totalStat.createSpan({
-		text: `${items.length} entities`,
+		text: `${items.length} 个实体`,
 		cls: 'crc-schema-stat-text'
 	});
 
@@ -542,7 +541,7 @@ function renderResearchNeededSection(container: HTMLElement, options: DataQualit
 	const questionsStat = statsRow.createDiv({ cls: 'crc-schema-stat crc-schema-stat-warning' });
 	setIcon(questionsStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'help-circle');
 	questionsStat.createSpan({
-		text: `${totalQuestions} questions`,
+		text: `${totalQuestions} 个问题`,
 		cls: 'crc-schema-stat-text'
 	});
 
@@ -555,7 +554,7 @@ function renderResearchNeededSection(container: HTMLElement, options: DataQualit
 		const personStat = statsRow.createDiv({ cls: 'crc-schema-stat' });
 		setIcon(personStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'user');
 		personStat.createSpan({
-			text: `${personCount} people`,
+			text: `${personCount} 位人物`,
 			cls: 'crc-schema-stat-text'
 		});
 	}
@@ -563,7 +562,7 @@ function renderResearchNeededSection(container: HTMLElement, options: DataQualit
 		const eventStat = statsRow.createDiv({ cls: 'crc-schema-stat' });
 		setIcon(eventStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'calendar');
 		eventStat.createSpan({
-			text: `${eventCount} events`,
+			text: `${eventCount} 个事件`,
 			cls: 'crc-schema-stat-text'
 		});
 	}
@@ -571,7 +570,7 @@ function renderResearchNeededSection(container: HTMLElement, options: DataQualit
 		const placeStat = statsRow.createDiv({ cls: 'crc-schema-stat' });
 		setIcon(placeStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'map-pin');
 		placeStat.createSpan({
-			text: `${placeCount} places`,
+			text: `${placeCount} 个地点`,
 			cls: 'crc-schema-stat-text'
 		});
 	}
@@ -625,9 +624,9 @@ function renderResearchGapsSection(container: HTMLElement, options: DataQualityT
 
 	// Create card for Research Gaps
 	const card = options.createCard({
-		title: 'Research gaps',
+		title: '研究缺口',
 		icon: 'search',
-		subtitle: 'Track unsourced and weakly sourced facts'
+		subtitle: '追踪无来源和来源薄弱的事实'
 	});
 	const section = card.querySelector('.crc-card__content') as HTMLElement;
 	section.addClass('crc-research-gaps-section');
@@ -635,7 +634,7 @@ function renderResearchGapsSection(container: HTMLElement, options: DataQualityT
 	// Explanation
 	const explanation = section.createDiv({ cls: 'crc-info-callout crc-mb-3' });
 	explanation.createEl('p', {
-		text: 'Identify facts that need sources or stronger evidence. Focus research efforts on gaps in your documentation.',
+		text: '识别需要来源或更强证据的事实。将研究精力集中在文档的缺口上。',
 		cls: 'crc-text--small'
 	});
 
@@ -647,7 +646,7 @@ function renderResearchGapsSection(container: HTMLElement, options: DataQualityT
 	// Export button
 	const exportBtn = headerActions.createEl('button', {
 		cls: 'crc-icon-button',
-		attr: { 'aria-label': 'Export research gaps to CSV' }
+		attr: { 'aria-label': '将研究缺口导出为 CSV' }
 	});
 	setIcon(exportBtn, 'download');
 	exportBtn.addEventListener('click', () => {
@@ -656,7 +655,7 @@ function renderResearchGapsSection(container: HTMLElement, options: DataQualityT
 
 	const sourcesLink = headerActions.createEl('button', {
 		cls: 'crc-link-button',
-		text: 'Open sources tab'
+		text: '打开来源标签页'
 	});
 	setIcon(sourcesLink.createSpan({ cls: 'crc-button-icon-right' }), 'external-link');
 	sourcesLink.addEventListener('click', () => {
@@ -674,7 +673,7 @@ function renderResearchGapsSection(container: HTMLElement, options: DataQualityT
 	const trackedStat = statsRow.createDiv({ cls: 'crc-schema-stat' });
 	setIcon(trackedStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'users');
 	trackedStat.createSpan({
-		text: `${gaps.totalPeopleTracked} tracked`,
+		text: `${gaps.totalPeopleTracked} 位已追踪`,
 		cls: 'crc-schema-stat-text'
 	});
 
@@ -683,7 +682,7 @@ function renderResearchGapsSection(container: HTMLElement, options: DataQualityT
 	const unsourcedStat = statsRow.createDiv({ cls: 'crc-schema-stat crc-schema-stat-warning' });
 	setIcon(unsourcedStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'alert-triangle');
 	unsourcedStat.createSpan({
-		text: `${totalUnsourced} unsourced facts`,
+		text: `${totalUnsourced} 项无来源事实`,
 		cls: 'crc-schema-stat-text'
 	});
 
@@ -692,18 +691,18 @@ function renderResearchGapsSection(container: HTMLElement, options: DataQualityT
 	const weaklyStat = statsRow.createDiv({ cls: 'crc-schema-stat crc-schema-stat-info' });
 	setIcon(weaklyStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'info');
 	weaklyStat.createSpan({
-		text: `${totalWeakly} weakly sourced`,
+		text: `${totalWeakly} 项来源薄弱`,
 		cls: 'crc-schema-stat-text'
 	});
 
 	// Quality filter dropdown
 	const filterRow = section.createDiv({ cls: 'crc-filter-row' });
-	filterRow.createSpan({ text: 'Filter by:', cls: 'crc-filter-label' });
+	filterRow.createSpan({ text: '筛选依据：', cls: 'crc-filter-label' });
 	const qualityFilter = filterRow.createEl('select', { cls: 'dropdown crc-filter-select' });
-	qualityFilter.createEl('option', { value: 'all', text: 'All research gaps' });
-	qualityFilter.createEl('option', { value: 'unsourced', text: 'Unsourced only' });
-	qualityFilter.createEl('option', { value: 'weakly-sourced', text: 'Weakly sourced only' });
-	qualityFilter.createEl('option', { value: 'needs-primary', text: 'Needs primary source' });
+	qualityFilter.createEl('option', { value: 'all', text: '所有研究缺口' });
+	qualityFilter.createEl('option', { value: 'unsourced', text: '仅无来源' });
+	qualityFilter.createEl('option', { value: 'weakly-sourced', text: '仅来源薄弱' });
+	qualityFilter.createEl('option', { value: 'needs-primary', text: '需要一手来源' });
 
 	// Store current filter state
 	let currentQualityFilter = 'all';
@@ -732,9 +731,9 @@ function renderResearchGapsSection(container: HTMLElement, options: DataQualityT
 	if (gaps.totalPeopleTracked === 0 && gaps.totalPeopleUntracked > 0) {
 		const emptyState = section.createDiv({ cls: 'crc-empty-state crc-compact' });
 		setIcon(emptyState.createSpan({ cls: 'crc-empty-icon' }), 'file-search');
-		emptyState.createEl('p', {
-			text: `No fact-level source tracking data found. Add sourced_* properties to your person notes to track research coverage.`
-		});
+			emptyState.createEl('p', {
+				text: `未找到事实级来源追踪数据。请向人物笔记添加 sourced_* 属性以追踪研究覆盖率。`
+			});
 		container.appendChild(card);
 		return;
 	}
@@ -758,9 +757,9 @@ function renderSourceConflictsSection(container: HTMLElement, options: DataQuali
 
 	// Create card for Source Conflicts
 	const card = options.createCard({
-		title: 'Source conflicts',
+		title: '来源冲突',
 		icon: 'scale',
-		subtitle: 'Resolve conflicting evidence in your research'
+		subtitle: '解决研究中的冲突证据'
 	});
 	const section = card.querySelector('.crc-card__content') as HTMLElement;
 	section.addClass('crc-conflicts-section');
@@ -768,7 +767,7 @@ function renderSourceConflictsSection(container: HTMLElement, options: DataQuali
 	// Explanation
 	const explanation = section.createDiv({ cls: 'crc-info-callout crc-mb-3' });
 	explanation.createEl('p', {
-		text: 'Track and resolve cases where multiple sources provide conflicting information about the same fact.',
+		text: '追踪并解决多个来源对同一事实提供冲突信息的情况。',
 		cls: 'crc-text--small'
 	});
 
@@ -782,7 +781,7 @@ function renderSourceConflictsSection(container: HTMLElement, options: DataQuali
 	const conflictIcon = conflictStat.createSpan({ cls: 'crc-schema-stat-icon' });
 	setIcon(conflictIcon, conflictedProofs.length > 0 ? 'alert-triangle' : 'check');
 	conflictStat.createSpan({
-		text: `${conflictedProofs.length} unresolved ${pluralize(conflictedProofs.length, 'conflict')}`,
+		text: `${conflictedProofs.length} 个未解决的冲突`,
 		cls: 'crc-schema-stat-text'
 	});
 
@@ -792,7 +791,7 @@ function renderSourceConflictsSection(container: HTMLElement, options: DataQuali
 	const proofIcon = proofStat.createSpan({ cls: 'crc-schema-stat-icon' });
 	setIcon(proofIcon, 'scale');
 	proofStat.createSpan({
-		text: `${allProofs.length} proof ${pluralize(allProofs.length, 'summary', 'summaries')}`,
+		text: `${allProofs.length} 份证明摘要`,
 		cls: 'crc-schema-stat-text'
 	});
 
@@ -802,7 +801,7 @@ function renderSourceConflictsSection(container: HTMLElement, options: DataQuali
 		const emptyIcon = emptyState.createSpan({ cls: 'crc-empty-icon' });
 		setIcon(emptyIcon, 'scale');
 		emptyState.createEl('p', {
-			text: 'No proof summaries created yet. Use proof summaries to document your research reasoning and resolve conflicting evidence.'
+			text: '尚未创建证明摘要。使用证明摘要记录你的研究推理并解决冲突证据。'
 		});
 
 		// Buttons container
@@ -810,7 +809,7 @@ function renderSourceConflictsSection(container: HTMLElement, options: DataQuali
 
 		// Create proof button
 		new ButtonComponent(buttonRow)
-			.setButtonText('Create proof summary')
+			.setButtonText('创建证明摘要')
 			.setCta()
 			.onClick(() => {
 				new CreateProofModal(app, plugin, {
@@ -823,7 +822,7 @@ function renderSourceConflictsSection(container: HTMLElement, options: DataQuali
 		// View templates button
 		const templateBtn = buttonRow.createEl('button', {
 			cls: 'crc-btn',
-			text: 'View templates'
+			text: '查看模板'
 		});
 		const templateIcon = createLucideIcon('file-code', 14);
 		templateBtn.insertBefore(templateIcon, templateBtn.firstChild);
@@ -840,7 +839,7 @@ function renderSourceConflictsSection(container: HTMLElement, options: DataQuali
 		const successState = section.createDiv({ cls: 'crc-dq-no-issues' });
 		const successIcon = successState.createDiv({ cls: 'crc-dq-no-issues-icon' });
 		setIcon(successIcon, 'check');
-		successState.createSpan({ text: 'No unresolved source conflicts' });
+		successState.createSpan({ text: '没有未解决的来源冲突' });
 		container.appendChild(card);
 		return;
 	}
@@ -887,7 +886,7 @@ function renderConflictItem(container: HTMLElement, proof: ProofSummaryNote, app
 
 	// Conflicting evidence
 	const evidenceSection = item.createDiv({ cls: 'crc-conflict-evidence' });
-	evidenceSection.createSpan({ cls: 'crc-conflict-evidence-label', text: 'Conflicting evidence:' });
+	evidenceSection.createSpan({ cls: 'crc-conflict-evidence-label', text: '冲突证据：' });
 
 	const evidenceList = evidenceSection.createDiv({ cls: 'crc-conflict-evidence-list' });
 
@@ -923,7 +922,7 @@ function renderConflictItem(container: HTMLElement, proof: ProofSummaryNote, app
 	const actions = item.createDiv({ cls: 'crc-conflict-actions' });
 	const resolveBtn = actions.createEl('button', {
 		cls: 'crc-btn crc-btn--small',
-		text: 'Open to resolve'
+		text: '打开以解决'
 	});
 	resolveBtn.addEventListener('click', () => {
 		void app.workspace.openLinkText(proof.filePath, '', true);
@@ -987,11 +986,11 @@ function renderResearchGapsBreakdown(
 	switch (filter) {
 		case 'unsourced':
 			factCounts = gaps.unsourcedByFact;
-			title = 'Unsourced facts by type';
+			title = '按类型统计的无来源事实';
 			break;
 		case 'weakly-sourced':
 			factCounts = gaps.weaklySourcedByFact;
-			title = 'Weakly sourced facts by type';
+			title = '按类型统计的来源薄弱事实';
 			break;
 		case 'needs-primary':
 			// Combine unsourced + weakly sourced for "needs primary"
@@ -999,11 +998,11 @@ function renderResearchGapsBreakdown(
 			for (const key of FACT_KEYS) {
 				factCounts[key] = (gaps.unsourcedByFact[key] || 0) + (gaps.weaklySourcedByFact[key] || 0);
 			}
-			title = 'Facts needing primary sources';
+			title = '需要一手来源的事实';
 			break;
 		default: // 'all'
 			factCounts = gaps.unsourcedByFact;
-			title = 'Unsourced facts by type';
+			title = '按类型统计的无来源事实';
 	}
 
 	const totalCount = Object.values(factCounts).reduce((a, b) => a + b, 0);
@@ -1036,14 +1035,14 @@ function renderLowestCoveragePeople(
 	if (people.length === 0) {
 		const emptySection = container.createDiv({ cls: 'crc-research-gaps-lowest' });
 		emptySection.createEl('p', {
-			text: `No people match the "${filter}" filter.`,
+			text: `没有符合"${filter}"筛选条件的人物。`,
 			cls: 'crc-text--muted'
 		});
 		return;
 	}
 
 	const lowestSection = container.createDiv({ cls: 'crc-research-gaps-lowest' });
-	lowestSection.createEl('h4', { text: 'Lowest research coverage', cls: 'crc-section-subtitle' });
+	lowestSection.createEl('h4', { text: '研究覆盖率最低', cls: 'crc-section-subtitle' });
 
 	const list = lowestSection.createDiv({ cls: 'crc-research-gaps-list' });
 
@@ -1078,7 +1077,7 @@ function renderLowestCoveragePeople(
 		});
 
 		info.createSpan({
-			text: `${person.coveragePercent}% (${person.sourcedFactCount}/${person.totalFactCount} facts)`,
+			text: `${person.coveragePercent}%（${person.sourcedFactCount}/${person.totalFactCount} 项事实）`,
 			cls: 'crc-text-muted crc-text-small'
 		});
 	}
@@ -1089,7 +1088,7 @@ function exportResearchGapsToCSV(app: App, plugin: CanvasRootsPlugin): void {
 	const gaps = evidenceService.getResearchGaps(1000); // Get all, not just top 10
 
 	if (gaps.lowestCoverage.length === 0) {
-		new Notice('No research coverage data to export');
+		new Notice('没有可导出的研究覆盖率数据');
 		return;
 	}
 
@@ -1122,9 +1121,9 @@ function exportResearchGapsToCSV(app: App, plugin: CanvasRootsPlugin): void {
 	const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
 
 	void navigator.clipboard.writeText(csv).then(() => {
-		new Notice(`Research gaps exported: ${gaps.lowestCoverage.length} people copied to clipboard as CSV`);
+		new Notice(`研究缺口已导出：${gaps.lowestCoverage.length} 位人物已作为 CSV 复制到剪贴板`);
 	}).catch(() => {
-		new Notice('Failed to copy to clipboard');
+		new Notice('复制到剪贴板失败');
 	});
 }
 
@@ -1143,7 +1142,7 @@ function runDataQualityAnalysis(
 
 	// Show loading
 	const loadingEl = container.createDiv({ cls: 'crc-loading' });
-	loadingEl.createSpan({ text: 'Analyzing data quality...' });
+	loadingEl.createSpan({ text: '正在分析数据质量…' });
 
 	// Create service and run analysis
 	const familyGraph = plugin.createFamilyGraphService();
@@ -1195,35 +1194,35 @@ function renderDataQualityReport(
 		scoreValue.addClass('crc-dq-score--poor');
 	}
 
-	scoreEl.createDiv({ cls: 'crc-dq-score-label', text: 'Quality score' });
+	scoreEl.createDiv({ cls: 'crc-dq-score-label', text: '质量得分' });
 
 	// Stats grid
 	const statsGrid = summarySection.createDiv({ cls: 'crc-dq-stats-grid' });
 
-	renderDqStatCard(statsGrid, 'People analyzed', String(summary.totalPeople), 'users');
-	renderDqStatCard(statsGrid, 'Total issues', String(summary.totalIssues), 'alert-circle');
-	renderDqStatCard(statsGrid, 'Errors', String(summary.bySeverity.error), 'alert-triangle');
-	renderDqStatCard(statsGrid, 'Warnings', String(summary.bySeverity.warning), 'alert-circle');
+	renderDqStatCard(statsGrid, '已分析人物', String(summary.totalPeople), 'users');
+	renderDqStatCard(statsGrid, '问题总数', String(summary.totalIssues), 'alert-circle');
+	renderDqStatCard(statsGrid, '错误', String(summary.bySeverity.error), 'alert-triangle');
+	renderDqStatCard(statsGrid, '警告', String(summary.bySeverity.warning), 'alert-circle');
 
 	// Completeness metrics
 	const completenessSection = container.createDiv({ cls: 'crc-section' });
-	completenessSection.createEl('h3', { text: 'Data completeness' });
+	completenessSection.createEl('h3', { text: '数据完整度' });
 
 	const completenessGrid = completenessSection.createDiv({ cls: 'crc-dq-completeness-grid' });
 
 	const total = summary.totalPeople || 1; // Avoid division by zero
-	renderCompletenessBar(completenessGrid, 'Birth date', summary.completeness.withBirthDate, total);
-	renderCompletenessBar(completenessGrid, 'Death date', summary.completeness.withDeathDate, total);
-	renderCompletenessBar(completenessGrid, 'Gender', summary.completeness.withGender, total);
-	renderCompletenessBar(completenessGrid, 'Both parents', summary.completeness.withBothParents, total);
-	renderCompletenessBar(completenessGrid, 'At least one parent', summary.completeness.withAtLeastOneParent, total);
-	renderCompletenessBar(completenessGrid, 'Has spouse', summary.completeness.withSpouse, total);
-	renderCompletenessBar(completenessGrid, 'Has children', summary.completeness.withChildren, total);
+	renderCompletenessBar(completenessGrid, '出生日期', summary.completeness.withBirthDate, total);
+	renderCompletenessBar(completenessGrid, '去世日期', summary.completeness.withDeathDate, total);
+	renderCompletenessBar(completenessGrid, '性别', summary.completeness.withGender, total);
+	renderCompletenessBar(completenessGrid, '父母双全', summary.completeness.withBothParents, total);
+	renderCompletenessBar(completenessGrid, '至少一位父母', summary.completeness.withAtLeastOneParent, total);
+	renderCompletenessBar(completenessGrid, '有配偶', summary.completeness.withSpouse, total);
+	renderCompletenessBar(completenessGrid, '有子女', summary.completeness.withChildren, total);
 
 	// Issues by category
 	if (issues.length > 0) {
 		const issuesSection = container.createDiv({ cls: 'crc-section' });
-		issuesSection.createEl('h3', { text: 'Issues found' });
+		issuesSection.createEl('h3', { text: '发现的问题' });
 
 		// Category filter
 		const filterRow = issuesSection.createDiv({ cls: 'crc-dq-filter-row' });
@@ -1231,15 +1230,15 @@ function renderDataQualityReport(
 		let selectedSeverity: IssueSeverity | 'all' = 'all';
 
 		new Setting(filterRow)
-			.setName('Category')
+			.setName('分类')
 			.addDropdown(dropdown => dropdown
-				.addOption('all', 'All categories')
-				.addOption('date_inconsistency', 'Date issues')
-				.addOption('relationship_inconsistency', 'Relationship issues')
-				.addOption('missing_data', 'Missing data')
-				.addOption('data_format', 'Format issues')
-				.addOption('orphan_reference', 'Orphan references')
-				.addOption('nested_property', 'Nested properties')
+				.addOption('all', '所有分类')
+				.addOption('date_inconsistency', '日期问题')
+				.addOption('relationship_inconsistency', '关系问题')
+				.addOption('missing_data', '缺失数据')
+				.addOption('data_format', '格式问题')
+				.addOption('orphan_reference', '孤立引用')
+				.addOption('nested_property', '嵌套属性')
 				.setValue(selectedCategory)
 				.onChange(value => {
 					selectedCategory = value as IssueCategory | 'all';
@@ -1248,12 +1247,12 @@ function renderDataQualityReport(
 			);
 
 		new Setting(filterRow)
-			.setName('Severity')
+			.setName('严重程度')
 			.addDropdown(dropdown => dropdown
-				.addOption('all', 'All severities')
-				.addOption('error', 'Errors only')
-				.addOption('warning', 'Warnings only')
-				.addOption('info', 'Info only')
+				.addOption('all', '所有级别')
+				.addOption('error', '仅错误')
+				.addOption('warning', '仅警告')
+				.addOption('info', '仅信息')
 				.setValue(selectedSeverity)
 				.onChange(value => {
 					selectedSeverity = value as IssueSeverity | 'all';
@@ -1266,7 +1265,7 @@ function renderDataQualityReport(
 	} else {
 		const noIssuesEl = container.createDiv({ cls: 'crc-dq-no-issues' });
 		setIcon(noIssuesEl.createSpan({ cls: 'crc-dq-no-issues-icon' }), 'check');
-		noIssuesEl.createSpan({ text: 'No issues found! Your data looks great.' });
+		noIssuesEl.createSpan({ text: '未发现问题！你的数据看起来很好。' });
 	}
 }
 
@@ -1328,7 +1327,7 @@ function renderIssuesList(
 	if (filtered.length === 0) {
 		container.createDiv({
 			cls: 'crc-dq-no-matches',
-			text: 'No issues match the selected filters.'
+			text: '没有符合所选筛选条件的问题。'
 		});
 		return;
 	}
@@ -1336,7 +1335,7 @@ function renderIssuesList(
 	// Show count
 	container.createDiv({
 		cls: 'crc-dq-issues-count',
-		text: `Showing ${filtered.length} ${pluralize(filtered.length, 'issue')}`
+		text: `显示 ${filtered.length} 个问题`
 	});
 
 	// Render issues (limit to first 100 for performance)
@@ -1348,7 +1347,7 @@ function renderIssuesList(
 	if (filtered.length > 100) {
 		container.createDiv({
 			cls: 'crc-dq-more-issues',
-			text: `... and ${filtered.length - 100} more issues`
+			text: `… 另有 ${filtered.length - 100} 个问题`
 		});
 	}
 }
@@ -1390,14 +1389,14 @@ function renderIssueItem(container: HTMLElement, issue: DataQualityIssue, option
 
 function formatCategoryName(category: IssueCategory): string {
 	const names: Record<IssueCategory, string> = {
-		date_inconsistency: 'Date',
-		relationship_inconsistency: 'Relationship',
-		missing_data: 'Missing data',
-		data_format: 'Format',
-		orphan_reference: 'Orphan ref',
-		nested_property: 'Nested',
-		legacy_type_property: 'Legacy type',
-		legacy_membership: 'Legacy membership',
+		date_inconsistency: '日期',
+		relationship_inconsistency: '关系',
+		missing_data: '缺失数据',
+		data_format: '格式',
+		orphan_reference: '孤立引用',
+		nested_property: '嵌套',
+		legacy_type_property: '旧版 type',
+		legacy_membership: '旧版成员关系',
 	};
 	return names[category] || category;
 }
@@ -1412,7 +1411,7 @@ function addDataQualityDockButton(card: HTMLElement, plugin: CanvasRootsPlugin):
 
 	const dockBtn = activeDocument.createElement('button');
 	dockBtn.className = 'crc-card__dock-btn clickable-icon';
-	dockBtn.setAttribute('aria-label', 'Open in sidebar');
+	dockBtn.setAttribute('aria-label', '在侧边栏中打开');
 	setIcon(dockBtn, 'panel-right');
 	dockBtn.addEventListener('click', (e) => {
 		e.stopPropagation();
@@ -1446,7 +1445,7 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 	// --- Section 1: Research Gaps (conditional) ---
 	if (plugin.settings.trackFactSourcing) {
 		const gapsSection = container.createDiv({ cls: 'cr-dqv-section' });
-		gapsSection.createEl('h3', { text: 'Research gaps', cls: 'cr-dqv-section-title' });
+		gapsSection.createEl('h3', { text: '研究缺口', cls: 'cr-dqv-section-title' });
 
 		const evidenceService = new EvidenceService(app, plugin.settings);
 		const gaps = evidenceService.getResearchGaps(10);
@@ -1455,7 +1454,7 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 			const emptyState = gapsSection.createDiv({ cls: 'crc-empty-state crc-compact' });
 			setIcon(emptyState.createSpan({ cls: 'crc-empty-icon' }), 'file-search');
 			emptyState.createEl('p', {
-				text: 'No fact-level source tracking data found. Add sourced_* properties to your person notes to track research coverage.'
+				text: '未找到事实级来源追踪数据。请向人物笔记添加 sourced_* 属性以追踪研究覆盖率。'
 			});
 		} else {
 			// Summary stats
@@ -1464,7 +1463,7 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 			const trackedStat = statsRow.createDiv({ cls: 'crc-schema-stat' });
 			setIcon(trackedStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'users');
 			trackedStat.createSpan({
-				text: `${gaps.totalPeopleTracked} tracked`,
+				text: `${gaps.totalPeopleTracked} 位已追踪`,
 				cls: 'crc-schema-stat-text'
 			});
 
@@ -1472,7 +1471,7 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 			const unsourcedStat = statsRow.createDiv({ cls: 'crc-schema-stat crc-schema-stat-warning' });
 			setIcon(unsourcedStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'alert-triangle');
 			unsourcedStat.createSpan({
-				text: `${totalUnsourced} unsourced facts`,
+				text: `${totalUnsourced} 项无来源事实`,
 				cls: 'crc-schema-stat-text'
 			});
 
@@ -1480,7 +1479,7 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 			const weaklyStat = statsRow.createDiv({ cls: 'crc-schema-stat crc-schema-stat-info' });
 			setIcon(weaklyStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'info');
 			weaklyStat.createSpan({
-				text: `${totalWeakly} weakly sourced`,
+				text: `${totalWeakly} 项来源薄弱`,
 				cls: 'crc-schema-stat-text'
 			});
 
@@ -1491,7 +1490,7 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 
 		// --- Section 2: Source Conflicts (conditional, same gate) ---
 		const conflictsSection = container.createDiv({ cls: 'cr-dqv-section' });
-		conflictsSection.createEl('h3', { text: 'Source conflicts', cls: 'cr-dqv-section-title' });
+		conflictsSection.createEl('h3', { text: '来源冲突', cls: 'cr-dqv-section-title' });
 
 		const proofService = plugin.getProofSummaryService();
 		const conflictedProofs = proofService.getProofsByStatus('conflicted');
@@ -1506,21 +1505,21 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 		setIcon(conflictStat.createSpan({ cls: 'crc-schema-stat-icon' }),
 			conflictedProofs.length > 0 ? 'alert-triangle' : 'check');
 		conflictStat.createSpan({
-			text: `${conflictedProofs.length} unresolved ${pluralize(conflictedProofs.length, 'conflict')}`,
+			text: `${conflictedProofs.length} 个未解决的冲突`,
 			cls: 'crc-schema-stat-text'
 		});
 
 		const proofStat = conflictStatsRow.createDiv({ cls: 'crc-schema-stat' });
 		setIcon(proofStat.createSpan({ cls: 'crc-schema-stat-icon' }), 'scale');
 		proofStat.createSpan({
-			text: `${allProofs.length} proof ${pluralize(allProofs.length, 'summary', 'summaries')}`,
+			text: `${allProofs.length} 份证明摘要`,
 			cls: 'crc-schema-stat-text'
 		});
 
 		if (conflictedProofs.length === 0) {
 			const successState = conflictsSection.createDiv({ cls: 'crc-dq-no-issues' });
 			setIcon(successState.createDiv({ cls: 'crc-dq-no-issues-icon' }), 'check');
-			successState.createSpan({ text: 'No unresolved source conflicts' });
+			successState.createSpan({ text: '没有未解决的来源冲突' });
 		} else {
 			const conflictList = conflictsSection.createDiv({ cls: 'crc-conflicts-list' });
 			for (const proof of conflictedProofs) {
@@ -1531,13 +1530,13 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 
 	// --- Section 3: Vault-wide Analysis (always shown, auto-run) ---
 	const analysisSection = container.createDiv({ cls: 'cr-dqv-section' });
-	analysisSection.createEl('h3', { text: 'Vault-wide analysis', cls: 'cr-dqv-section-title' });
+	analysisSection.createEl('h3', { text: '全库分析', cls: 'cr-dqv-section-title' });
 
 	const resultsContainer = analysisSection.createDiv({ cls: 'crc-data-quality-results' });
 
 	// Auto-run analysis
 	const loadingEl = resultsContainer.createDiv({ cls: 'crc-loading' });
-	loadingEl.createSpan({ text: 'Analyzing data quality...' });
+	loadingEl.createSpan({ text: '正在分析数据质量…' });
 
 	const familyGraph = plugin.createFamilyGraphService();
 	const folderFilter = new FolderFilterService(plugin.settings);
@@ -1572,48 +1571,48 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 		scoreValue.addClass('crc-dq-score--poor');
 	}
 
-	scoreEl.createDiv({ cls: 'crc-dq-score-label', text: 'Quality score' });
+	scoreEl.createDiv({ cls: 'crc-dq-score-label', text: '质量得分' });
 
 	// Stats grid
 	const statsGrid = summaryDiv.createDiv({ cls: 'crc-dq-stats-grid' });
-	renderDqStatCard(statsGrid, 'People analyzed', String(summary.totalPeople), 'users');
-	renderDqStatCard(statsGrid, 'Total issues', String(summary.totalIssues), 'alert-circle');
-	renderDqStatCard(statsGrid, 'Errors', String(summary.bySeverity.error), 'alert-triangle');
-	renderDqStatCard(statsGrid, 'Warnings', String(summary.bySeverity.warning), 'alert-circle');
+	renderDqStatCard(statsGrid, '已分析人物', String(summary.totalPeople), 'users');
+	renderDqStatCard(statsGrid, '问题总数', String(summary.totalIssues), 'alert-circle');
+	renderDqStatCard(statsGrid, '错误', String(summary.bySeverity.error), 'alert-triangle');
+	renderDqStatCard(statsGrid, '警告', String(summary.bySeverity.warning), 'alert-circle');
 
 	// Completeness metrics
 	const completenessDiv = resultsContainer.createDiv({ cls: 'crc-section' });
-	completenessDiv.createEl('h3', { text: 'Data completeness' });
+	completenessDiv.createEl('h3', { text: '数据完整度' });
 
 	const completenessGrid = completenessDiv.createDiv({ cls: 'crc-dq-completeness-grid' });
 	const total = summary.totalPeople || 1;
-	renderCompletenessBar(completenessGrid, 'Birth date', summary.completeness.withBirthDate, total);
-	renderCompletenessBar(completenessGrid, 'Death date', summary.completeness.withDeathDate, total);
-	renderCompletenessBar(completenessGrid, 'Gender', summary.completeness.withGender, total);
-	renderCompletenessBar(completenessGrid, 'Both parents', summary.completeness.withBothParents, total);
-	renderCompletenessBar(completenessGrid, 'At least one parent', summary.completeness.withAtLeastOneParent, total);
-	renderCompletenessBar(completenessGrid, 'Has spouse', summary.completeness.withSpouse, total);
-	renderCompletenessBar(completenessGrid, 'Has children', summary.completeness.withChildren, total);
+	renderCompletenessBar(completenessGrid, '出生日期', summary.completeness.withBirthDate, total);
+	renderCompletenessBar(completenessGrid, '去世日期', summary.completeness.withDeathDate, total);
+	renderCompletenessBar(completenessGrid, '性别', summary.completeness.withGender, total);
+	renderCompletenessBar(completenessGrid, '父母双全', summary.completeness.withBothParents, total);
+	renderCompletenessBar(completenessGrid, '至少一位父母', summary.completeness.withAtLeastOneParent, total);
+	renderCompletenessBar(completenessGrid, '有配偶', summary.completeness.withSpouse, total);
+	renderCompletenessBar(completenessGrid, '有子女', summary.completeness.withChildren, total);
 
 	// Issues section
 	if (issues.length > 0) {
 		const issuesDiv = resultsContainer.createDiv({ cls: 'crc-section' });
-		issuesDiv.createEl('h3', { text: 'Issues found' });
+		issuesDiv.createEl('h3', { text: '发现的问题' });
 
 		// Filter row: severity filter + search
 		const filterRow = issuesDiv.createDiv({ cls: 'crc-dq-filter-row' });
 
 		const severitySelect = filterRow.createEl('select', { cls: 'dropdown crc-filter-select' });
-		severitySelect.createEl('option', { value: 'all', text: 'All severities' });
-		severitySelect.createEl('option', { value: 'errors', text: 'Errors only' });
-		severitySelect.createEl('option', { value: 'warnings', text: 'Warnings only' });
-		severitySelect.createEl('option', { value: 'info', text: 'Info only' });
+		severitySelect.createEl('option', { value: 'all', text: '所有级别' });
+		severitySelect.createEl('option', { value: 'errors', text: '仅错误' });
+		severitySelect.createEl('option', { value: 'warnings', text: '仅警告' });
+		severitySelect.createEl('option', { value: 'info', text: '仅信息' });
 		severitySelect.value = currentFilter;
 
 		const searchInput = filterRow.createEl('input', {
 			cls: 'crc-filter-search',
 			type: 'search',
-			placeholder: 'Search issues...',
+			placeholder: '搜索问题…',
 			value: currentSearch
 		});
 
@@ -1642,14 +1641,14 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 			if (filtered.length === 0) {
 				issuesList.createDiv({
 					cls: 'crc-dq-no-matches',
-					text: 'No issues match the selected filters.'
+					text: '没有符合所选筛选条件的问题。'
 				});
 				return;
 			}
 
 			issuesList.createDiv({
 				cls: 'crc-dq-issues-count',
-				text: `Showing ${filtered.length} ${pluralize(filtered.length, 'issue')}`
+				text: `显示 ${filtered.length} 个问题`
 			});
 
 			const displayIssues = filtered.slice(0, 100);
@@ -1660,7 +1659,7 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 			if (filtered.length > 100) {
 				issuesList.createDiv({
 					cls: 'crc-dq-more-issues',
-					text: `... and ${filtered.length - 100} more issues`
+					text: `… 另有 ${filtered.length - 100} 个问题`
 				});
 			}
 		};
@@ -1681,7 +1680,7 @@ export function renderDataQualityDashboard(options: DataQualityDashboardOptions)
 	} else {
 		const noIssuesEl = resultsContainer.createDiv({ cls: 'crc-dq-no-issues' });
 		setIcon(noIssuesEl.createSpan({ cls: 'crc-dq-no-issues-icon' }), 'check');
-		noIssuesEl.createSpan({ text: 'No issues found! Your data looks great.' });
+		noIssuesEl.createSpan({ text: '未发现问题！你的数据看起来很好。' });
 	}
 }
 
@@ -1796,41 +1795,41 @@ async function runBatchOperation(
 	try {
 		switch (operation) {
 			case 'dates':
-				operationName = 'Date normalization';
+				operationName = '日期规范化';
 				result = await dataQualityService.normalizeDateFormats({ scope, folderPath });
 				break;
 			case 'sex':
-				operationName = 'Sex normalization';
+				operationName = '性别规范化';
 				result = await dataQualityService.normalizeGenderValues({ scope, folderPath });
 				break;
 			case 'orphans':
-				operationName = 'Orphan reference clearing';
+				operationName = '孤立引用清除';
 				result = await dataQualityService.clearOrphanReferences({ scope, folderPath });
 				break;
 			case 'legacy_type':
-				operationName = 'Legacy type migration';
+				operationName = '旧版 type 迁移';
 				result = await dataQualityService.migrateLegacyTypeProperty({ scope, folderPath });
 				break;
 			case 'missing_ids':
-				operationName = 'Missing ID repair';
+				operationName = '缺失 ID 修复';
 				result = await dataQualityService.repairMissingIds({ scope, folderPath });
 				break;
 		}
 
 		if (!result) {
-			new Notice(`${operation}: unsupported operation`);
+			new Notice(`${operation}：不支持的操作`);
 			return;
 		}
 
 		// Show result
 		if (result.modified > 0) {
-			new Notice(`${operationName}: Modified ${result.modified} of ${result.processed} files`);
+			new Notice(`${operationName}：已修改 ${result.processed} 个文件中的 ${result.modified} 个`);
 		} else {
-			new Notice(`${operationName}: No changes needed`);
+			new Notice(`${operationName}：无需更改`);
 		}
 
 		if (result.errors.length > 0) {
-			new Notice(`${result.errors.length} errors occurred. Check console for details.`);
+			new Notice(`发生 ${result.errors.length} 个错误。详情请查看控制台。`);
 			console.error('Batch operation errors:', result.errors);
 		}
 
@@ -1840,7 +1839,7 @@ async function runBatchOperation(
 		await familyGraph.reloadCache(result.modifiedFiles);
 
 	} catch (error) {
-		new Notice(`${operation} failed: ${getErrorMessage(error)}`);
+		new Notice(`${operation} 失败：${getErrorMessage(error)}`);
 	}
 }
 

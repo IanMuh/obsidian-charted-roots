@@ -51,8 +51,8 @@ export class RelationshipHistoryModal extends Modal {
 
 		// Title
 		const titleText = this.personFile
-			? `Relationship history: ${this.personFile.basename}`
-			: 'Relationship history';
+			? `关系历史：${this.personFile.basename}`
+			: '关系历史';
 		contentEl.createEl('h2', { text: titleText, cls: 'cr-modal-title' });
 
 		// Stats summary
@@ -74,10 +74,10 @@ export class RelationshipHistoryModal extends Modal {
 
 		const statsGrid = statsDiv.createDiv({ cls: 'cr-stats-grid cr-stats-grid--compact' });
 
-		this.createMiniStat(statsGrid, 'Total', stats.totalChanges.toString());
-		this.createMiniStat(statsGrid, 'Last 24h', stats.changesLast24h.toString());
-		this.createMiniStat(statsGrid, 'Last 7d', stats.changesLast7d.toString());
-		this.createMiniStat(statsGrid, 'Undone', stats.undoneChanges.toString());
+		this.createMiniStat(statsGrid, '总计', stats.totalChanges.toString());
+		this.createMiniStat(statsGrid, '最近24小时', stats.changesLast24h.toString());
+		this.createMiniStat(statsGrid, '最近7天', stats.changesLast7d.toString());
+		this.createMiniStat(statsGrid, '已撤销', stats.undoneChanges.toString());
 	}
 
 	private createMiniStat(container: HTMLElement, label: string, value: string): void {
@@ -90,11 +90,11 @@ export class RelationshipHistoryModal extends Modal {
 		const filterDiv = container.createDiv({ cls: 'cr-history-filters' });
 
 		new Setting(filterDiv)
-			.setName('Filter')
+			.setName('筛选')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('all', 'All changes')
-					.addOption('undoable', 'Undoable only')
+					.addOption('all', '全部更改')
+					.addOption('undoable', '仅可撤销')
 					.setValue(this.filterMode === 'person' ? 'all' : this.filterMode)
 					.onChange(value => {
 						this.filterMode = value as 'all' | 'undoable';
@@ -103,7 +103,7 @@ export class RelationshipHistoryModal extends Modal {
 
 				// Add person option if we have a person file
 				if (this.personFile) {
-					dropdown.addOption('person', `This person only`);
+					dropdown.addOption('person', `仅此人物`);
 					if (this.filterMode === 'person') {
 						dropdown.setValue('person');
 					}
@@ -131,7 +131,7 @@ export class RelationshipHistoryModal extends Modal {
 
 		if (changes.length === 0) {
 			listDiv.createEl('p', {
-				text: 'No relationship changes recorded.',
+				text: '没有记录到关系更改。',
 				cls: 'cr-history-empty'
 			});
 			return;
@@ -146,7 +146,7 @@ export class RelationshipHistoryModal extends Modal {
 
 		if (changes.length > 50) {
 			listDiv.createEl('p', {
-				text: `Showing 50 of ${changes.length} changes`,
+				text: `共 ${changes.length} 条更改，显示最近50条`,
 				cls: 'cr-history-truncated'
 			});
 		}
@@ -177,14 +177,14 @@ export class RelationshipHistoryModal extends Modal {
 
 		if (change.isBidirectionalSync) {
 			meta.createEl('span', {
-				text: 'auto-sync',
+				text: '自动同步',
 				cls: 'cr-history-item-tag'
 			});
 		}
 
 		if (change.undone) {
 			meta.createEl('span', {
-				text: 'undone',
+				text: '已撤销',
 				cls: 'cr-history-item-tag cr-history-item-tag--undone'
 			});
 		}
@@ -193,7 +193,7 @@ export class RelationshipHistoryModal extends Modal {
 		if (!change.undone) {
 			const undoBtn = item.createEl('button', {
 				cls: 'cr-history-item-undo',
-				attr: { 'aria-label': 'Undo this change' }
+				attr: { 'aria-label': '撤销此更改' }
 			});
 			const undoIcon = createLucideIcon('undo-2', 14);
 			undoBtn.appendChild(undoIcon);
@@ -202,7 +202,7 @@ export class RelationshipHistoryModal extends Modal {
 				void (async () => {
 					const success = await this.historyService.undoChange(change.id);
 					if (success) {
-						new Notice('Change undone successfully');
+						new Notice('更改已成功撤销');
 						this.render();
 					}
 				})();
@@ -230,12 +230,12 @@ export class RelationshipHistoryModal extends Modal {
 		const undoableCount = this.historyService.getUndoableChanges().length;
 		if (undoableCount > 0) {
 			new ButtonComponent(actionsDiv)
-				.setButtonText('Undo last change')
+				.setButtonText('撤销上次更改')
 				.onClick(() => {
 					void (async () => {
 						const change = await this.historyService.undoLastChange();
 						if (change) {
-							new Notice(`Undone: ${formatChangeDescription(change)}`);
+							new Notice(`已撤销：${formatChangeDescription(change)}`);
 							this.render();
 						}
 					})();
@@ -244,7 +244,7 @@ export class RelationshipHistoryModal extends Modal {
 
 		// Close button
 		new ButtonComponent(actionsDiv)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.setCta()
 			.onClick(() => this.close());
 	}
@@ -276,27 +276,27 @@ export class ClearHistoryConfirmModal extends Modal {
 		const { contentEl } = this;
 		contentEl.empty();
 
-		contentEl.createEl('h2', { text: 'Clear relationship history?' });
+		contentEl.createEl('h2', { text: '清空关系历史？' });
 
 		const stats = this.historyService.getStats();
 		contentEl.createEl('p', {
-			text: `This will permanently delete ${stats.totalChanges} history entries. This action cannot be undone.`
+			text: `这将永久删除 ${stats.totalChanges} 条历史记录，此操作无法撤销。`
 		});
 
 		const buttonDiv = contentEl.createDiv({ cls: 'cr-modal-buttons' });
 
 		new ButtonComponent(buttonDiv)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => this.close());
 
 		setButtonDestructive(new ButtonComponent(buttonDiv)
-			.setButtonText('Clear history'))
+			.setButtonText('清空历史'))
 			.onClick(() => {
 				void (async () => {
 					await this.historyService.clearHistory();
 					this.onConfirm();
 					this.close();
-					new Notice('Relationship history cleared');
+					new Notice('关系历史已清空');
 				})();
 			});
 	}

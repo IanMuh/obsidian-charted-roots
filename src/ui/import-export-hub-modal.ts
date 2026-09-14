@@ -30,7 +30,7 @@ export class ImportExportHubModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'crc-import-export-hub-header' });
 		const headerIcon = header.createDiv({ cls: 'crc-import-export-hub-header-icon' });
 		setIcon(headerIcon, 'arrow-up-down');
-		header.createEl('h2', { text: 'Import/Export' });
+		header.createEl('h2', { text: '导入/导出' });
 
 		// Action cards grid
 		const grid = contentEl.createDiv({ cls: 'crc-import-export-hub-grid' });
@@ -39,8 +39,8 @@ export class ImportExportHubModal extends Modal {
 		this.renderActionCard(grid, {
 			icon: 'download',
 			iconClass: 'import',
-			title: 'Import',
-			description: 'Import family data from GEDCOM, Gramps, or CSV files into your vault.',
+			title: '导入',
+			description: '从 GEDCOM、Gramps 或 CSV 文件导入家族数据到你的库。',
 			onClick: () => this.openWizard('import')
 		});
 
@@ -48,8 +48,8 @@ export class ImportExportHubModal extends Modal {
 		this.renderActionCard(grid, {
 			icon: 'upload',
 			iconClass: 'export',
-			title: 'Export',
-			description: 'Export your genealogical data to GEDCOM, GEDCOM X, Gramps XML, or CSV formats.',
+			title: '导出',
+			description: '将你的谱系数据导出为 GEDCOM、GEDCOM X、Gramps XML 或 CSV 格式。',
 			onClick: () => this.openWizard('export')
 		});
 	}

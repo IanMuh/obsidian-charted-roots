@@ -448,7 +448,7 @@ export class PlaceLookupService {
 			const errorMsg = String(error);
 			logger.warn('geonames-lookup-failed', `GeoNames lookup failed: ${errorMsg}`);
 			if (errorMsg.includes('401')) {
-				new Notice('GeoNames lookup failed: invalid or inactive username. Check Settings > Places > GeoNames username.');
+				new Notice('GeoNames 查找失败：用户名无效或未激活。请检查 设置 > 地点 > GeoNames 用户名。');
 			}
 			return [];
 		}

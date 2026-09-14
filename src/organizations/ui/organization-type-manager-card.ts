@@ -30,18 +30,18 @@ export function renderOrganizationTypeManagerCard(
 	onRefresh: () => void
 ): void {
 	const card = createCard({
-		title: 'Manage organization types',
+		title: '管理组织类型',
 		icon: 'sliders',
-		subtitle: 'Customize, hide, or create organization types'
+		subtitle: '自定义、隐藏或创建组织类型'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	// Create organization type button
 	new Setting(content)
-		.setName('Create organization type')
-		.setDesc('Define a new custom organization type')
+		.setName('创建组织类型')
+		.setDesc('定义新的自定义组织类型')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.setCta()
 			.onClick(() => {
 				const modal = new OrganizationTypeEditorModal(plugin.app, plugin, {
@@ -55,10 +55,10 @@ export function renderOrganizationTypeManagerCard(
 
 	// Add category button
 	new Setting(content)
-		.setName('Add category')
-		.setDesc('Create a new category to organize types')
+		.setName('添加分类')
+		.setDesc('创建用于组织类型的新分类')
 		.addButton(button => button
-			.setButtonText('Add')
+			.setButtonText('添加')
 			.onClick(() => {
 				openCategoryEditor(plugin, null, false, () => {
 					renderTypeList();
@@ -68,8 +68,8 @@ export function renderOrganizationTypeManagerCard(
 
 	// Toggle built-in types
 	new Setting(content)
-		.setName('Show built-in types')
-		.setDesc('Toggle visibility of default organization types')
+		.setName('显示内置类型')
+		.setDesc('切换默认组织类型的可见性')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.showBuiltInOrganizationTypes !== false)
 			.onChange(async (value) => {
@@ -137,7 +137,7 @@ export function renderOrganizationTypeManagerCard(
 			// Show customized badge for built-in categories
 			if (isBuiltIn && isCatCustomized) {
 				headingEl.createEl('span', {
-					text: ' (customized)',
+					text: '（已自定义）',
 					cls: 'crc-text-muted crc-type-category-badge'
 				});
 			}
@@ -146,7 +146,7 @@ export function renderOrganizationTypeManagerCard(
 			const actionsContainer = headerRow.createDiv({ cls: 'crc-type-category-actions' });
 
 			const editCatBtn = actionsContainer.createEl('button', {
-				text: isBuiltIn ? 'Customize' : 'Edit',
+				text: isBuiltIn ? '自定义' : '编辑',
 				cls: 'crc-btn crc-btn--small'
 			});
 			editCatBtn.addEventListener('click', () => {
@@ -157,7 +157,7 @@ export function renderOrganizationTypeManagerCard(
 			});
 
 			const deleteCatBtn = actionsContainer.createEl('button', {
-				text: isBuiltIn ? 'Hide' : 'Delete',
+				text: isBuiltIn ? '隐藏' : '删除',
 				cls: 'crc-btn crc-btn--small crc-btn--danger'
 			});
 			deleteCatBtn.addEventListener('click', () => {
@@ -183,7 +183,7 @@ export function renderOrganizationTypeManagerCard(
 				}
 			} else {
 				categorySection.createEl('p', {
-					text: 'No types in this category',
+					text: '此分类中没有类型',
 					cls: 'crc-text-muted crc-type-empty-category'
 				});
 			}
@@ -193,12 +193,12 @@ export function renderOrganizationTypeManagerCard(
 		if (hiddenCats.size > 0) {
 			const hiddenCatsInfo = listContainer.createDiv({ cls: 'crc-hidden-types-info' });
 			hiddenCatsInfo.createEl('span', {
-				text: `${hiddenCats.size} categor${hiddenCats.size !== 1 ? 'ies' : 'y'} hidden`,
+				text: `已隐藏 ${hiddenCats.size} 个分类`,
 				cls: 'crc-text-muted'
 			});
 
 			const showAllCatsBtn = hiddenCatsInfo.createEl('button', {
-				text: 'Show all',
+				text: '全部显示',
 				cls: 'crc-btn-link'
 			});
 			showAllCatsBtn.addEventListener('click', () => {
@@ -215,12 +215,12 @@ export function renderOrganizationTypeManagerCard(
 		if (hiddenTypes.size > 0) {
 			const hiddenInfo = listContainer.createDiv({ cls: 'crc-hidden-types-info' });
 			hiddenInfo.createEl('span', {
-				text: `${hiddenTypes.size} type${hiddenTypes.size !== 1 ? 's' : ''} hidden`,
+				text: `已隐藏 ${hiddenTypes.size} 个类型`,
 				cls: 'crc-text-muted'
 			});
 
 			const showAllBtn = hiddenInfo.createEl('button', {
-				text: 'Show all',
+				text: '全部显示',
 				cls: 'crc-btn-link'
 			});
 			showAllBtn.addEventListener('click', () => {
@@ -267,10 +267,10 @@ function renderTypeRow(
 	// Status cell (badges)
 	const statusCell = row.createEl('td', { cls: 'crc-type-cell-status' });
 	if (isCustomized) {
-		statusCell.createEl('span', { text: 'Customized', cls: 'crc-type-badge crc-type-badge--customized' });
+		statusCell.createEl('span', { text: '已自定义', cls: 'crc-type-badge crc-type-badge--customized' });
 	}
 	if (isHidden) {
-		statusCell.createEl('span', { text: 'Hidden', cls: 'crc-type-badge crc-type-badge--hidden' });
+		statusCell.createEl('span', { text: '已隐藏', cls: 'crc-type-badge crc-type-badge--hidden' });
 	}
 
 	// Actions cell
@@ -279,7 +279,7 @@ function renderTypeRow(
 
 	// Edit/Customize button
 	const editBtn = actionsWrapper.createEl('button', {
-		text: type.isBuiltIn ? 'Customize' : 'Edit',
+		text: type.isBuiltIn ? '自定义' : '编辑',
 		cls: 'crc-btn crc-btn--small'
 	});
 	editBtn.addEventListener('click', (e) => {
@@ -304,7 +304,7 @@ function renderTypeRow(
 
 	// Hide/Show button
 	const hideBtn = actionsWrapper.createEl('button', {
-		text: isHidden ? 'Show' : 'Hide',
+		text: isHidden ? '显示' : '隐藏',
 		cls: 'crc-btn crc-btn--small crc-btn--danger'
 	});
 	hideBtn.addEventListener('click', (e) => {
@@ -325,7 +325,7 @@ function renderTypeRow(
 	// Reset button for customized built-in types
 	if (type.isBuiltIn && isCustomized) {
 		const resetBtn = actionsWrapper.createEl('button', {
-			text: 'Reset',
+			text: '重置',
 			cls: 'crc-btn crc-btn--small'
 		});
 		resetBtn.addEventListener('click', (e) => {
@@ -343,7 +343,7 @@ function renderTypeRow(
 	// Delete button for custom types
 	if (!type.isBuiltIn) {
 		const deleteBtn = actionsWrapper.createEl('button', {
-			text: 'Delete',
+			text: '删除',
 			cls: 'crc-btn crc-btn--small crc-btn--danger'
 		});
 		deleteBtn.addEventListener('click', (e) => {
@@ -362,18 +362,18 @@ function confirmDeleteType(
 	onUpdate: () => void
 ): void {
 	const modal = new Modal(plugin.app);
-	modal.titleEl.setText('Delete organization type');
+	modal.titleEl.setText('删除组织类型');
 	modal.contentEl.createEl('p', {
-		text: `Are you sure you want to delete "${type.name}"? Existing organization notes using this type will still work, but the type will no longer appear in dropdowns.`
+		text: `确定要删除"${type.name}"吗？使用此类型的现有组织笔记仍可正常工作，但该类型将不再出现在下拉菜单中。`
 	});
 
 	const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
 
-	const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+	const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 	cancelBtn.addEventListener('click', () => modal.close());
 
 	const deleteBtn = buttonContainer.createEl('button', {
-		text: 'Delete',
+		text: '删除',
 		cls: 'mod-warning'
 	});
 	deleteBtn.addEventListener('click', () => {
@@ -387,7 +387,7 @@ function confirmDeleteType(
 			);
 			await plugin.saveSettings();
 			modal.close();
-			new Notice(`Deleted "${type.name}"`);
+			new Notice(`已删除"${type.name}"`);
 			onUpdate();
 		})();
 	});
@@ -410,16 +410,16 @@ function openCategoryEditor(
 
 	modal.titleEl.setText(
 		isBuiltIn
-			? `Customize "${category?.name}"`
+			? `自定义"${category?.name}"`
 			: isEditing
-				? 'Edit category'
-				: 'Create category'
+				? '编辑分类'
+				: '创建分类'
 	);
 
 	if (isBuiltIn) {
 		const info = modal.contentEl.createDiv({ cls: 'cr-modal-info' });
 		info.createEl('p', {
-			text: 'Customize this built-in category. You can rename it or change its position.',
+			text: '自定义此内置分类。你可以重命名它或更改其位置。',
 			cls: 'crc-text-muted'
 		});
 	}
@@ -428,12 +428,12 @@ function openCategoryEditor(
 	const nameRow = modal.contentEl.createDiv({ cls: 'setting-item' });
 	nameRow.createDiv({ cls: 'setting-item-info' }).createDiv({
 		cls: 'setting-item-name',
-		text: 'Name'
+		text: '名称'
 	});
 	const nameInput = nameRow.createDiv({ cls: 'setting-item-control' }).createEl('input', {
 		type: 'text',
 		value: category?.name || '',
-		placeholder: 'e.g., Secret societies'
+		placeholder: '例如：秘密结社'
 	});
 	nameInput.addClass('crc-form-input');
 
@@ -441,7 +441,7 @@ function openCategoryEditor(
 	const orderRow = modal.contentEl.createDiv({ cls: 'setting-item' });
 	orderRow.createDiv({ cls: 'setting-item-info' }).createDiv({
 		cls: 'setting-item-name',
-		text: 'Sort order'
+		text: '排序顺序'
 	});
 	const orderInput = orderRow.createDiv({ cls: 'setting-item-control' }).createEl('input', {
 		type: 'number',
@@ -456,7 +456,7 @@ function openCategoryEditor(
 	if (isBuiltIn && category) {
 		const hasCustomization = plugin.settings.organizationCategoryCustomizations?.[category.id];
 		if (hasCustomization) {
-			const resetBtn = buttonContainer.createEl('button', { text: 'Reset to default' });
+			const resetBtn = buttonContainer.createEl('button', { text: '重置为默认' });
 			resetBtn.addEventListener('click', () => {
 				void (async () => {
 					if (plugin.settings.organizationCategoryCustomizations) {
@@ -464,25 +464,25 @@ function openCategoryEditor(
 					}
 					await plugin.saveSettings();
 					modal.close();
-					new Notice('Reset to default');
+					new Notice('已重置为默认');
 					onSave();
 				})();
 			});
 		}
 	}
 
-	const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+	const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 	cancelBtn.addEventListener('click', () => modal.close());
 
 	const saveBtn = buttonContainer.createEl('button', {
-		text: isBuiltIn ? 'Save customization' : isEditing ? 'Save' : 'Create',
+		text: isBuiltIn ? '保存自定义' : isEditing ? '保存' : '创建',
 		cls: 'mod-cta'
 	});
 	saveBtn.addEventListener('click', () => {
 		void (async () => {
 			const name = nameInput.value.trim();
 			if (!name) {
-				new Notice('Category name is required');
+				new Notice('请输入分类名称');
 				return;
 			}
 
@@ -511,7 +511,7 @@ function openCategoryEditor(
 
 				await plugin.saveSettings();
 				modal.close();
-				new Notice('Category customized');
+				new Notice('已自定义分类');
 				onSave();
 			} else if (isEditing && category) {
 				// Update existing custom category
@@ -521,7 +521,7 @@ function openCategoryEditor(
 				);
 				await plugin.saveSettings();
 				modal.close();
-				new Notice(`Updated "${name}"`);
+				new Notice(`已更新"${name}"`);
 				onSave();
 			} else {
 				// Create new custom category
@@ -531,14 +531,14 @@ function openCategoryEditor(
 				const existing = plugin.settings.customOrganizationCategories || [];
 				const builtInConflict = BUILT_IN_ORGANIZATION_CATEGORIES.some(c => c.id === id);
 				if (builtInConflict || existing.some(c => c.id === id)) {
-					new Notice('A category with this ID already exists');
+					new Notice('已存在使用此 ID 的分类');
 					return;
 				}
 
 				plugin.settings.customOrganizationCategories = [...existing, { id, name, sortOrder }];
 				await plugin.saveSettings();
 				modal.close();
-				new Notice(`Created "${name}"`);
+				new Notice(`已创建"${name}"`);
 				onSave();
 			}
 		})();
@@ -559,34 +559,34 @@ function confirmDeleteCategory(
 	onDelete: () => void
 ): void {
 	const modal = new Modal(plugin.app);
-	modal.titleEl.setText(isBuiltIn ? 'Hide category' : 'Delete category');
+	modal.titleEl.setText(isBuiltIn ? '隐藏分类' : '删除分类');
 
 	if (typeCount > 0) {
 		modal.contentEl.createEl('p', {
-			text: `This category contains ${typeCount} type${typeCount !== 1 ? 's' : ''}. You must move or delete all types before ${isBuiltIn ? 'hiding' : 'deleting'} the category.`
+			text: `此分类包含 ${typeCount} 个类型。${isBuiltIn ? '隐藏' : '删除'}该分类前，必须先移动或删除所有类型。`
 		});
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
-		const okBtn = buttonContainer.createEl('button', { text: 'OK', cls: 'mod-cta' });
+		const okBtn = buttonContainer.createEl('button', { text: '确定', cls: 'mod-cta' });
 		okBtn.addEventListener('click', () => modal.close());
 	} else {
 		if (isBuiltIn) {
 			modal.contentEl.createEl('p', {
-				text: `Are you sure you want to hide the category "${category.name}"? You can restore it later from the settings.`
+				text: `确定要隐藏分类"${category.name}"吗？之后可以在设置中恢复。`
 			});
 		} else {
 			modal.contentEl.createEl('p', {
-				text: `Are you sure you want to delete the category "${category.name}"?`
+				text: `确定要删除分类"${category.name}"吗？`
 			});
 		}
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => modal.close());
 
 		const deleteBtn = buttonContainer.createEl('button', {
-			text: isBuiltIn ? 'Hide' : 'Delete',
+			text: isBuiltIn ? '隐藏' : '删除',
 			cls: 'mod-warning'
 		});
 		deleteBtn.addEventListener('click', () => {
@@ -606,7 +606,7 @@ function confirmDeleteCategory(
 				}
 				await plugin.saveSettings();
 				modal.close();
-				new Notice(isBuiltIn ? `Hidden "${category.name}"` : `Deleted "${category.name}"`);
+				new Notice(isBuiltIn ? `已隐藏"${category.name}"` : `已删除"${category.name}"`);
 				onDelete();
 			})();
 		});

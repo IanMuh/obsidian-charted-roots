@@ -7,9 +7,9 @@ import type { ValidationSummary } from '../schemas/types/schema-types';
  * Phase display configuration
  */
 const PHASE_CONFIG: Record<ValidationProgress['phase'], { label: string; icon: LucideIconName }> = {
-	scanning: { label: 'Scanning vault', icon: 'search' },
-	validating: { label: 'Validating notes', icon: 'clipboard-check' },
-	complete: { label: 'Complete', icon: 'check' }
+	scanning: { label: '正在扫描库', icon: 'search' },
+	validating: { label: '正在验证笔记', icon: 'clipboard-check' },
+	complete: { label: '完成', icon: 'check' }
 };
 
 /**
@@ -37,7 +37,7 @@ export class SchemaValidationProgressModal extends Modal {
 
 		// Title
 		contentEl.createEl('h2', {
-			text: 'Validating vault',
+			text: '正在验证库',
 			cls: 'crc-modal-title'
 		});
 
@@ -46,7 +46,7 @@ export class SchemaValidationProgressModal extends Modal {
 		this.phaseIcon = phaseContainer.createDiv({ cls: 'cr-import-phase__icon' });
 		this.phaseLabel = phaseContainer.createEl('span', {
 			cls: 'cr-import-phase__label',
-			text: 'Scanning vault…'
+			text: '正在扫描库…'
 		});
 
 		// Progress bar container
@@ -58,7 +58,7 @@ export class SchemaValidationProgressModal extends Modal {
 		// Progress text
 		this.progressText = contentEl.createDiv({
 			cls: 'cr-import-progress__text',
-			text: 'Starting…'
+			text: '正在开始…'
 		});
 
 		// Current file being processed
@@ -100,9 +100,9 @@ export class SchemaValidationProgressModal extends Modal {
 
 		// Update progress text
 		if (progress.total > 0) {
-			this.progressText.textContent = `${progress.current} of ${progress.total}`;
+			this.progressText.textContent = `第 ${progress.current} / ${progress.total}`;
 		} else {
-			this.progressText.textContent = 'Processing…';
+			this.progressText.textContent = '正在处理…';
 		}
 
 		// Update current file
@@ -120,10 +120,10 @@ export class SchemaValidationProgressModal extends Modal {
 		if (!this.progressBar || !this.progressText || !this.phaseLabel) return;
 
 		this.currentPhase = 'complete';
-		this.phaseLabel.textContent = 'Validation complete';
+		this.phaseLabel.textContent = '验证完成';
 		this.updatePhaseIcon('complete');
 		this.progressBar.setCssProps({ '--progress-width': '100%' });
-		this.progressText.textContent = 'Done!';
+		this.progressText.textContent = '完成！';
 
 		// Clear current file
 		if (this.currentFileEl) {
@@ -135,10 +135,10 @@ export class SchemaValidationProgressModal extends Modal {
 			this.statsContainer.empty();
 
 			const items: { label: string; value: number; icon: LucideIconName; cls?: string }[] = [
-				{ label: 'People validated', value: summary.totalPeopleValidated, icon: 'users' },
-				{ label: 'Schemas checked', value: summary.totalSchemas, icon: 'clipboard-check' },
+				{ label: '已验证人物', value: summary.totalPeopleValidated, icon: 'users' },
+				{ label: '已检查模式', value: summary.totalSchemas, icon: 'clipboard-check' },
 				{
-					label: 'Errors',
+					label: '错误',
 					value: summary.totalErrors,
 					icon: summary.totalErrors > 0 ? 'alert-circle' : 'check',
 					cls: summary.totalErrors > 0 ? 'cr-import-stat--error' : 'cr-import-stat--success'
@@ -147,7 +147,7 @@ export class SchemaValidationProgressModal extends Modal {
 
 			if (summary.totalWarnings > 0) {
 				items.push({
-					label: 'Warnings',
+					label: '警告',
 					value: summary.totalWarnings,
 					icon: 'alert-triangle',
 					cls: 'cr-import-stat--warning'

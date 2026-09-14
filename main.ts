@@ -821,7 +821,7 @@ export default class CanvasRootsPlugin extends Plugin {
 	 */
 	private showRelationshipHistory(personFile?: TFile) {
 		if (!this.relationshipHistory) {
-			new Notice('Relationship history is disabled. Enable it in settings.');
+			new Notice('关系历史已禁用。请在设置中启用。');
 			return;
 		}
 
@@ -833,13 +833,13 @@ export default class CanvasRootsPlugin extends Plugin {
 	 */
 	private async undoLastRelationshipChange() {
 		if (!this.relationshipHistory) {
-			new Notice('Relationship history is disabled. Enable it in settings.');
+			new Notice('关系历史已禁用。请在设置中启用。');
 			return;
 		}
 
 		const change = await this.relationshipHistory.undoLastChange();
 		if (change) {
-			new Notice(`Undone: ${formatChangeDescription(change)}`);
+			new Notice(`已撤销：${formatChangeDescription(change)}`);
 		}
 	}
 
@@ -985,7 +985,7 @@ export default class CanvasRootsPlugin extends Plugin {
 			void universeService.cascadeUniverseRename(oldBasename, newBasename)
 				.then(updateCount => {
 					if (updateCount > 0) {
-						new Notice(`Updated universe references on ${updateCount} note${updateCount === 1 ? '' : 's'}`);
+						new Notice(`已更新 ${updateCount} 个笔记中的宇宙引用`);
 					}
 				})
 				.catch(error => {

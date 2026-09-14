@@ -10,7 +10,6 @@ import CanvasRootsPlugin from '../../main';
 import { LucideIconName, setLucideIcon } from './lucide-icons';
 import { VaultStatsService, FullVaultStats } from '../core/vault-stats';
 import { getErrorMessage } from '../core/error-utils';
-import { pluralize } from '../utils/format-utils';
 import { CreatePersonModal } from './create-person-modal';
 import { CreatePlaceModal } from './create-place-modal';
 import { CreateEventModal } from '../events/ui/create-event-modal';
@@ -88,14 +87,14 @@ function renderFirstRunNotice(container: HTMLElement, plugin: CanvasRootsPlugin)
 	setLucideIcon(iconEl, 'sparkles', 18);
 
 	const textEl = content.createDiv({ cls: 'crc-dashboard-first-run-text' });
-	textEl.createEl('strong', { text: 'Welcome to the new Dashboard!' });
+	textEl.createEl('strong', { text: '欢迎使用新版仪表盘！' });
 	textEl.createSpan({
-		text: ' Quick actions, recent files, and vault health at a glance.'
+		text: ' 快速操作、最近文件与库健康状况一览。'
 	});
 
 	const dismissBtn = notice.createEl('button', {
 		cls: 'crc-dashboard-first-run-dismiss',
-		attr: { 'aria-label': 'Dismiss notice' }
+		attr: { 'aria-label': '关闭通知' }
 	});
 	setLucideIcon(dismissBtn, 'x', 14);
 
@@ -120,19 +119,19 @@ function renderDocumentationCard(container: HTMLElement): void {
 
 	// Content
 	const content = card.createDiv({ cls: 'crc-dashboard-docs-content' });
-	content.createSpan({ text: 'New to Charted Roots? Start with ', cls: 'crc-text-muted' });
+	content.createSpan({ text: '初次使用 Charted Roots？请先阅读 ', cls: 'crc-text-muted' });
 
 	const essentialLink = content.createEl('a', {
-		text: 'Essential Properties',
+		text: '核心属性',
 		href: `${WIKI_BASE}/Essential-Properties`,
 		cls: 'crc-link'
 	});
 	essentialLink.setAttr('target', '_blank');
 
-	content.createSpan({ text: ' or explore the ', cls: 'crc-text-muted' });
+	content.createSpan({ text: ' 或浏览 ', cls: 'crc-text-muted' });
 
 	const wikiLink = content.createEl('a', {
-		text: 'full documentation',
+		text: '完整文档',
 		href: WIKI_BASE,
 		cls: 'crc-link'
 	});
@@ -153,7 +152,7 @@ function renderQuickActionsSection(
 ): void {
 	// Section header
 	const header = container.createDiv({ cls: 'crc-dashboard-section-header' });
-	header.createSpan({ text: 'Quick Actions', cls: 'crc-dashboard-section-title' });
+	header.createSpan({ text: '快速操作', cls: 'crc-dashboard-section-title' });
 
 	// Tile grid
 	const grid = container.createDiv({ cls: 'crc-dashboard-tile-grid' });
@@ -237,38 +236,38 @@ function renderQuickActionsSection(
 		// Row 1: Core entity creation
 		{
 			id: 'create-person',
-			label: 'Person',
+			label: '人物',
 			icon: 'user',
-			description: 'Create a new person note',
+			description: '创建新的人物笔记',
 			action: () => void openCreatePerson()
 		},
 		{
 			id: 'create-event',
-			label: 'Event',
+			label: '事件',
 			icon: 'calendar',
-			description: 'Create a new event note',
+			description: '创建新的事件笔记',
 			action: openCreateEvent
 		},
 		{
 			id: 'create-place',
-			label: 'Place',
+			label: '地点',
 			icon: 'map-pin',
-			description: 'Create a new place note',
+			description: '创建新的地点笔记',
 			action: openCreatePlace
 		},
 		{
 			id: 'create-source',
-			label: 'Source',
+			label: '来源',
 			icon: 'file-text',
-			description: 'Create a new source note',
+			description: '创建新的来源笔记',
 			action: openCreateSource
 		},
 		// Row 2: Family & visualization
 		{
 			id: 'create-family',
-			label: 'Create Family',
+			label: '创建家族',
 			icon: 'users',
-			description: 'Create a family group with wizard',
+			description: '使用向导创建家族分组',
 			action: () => {
 				closeModal();
 				new FamilyCreationWizardModal(app, plugin).open();
@@ -276,9 +275,9 @@ function renderQuickActionsSection(
 		},
 		{
 			id: 'family-chart',
-			label: 'Family Chart',
+			label: '家族图表',
 			icon: 'users',
-			description: 'Open the interactive family chart',
+			description: '打开交互式家族图表',
 			action: () => {
 				closeModal();
 				void plugin.activateFamilyChartView();
@@ -286,18 +285,18 @@ function renderQuickActionsSection(
 		},
 		{
 			id: 'tree-output',
-			label: 'Generate Canvas Tree',
+			label: '生成画布树',
 			icon: 'git-branch',
-			description: 'Generate interactive tree canvases',
+			description: '生成交互式树画布',
 			action: () => {
 				switchTab('tree-generation');
 			}
 		},
 		{
 			id: 'open-map',
-			label: 'Map',
+			label: '地图',
 			icon: 'map',
-			description: 'Open the interactive map view',
+			description: '打开交互式地图视图',
 			action: () => {
 				closeModal();
 				void plugin.activateMapView();
@@ -305,9 +304,9 @@ function renderQuickActionsSection(
 		},
 		{
 			id: 'open-calendar',
-			label: 'Calendar',
+			label: '日历',
 			icon: 'calendar',
-			description: 'View significant dates on a calendar',
+			description: '在日历上查看重要日期',
 			action: () => {
 				closeModal();
 				void plugin.activateCalendarView();
@@ -316,9 +315,9 @@ function renderQuickActionsSection(
 		// Row 3: Analysis & utilities
 		{
 			id: 'reports',
-			label: 'Reports Wizard',
+			label: '报告向导',
 			icon: 'file-text',
-			description: 'Generate timeline and narrative reports',
+			description: '生成时间轴与叙述性报告',
 			action: () => {
 				closeModal();
 				new ReportWizardModal(plugin).open();
@@ -326,9 +325,9 @@ function renderQuickActionsSection(
 		},
 		{
 			id: 'statistics-reports',
-			label: 'Stats & Reports',
+			label: '统计与报告',
 			icon: 'chart-bar-decreasing',
-			description: 'Statistics dashboard and report generation',
+			description: '统计仪表盘与报告生成',
 			action: () => {
 				closeModal();
 				void plugin.activateStatisticsView();
@@ -336,9 +335,9 @@ function renderQuickActionsSection(
 		},
 		{
 			id: 'media-manager',
-			label: 'Media',
+			label: '媒体',
 			icon: 'image',
-			description: 'Manage media files linked to entities',
+			description: '管理关联到实体的媒体文件',
 			action: () => {
 				closeModal();
 				new MediaManagerModal(app, plugin).open();
@@ -346,9 +345,9 @@ function renderQuickActionsSection(
 		},
 		{
 			id: 'import-export',
-			label: 'Import/Export',
+			label: '导入/导出',
 			icon: 'arrow-up-down',
-			description: 'Import or export genealogical data',
+			description: '导入或导出家谱数据',
 			action: () => {
 				closeModal();
 				new ImportExportHubModal(app, plugin).open();
@@ -357,9 +356,9 @@ function renderQuickActionsSection(
 		// Row 4: Utilities
 		{
 			id: 'quick-actions',
-			label: 'Quick actions',
+			label: '快速操作',
 			icon: 'terminal',
-			description: 'Search and launch any plugin command',
+			description: '搜索并运行任意插件命令',
 			action: () => {
 				closeModal();
 				new CommandMenuModal(app).open();
@@ -367,9 +366,9 @@ function renderQuickActionsSection(
 		},
 		{
 			id: 'settings',
-			label: 'Settings',
+			label: '设置',
 			icon: 'settings',
-			description: 'Open Charted Roots plugin settings',
+			description: '打开 Charted Roots 插件设置',
 			action: () => {
 				closeModal();
 				// @ts-expect-error - Obsidian internal API for opening settings
@@ -396,7 +395,7 @@ function renderDockableViewsSection(
 ): void {
 	// Section header
 	const header = container.createDiv({ cls: 'crc-dashboard-section-header' });
-	header.createSpan({ text: 'Dockable views', cls: 'crc-dashboard-section-title' });
+	header.createSpan({ text: '可停靠视图', cls: 'crc-dashboard-section-title' });
 
 	// Tile grid
 	const grid = container.createDiv({ cls: 'crc-dashboard-tile-grid' });
@@ -405,9 +404,9 @@ function renderDockableViewsSection(
 	const tiles: DashboardTile[] = [
 		{
 			id: 'view-people',
-			label: 'People',
+			label: '人物',
 			icon: 'users',
-			description: 'Open people browser in sidebar',
+			description: '在侧边栏打开人物浏览器',
 			action: () => {
 				closeModal();
 				void plugin.activatePeopleView();
@@ -415,9 +414,9 @@ function renderDockableViewsSection(
 		},
 		{
 			id: 'view-places',
-			label: 'Places',
+			label: '地点',
 			icon: 'map-pin',
-			description: 'Open places browser in sidebar',
+			description: '在侧边栏打开地点浏览器',
 			action: () => {
 				closeModal();
 				void plugin.activatePlacesView();
@@ -425,9 +424,9 @@ function renderDockableViewsSection(
 		},
 		{
 			id: 'view-events',
-			label: 'Events',
+			label: '事件',
 			icon: 'calendar',
-			description: 'Open events browser in sidebar',
+			description: '在侧边栏打开事件浏览器',
 			action: () => {
 				closeModal();
 				void plugin.activateEventsView();
@@ -435,9 +434,9 @@ function renderDockableViewsSection(
 		},
 		{
 			id: 'view-sources',
-			label: 'Sources',
+			label: '来源',
 			icon: 'book-open',
-			description: 'Open sources browser in sidebar',
+			description: '在侧边栏打开来源浏览器',
 			action: () => {
 				closeModal();
 				void plugin.activateSourcesView();
@@ -445,9 +444,9 @@ function renderDockableViewsSection(
 		},
 		{
 			id: 'view-organizations',
-			label: 'Organizations',
+			label: '组织',
 			icon: 'building',
-			description: 'Open organizations browser in sidebar',
+			description: '在侧边栏打开组织浏览器',
 			action: () => {
 				closeModal();
 				void plugin.activateOrganizationsView();
@@ -455,9 +454,9 @@ function renderDockableViewsSection(
 		},
 		{
 			id: 'view-relationships',
-			label: 'Relationships',
+			label: '关系',
 			icon: 'git-merge',
-			description: 'Open relationships browser in sidebar',
+			description: '在侧边栏打开关系浏览器',
 			action: () => {
 				closeModal();
 				void plugin.activateRelationshipsView();
@@ -465,9 +464,9 @@ function renderDockableViewsSection(
 		},
 		{
 			id: 'view-universes',
-			label: 'Universes',
+			label: '宇宙',
 			icon: 'globe',
-			description: 'Open universes browser in sidebar',
+			description: '在侧边栏打开宇宙浏览器',
 			action: () => {
 				closeModal();
 				void plugin.activateUniversesView();
@@ -475,9 +474,9 @@ function renderDockableViewsSection(
 		},
 		{
 			id: 'view-collections',
-			label: 'Collections',
+			label: '合集',
 			icon: 'folder',
-			description: 'Open collections browser in sidebar',
+			description: '在侧边栏打开合集浏览器',
 			action: () => {
 				closeModal();
 				void plugin.activateCollectionsView();
@@ -485,9 +484,9 @@ function renderDockableViewsSection(
 		},
 		{
 			id: 'view-data-quality',
-			label: 'Data quality',
+			label: '数据质量',
 			icon: 'shield-check',
-			description: 'Open data quality dashboard in sidebar',
+			description: '在侧边栏打开数据质量仪表盘',
 			action: () => {
 				closeModal();
 				void plugin.activateDataQualityView();
@@ -568,7 +567,7 @@ function renderRecentSection(
 
 	// Section header
 	const header = container.createDiv({ cls: 'crc-dashboard-section-header crc-dashboard-recent-header' });
-	header.createSpan({ text: 'Recent', cls: 'crc-dashboard-section-title' });
+	header.createSpan({ text: '最近', cls: 'crc-dashboard-section-title' });
 
 	// Recent list
 	const list = container.createDiv({ cls: 'crc-dashboard-recent-list' });
@@ -657,7 +656,7 @@ function renderStagingSection(
 	const content = section.createDiv({ cls: 'crc-dashboard-staging-content' });
 
 	// Title
-	content.createEl('strong', { text: 'Staging' });
+	content.createEl('strong', { text: '暂存' });
 
 	// Stats summary with breakdown
 	const statsText = content.createSpan({ cls: 'crc-dashboard-staging-stats' });
@@ -666,25 +665,23 @@ function renderStagingSection(
 	const breakdown: string[] = [];
 	if (clippedCount > 0) {
 		const unreadCount = webClipperService?.getUnreadClipCount() ?? 0;
-		const clippedText = pluralize(clippedCount, 'clip');
-		const newBadge = unreadCount > 0 ? ` (${unreadCount} new)` : '';
-		breakdown.push(`${clippedCount} ${clippedText}${newBadge}`);
+		const newBadge = unreadCount > 0 ? `（${unreadCount} 个新）` : '';
+		breakdown.push(`${clippedCount} 个剪藏${newBadge}`);
 	}
 	if (nonClippedCount > 0) {
-		const otherText = pluralize(nonClippedCount, 'other');
-		breakdown.push(`${nonClippedCount} ${otherText}`);
+		breakdown.push(`其他 ${nonClippedCount} 个`);
 	}
 
 	if (breakdown.length > 0) {
 		statsText.setText(` — ${breakdown.join(', ')}`);
 	} else {
-		statsText.setText(` — ${allStats.totalFiles} ${pluralize(allStats.totalFiles, 'file')}`);
+		statsText.setText(` — ${allStats.totalFiles} 个文件`);
 	}
 
 	// Action button
 	const manageBtn = section.createEl('button', {
 		cls: 'crc-dashboard-staging-btn',
-		text: 'Review'
+		text: '查看'
 	});
 
 	manageBtn.addEventListener('click', () => {
@@ -713,7 +710,7 @@ function showRecentItemContextMenu(
 	// Always show "Open note" option
 	menu.addItem((item) =>
 		item
-			.setTitle('Open note')
+			.setTitle('打开笔记')
 			.setIcon('file-text')
 			.onClick(() => {
 				const file = app.vault.getAbstractFileByPath(entry.path);
@@ -728,7 +725,7 @@ function showRecentItemContextMenu(
 	if (entry.type === 'place') {
 		menu.addItem((item) =>
 			item
-				.setTitle('Open in Map View')
+				.setTitle('在地图视图中打开')
 				.setIcon('map')
 				.onClick(() => {
 					closeModal();
@@ -740,7 +737,7 @@ function showRecentItemContextMenu(
 	if (entry.type === 'person') {
 		menu.addItem((item) =>
 			item
-				.setTitle('Open in Family Chart')
+				.setTitle('在家族图表中打开')
 				.setIcon('git-branch')
 				.onClick(() => {
 					closeModal();
@@ -824,7 +821,7 @@ function renderVaultHealthSection(
 	const summary = details.createEl('summary', { cls: 'crc-dashboard-collapsible-header' });
 	const chevron = summary.createSpan({ cls: 'crc-dashboard-chevron' });
 	setLucideIcon(chevron, 'chevron-right', 14);
-	summary.createSpan({ text: 'Vault health', cls: 'crc-dashboard-collapsible-title' });
+	summary.createSpan({ text: '库健康状况', cls: 'crc-dashboard-collapsible-title' });
 
 	// Content container
 	const content = details.createDiv({ cls: 'crc-dashboard-collapsible-content' });
@@ -850,7 +847,7 @@ function renderVaultHealthContent(
 ): void {
 	// Show loading state
 	const loadingEl = container.createDiv({ cls: 'crc-dashboard-loading' });
-	loadingEl.createSpan({ text: 'Loading statistics...', cls: 'crc-text-muted' });
+	loadingEl.createSpan({ text: '正在加载统计…', cls: 'crc-text-muted' });
 
 	// Collect statistics
 	let stats: FullVaultStats;
@@ -865,7 +862,7 @@ function renderVaultHealthContent(
 	} catch (error) {
 		container.empty();
 		container.createEl('p', {
-			text: `Failed to load statistics: ${getErrorMessage(error)}`,
+			text: `加载统计失败：${getErrorMessage(error)}`,
 			cls: 'crc-text-error'
 		});
 		return;
@@ -879,12 +876,12 @@ function renderVaultHealthContent(
 
 	// Entity counts
 	const metrics = [
-		{ label: 'People', value: stats.people.totalPeople },
-		{ label: 'Events', value: stats.events.totalEvents },
-		{ label: 'Sources', value: stats.sources.totalSources },
-		{ label: 'Places', value: stats.places.totalPlaces },
-		{ label: 'Canvases', value: stats.canvases.totalCanvases },
-		{ label: 'Maps', value: stats.maps.totalMaps }
+		{ label: '人物', value: stats.people.totalPeople },
+		{ label: '事件', value: stats.events.totalEvents },
+		{ label: '来源', value: stats.sources.totalSources },
+		{ label: '地点', value: stats.places.totalPlaces },
+		{ label: '画布', value: stats.canvases.totalCanvases },
+		{ label: '地图', value: stats.maps.totalMaps }
 	];
 
 	for (const metric of metrics) {
@@ -896,7 +893,7 @@ function renderVaultHealthContent(
 	// Data completeness progress bar
 	const completenessContainer = container.createDiv({ cls: 'crc-dashboard-completeness' });
 	const completenessHeader = completenessContainer.createDiv({ cls: 'crc-dashboard-completeness-header' });
-	completenessHeader.createSpan({ text: 'Data completeness', cls: 'crc-dashboard-completeness-label' });
+	completenessHeader.createSpan({ text: '数据完整度', cls: 'crc-dashboard-completeness-label' });
 
 	// Calculate completeness percentage
 	const totalPeople = stats.people.totalPeople;
@@ -921,7 +918,7 @@ function renderVaultHealthContent(
 	const issuesLabel = issuesRow.createDiv({ cls: 'crc-dashboard-issues-label' });
 	const issuesIcon = issuesLabel.createSpan({ cls: 'crc-dashboard-issues-icon' });
 	setLucideIcon(issuesIcon, 'alert-triangle', 16);
-	issuesLabel.createSpan({ text: 'Data issues' });
+	issuesLabel.createSpan({ text: '数据问题' });
 
 	// Calculate total issues to match Statistics Dashboard
 	// (missing birth dates + orphaned people + unsourced events)
@@ -933,7 +930,7 @@ function renderVaultHealthContent(
 	});
 
 	const viewDetailsLink = issuesRow.createEl('a', {
-		text: 'View details',
+		text: '查看详情',
 		cls: 'crc-dashboard-view-details-link'
 	});
 	viewDetailsLink.addEventListener('click', (e) => {

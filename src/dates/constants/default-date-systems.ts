@@ -21,34 +21,34 @@ import type { FictionalDateSystem } from '../types/date-types';
  */
 export const MIDDLE_EARTH_CALENDAR: FictionalDateSystem = {
 	id: 'middle_earth',
-	name: 'Middle-earth Calendar',
+	name: '中土历法',
 	universe: 'middle-earth',
 	builtIn: true,
 	eras: [
 		{
 			id: 'first_age',
-			name: 'First Age',
+			name: '第一纪元',
 			abbrev: 'FA',
 			epoch: -6500, // Approximate: SA started ~3500 years before TA
 			direction: 'forward'
 		},
 		{
 			id: 'second_age',
-			name: 'Second Age',
+			name: '第二纪元',
 			abbrev: 'SA',
 			epoch: -3441, // SA 3441 = TA 0, so SA 1 = -3441 + 1 = -3440
 			direction: 'forward'
 		},
 		{
 			id: 'third_age',
-			name: 'Third Age',
+			name: '第三纪元',
 			abbrev: 'TA',
 			epoch: 0, // Reference point
 			direction: 'forward'
 		},
 		{
 			id: 'fourth_age',
-			name: 'Fourth Age',
+			name: '第四纪元',
 			abbrev: 'FoA',
 			epoch: 3021, // TA 3021 = FoA 1
 			direction: 'forward'
@@ -66,20 +66,20 @@ export const MIDDLE_EARTH_CALENDAR: FictionalDateSystem = {
  */
 export const WESTEROS_CALENDAR: FictionalDateSystem = {
 	id: 'westeros',
-	name: 'Westeros Calendar',
+	name: '维斯特洛历法',
 	universe: 'westeros',
 	builtIn: true,
 	eras: [
 		{
 			id: 'before_conquest',
-			name: 'Before Conquest',
+			name: '征服前',
 			abbrev: 'BC',
 			epoch: 0,
 			direction: 'backward' // BC years count backward
 		},
 		{
 			id: 'after_conquest',
-			name: 'After Conquest',
+			name: '征服后',
 			abbrev: 'AC',
 			epoch: 0,
 			direction: 'forward'
@@ -97,20 +97,20 @@ export const WESTEROS_CALENDAR: FictionalDateSystem = {
  */
 export const STAR_WARS_CALENDAR: FictionalDateSystem = {
 	id: 'star_wars',
-	name: 'Galactic Standard Calendar',
+	name: '银河标准历法',
 	universe: 'star-wars',
 	builtIn: true,
 	eras: [
 		{
 			id: 'before_yavin',
-			name: 'Before the Battle of Yavin',
+			name: '雅文战役前',
 			abbrev: 'BBY',
 			epoch: 0,
 			direction: 'backward'
 		},
 		{
 			id: 'after_yavin',
-			name: 'After the Battle of Yavin',
+			name: '雅文战役后',
 			abbrev: 'ABY',
 			epoch: 0,
 			direction: 'forward'
@@ -126,33 +126,33 @@ export const STAR_WARS_CALENDAR: FictionalDateSystem = {
  */
 export const GENERIC_FANTASY_CALENDAR: FictionalDateSystem = {
 	id: 'generic_fantasy',
-	name: 'Fantasy Ages',
+	name: '奇幻纪元',
 	builtIn: true,
 	eras: [
 		{
 			id: 'age_1',
-			name: 'First Age',
+			name: '第一纪元',
 			abbrev: 'A1',
 			epoch: -2000,
 			direction: 'forward'
 		},
 		{
 			id: 'age_2',
-			name: 'Second Age',
+			name: '第二纪元',
 			abbrev: 'A2',
 			epoch: -1000,
 			direction: 'forward'
 		},
 		{
 			id: 'age_3',
-			name: 'Third Age',
+			name: '第三纪元',
 			abbrev: 'A3',
 			epoch: 0,
 			direction: 'forward'
 		},
 		{
 			id: 'age_4',
-			name: 'Fourth Age',
+			name: '第四纪元',
 			abbrev: 'A4',
 			epoch: 1000,
 			direction: 'forward'

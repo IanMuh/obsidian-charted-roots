@@ -18,7 +18,6 @@ import { GedcomExporter, type GedcomExportOptions, type GedcomExportResult } fro
 import { GedcomXExporter, type GedcomXExportOptions, type GedcomXExportResult } from '../gedcomx/gedcomx-exporter';
 import { GrampsExporter, type GrampsExportOptions, type GrampsExportResult } from '../gramps/gramps-exporter';
 import { FolderFilterService } from '../core/folder-filter';
-import { pluralize } from '../utils/format-utils';
 import type { PrivacySettings, PrivateFieldSummary } from '../core/privacy-service';
 import { scanForPrivateFields } from '../core/privacy-service';
 import { FamilyGraphService, type PersonNode } from '../core/family-graph';
@@ -36,7 +35,7 @@ class FolderPickerModal extends FuzzySuggestModal<TFolder> {
 	constructor(app: App, onSelect: (folder: TFolder) => void) {
 		super(app);
 		this.onSelect = onSelect;
-		this.setPlaceholder('Select a folder...');
+		this.setPlaceholder('选择文件夹…');
 	}
 
 	getItems(): TFolder[] {
@@ -146,28 +145,28 @@ const EXPORT_FORMATS: FormatConfig[] = [
 	{
 		id: 'gedcom',
 		name: 'GEDCOM 5.5.1',
-		description: 'Standard genealogy format (.ged)',
+		description: '标准家谱格式（.ged）',
 		extension: '.ged',
 		icon: 'file-text'
 	},
 	{
 		id: 'gedcomx',
 		name: 'GEDCOM X (JSON)',
-		description: 'Modern JSON-based format',
+		description: '基于 JSON 的现代格式',
 		extension: '.json',
 		icon: 'file-json'
 	},
 	{
 		id: 'gramps',
 		name: 'Gramps XML',
-		description: 'Gramps software format (.gramps)',
+		description: 'Gramps 软件格式（.gramps）',
 		extension: '.gramps',
 		icon: 'file-code'
 	},
 	{
 		id: 'csv',
 		name: 'CSV',
-		description: 'Spreadsheet-compatible (.csv)',
+		description: '兼容电子表格（.csv）',
 		extension: '.csv',
 		icon: 'table'
 	}
@@ -186,12 +185,12 @@ export class ExportWizardModal extends Modal {
 
 	// Step definitions
 	private readonly steps = [
-		{ number: 1, title: 'Format', description: 'Choose export format' },
-		{ number: 2, title: 'Folders', description: 'Select source folders' },
-		{ number: 3, title: 'Options', description: 'Privacy and inclusions' },
-		{ number: 4, title: 'Preview', description: 'Review before exporting' },
-		{ number: 5, title: 'Export', description: 'Exporting data...' },
-		{ number: 6, title: 'Complete', description: 'Export finished' }
+		{ number: 1, title: '格式', description: '选择导出格式' },
+		{ number: 2, title: '文件夹', description: '选择来源文件夹' },
+		{ number: 3, title: '选项', description: '隐私与包含内容' },
+		{ number: 4, title: '预览', description: '导出前检查' },
+		{ number: 5, title: '导出', description: '正在导出数据…' },
+		{ number: 6, title: '完成', description: '导出完成' }
 	];
 
 	constructor(app: App, plugin: CanvasRootsPlugin) {
@@ -264,7 +263,7 @@ export class ExportWizardModal extends Modal {
 		const titleRow = header.createDiv({ cls: 'crc-wizard-title' });
 		const iconEl = titleRow.createDiv({ cls: 'crc-wizard-title-icon' });
 		setIcon(iconEl, 'upload');
-		titleRow.createSpan({ text: 'Export Data' });
+		titleRow.createSpan({ text: '导出数据' });
 
 		// Step progress indicator
 		this.renderStepProgress(contentEl);
@@ -382,7 +381,7 @@ export class ExportWizardModal extends Modal {
 	 */
 	private renderStep1Format(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'crc-export-section' });
-		section.createEl('h3', { text: 'Choose export format', cls: 'crc-export-section-title' });
+		section.createEl('h3', { text: '选择导出格式', cls: 'crc-export-section-title' });
 
 		const formatGrid = section.createDiv({ cls: 'crc-export-format-grid' });
 
@@ -413,14 +412,14 @@ export class ExportWizardModal extends Modal {
 		const section = container.createDiv({ cls: 'crc-export-section' });
 
 		// Folder source dropdown
-		section.createEl('h4', { text: 'Folder source', cls: 'crc-export-options-title' });
+		section.createEl('h4', { text: '文件夹来源', cls: 'crc-export-options-title' });
 
 		const sourceRow = section.createDiv({ cls: 'crc-export-option-row' });
-		sourceRow.createSpan({ text: 'Use folders from', cls: 'crc-export-option-label' });
+		sourceRow.createSpan({ text: '使用以下位置的文件夹', cls: 'crc-export-option-label' });
 
 		const sourceSelect = sourceRow.createEl('select', { cls: 'crc-export-select' });
-		const prefOption = sourceSelect.createEl('option', { value: 'preferences', text: 'Preference folders' });
-		const customOption = sourceSelect.createEl('option', { value: 'custom', text: 'Specify folders' });
+		const prefOption = sourceSelect.createEl('option', { value: 'preferences', text: '首选项文件夹' });
+		const customOption = sourceSelect.createEl('option', { value: 'custom', text: '指定文件夹' });
 
 		if (this.formData.folderSource === 'preferences') {
 			prefOption.selected = true;
@@ -435,39 +434,39 @@ export class ExportWizardModal extends Modal {
 
 		// Show folder paths
 		if (this.formData.folderSource === 'preferences') {
-			section.createEl('h4', { text: 'Configured folders', cls: 'crc-export-options-title crc-mt-3' });
+			section.createEl('h4', { text: '已配置的文件夹', cls: 'crc-export-options-title crc-mt-3' });
 
 			const helpText = section.createDiv({ cls: 'crc-export-help-text' });
-			helpText.textContent = 'These folders are configured in your Preferences settings.';
+			helpText.textContent = '这些文件夹在首选项设置中配置。';
 
 			const foldersGrid = section.createDiv({ cls: 'crc-export-folders-grid' });
 
-			this.renderFolderRow(foldersGrid, 'People folder', this.formData.peoplePath, false);
-			this.renderFolderRow(foldersGrid, 'Places folder', this.formData.placesPath, false);
-			this.renderFolderRow(foldersGrid, 'Events folder', this.formData.eventsPath, false);
-			this.renderFolderRow(foldersGrid, 'Sources folder', this.formData.sourcesPath, false);
-			this.renderFolderRow(foldersGrid, 'Citations folder', this.formData.citationsPath, false);
+			this.renderFolderRow(foldersGrid, '人物文件夹', this.formData.peoplePath, false);
+			this.renderFolderRow(foldersGrid, '地点文件夹', this.formData.placesPath, false);
+			this.renderFolderRow(foldersGrid, '事件文件夹', this.formData.eventsPath, false);
+			this.renderFolderRow(foldersGrid, '来源文件夹', this.formData.sourcesPath, false);
+			this.renderFolderRow(foldersGrid, '引文文件夹', this.formData.citationsPath, false);
 		} else {
-			section.createEl('h4', { text: 'Custom folders', cls: 'crc-export-options-title crc-mt-3' });
+			section.createEl('h4', { text: '自定义文件夹', cls: 'crc-export-options-title crc-mt-3' });
 
 			const helpText = section.createDiv({ cls: 'crc-export-help-text' });
-			helpText.textContent = 'Specify custom folders for this export.';
+			helpText.textContent = '为此次导出指定自定义文件夹。';
 
 			const foldersGrid = section.createDiv({ cls: 'crc-export-folders-grid' });
 
-			this.renderFolderRow(foldersGrid, 'People folder', this.formData.peoplePath, true, (val) => {
+			this.renderFolderRow(foldersGrid, '人物文件夹', this.formData.peoplePath, true, (val) => {
 				this.formData.peoplePath = val;
 			});
-			this.renderFolderRow(foldersGrid, 'Places folder', this.formData.placesPath, true, (val) => {
+			this.renderFolderRow(foldersGrid, '地点文件夹', this.formData.placesPath, true, (val) => {
 				this.formData.placesPath = val;
 			});
-			this.renderFolderRow(foldersGrid, 'Events folder', this.formData.eventsPath, true, (val) => {
+			this.renderFolderRow(foldersGrid, '事件文件夹', this.formData.eventsPath, true, (val) => {
 				this.formData.eventsPath = val;
 			});
-			this.renderFolderRow(foldersGrid, 'Sources folder', this.formData.sourcesPath, true, (val) => {
+			this.renderFolderRow(foldersGrid, '来源文件夹', this.formData.sourcesPath, true, (val) => {
 				this.formData.sourcesPath = val;
 			});
-			this.renderFolderRow(foldersGrid, 'Citations folder', this.formData.citationsPath, true, (val) => {
+			this.renderFolderRow(foldersGrid, '引文文件夹', this.formData.citationsPath, true, (val) => {
 				this.formData.citationsPath = val;
 			});
 		}
@@ -480,14 +479,14 @@ export class ExportWizardModal extends Modal {
 		const section = container.createDiv({ cls: 'crc-export-section' });
 
 		// Privacy controls
-		section.createEl('h4', { text: 'Privacy controls', cls: 'crc-export-options-title' });
+		section.createEl('h4', { text: '隐私控制', cls: 'crc-export-options-title' });
 
 		const privacyOptions = section.createDiv({ cls: 'crc-export-privacy-options' });
 
 		const privacyChoices: Array<{ id: PrivacyHandling; label: string; description: string }> = [
-			{ id: 'exclude', label: 'Exclude living persons', description: 'Do not include potentially living individuals' },
-			{ id: 'redact', label: 'Redact living persons', description: 'Include but hide sensitive details' },
-			{ id: 'include', label: 'Include all', description: 'Export all data without privacy filtering' }
+			{ id: 'exclude', label: '排除在世人物', description: '不包含可能仍在世的人物' },
+			{ id: 'redact', label: '隐去在世人物', description: '包含但隐藏敏感细节' },
+			{ id: 'include', label: '包含全部', description: '导出所有数据，不做隐私过滤' }
 		];
 
 		for (const choice of privacyChoices) {
@@ -510,7 +509,7 @@ export class ExportWizardModal extends Modal {
 		// Living threshold
 		if (this.formData.privacyHandling !== 'include') {
 			const thresholdRow = section.createDiv({ cls: 'crc-export-option-row crc-mt-2' });
-			thresholdRow.createSpan({ text: 'Consider living if born within', cls: 'crc-export-option-label' });
+			thresholdRow.createSpan({ text: '出生于此年数内视为在世：', cls: 'crc-export-option-label' });
 
 			const thresholdInput = thresholdRow.createEl('input', {
 				type: 'number',
@@ -520,7 +519,7 @@ export class ExportWizardModal extends Modal {
 			thresholdInput.min = '50';
 			thresholdInput.max = '150';
 
-			thresholdRow.createSpan({ text: 'years' });
+			thresholdRow.createSpan({ text: '年' });
 
 			thresholdInput.addEventListener('input', () => {
 				this.formData.livingThresholdYears = parseInt(thresholdInput.value) || 100;
@@ -528,24 +527,24 @@ export class ExportWizardModal extends Modal {
 		}
 
 		// Inclusions
-		section.createEl('h4', { text: 'Include in export', cls: 'crc-export-options-title crc-mt-3' });
+		section.createEl('h4', { text: '导出内容包含', cls: 'crc-export-options-title crc-mt-3' });
 
 		const inclusionOptions = section.createDiv({ cls: 'crc-export-options-grid' });
 
-		this.renderToggleOption(inclusionOptions, 'Sources', 'Source citations and references', this.formData.includeSources, (val) => {
+		this.renderToggleOption(inclusionOptions, '来源', '来源引文与引用', this.formData.includeSources, (val) => {
 			this.formData.includeSources = val;
 		});
 
-		this.renderToggleOption(inclusionOptions, 'Places', 'Location records', this.formData.includePlaces, (val) => {
+		this.renderToggleOption(inclusionOptions, '地点', '地点记录', this.formData.includePlaces, (val) => {
 			this.formData.includePlaces = val;
 		});
 
-		this.renderToggleOption(inclusionOptions, 'Notes', 'Personal notes and descriptions', this.formData.includeNotes, (val) => {
+		this.renderToggleOption(inclusionOptions, '笔记', '个人笔记与描述', this.formData.includeNotes, (val) => {
 			this.formData.includeNotes = val;
 		});
 
 		if (this.formData.format === 'gramps') {
-			this.renderToggleOption(inclusionOptions, 'Media', 'Attached media files', this.formData.includeMedia, (val) => {
+			this.renderToggleOption(inclusionOptions, '媒体', '附加的媒体文件', this.formData.includeMedia, (val) => {
 				this.formData.includeMedia = val;
 			});
 		}
@@ -557,12 +556,12 @@ export class ExportWizardModal extends Modal {
 	 */
 	private renderStep4Preview(container: HTMLElement): boolean {
 		const section = container.createDiv({ cls: 'crc-export-section' });
-		section.createEl('h3', { text: 'Preview', cls: 'crc-export-section-title' });
+		section.createEl('h3', { text: '预览', cls: 'crc-export-section-title' });
 
 		// Check if we need to scan the vault (only scan once)
 		if (!this.formData.previewScanned) {
 			const loadingEl = section.createDiv({ cls: 'crc-export-preview-loading' });
-			loadingEl.textContent = 'Scanning vault...';
+			loadingEl.textContent = '正在扫描库…';
 			this.scanVaultForPreview();
 			return true; // Still loading, skip footer
 		}
@@ -573,14 +572,14 @@ export class ExportWizardModal extends Modal {
 		// Settings summary
 		const settingsGrid = summaryCard.createDiv({ cls: 'crc-export-preview-settings' });
 
-		this.renderSettingRow(settingsGrid, 'Format', this.getFormatDisplayName());
-		this.renderSettingRow(settingsGrid, 'Folders', this.formData.folderSource === 'preferences' ? 'Preference folders' : 'Custom folders');
+		this.renderSettingRow(settingsGrid, '格式', this.getFormatDisplayName());
+		this.renderSettingRow(settingsGrid, '文件夹', this.formData.folderSource === 'preferences' ? '首选项文件夹' : '自定义文件夹');
 
 		if (this.formData.privacyHandling !== 'include' && this.formData.livingCount > 0) {
 			const privacyText = this.formData.privacyHandling === 'exclude'
-				? `${this.formData.livingCount} living persons will be excluded`
-				: `${this.formData.livingCount} living persons will be redacted`;
-			this.renderSettingRow(settingsGrid, 'Privacy', privacyText, 'warning');
+				? `将排除 ${this.formData.livingCount} 位在世人物`
+				: `将隐去 ${this.formData.livingCount} 位在世人物`;
+			this.renderSettingRow(settingsGrid, '隐私', privacyText, 'warning');
 		}
 
 		// Show private fields warning if any exist
@@ -589,21 +588,21 @@ export class ExportWizardModal extends Modal {
 				(sum, item) => sum + item.peopleCount, 0
 			);
 			const fieldNames = this.formData.privateFieldsSummary.map(s => s.fieldName).join(', ');
-			const warningText = `${totalPeopleWithPrivateFields} people have private fields (${fieldNames})`;
-			this.renderSettingRow(settingsGrid, 'Private fields', warningText, 'warning');
+			const warningText = `${totalPeopleWithPrivateFields} 人含私密字段（${fieldNames}）`;
+			this.renderSettingRow(settingsGrid, '私密字段', warningText, 'warning');
 		}
 
 		// Entity counts
-		section.createEl('h4', { text: 'Entities to export', cls: 'crc-export-options-title crc-mt-3' });
+		section.createEl('h4', { text: '待导出实体', cls: 'crc-export-options-title crc-mt-3' });
 
 		const counts = section.createDiv({ cls: 'crc-export-preview-counts' });
 
 		const { previewCounts } = this.formData;
 		const countItems = [
-			{ label: 'People', count: previewCounts.people, icon: 'users' },
-			{ label: 'Places', count: this.formData.includePlaces ? previewCounts.places : 0, icon: 'map-pin' },
-			{ label: 'Sources', count: this.formData.includeSources ? previewCounts.sources : 0, icon: 'archive' },
-			{ label: 'Events', count: previewCounts.events, icon: 'calendar' }
+			{ label: '人物', count: previewCounts.people, icon: 'users' },
+			{ label: '地点', count: this.formData.includePlaces ? previewCounts.places : 0, icon: 'map-pin' },
+			{ label: '来源', count: this.formData.includeSources ? previewCounts.sources : 0, icon: 'archive' },
+			{ label: '事件', count: previewCounts.events, icon: 'calendar' }
 		];
 
 		for (const item of countItems) {
@@ -622,11 +621,11 @@ export class ExportWizardModal extends Modal {
 			const content = noticeEl.createDiv({ cls: 'crc-export-privacy-notice__content' });
 			content.createDiv({
 				cls: 'crc-export-privacy-notice__text',
-				text: `Privacy protection is disabled. ${this.formData.livingCount} living ${pluralize(this.formData.livingCount, 'person', 'persons')} will be exported with full details.`
+				text: `隐私保护已禁用。${this.formData.livingCount} 位在世人物将以完整细节导出。`
 			});
 			const link = content.createDiv({
 				cls: 'crc-export-privacy-notice__link',
-				text: 'Configure privacy settings'
+				text: '配置隐私设置'
 			});
 			link.addEventListener('click', () => {
 				this.close();
@@ -640,7 +639,7 @@ export class ExportWizardModal extends Modal {
 
 		// Ready message
 		const readyEl = section.createDiv({ cls: 'crc-export-preview-ready' });
-		readyEl.createSpan({ text: 'Ready to export. Click Export to proceed.' });
+		readyEl.createSpan({ text: '已准备好导出。点击"导出"继续。' });
 
 		return false; // Not loading, render footer
 	}
@@ -741,7 +740,7 @@ export class ExportWizardModal extends Modal {
 	 */
 	private renderStep5Export(container: HTMLElement): void {
 		const section = container.createDiv({ cls: 'crc-export-section' });
-		section.createEl('h3', { text: 'Exporting...', cls: 'crc-export-section-title' });
+		section.createEl('h3', { text: '正在导出…', cls: 'crc-export-section-title' });
 
 		// Progress bar
 		const progressBar = section.createDiv({ cls: 'crc-export-progress-bar' });
@@ -750,7 +749,7 @@ export class ExportWizardModal extends Modal {
 
 		// Status text
 		const statusEl = section.createDiv({ cls: 'crc-export-progress-status' });
-		statusEl.textContent = 'Starting export...';
+		statusEl.textContent = '正在开始导出…';
 
 		// Log area
 		const logArea = section.createDiv({ cls: 'crc-export-log' });
@@ -802,16 +801,16 @@ export class ExportWizardModal extends Modal {
 			if (this.formData.privateFieldsSummary.length > 0) {
 				const decision = this.formData.privateFieldsDecision;
 				if (decision === 'exclude') {
-					addLogEntry('Private fields will be excluded from export', 'info');
+					addLogEntry('私密字段将从导出中排除', 'info');
 				} else if (decision === 'include') {
-					addLogEntry('Private fields will be included in export (user confirmed)', 'warning');
+					addLogEntry('私密字段将包含在导出中（用户已确认）', 'warning');
 				}
 			}
 
 			if (this.formData.format === 'gedcom') {
-				addLogEntry('Starting GEDCOM export...');
+				addLogEntry('正在开始 GEDCOM 导出…');
 				progressFill.setCssProps({ width: '20%' });
-				statusEl.textContent = 'Reading person notes...';
+				statusEl.textContent = '正在读取人物笔记…';
 
 				// Create exporter with folder filter
 				const exporter = new GedcomExporter(this.app, folderFilter);
@@ -822,8 +821,8 @@ export class ExportWizardModal extends Modal {
 				exporter.setPlaceGraphService(this.plugin.settings);
 
 				progressFill.setCssProps({ width: '40%' });
-				statusEl.textContent = 'Generating GEDCOM data...';
-				addLogEntry('Generating GEDCOM data...');
+				statusEl.textContent = '正在生成 GEDCOM 数据…';
+				addLogEntry('正在生成 GEDCOM 数据…');
 
 				// Build export options
 				const options: GedcomExportOptions = {
@@ -840,21 +839,21 @@ export class ExportWizardModal extends Modal {
 
 				if (result.success && result.gedcomContent) {
 					progressFill.setCssProps({ width: '100%' });
-					statusEl.textContent = 'Export complete!';
+					statusEl.textContent = '导出完成！';
 
 					this.formData.gedcomContent = result.gedcomContent;
 					this.formData.exportedCount = result.individualsExported;
 					this.formData.outputFilePath = `${result.fileName}.ged`;
 					this.formData.outputFileSize = new Blob([result.gedcomContent]).size;
 
-					addLogEntry(`Exported ${result.individualsExported} people`, 'success');
-					addLogEntry(`Created ${result.familiesExported} family records`, 'success');
+					addLogEntry(`已导出 ${result.individualsExported} 位人物`, 'success');
+					addLogEntry(`已创建 ${result.familiesExported} 条家族记录`, 'success');
 
 					if (result.privacyExcluded && result.privacyExcluded > 0) {
-						addLogEntry(`Excluded ${result.privacyExcluded} living persons for privacy`, 'warning');
+						addLogEntry(`出于隐私排除 ${result.privacyExcluded} 位在世人物`, 'warning');
 					}
 					if (result.privacyObfuscated && result.privacyObfuscated > 0) {
-						addLogEntry(`Redacted ${result.privacyObfuscated} living persons`, 'warning');
+						addLogEntry(`已隐去 ${result.privacyObfuscated} 位在世人物`, 'warning');
 					}
 
 					// Auto-advance to complete step
@@ -864,14 +863,14 @@ export class ExportWizardModal extends Modal {
 						this.renderCurrentStep();
 					}, 1500);
 				} else {
-					addLogEntry('Export failed!', 'error');
+					addLogEntry('导出失败！', 'error');
 					for (const error of result.errors) {
 						addLogEntry(error, 'error');
 					}
 					this.formData.isExporting = false;
 				}
 			} else if (this.formData.format === 'gedcomx') {
-				addLogEntry('Starting GEDCOM X export...');
+				addLogEntry('正在开始 GEDCOM X 导出…');
 				progressFill.setCssProps({ width: '20%' });
 
 				const exporter = new GedcomXExporter(this.app, folderFilter);
@@ -880,8 +879,8 @@ export class ExportWizardModal extends Modal {
 				exporter.setPlaceGraphService(this.plugin.settings);
 
 				progressFill.setCssProps({ width: '40%' });
-				statusEl.textContent = 'Generating GEDCOM X JSON...';
-				addLogEntry('Generating GEDCOM X JSON...');
+				statusEl.textContent = '正在生成 GEDCOM X JSON…';
+				addLogEntry('正在生成 GEDCOM X JSON…');
 
 				const options: GedcomXExportOptions = {
 					peopleFolder: this.formData.peoplePath,
@@ -894,15 +893,15 @@ export class ExportWizardModal extends Modal {
 
 				if (result.success && result.jsonContent) {
 					progressFill.setCssProps({ width: '100%' });
-					statusEl.textContent = 'Export complete!';
+					statusEl.textContent = '导出完成！';
 
 					this.formData.gedcomContent = result.jsonContent;
 					this.formData.exportedCount = result.personsExported;
 					this.formData.outputFilePath = `${result.fileName}.json`;
 					this.formData.outputFileSize = new Blob([result.jsonContent]).size;
 
-					addLogEntry(`Exported ${result.personsExported} persons`, 'success');
-					addLogEntry(`Created ${result.relationshipsExported} relationships`, 'success');
+					addLogEntry(`已导出 ${result.personsExported} 位人物`, 'success');
+					addLogEntry(`已创建 ${result.relationshipsExported} 条关系`, 'success');
 
 					window.setTimeout(() => {
 						this.formData.isExporting = false;
@@ -910,14 +909,14 @@ export class ExportWizardModal extends Modal {
 						this.renderCurrentStep();
 					}, 1500);
 				} else {
-					addLogEntry('Export failed!', 'error');
+					addLogEntry('导出失败！', 'error');
 					for (const error of result.errors) {
 						addLogEntry(error, 'error');
 					}
 					this.formData.isExporting = false;
 				}
 			} else if (this.formData.format === 'gramps') {
-				addLogEntry('Starting Gramps XML export...');
+				addLogEntry('正在开始 Gramps XML 导出…');
 				progressFill.setCssProps({ width: '20%' });
 
 				const exporter = new GrampsExporter(this.app, folderFilter);
@@ -926,8 +925,8 @@ export class ExportWizardModal extends Modal {
 				exporter.setPlaceGraphService(this.plugin.settings);
 
 				progressFill.setCssProps({ width: '40%' });
-				statusEl.textContent = 'Generating Gramps XML...';
-				addLogEntry('Generating Gramps XML...');
+				statusEl.textContent = '正在生成 Gramps XML…';
+				addLogEntry('正在生成 Gramps XML…');
 
 				const options: GrampsExportOptions = {
 					peopleFolder: this.formData.peoplePath,
@@ -942,16 +941,16 @@ export class ExportWizardModal extends Modal {
 
 				if (result.success && result.xmlContent) {
 					progressFill.setCssProps({ width: '100%' });
-					statusEl.textContent = 'Export complete!';
+					statusEl.textContent = '导出完成！';
 
 					this.formData.gedcomContent = result.xmlContent;
 					this.formData.exportedCount = result.personsExported;
 					this.formData.outputFilePath = `${result.fileName}.gramps`;
 					this.formData.outputFileSize = new Blob([result.xmlContent]).size;
 
-					addLogEntry(`Exported ${result.personsExported} persons`, 'success');
-					addLogEntry(`Created ${result.familiesExported} families`, 'success');
-					addLogEntry(`Created ${result.eventsExported} events`, 'success');
+					addLogEntry(`已导出 ${result.personsExported} 位人物`, 'success');
+					addLogEntry(`已创建 ${result.familiesExported} 个家族`, 'success');
+					addLogEntry(`已创建 ${result.eventsExported} 个事件`, 'success');
 
 					window.setTimeout(() => {
 						this.formData.isExporting = false;
@@ -959,19 +958,19 @@ export class ExportWizardModal extends Modal {
 						this.renderCurrentStep();
 					}, 1500);
 				} else {
-					addLogEntry('Export failed!', 'error');
+					addLogEntry('导出失败！', 'error');
 					for (const error of result.errors) {
 						addLogEntry(error, 'error');
 					}
 					this.formData.isExporting = false;
 				}
 			} else {
-				addLogEntry(`Export format '${this.formData.format}' is not yet supported.`, 'warning');
+				addLogEntry(`导出格式"${this.formData.format}"尚不支持。`, 'warning');
 				this.formData.isExporting = false;
 			}
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Unknown error';
-			addLogEntry(`Export failed: ${message}`, 'error');
+			const message = error instanceof Error ? error.message : '未知错误';
+			addLogEntry(`导出失败：${message}`, 'error');
 			this.formData.isExporting = false;
 		}
 	}
@@ -986,8 +985,8 @@ export class ExportWizardModal extends Modal {
 		const completeEl = section.createDiv({ cls: 'crc-export-complete' });
 		const completeIcon = completeEl.createDiv({ cls: 'crc-export-complete-icon' });
 		setIcon(completeIcon, 'check-circle');
-		completeEl.createDiv({ cls: 'crc-export-complete-title', text: 'Export Complete!' });
-		completeEl.createDiv({ cls: 'crc-export-complete-message', text: 'Your data has been successfully exported.' });
+		completeEl.createDiv({ cls: 'crc-export-complete-title', text: '导出完成！' });
+		completeEl.createDiv({ cls: 'crc-export-complete-message', text: '你的数据已成功导出。' });
 
 		// File info with download button
 		const fileCard = section.createDiv({ cls: 'crc-export-file-card crc-mt-3' });
@@ -1012,22 +1011,22 @@ export class ExportWizardModal extends Modal {
 		});
 		const downloadIcon = downloadBtn.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(downloadIcon, 'download');
-		downloadBtn.createSpan({ text: 'Download' });
+		downloadBtn.createSpan({ text: '下载' });
 
 		downloadBtn.addEventListener('click', () => {
 			this.downloadExportFile();
 		});
 
 		// Summary stats
-		section.createEl('h4', { text: 'Export summary', cls: 'crc-export-options-title crc-mt-3' });
+		section.createEl('h4', { text: '导出摘要', cls: 'crc-export-options-title crc-mt-3' });
 
 		const stats = section.createDiv({ cls: 'crc-export-complete-stats' });
 
 		const statItems = [
-			{ label: 'People', value: this.formData.exportedCount, color: 'blue' },
-			{ label: 'Places', value: this.formData.previewCounts.places, color: 'green' },
-			{ label: 'Sources', value: this.formData.previewCounts.sources, color: 'purple' },
-			{ label: 'Events', value: this.formData.previewCounts.events, color: 'orange' }
+			{ label: '人物', value: this.formData.exportedCount, color: 'blue' },
+			{ label: '地点', value: this.formData.previewCounts.places, color: 'green' },
+			{ label: '来源', value: this.formData.previewCounts.sources, color: 'purple' },
+			{ label: '事件', value: this.formData.previewCounts.events, color: 'orange' }
 		];
 
 		for (const stat of statItems) {
@@ -1042,11 +1041,11 @@ export class ExportWizardModal extends Modal {
 		const result = this.formData.exportResult;
 		if (result && 'privacyExcluded' in result && result.privacyExcluded && result.privacyExcluded > 0) {
 			const privacyNote = section.createDiv({ cls: 'crc-export-complete-privacy' });
-			privacyNote.textContent = `${result.privacyExcluded} living persons excluded for privacy.`;
+			privacyNote.textContent = `出于隐私已排除 ${result.privacyExcluded} 位在世人物。`;
 		}
 		if (result && 'privacyObfuscated' in result && result.privacyObfuscated && result.privacyObfuscated > 0) {
 			const privacyNote = section.createDiv({ cls: 'crc-export-complete-privacy' });
-			privacyNote.textContent = `${result.privacyObfuscated} living persons redacted.`;
+			privacyNote.textContent = `已隐去 ${result.privacyObfuscated} 位在世人物。`;
 		}
 	}
 
@@ -1055,7 +1054,7 @@ export class ExportWizardModal extends Modal {
 	 */
 	private downloadExportFile(): void {
 		if (!this.formData.gedcomContent) {
-			new Notice('No export content available');
+			new Notice('没有可用的导出内容');
 			return;
 		}
 
@@ -1072,7 +1071,7 @@ export class ExportWizardModal extends Modal {
 		activeDocument.body.removeChild(a);
 		URL.revokeObjectURL(url);
 
-		new Notice(`Downloaded ${this.formData.outputFilePath}`);
+		new Notice(`已下载 ${this.formData.outputFilePath}`);
 	}
 
 	/**
@@ -1085,12 +1084,12 @@ export class ExportWizardModal extends Modal {
 		if (this.currentStep === 0) {
 			// Step 0: Show Cancel button
 			new ButtonComponent(leftBtns)
-				.setButtonText('Cancel')
+				.setButtonText('取消')
 				.onClick(() => this.close());
 		} else if (this.currentStep < 4) {
 			// Steps 1-3: Show Back button
 			new ButtonComponent(leftBtns)
-				.setButtonText('Back')
+				.setButtonText('上一步')
 				.onClick(() => {
 					this.currentStep--;
 					this.renderCurrentStep();
@@ -1103,7 +1102,7 @@ export class ExportWizardModal extends Modal {
 		if (this.currentStep < 3) {
 			// Steps 0-2: Show Next button
 			new ButtonComponent(rightBtns)
-				.setButtonText('Next')
+				.setButtonText('下一步')
 				.setCta()
 				.onClick(() => {
 					this.currentStep++;
@@ -1112,7 +1111,7 @@ export class ExportWizardModal extends Modal {
 		} else if (this.currentStep === 3) {
 			// Step 3: Show Export button
 			new ButtonComponent(rightBtns)
-				.setButtonText('Export')
+				.setButtonText('导出')
 				.setCta()
 				.onClick(() => {
 					void (async () => {
@@ -1139,7 +1138,7 @@ export class ExportWizardModal extends Modal {
 		} else if (this.currentStep === 5) {
 			// Step 5 (Complete): Show Export Another and Done buttons
 			new ButtonComponent(rightBtns)
-				.setButtonText('Export Another')
+				.setButtonText('再导出一次')
 				.onClick(() => {
 					this.formData = this.getDefaultFormData();
 					this.currentStep = 0;
@@ -1147,7 +1146,7 @@ export class ExportWizardModal extends Modal {
 				});
 
 			new ButtonComponent(rightBtns)
-				.setButtonText('Done')
+				.setButtonText('完成')
 				.setCta()
 				.onClick(() => this.close());
 		}
@@ -1257,7 +1256,7 @@ export class ExportWizardModal extends Modal {
 	 */
 	private formatFileSize(bytes: number): string {
 		if (bytes === 0) return '—';
-		if (bytes < 1024) return `${bytes} bytes`;
+		if (bytes < 1024) return `${bytes} 字节`;
 		if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
 		return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 	}

@@ -18,15 +18,15 @@ import {
  * Family graph mapping options for the dropdown
  */
 const FAMILY_GRAPH_MAPPING_OPTIONS: { value: FamilyGraphMapping; label: string }[] = [
-	{ value: 'parent', label: 'Parent (gender-neutral)' },
-	{ value: 'father', label: 'Father' },
-	{ value: 'mother', label: 'Mother' },
-	{ value: 'stepparent', label: 'Step-parent' },
-	{ value: 'adoptive_parent', label: 'Adoptive parent' },
-	{ value: 'foster_parent', label: 'Foster parent' },
-	{ value: 'guardian', label: 'Guardian' },
-	{ value: 'spouse', label: 'Spouse' },
-	{ value: 'child', label: 'Child' }
+	{ value: 'parent', label: '父母（不区分性别）' },
+	{ value: 'father', label: '父亲' },
+	{ value: 'mother', label: '母亲' },
+	{ value: 'stepparent', label: '继父母' },
+	{ value: 'adoptive_parent', label: '收养父母' },
+	{ value: 'foster_parent', label: '寄养父母' },
+	{ value: 'guardian', label: '监护人' },
+	{ value: 'spouse', label: '配偶' },
+	{ value: 'child', label: '子女' }
 ];
 
 /**
@@ -141,26 +141,26 @@ export class RelationshipTypeEditorModal extends Modal {
 		contentEl.addClass('cr-event-type-editor-modal');
 
 		const title = this.customizeMode
-			? `Customize "${this.builtInDefaults?.name}"`
+			? `自定义"${this.builtInDefaults?.name}"`
 			: this.editMode
-				? 'Edit relationship type'
-				: 'Create relationship type';
+				? '编辑关系类型'
+				: '创建关系类型';
 		contentEl.createEl('h2', { text: title });
 
 		if (this.customizeMode) {
 			const info = contentEl.createDiv({ cls: 'cr-modal-info' });
 			info.createEl('p', {
-				text: 'Customize this built-in type. Changes only affect display; existing notes still work.',
+				text: '自定义此内置类型。更改仅影响显示；现有笔记仍可正常工作。',
 				cls: 'crc-text-muted'
 			});
 		}
 
 		// Name
 		new Setting(contentEl)
-			.setName('Name')
-			.setDesc('Display name for this relationship type')
+			.setName('名称')
+			.setDesc('此关系类型的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., Blood brother')
+				.setPlaceholder('例如：结义兄弟')
 				.setValue(this.name)
 				.onChange(value => {
 					this.name = value;
@@ -175,7 +175,7 @@ export class RelationshipTypeEditorModal extends Modal {
 		if (!this.editMode && !this.customizeMode) {
 			new Setting(contentEl)
 				.setName('ID')
-				.setDesc('Unique identifier (used in frontmatter)')
+				.setDesc('唯一标识符（用于 frontmatter）')
 				.addText(text => text
 					.setPlaceholder('blood_brother')
 					.setValue(this.id)
@@ -184,18 +184,18 @@ export class RelationshipTypeEditorModal extends Modal {
 
 		// Description
 		new Setting(contentEl)
-			.setName('Description')
-			.setDesc('Brief description of this relationship type')
+			.setName('描述')
+			.setDesc('此关系类型的简要描述')
 			.addText(text => text
-				.setPlaceholder('e.g., Sworn brothers bound by oath')
+				.setPlaceholder('例如：以誓言结为兄弟的义兄弟')
 				.setValue(this.description)
 				.onChange(value => this.description = value));
 
 		// Category (only for new types and editing user types)
 		if (!this.customizeMode) {
 			new Setting(contentEl)
-				.setName('Category')
-				.setDesc('Group this type with similar relationships')
+				.setName('分类')
+				.setDesc('将此类型与相似关系归为一组')
 				.addDropdown(dropdown => {
 					// Get all categories (built-in + custom, with customizations and hiding)
 					const categories = getAllRelationshipCategories(
@@ -215,12 +215,12 @@ export class RelationshipTypeEditorModal extends Modal {
 
 		// Line style
 		new Setting(contentEl)
-			.setName('Line style')
-			.setDesc('Style of edge when displayed on canvas')
+			.setName('线条样式')
+			.setDesc('在画布上显示时连线的样式')
 			.addDropdown(dropdown => dropdown
-				.addOption('solid', 'Solid')
-				.addOption('dashed', 'Dashed')
-				.addOption('dotted', 'Dotted')
+				.addOption('solid', '实线')
+				.addOption('dashed', '虚线')
+				.addOption('dotted', '点线')
 				.setValue(this.lineStyle)
 				.onChange(value => {
 					this.lineStyle = value as RelationshipLineStyle;
@@ -229,10 +229,10 @@ export class RelationshipTypeEditorModal extends Modal {
 		// Inverse relationship (only for new types and editing user types)
 		if (!this.customizeMode) {
 			new Setting(contentEl)
-				.setName('Inverse relationship')
-				.setDesc('The relationship type that represents the other direction (e.g., mentor → disciple)')
+				.setName('反向关系')
+				.setDesc('表示相反方向的关系类型（例如：导师 → 弟子）')
 				.addDropdown(dropdown => {
-					dropdown.addOption('', '(none - or symmetric)');
+					dropdown.addOption('', '（无 - 或对称）');
 
 					// Get all types for inverse selection
 					const allTypes = getAllRelationshipTypesWithCustomizations(
@@ -259,8 +259,8 @@ export class RelationshipTypeEditorModal extends Modal {
 
 			// Symmetric
 			new Setting(contentEl)
-				.setName('Symmetric')
-				.setDesc('Whether this relationship is the same in both directions (e.g., neighbor, ally)')
+				.setName('对称')
+				.setDesc('此关系在双向是否相同（例如：邻居、盟友）')
 				.addToggle(toggle => toggle
 					.setValue(this.symmetric)
 					.onChange(value => {
@@ -271,14 +271,14 @@ export class RelationshipTypeEditorModal extends Modal {
 					}));
 
 			// Family Tree Integration section
-			contentEl.createEl('h3', { text: 'Family Tree Integration', cls: 'crc-section-heading' });
+			contentEl.createEl('h3', { text: '家谱集成', cls: 'crc-section-heading' });
 
 			// Include on family tree toggle
 			let mappingDropdownEl: HTMLSelectElement | null = null;
 
 			new Setting(contentEl)
-				.setName('Include on family trees')
-				.setDesc('Show this relationship type on canvas trees and family charts')
+				.setName('包含在家谱中')
+				.setDesc('在画布树和家族图表上显示此关系类型')
 				.addToggle(toggle => toggle
 					.setValue(this.includeOnFamilyTree)
 					.onChange(value => {
@@ -299,10 +299,10 @@ export class RelationshipTypeEditorModal extends Modal {
 
 			// Family graph mapping dropdown
 			const mappingSetting = new Setting(contentEl)
-				.setName('Maps to')
-				.setDesc('Which family relationship this type represents on trees')
+				.setName('映射为')
+				.setDesc('此类型在树上代表的家族关系')
 				.addDropdown(dropdown => {
-					dropdown.addOption('', '(select mapping)');
+					dropdown.addOption('', '（选择映射）');
 					FAMILY_GRAPH_MAPPING_OPTIONS.forEach(opt => {
 						dropdown.addOption(opt.value, opt.label);
 					});
@@ -320,11 +320,11 @@ export class RelationshipTypeEditorModal extends Modal {
 		}
 
 		// Family Chart Overlay section (available for both user types and built-in customizations)
-		contentEl.createEl('h3', { text: 'Family Chart overlay', cls: 'crc-section-heading' });
+		contentEl.createEl('h3', { text: '家族图表叠加层', cls: 'crc-section-heading' });
 
 		new Setting(contentEl)
-			.setName('Render on Family Chart as overlay line')
-			.setDesc('Draw this relationship type as a styled line between the two people it connects, on top of the family tree. Decoupled from tree-structure integration — a type can be tree-only, overlay-only, or both.')
+			.setName('在家族图表上渲染为叠加线')
+			.setDesc('将此关系类型绘制为其连接的两人之间的样式化连线，叠加在家谱之上。与树结构集成解耦 — 一个类型可以仅用于树、仅用于叠加层，或两者兼有。')
 			.addToggle(toggle => toggle
 				.setValue(this.includeOnFamilyChartOverlay)
 				.onChange(value => {
@@ -333,8 +333,8 @@ export class RelationshipTypeEditorModal extends Modal {
 
 		// Color picker
 		const colorSetting = new Setting(contentEl)
-			.setName('Color')
-			.setDesc('Edge color for this relationship type');
+			.setName('颜色')
+			.setDesc('此关系类型的连线颜色');
 
 		const colorContainer = colorSetting.controlEl.createDiv({ cls: 'cr-color-picker' });
 
@@ -367,7 +367,7 @@ export class RelationshipTypeEditorModal extends Modal {
 		const updateColorPreview = () => {
 			colorPreview.style.setProperty('background-color', this.color);
 			colorPreview.style.setProperty('color', this.getContrastColor(this.color));
-			colorPreview.textContent = this.name || 'Preview';
+			colorPreview.textContent = this.name || '预览';
 		};
 		updateColorPreview();
 
@@ -376,15 +376,15 @@ export class RelationshipTypeEditorModal extends Modal {
 
 		// Reset button for customizations
 		if (this.customizeMode) {
-			const resetBtn = buttonContainer.createEl('button', { text: 'Reset to default' });
+			const resetBtn = buttonContainer.createEl('button', { text: '重置为默认' });
 			resetBtn.addEventListener('click', () => void this.resetToDefault());
 		}
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const saveBtn = buttonContainer.createEl('button', {
-			text: this.customizeMode ? 'Save customization' : this.editMode ? 'Save changes' : 'Create type',
+			text: this.customizeMode ? '保存自定义' : this.editMode ? '保存更改' : '创建类型',
 			cls: 'mod-cta'
 		});
 		saveBtn.addEventListener('click', () => void this.saveType());
@@ -398,12 +398,12 @@ export class RelationshipTypeEditorModal extends Modal {
 	private async saveType(): Promise<void> {
 		// Validation
 		if (!this.name.trim()) {
-			new Notice('Please enter a name');
+			new Notice('请输入名称');
 			return;
 		}
 
 		if (!this.customizeMode && !this.id.trim()) {
-			new Notice('Please enter an ID');
+			new Notice('请输入 ID');
 			return;
 		}
 
@@ -422,7 +422,7 @@ export class RelationshipTypeEditorModal extends Modal {
 			this.close();
 			this.onSave();
 		} catch (error) {
-			new Notice(`Failed to save relationship type: ${error}`);
+			new Notice(`保存关系类型失败：${error}`);
 		}
 	}
 
@@ -452,7 +452,7 @@ export class RelationshipTypeEditorModal extends Modal {
 		}
 
 		await this.plugin.saveSettings();
-		new Notice('Relationship type customized');
+		new Notice('已自定义关系类型');
 	}
 
 	private async updateUserType(): Promise<void> {
@@ -477,7 +477,7 @@ export class RelationshipTypeEditorModal extends Modal {
 		}
 
 		await this.plugin.saveSettings();
-		new Notice('Relationship type updated');
+		new Notice('已更新关系类型');
 	}
 
 	private async createUserType(): Promise<void> {
@@ -487,7 +487,7 @@ export class RelationshipTypeEditorModal extends Modal {
 		const customConflict = existingTypes.find(t => t.id === this.id);
 
 		if (builtInConflict || customConflict) {
-			new Notice('A relationship type with this ID already exists');
+			new Notice('已存在使用此 ID 的关系类型');
 			return;
 		}
 
@@ -508,7 +508,7 @@ export class RelationshipTypeEditorModal extends Modal {
 
 		existingTypes.push(typeDef);
 		await this.plugin.saveSettings();
-		new Notice('Relationship type created');
+		new Notice('已创建关系类型');
 	}
 
 	private async resetToDefault(): Promise<void> {
@@ -520,7 +520,7 @@ export class RelationshipTypeEditorModal extends Modal {
 		}
 
 		await this.plugin.saveSettings();
-		new Notice('Reset to default');
+		new Notice('已重置为默认');
 		this.close();
 		this.onSave();
 	}

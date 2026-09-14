@@ -123,13 +123,13 @@ export class CreateSchemaModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('clipboard-check', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText(this.editMode ? 'Edit schema' : 'Create schema');
+		titleContainer.appendText(this.editMode ? '编辑校验架构' : '创建校验架构');
 
 		// Description
 		contentEl.createEl('p', {
 			text: this.editMode
-				? 'Edit the validation schema configuration.'
-				: 'Create a validation schema to enforce property rules on person notes.',
+				? '编辑校验架构配置。'
+				: '创建校验架构以对人物笔记强制属性规则。',
 			cls: 'crc-modal-description'
 		});
 
@@ -147,11 +147,11 @@ export class CreateSchemaModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => this.close());
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText(this.editMode ? 'Save changes' : 'Create schema')
+			.setButtonText(this.editMode ? '保存更改' : '创建校验架构')
 			.setCta()
 			.onClick(() => {
 				if (this.editMode) {
@@ -173,10 +173,10 @@ export class CreateSchemaModal extends Modal {
 	private renderBasicSettings(form: HTMLElement): void {
 		// Name
 		new Setting(form)
-			.setName('Name')
-			.setDesc('Display name for the schema')
+			.setName('名称')
+			.setDesc('校验架构的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., House Stark Schema')
+				.setPlaceholder('例如：House Stark 校验架构')
 				.setValue(this.formData.name)
 				.onChange(value => {
 					this.formData.name = value;
@@ -190,13 +190,13 @@ export class CreateSchemaModal extends Modal {
 
 		// Schema ID
 		new Setting(form)
-			.setName('Schema ID')
+			.setName('校验架构 ID')
 			.setDesc(this.editMode
-				? 'Unique identifier (changing may break references)'
-				: 'Unique identifier (auto-generated from name)')
+				? '唯一标识符（更改可能破坏引用）'
+				: '唯一标识符（根据名称自动生成）')
 			.addText(text => {
 				this.crIdInput = text.inputEl;
-				text.setPlaceholder('e.g., schema-house-stark')
+				text.setPlaceholder('例如：schema-house-stark')
 					.setValue(this.formData.crId)
 					.onChange(value => {
 						this.formData.crId = value;
@@ -212,10 +212,10 @@ export class CreateSchemaModal extends Modal {
 
 		// Description
 		new Setting(form)
-			.setName('Description')
-			.setDesc('Optional description of what this schema validates')
+			.setName('描述')
+			.setDesc('此校验架构用途的可选描述')
 			.addTextArea(text => text
-				.setPlaceholder('e.g., Validates members of House Stark...')
+				.setPlaceholder('例如：校验 House Stark 的成员……')
 				.setValue(this.formData.description)
 				.onChange(value => {
 					this.formData.description = value;
@@ -227,17 +227,17 @@ export class CreateSchemaModal extends Modal {
 	 */
 	private renderScopeSettings(form: HTMLElement): void {
 		const scopeSection = form.createDiv({ cls: 'crc-section' });
-		scopeSection.createEl('h4', { text: 'Scope', cls: 'crc-section-title' });
+		scopeSection.createEl('h4', { text: '适用范围', cls: 'crc-section-title' });
 
 		// Applies to type
 		new Setting(scopeSection)
-			.setName('Applies to')
-			.setDesc('Which person notes should this schema validate?')
+			.setName('适用于')
+			.setDesc('此校验架构应校验哪些人物笔记？')
 			.addDropdown(dropdown => dropdown
-				.addOption('all', 'All people')
-				.addOption('collection', 'By collection')
-				.addOption('folder', 'By folder')
-				.addOption('universe', 'By universe')
+				.addOption('all', '所有人物')
+				.addOption('collection', '按合集')
+				.addOption('folder', '按文件夹')
+				.addOption('universe', '按宇宙')
 				.setValue(this.formData.appliesToType)
 				.onChange(value => {
 					this.formData.appliesToType = value as SchemaAppliesTo;
@@ -262,16 +262,16 @@ export class CreateSchemaModal extends Modal {
 
 		const labels: Record<SchemaAppliesTo, string> = {
 			all: '',
-			collection: 'Collection name',
-			folder: 'Folder path',
-			universe: 'Universe name'
+			collection: '合集名称',
+			folder: '文件夹路径',
+			universe: '宇宙名称'
 		};
 
 		const placeholders: Record<SchemaAppliesTo, string> = {
 			all: '',
-			collection: 'e.g., House Stark',
-			folder: 'e.g., People/Westeros',
-			universe: 'e.g., westeros'
+			collection: '例如：House Stark',
+			folder: '例如：People/Westeros',
+			universe: '例如：westeros'
 		};
 
 		new Setting(this.appliesToValueContainer)
@@ -296,9 +296,9 @@ export class CreateSchemaModal extends Modal {
 	 */
 	private renderRequiredProperties(form: HTMLElement): void {
 		const section = form.createDiv({ cls: 'crc-section' });
-		section.createEl('h4', { text: 'Required properties', cls: 'crc-section-title' });
+		section.createEl('h4', { text: '必填属性', cls: 'crc-section-title' });
 		section.createEl('p', {
-			text: 'Properties that must be present on all matching person notes.',
+			text: '所有匹配的人物笔记中必须存在的属性。',
 			cls: 'crc-section-desc crc-text--muted'
 		});
 
@@ -307,7 +307,7 @@ export class CreateSchemaModal extends Modal {
 
 		// Add button
 		const addBtn = section.createEl('button', {
-			text: 'Add required property',
+			text: '添加必填属性',
 			cls: 'crc-btn crc-btn--secondary crc-btn--small'
 		});
 		addBtn.prepend(createLucideIcon('plus', 14));
@@ -326,7 +326,7 @@ export class CreateSchemaModal extends Modal {
 
 		if (this.formData.requiredProperties.length === 0) {
 			this.requiredPropsContainer.createEl('p', {
-				text: 'No required properties defined.',
+				text: '未定义必填属性。',
 				cls: 'crc-text--muted crc-text--small'
 			});
 			return;
@@ -339,7 +339,7 @@ export class CreateSchemaModal extends Modal {
 				type: 'text',
 				cls: 'crc-form-input',
 				value: this.formData.requiredProperties[i],
-				attr: { placeholder: 'e.g., allegiance' }
+				attr: { placeholder: '例如：allegiance' }
 			});
 			input.addEventListener('input', (e) => {
 				this.formData.requiredProperties[i] = (e.target as HTMLInputElement).value;
@@ -347,7 +347,7 @@ export class CreateSchemaModal extends Modal {
 
 			const removeBtn = propRow.createEl('button', {
 				cls: 'crc-btn crc-btn--icon crc-btn--danger',
-				attr: { 'aria-label': 'Remove' }
+				attr: { 'aria-label': '移除' }
 			});
 			setLucideIcon(removeBtn, 'x', 14);
 			removeBtn.addEventListener('click', () => {
@@ -362,9 +362,9 @@ export class CreateSchemaModal extends Modal {
 	 */
 	private renderPropertyDefinitions(form: HTMLElement): void {
 		const section = form.createDiv({ cls: 'crc-section' });
-		section.createEl('h4', { text: 'Property definitions', cls: 'crc-section-title' });
+		section.createEl('h4', { text: '属性定义', cls: 'crc-section-title' });
 		section.createEl('p', {
-			text: 'Define validation rules for specific properties.',
+			text: '为特定属性定义校验规则。',
 			cls: 'crc-section-desc crc-text--muted'
 		});
 
@@ -373,7 +373,7 @@ export class CreateSchemaModal extends Modal {
 
 		// Add button
 		const addBtn = section.createEl('button', {
-			text: 'Add property definition',
+			text: '添加属性定义',
 			cls: 'crc-btn crc-btn--secondary crc-btn--small'
 		});
 		addBtn.prepend(createLucideIcon('plus', 14));
@@ -395,7 +395,7 @@ export class CreateSchemaModal extends Modal {
 
 		if (propNames.length === 0) {
 			this.propertiesContainer.createEl('p', {
-				text: 'No property definitions. Add one to validate specific properties.',
+				text: '无属性定义。添加一个以校验特定属性。',
 				cls: 'crc-text--muted crc-text--small'
 			});
 			return;
@@ -412,7 +412,7 @@ export class CreateSchemaModal extends Modal {
 				type: 'text',
 				cls: 'crc-form-input crc-property-name-input',
 				value: propName,
-				attr: { placeholder: 'Property name' }
+				attr: { placeholder: '属性名称' }
 			});
 			nameInput.addEventListener('change', (e) => {
 				const newName = (e.target as HTMLInputElement).value;
@@ -425,7 +425,7 @@ export class CreateSchemaModal extends Modal {
 
 			const removeBtn = header.createEl('button', {
 				cls: 'crc-btn crc-btn--icon crc-btn--danger',
-				attr: { 'aria-label': 'Remove property' }
+				attr: { 'aria-label': '移除属性' }
 			});
 			setLucideIcon(removeBtn, 'trash', 14);
 			removeBtn.addEventListener('click', () => {
@@ -438,16 +438,16 @@ export class CreateSchemaModal extends Modal {
 
 			// Type dropdown
 			new Setting(settings)
-				.setName('Type')
+				.setName('类型')
 				.addDropdown(dropdown => dropdown
-					.addOption('string', 'String')
-					.addOption('number', 'Number')
-					.addOption('boolean', 'Boolean')
-					.addOption('date', 'Date')
-					.addOption('wikilink', 'Wikilink')
-					.addOption('array', 'Array')
-					.addOption('enum', 'Enum')
-					.addOption('sourced_facts', 'Sourced facts')
+					.addOption('string', '字符串')
+					.addOption('number', '数字')
+					.addOption('boolean', '布尔值')
+					.addOption('date', '日期')
+					.addOption('wikilink', 'Wiki 链接')
+					.addOption('array', '数组')
+					.addOption('enum', '枚举')
+					.addOption('sourced_facts', '来源事实')
 					.setValue(propDef.type)
 					.onChange(value => {
 						propDef.type = value as PropertyType;
@@ -457,10 +457,10 @@ export class CreateSchemaModal extends Modal {
 			// Type-specific settings
 			if (propDef.type === 'enum') {
 				new Setting(settings)
-					.setName('Allowed values')
-					.setDesc('Comma-separated list')
+					.setName('允许的值')
+					.setDesc('逗号分隔的列表')
 					.addText(text => text
-						.setPlaceholder('e.g., male, female, other')
+						.setPlaceholder('例如：male, female, other')
 						.setValue(propDef.values?.join(', ') || '')
 						.onChange(value => {
 							propDef.values = splitAndTrim(value);
@@ -470,7 +470,7 @@ export class CreateSchemaModal extends Modal {
 			if (propDef.type === 'number') {
 				const rangeRow = settings.createDiv({ cls: 'crc-range-row' });
 				new Setting(rangeRow)
-					.setName('Min')
+					.setName('最小值')
 					.addText(text => text
 						.setPlaceholder('0')
 						.setValue(propDef.min?.toString() || '')
@@ -478,7 +478,7 @@ export class CreateSchemaModal extends Modal {
 							propDef.min = value ? parseFloat(value) : undefined;
 						}));
 				new Setting(rangeRow)
-					.setName('Max')
+					.setName('最大值')
 					.addText(text => text
 						.setPlaceholder('100')
 						.setValue(propDef.max?.toString() || '')
@@ -489,13 +489,13 @@ export class CreateSchemaModal extends Modal {
 
 			if (propDef.type === 'wikilink') {
 				new Setting(settings)
-					.setName('Target type')
-					.setDesc('Optional: restrict to specific note types')
+					.setName('目标类型')
+					.setDesc('可选：限制为特定笔记类型')
 					.addDropdown(dropdown => dropdown
-						.addOption('', 'Any')
-						.addOption('person', 'Person')
-						.addOption('place', 'Place')
-						.addOption('map', 'Map')
+						.addOption('', '任意')
+						.addOption('person', '人物')
+						.addOption('place', '地点')
+						.addOption('map', '地图')
 						.setValue(propDef.targetType || '')
 						.onChange(value => {
 							propDef.targetType = value || undefined;
@@ -504,16 +504,16 @@ export class CreateSchemaModal extends Modal {
 
 			if (propDef.type === 'sourced_facts') {
 				settings.createEl('p', {
-					text: 'Validates fact-level source tracking structure. Expected format: { birth_date: { sources: ["[[Source]]"] }, ... }',
+					text: '校验事实级来源追踪结构。预期格式：{ birth_date: { sources: ["[[Source]]"] }, ... }',
 					cls: 'crc-text--muted crc-text--small crc-mt-1'
 				});
 			}
 
 			// Description
 			new Setting(settings)
-				.setName('Description')
+				.setName('描述')
 				.addText(text => text
-					.setPlaceholder('Optional description')
+					.setPlaceholder('可选描述')
 					.setValue(propDef.description || '')
 					.onChange(value => {
 						propDef.description = value || undefined;
@@ -526,9 +526,9 @@ export class CreateSchemaModal extends Modal {
 	 */
 	private renderConstraints(form: HTMLElement): void {
 		const section = form.createDiv({ cls: 'crc-section' });
-		section.createEl('h4', { text: 'Constraints', cls: 'crc-section-title' });
+		section.createEl('h4', { text: '约束', cls: 'crc-section-title' });
 		section.createEl('p', {
-			text: 'Cross-property validation rules using JavaScript expressions.',
+			text: '使用 JavaScript 表达式的跨属性校验规则。',
 			cls: 'crc-section-desc crc-text--muted'
 		});
 
@@ -537,7 +537,7 @@ export class CreateSchemaModal extends Modal {
 
 		// Add button
 		const addBtn = section.createEl('button', {
-			text: 'Add constraint',
+			text: '添加约束',
 			cls: 'crc-btn crc-btn--secondary crc-btn--small'
 		});
 		addBtn.prepend(createLucideIcon('plus', 14));
@@ -549,12 +549,12 @@ export class CreateSchemaModal extends Modal {
 		// Help text
 		const helpDiv = section.createDiv({ cls: 'crc-help-text crc-mt-2' });
 		helpDiv.createEl('p', {
-			text: 'Examples:',
+			text: '示例：',
 			cls: 'crc-text--muted crc-text--small'
 		});
 		const examples = helpDiv.createEl('ul', { cls: 'crc-text--muted crc-text--small' });
-		examples.createEl('li', { text: '!died || born — "Cannot have death without birth"' });
-		examples.createEl('li', { text: 'age >= 0 && age <= 200 — "Age must be between 0 and 200"' });
+		examples.createEl('li', { text: '!died || born —「没有出生不能有死亡」' });
+		examples.createEl('li', { text: 'age >= 0 && age <= 200 —「年龄必须在0到200之间」' });
 	}
 
 	/**
@@ -566,7 +566,7 @@ export class CreateSchemaModal extends Modal {
 
 		if (this.formData.constraints.length === 0) {
 			this.constraintsContainer.createEl('p', {
-				text: 'No constraints defined.',
+				text: '未定义约束。',
 				cls: 'crc-text--muted crc-text--small'
 			});
 			return;
@@ -578,11 +578,11 @@ export class CreateSchemaModal extends Modal {
 
 			// Header with remove button
 			const header = card.createDiv({ cls: 'crc-constraint-header' });
-			header.createEl('span', { text: `Constraint ${i + 1}`, cls: 'crc-constraint-label' });
+			header.createEl('span', { text: `约束${i + 1}`, cls: 'crc-constraint-label' });
 
 			const removeBtn = header.createEl('button', {
 				cls: 'crc-btn crc-btn--icon crc-btn--danger',
-				attr: { 'aria-label': 'Remove constraint' }
+				attr: { 'aria-label': '移除约束' }
 			});
 			setLucideIcon(removeBtn, 'x', 14);
 			removeBtn.addEventListener('click', () => {
@@ -592,10 +592,10 @@ export class CreateSchemaModal extends Modal {
 
 			// Rule input
 			new Setting(card)
-				.setName('Rule')
-				.setDesc('JavaScript expression')
+				.setName('规则')
+				.setDesc('JavaScript 表达式')
 				.addText(text => text
-					.setPlaceholder('e.g., !died || born')
+					.setPlaceholder('例如：!died || born')
 					.setValue(constraint.rule)
 					.onChange(value => {
 						constraint.rule = value;
@@ -603,9 +603,9 @@ export class CreateSchemaModal extends Modal {
 
 			// Message input
 			new Setting(card)
-				.setName('Error message')
+				.setName('错误消息')
 				.addText(text => text
-					.setPlaceholder('e.g., Cannot have death date without birth date')
+					.setPlaceholder('例如：没有出生日期不能有去世日期')
 					.setValue(constraint.message)
 					.onChange(value => {
 						constraint.message = value;
@@ -618,17 +618,17 @@ export class CreateSchemaModal extends Modal {
 	 */
 	private validate(): boolean {
 		if (!this.formData.name.trim()) {
-			new Notice('Please enter a name for the schema');
+			new Notice('请输入校验架构名称');
 			return false;
 		}
 
 		if (!this.formData.crId.trim()) {
-			new Notice('Please enter a schema ID');
+			new Notice('请输入校验架构 ID');
 			return false;
 		}
 
 		if (this.formData.appliesToType !== 'all' && !this.formData.appliesToValue.trim()) {
-			new Notice(`Please enter a value for "${this.formData.appliesToType}"`);
+			new Notice(`请输入「${this.formData.appliesToType}」的值`);
 			return false;
 		}
 
@@ -636,7 +636,7 @@ export class CreateSchemaModal extends Modal {
 		for (let i = 0; i < this.formData.constraints.length; i++) {
 			const c = this.formData.constraints[i];
 			if (!c.rule.trim() || !c.message.trim()) {
-				new Notice(`Constraint ${i + 1} must have both a rule and error message`);
+				new Notice(`约束${i + 1}必须同时包含规则和错误消息`);
 				return false;
 			}
 		}
@@ -654,7 +654,7 @@ export class CreateSchemaModal extends Modal {
 			// Check for duplicate ID
 			const existing = await this.schemaService.getSchemaById(this.formData.crId);
 			if (existing) {
-				new Notice(`A schema with ID "${this.formData.crId}" already exists`);
+				new Notice(`ID 为「${this.formData.crId}」的校验架构已存在`);
 				return;
 			}
 
@@ -673,7 +673,7 @@ export class CreateSchemaModal extends Modal {
 
 			const file = await this.schemaService.createSchema(schemaData);
 
-			new Notice(`Created schema: ${this.formData.name}`);
+			new Notice(`已创建校验架构：${this.formData.name}`);
 
 			if (this.onCreated) {
 				this.onCreated(file);
@@ -682,7 +682,7 @@ export class CreateSchemaModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to create schema:', error);
-			new Notice(`Failed to create schema: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建校验架构失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -693,7 +693,7 @@ export class CreateSchemaModal extends Modal {
 		if (!this.validate()) return;
 
 		if (!this.editingSchema) {
-			new Notice('No schema to update');
+			new Notice('没有可更新的校验架构');
 			return;
 		}
 
@@ -710,7 +710,7 @@ export class CreateSchemaModal extends Modal {
 				}
 			});
 
-			new Notice(`Updated schema: ${this.formData.name}`);
+			new Notice(`已更新校验架构：${this.formData.name}`);
 
 			if (this.onUpdated) {
 				this.onUpdated();
@@ -719,7 +719,7 @@ export class CreateSchemaModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to update schema:', error);
-			new Notice(`Failed to update schema: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`更新校验架构失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 }

@@ -183,13 +183,13 @@ export class CreateMapModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('globe', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText(this.editMode ? 'Edit custom map' : 'Create custom map');
+		titleContainer.appendText(this.editMode ? '编辑自定义地图' : '创建自定义地图');
 
 		// Description
 		contentEl.createEl('p', {
 			text: this.editMode
-				? 'Edit the map configuration. Changes will be saved to the frontmatter.'
-				: 'Create a map note for a fictional world or historical map. Custom maps can be used in the map view to display places from your universe.',
+				? '编辑地图配置。更改将保存到 frontmatter。'
+				: '为虚构世界或历史地图创建地图笔记。自定义地图可用于地图视图，以显示宇宙中的地点。',
 			cls: 'crc-modal-description'
 		});
 
@@ -198,10 +198,10 @@ export class CreateMapModal extends Modal {
 
 		// Name (required)
 		new Setting(form)
-			.setName('Name')
-			.setDesc('Display name for the map')
+			.setName('名称')
+			.setDesc('地图的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., Middle-earth, Westeros')
+				.setPlaceholder('例如：Middle-earth、Westeros')
 				.setValue(this.mapData.name)
 				.onChange(value => {
 					this.mapData.name = value;
@@ -215,13 +215,13 @@ export class CreateMapModal extends Modal {
 
 		// Map ID (required, auto-generated in create mode)
 		new Setting(form)
-			.setName('Map ID')
+			.setName('地图 ID')
 			.setDesc(this.editMode
-				? 'Unique identifier (changing this may break references)'
-				: 'Unique identifier (auto-generated from name, or enter custom)')
+				? '唯一标识符（更改可能破坏引用）'
+				: '唯一标识符（根据名称自动生成，或输入自定义值）')
 			.addText(text => {
 				this.mapIdInput = text.inputEl;
-				text.setPlaceholder('e.g., Middle-earth')
+				text.setPlaceholder('例如：middle-earth')
 					.setValue(this.mapData.mapId)
 					.onChange(value => {
 						this.mapData.mapId = value;
@@ -239,10 +239,10 @@ export class CreateMapModal extends Modal {
 
 		// Universe (required)
 		new Setting(form)
-			.setName('Universe')
-			.setDesc('The fictional world or setting this map belongs to')
+			.setName('宇宙')
+			.setDesc('此地图所属的虚构世界或设定')
 			.addText(text => text
-				.setPlaceholder('e.g., tolkien, Westeros, star-wars')
+				.setPlaceholder('例如：tolkien、westeros、star-wars')
 				.setValue(this.mapData.universe)
 				.onChange(value => {
 					this.mapData.universe = value;
@@ -250,14 +250,14 @@ export class CreateMapModal extends Modal {
 
 		// Image path (required)
 		const imagePathSetting = new Setting(form)
-			.setName('Image path')
-			.setDesc('Path to the map image file in your vault');
+			.setName('图片路径')
+			.setDesc('库中地图图片文件的路径');
 
 		imagePathSetting.addText(text => {
 			this.imagePathInput = text.inputEl;
 			// Display the path without wikilink brackets for readability
 			const displayPath = extractWikilinkPath(this.mapData.imagePath);
-			text.setPlaceholder('e.g., assets/maps/middle-earth.jpg')
+			text.setPlaceholder('例如：assets/maps/middle-earth.jpg')
 				.setValue(displayPath)
 				.onChange(value => {
 					// If user manually types a path, convert to wikilink
@@ -266,7 +266,7 @@ export class CreateMapModal extends Modal {
 		});
 
 		imagePathSetting.addButton(btn => {
-			btn.setButtonText('Browse')
+			btn.setButtonText('浏览')
 				.onClick(() => {
 					this.browseForImage();
 				});
@@ -274,11 +274,11 @@ export class CreateMapModal extends Modal {
 
 		// Coordinate system
 		new Setting(form)
-			.setName('Coordinate system')
-			.setDesc('Geographic uses lat/lng coordinates; Pixel uses image coordinates')
+			.setName('坐标系统')
+			.setDesc('地理坐标使用纬度/经度；像素坐标使用图像坐标')
 			.addDropdown(dropdown => dropdown
-				.addOption('geographic', 'Geographic (lat/lng)')
-				.addOption('pixel', 'Pixel (image coordinates)')
+				.addOption('geographic', '地理坐标（纬度/经度）')
+				.addOption('pixel', '像素坐标（图像坐标）')
 				.setValue(this.mapData.coordinateSystem)
 				.onChange(value => {
 					this.mapData.coordinateSystem = value as 'geographic' | 'pixel';
@@ -289,15 +289,15 @@ export class CreateMapModal extends Modal {
 		this.boundsSection = form.createDiv({ cls: 'crc-bounds-section' });
 
 		const boundsHeader = new Setting(this.boundsSection)
-			.setName('Map bounds')
-			.setDesc('Define the coordinate boundaries of your map image');
+			.setName('地图边界')
+			.setDesc('定义地图图像的坐标边界');
 		boundsHeader.settingEl.addClass('crc-section-header');
 
 		const boundsGrid = this.boundsSection.createDiv({ cls: 'crc-bounds-grid' });
 
 		// North
 		new Setting(boundsGrid)
-			.setName('North')
+			.setName('北')
 			.addText(text => text
 				.setPlaceholder('100')
 				.setValue(this.mapData.boundsNorth?.toString() || '')
@@ -307,7 +307,7 @@ export class CreateMapModal extends Modal {
 
 		// South
 		new Setting(boundsGrid)
-			.setName('South')
+			.setName('南')
 			.addText(text => text
 				.setPlaceholder('-100')
 				.setValue(this.mapData.boundsSouth?.toString() || '')
@@ -317,7 +317,7 @@ export class CreateMapModal extends Modal {
 
 		// East
 		new Setting(boundsGrid)
-			.setName('East')
+			.setName('东')
 			.addText(text => text
 				.setPlaceholder('100')
 				.setValue(this.mapData.boundsEast?.toString() || '')
@@ -327,7 +327,7 @@ export class CreateMapModal extends Modal {
 
 		// West
 		new Setting(boundsGrid)
-			.setName('West')
+			.setName('西')
 			.addText(text => text
 				.setPlaceholder('-100')
 				.setValue(this.mapData.boundsWest?.toString() || '')
@@ -339,25 +339,25 @@ export class CreateMapModal extends Modal {
 		this.dimensionsSection = form.createDiv({ cls: 'crc-dimensions-section' });
 
 		const dimsHeader = new Setting(this.dimensionsSection)
-			.setName('Image dimensions')
-			.setDesc('Dimensions of the map image (optional, auto-detected if not specified)');
+			.setName('图片尺寸')
+			.setDesc('地图图像的尺寸（可选，未指定时自动检测）');
 		dimsHeader.settingEl.addClass('crc-section-header');
 
 		const dimsGrid = this.dimensionsSection.createDiv({ cls: 'crc-dims-grid' });
 
 		new Setting(dimsGrid)
-			.setName('Width')
+			.setName('宽度')
 			.addText(text => text
-				.setPlaceholder('e.g., 2048')
+				.setPlaceholder('例如：2048')
 				.setValue(this.mapData.imageWidth?.toString() || '')
 				.onChange(value => {
 					this.mapData.imageWidth = parseInt(value) || undefined;
 				}));
 
 		new Setting(dimsGrid)
-			.setName('Height')
+			.setName('高度')
 			.addText(text => text
-				.setPlaceholder('e.g., 1536')
+				.setPlaceholder('例如：1536')
 				.setValue(this.mapData.imageHeight?.toString() || '')
 				.onChange(value => {
 					this.mapData.imageHeight = parseInt(value) || undefined;
@@ -365,8 +365,8 @@ export class CreateMapModal extends Modal {
 
 		// Default zoom
 		new Setting(form)
-			.setName('Default zoom')
-			.setDesc('Initial zoom level when opening the map (typically 0-5)')
+			.setName('默认缩放')
+			.setDesc('打开地图时的初始缩放级别（通常为 0-5）')
 			.addText(text => text
 				.setPlaceholder('2')
 				.setValue(this.mapData.defaultZoom?.toString() || '')
@@ -377,10 +377,10 @@ export class CreateMapModal extends Modal {
 		// Directory setting (only show in create mode)
 		if (!this.editMode) {
 			const dirSetting = new Setting(form)
-				.setName('Directory')
-				.setDesc('Where to create the map note')
+				.setName('文件夹')
+				.setDesc('在何处创建地图笔记')
 				.addText(text => text
-					.setPlaceholder('e.g., Maps')
+					.setPlaceholder('例如：Maps')
 					.setValue(this.directory)
 					.onChange(value => {
 						this.directory = value;
@@ -395,13 +395,13 @@ export class CreateMapModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				this.close();
 			});
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText(this.editMode ? 'Save changes' : 'Create map')
+			.setButtonText(this.editMode ? '保存更改' : '创建地图')
 			.setCta()
 			.onClick(() => {
 				if (this.editMode) {
@@ -444,7 +444,7 @@ export class CreateMapModal extends Modal {
 		);
 
 		if (imageFiles.length === 0) {
-			new Notice('No image files found in vault');
+			new Notice('库中未找到图片文件');
 			return;
 		}
 
@@ -466,22 +466,22 @@ export class CreateMapModal extends Modal {
 	 */
 	private validate(): boolean {
 		if (!this.mapData.name.trim()) {
-			new Notice('Please enter a name for the map');
+			new Notice('请输入地图名称');
 			return false;
 		}
 
 		if (!this.mapData.mapId.trim()) {
-			new Notice('Please enter a map ID');
+			new Notice('请输入地图 ID');
 			return false;
 		}
 
 		if (!this.mapData.universe.trim()) {
-			new Notice('Please enter a universe/world name');
+			new Notice('请输入宇宙/世界名称');
 			return false;
 		}
 
 		if (!this.mapData.imagePath.trim()) {
-			new Notice('Please specify an image path');
+			new Notice('请指定图片路径');
 			return false;
 		}
 
@@ -493,7 +493,7 @@ export class CreateMapModal extends Modal {
 				this.mapData.boundsEast === undefined ||
 				this.mapData.boundsWest === undefined
 			) {
-				new Notice('Please specify all four boundary values (north, south, east, west)');
+				new Notice('请指定全部四项边界值（北、南、东、西）');
 				return false;
 			}
 		}
@@ -529,7 +529,7 @@ export class CreateMapModal extends Modal {
 			// Check if file already exists
 			const existingFile = this.app.vault.getAbstractFileByPath(filepath);
 			if (existingFile) {
-				new Notice(`A file already exists at ${filepath}`);
+				new Notice(`文件已存在于 ${filepath}`);
 				return;
 			}
 
@@ -538,7 +538,7 @@ export class CreateMapModal extends Modal {
 
 			const file = await this.app.vault.create(filepath, content);
 
-			new Notice(`Created map note: ${file.basename}`);
+			new Notice(`已创建地图笔记：${file.basename}`);
 
 			if (this.onCreated) {
 				this.onCreated(file);
@@ -550,7 +550,7 @@ export class CreateMapModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to create map note:', error);
-			new Notice(`Failed to create map note: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建地图笔记失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -561,7 +561,7 @@ export class CreateMapModal extends Modal {
 		if (!this.validate()) return;
 
 		if (!this.editingFile) {
-			new Notice('No file to update');
+			new Notice('没有可更新的文件');
 			return;
 		}
 
@@ -572,7 +572,7 @@ export class CreateMapModal extends Modal {
 			// Find and replace frontmatter
 			const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
 			if (!frontmatterMatch) {
-				new Notice('Could not find frontmatter in file');
+				new Notice('无法在文件中找到 frontmatter');
 				return;
 			}
 
@@ -584,7 +584,7 @@ export class CreateMapModal extends Modal {
 
 			await this.app.vault.modify(this.editingFile, newContent);
 
-			new Notice(`Updated map note: ${this.editingFile.basename}`);
+			new Notice(`已更新地图笔记：${this.editingFile.basename}`);
 
 			if (this.onUpdated) {
 				this.onUpdated(this.editingFile);
@@ -593,7 +593,7 @@ export class CreateMapModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to update map note:', error);
-			new Notice(`Failed to update map note: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`更新地图笔记失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -663,13 +663,13 @@ class ImagePickerModal extends Modal {
 		contentEl.addClass('crc-image-picker-modal');
 
 		// Header
-		contentEl.createEl('h3', { text: 'Select map image' });
+		contentEl.createEl('h3', { text: '选择地图图片' });
 
 		// Search input
 		const searchContainer = contentEl.createDiv({ cls: 'crc-search-container' });
 		this.searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search images...',
+			placeholder: '搜索图片……',
 			cls: 'crc-search-input'
 		});
 		this.searchInput.addEventListener('input', () => this.filterFiles());
@@ -702,7 +702,7 @@ class ImagePickerModal extends Modal {
 
 		if (files.length === 0) {
 			this.listContainer.createEl('p', {
-				text: 'No matching images found',
+				text: '未找到匹配的图片',
 				cls: 'crc-no-results'
 			});
 			return;
@@ -722,7 +722,7 @@ class ImagePickerModal extends Modal {
 		for (const [folder, folderFiles] of byFolder.entries()) {
 			if (byFolder.size > 1) {
 				this.listContainer.createEl('div', {
-					text: folder || 'Root',
+					text: folder || '根目录',
 					cls: 'crc-folder-header'
 				});
 			}

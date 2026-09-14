@@ -11,13 +11,13 @@ import type { RelationshipTypeDefinition, RelationshipCategoryDefinition } from 
  * Built-in relationship categories
  */
 export const BUILT_IN_RELATIONSHIP_CATEGORIES: RelationshipCategoryDefinition[] = [
-	{ id: 'family', name: 'Family', sortOrder: 0 },
-	{ id: 'legal', name: 'Legal/Guardianship', sortOrder: 1 },
-	{ id: 'religious', name: 'Religious/Spiritual', sortOrder: 2 },
-	{ id: 'professional', name: 'Professional', sortOrder: 3 },
-	{ id: 'social', name: 'Social', sortOrder: 4 },
-	{ id: 'feudal', name: 'Feudal/World-building', sortOrder: 5 },
-	{ id: 'dna', name: 'DNA/Genetic', sortOrder: 6 }
+	{ id: 'family', name: '家族', sortOrder: 0 },
+	{ id: 'legal', name: '法律/监护', sortOrder: 1 },
+	{ id: 'religious', name: '宗教/灵性', sortOrder: 2 },
+	{ id: 'professional', name: '职业', sortOrder: 3 },
+	{ id: 'social', name: '社交', sortOrder: 4 },
+	{ id: 'feudal', name: '封建/世界观', sortOrder: 5 },
+	{ id: 'dna', name: 'DNA/遗传', sortOrder: 6 }
 ];
 
 /**
@@ -43,7 +43,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	// Family (core genealogical relationships)
 	{
 		id: 'spouse',
-		name: 'Spouse',
+		name: '配偶',
 		category: 'family',
 		color: '#a855f7',
 		lineStyle: 'solid',
@@ -54,7 +54,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'parents',
-		name: 'Parent',
+		name: '父母',
 		category: 'family',
 		color: '#22c55e',
 		lineStyle: 'solid',
@@ -66,7 +66,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'children',
-		name: 'Child',
+		name: '子女',
 		category: 'family',
 		color: '#22c55e',
 		lineStyle: 'solid',
@@ -78,7 +78,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'sibling',
-		name: 'Sibling',
+		name: '兄弟姐妹',
 		category: 'family',
 		color: '#84cc16',
 		lineStyle: 'solid',
@@ -89,7 +89,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	// Legal/Guardianship
 	{
 		id: 'guardian',
-		name: 'Guardian',
+		name: '监护人',
 		category: 'legal',
 		color: '#14b8a6',
 		lineStyle: 'solid',
@@ -101,7 +101,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'ward',
-		name: 'Ward',
+		name: '被监护人',
 		category: 'legal',
 		color: '#14b8a6',
 		lineStyle: 'solid',
@@ -113,7 +113,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'step_parent',
-		name: 'Step-parent',
+		name: '继父母',
 		category: 'legal',
 		color: '#14b8a6',
 		lineStyle: 'dashed',
@@ -125,7 +125,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'step_child',
-		name: 'Step-child',
+		name: '继子女',
 		category: 'legal',
 		color: '#14b8a6',
 		lineStyle: 'dashed',
@@ -137,7 +137,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'adoptive_parent',
-		name: 'Adoptive parent',
+		name: '收养父母',
 		category: 'legal',
 		color: '#06b6d4',
 		lineStyle: 'dotted',
@@ -149,7 +149,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'adopted_child',
-		name: 'Adopted child',
+		name: '被收养子女',
 		category: 'legal',
 		color: '#06b6d4',
 		lineStyle: 'dotted',
@@ -161,7 +161,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'foster_parent',
-		name: 'Foster parent',
+		name: '寄养父母',
 		category: 'legal',
 		color: '#0ea5e9',
 		lineStyle: 'solid',
@@ -173,7 +173,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'foster_child',
-		name: 'Foster child',
+		name: '寄养子女',
 		category: 'legal',
 		color: '#0ea5e9',
 		lineStyle: 'solid',
@@ -187,7 +187,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	// Religious/Spiritual
 	{
 		id: 'godparent',
-		name: 'Godparent',
+		name: '教父母',
 		category: 'religious',
 		color: '#3b82f6',
 		lineStyle: 'solid',
@@ -197,7 +197,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'godchild',
-		name: 'Godchild',
+		name: '教子女',
 		category: 'religious',
 		color: '#3b82f6',
 		lineStyle: 'solid',
@@ -207,7 +207,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'mentor',
-		name: 'Mentor',
+		name: '导师',
 		category: 'religious',
 		color: '#8b5cf6',
 		lineStyle: 'solid',
@@ -217,7 +217,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'disciple',
-		name: 'Disciple',
+		name: '弟子',
 		category: 'religious',
 		color: '#8b5cf6',
 		lineStyle: 'solid',
@@ -229,7 +229,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	// Professional
 	{
 		id: 'master',
-		name: 'Master',
+		name: '师傅',
 		category: 'professional',
 		color: '#f97316',
 		lineStyle: 'solid',
@@ -239,7 +239,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'apprentice',
-		name: 'Apprentice',
+		name: '学徒',
 		category: 'professional',
 		color: '#f97316',
 		lineStyle: 'solid',
@@ -249,7 +249,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'employer',
-		name: 'Employer',
+		name: '雇主',
 		category: 'professional',
 		color: '#ea580c',
 		lineStyle: 'solid',
@@ -259,7 +259,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'employee',
-		name: 'Employee',
+		name: '雇员',
 		category: 'professional',
 		color: '#ea580c',
 		lineStyle: 'solid',
@@ -271,7 +271,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	// Social
 	{
 		id: 'witness',
-		name: 'Witness',
+		name: '见证人',
 		category: 'social',
 		color: '#6b7280',
 		lineStyle: 'dashed',
@@ -280,7 +280,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'neighbor',
-		name: 'Neighbor',
+		name: '邻居',
 		category: 'social',
 		color: '#9ca3af',
 		lineStyle: 'dashed',
@@ -289,7 +289,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'companion',
-		name: 'Companion',
+		name: '同伴',
 		category: 'social',
 		color: '#22c55e',
 		lineStyle: 'solid',
@@ -298,7 +298,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'betrothed',
-		name: 'Betrothed',
+		name: '订婚对象',
 		category: 'social',
 		color: '#ec4899',
 		lineStyle: 'dashed',
@@ -309,7 +309,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	// Feudal/World-building
 	{
 		id: 'liege',
-		name: 'Liege lord',
+		name: '领主',
 		category: 'feudal',
 		color: '#eab308',
 		lineStyle: 'solid',
@@ -319,7 +319,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'vassal',
-		name: 'Vassal',
+		name: '封臣',
 		category: 'feudal',
 		color: '#eab308',
 		lineStyle: 'solid',
@@ -329,7 +329,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'ally',
-		name: 'Ally',
+		name: '盟友',
 		category: 'feudal',
 		color: '#10b981',
 		lineStyle: 'dashed',
@@ -338,7 +338,7 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	},
 	{
 		id: 'rival',
-		name: 'Rival',
+		name: '对手',
 		category: 'feudal',
 		color: '#ef4444',
 		lineStyle: 'dashed',
@@ -349,14 +349,14 @@ export const DEFAULT_RELATIONSHIP_TYPES: RelationshipTypeDefinition[] = [
 	// DNA/Genetic (opt-in via enableDnaTracking setting)
 	{
 		id: 'dna_match',
-		name: 'DNA match',
+		name: 'DNA 匹配',
 		category: 'dna',
 		color: '#9333ea',
 		lineStyle: 'dashed',
 		symmetric: true,
 		builtIn: true,
 		includeOnFamilyTree: false,
-		description: 'Genetic DNA match (not a genealogical relationship)',
+		description: '基因 DNA 匹配（非谱系关系）',
 		/** This relationship type requires enableDnaTracking setting */
 		requiresSetting: 'enableDnaTracking'
 	}

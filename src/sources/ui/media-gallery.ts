@@ -60,7 +60,7 @@ export function renderMediaGallery(
 	_showTab: (tabId: string) => void
 ): void {
 	const card = createCard({
-		title: 'Media gallery',
+		title: '媒体图库',
 		icon: 'image'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
@@ -104,7 +104,7 @@ export function renderMediaGallery(
 	const docCount = allMediaItems.filter(m => m.type === 'document').length;
 	const footer = content.createDiv({ cls: 'cr-media-gallery-footer' });
 	footer.createSpan({
-		text: `${allMediaItems.length} media items (${imageCount} images, ${docCount} documents) from ${sourcesWithMedia.length} sources`,
+		text: `来自 ${sourcesWithMedia.length} 条来源的 ${allMediaItems.length} 个媒体项（${imageCount} 张图片，${docCount} 份文档）`,
 		cls: 'crc-text-muted'
 	});
 
@@ -172,10 +172,10 @@ function renderEmptyState(container: HTMLElement): void {
 	const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 	const iconSpan = emptyState.createSpan({ cls: 'crc-empty-icon' });
 	setIcon(iconSpan, 'image');
-	emptyState.createEl('p', { text: 'No media found.' });
+	emptyState.createEl('p', { text: '未找到媒体。' });
 	emptyState.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'Add media files to your source notes using the "media" frontmatter property.'
+		text: '使用"media" frontmatter 属性向你的来源笔记添加媒体文件。'
 	});
 }
 
@@ -195,7 +195,7 @@ function renderFilterToolbar(
 	setIcon(searchIcon, 'search');
 	const searchInput = searchContainer.createEl('input', {
 		type: 'text',
-		placeholder: 'Search media...',
+		placeholder: '搜索媒体…',
 		cls: 'cr-media-gallery-search-input'
 	});
 	searchInput.addEventListener('input', () => {
@@ -205,9 +205,9 @@ function renderFilterToolbar(
 
 	// Media type filter
 	const typeFilter = container.createEl('select', { cls: 'cr-media-gallery-filter' });
-	typeFilter.createEl('option', { value: 'all', text: 'All types' });
-	typeFilter.createEl('option', { value: 'image', text: 'Images only' });
-	typeFilter.createEl('option', { value: 'document', text: 'Documents only' });
+	typeFilter.createEl('option', { value: 'all', text: '全部类型' });
+	typeFilter.createEl('option', { value: 'image', text: '仅图片' });
+	typeFilter.createEl('option', { value: 'document', text: '仅文档' });
 	typeFilter.addEventListener('change', () => {
 		filterState.mediaType = typeFilter.value as 'image' | 'document' | 'all';
 		onFilterChange();
@@ -221,7 +221,7 @@ function renderFilterToolbar(
 
 	if (sourceTypes.size > 1) {
 		const sourceTypeFilter = container.createEl('select', { cls: 'cr-media-gallery-filter' });
-		sourceTypeFilter.createEl('option', { value: '', text: 'All source types' });
+		sourceTypeFilter.createEl('option', { value: '', text: '全部来源类型' });
 
 		for (const typeId of Array.from(sourceTypes).sort()) {
 			const typeDef = getSourceType(
@@ -272,7 +272,7 @@ function renderGalleryGrid(
 
 	if (filteredItems.length === 0) {
 		const noResults = container.createDiv({ cls: 'cr-media-gallery-no-results' });
-		noResults.createEl('p', { text: 'No media matches your filters.', cls: 'crc-text-muted' });
+		noResults.createEl('p', { text: '没有符合筛选条件的媒体。', cls: 'crc-text-muted' });
 		return;
 	}
 
@@ -377,7 +377,7 @@ function renderMediaThumbnail(
 		thumbnail.addClass('cr-media-thumbnail--missing');
 		const missingBadge = thumbnail.createDiv({ cls: 'cr-media-thumbnail-missing' });
 		setIcon(missingBadge, 'alert-circle');
-		missingBadge.createSpan({ text: 'Missing' });
+		missingBadge.createSpan({ text: '缺失' });
 	}
 }
 
@@ -410,7 +410,7 @@ function openMediaLightbox(
 	const lightboxItems: LightboxItem[] = imageItems.map(item => ({
 		file: item.file!,
 		displayName: item.displayName,
-		subtitle: `Source: ${item.source.title}`
+		subtitle: `来源：${item.source.title}`
 	}));
 
 	openGalleryLightbox(plugin.app, lightboxItems, currentIndex);

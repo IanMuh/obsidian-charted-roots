@@ -9,7 +9,6 @@ import { App } from 'obsidian';
 import { FamilyGraphService, PersonNode } from './family-graph';
 import { FolderFilterService } from './folder-filter';
 import { getLogger } from './logging';
-import { pluralize } from '../utils/format-utils';
 
 const logger = getLogger('RelationshipCalculator');
 
@@ -99,7 +98,7 @@ export class RelationshipCalculator {
 				personA,
 				personB,
 				path: [{ person: personA, relationship: 'start', direction: 'start' }],
-				relationshipDescription: 'Same person',
+				relationshipDescription: '同一人',
 				generationsUp: 0,
 				generationsDown: 0,
 				isDirectLine: true,
@@ -125,7 +124,7 @@ export class RelationshipCalculator {
 				personA,
 				personB,
 				path: [],
-				relationshipDescription: 'Not related',
+				relationshipDescription: '无亲属关系',
 				generationsUp: 0,
 				generationsDown: 0,
 				isDirectLine: false,
@@ -514,18 +513,18 @@ export class RelationshipCalculator {
 		// a step/adoptive edge to surface.
 		if (hasSpouseConnection) {
 			if (generationsUp === 0 && generationsDown === 0) {
-				return 'Spouse';
+				return '配偶';
 			}
 			if (generationsUp === 1 && generationsDown === 0) {
-				return 'Parent-in-law';
+				return '姻亲父母';
 			}
 			if (generationsUp === 0 && generationsDown === 1) {
-				return 'Child-in-law';
+				return '姻亲子女';
 			}
 			if (generationsUp === 1 && generationsDown === 1) {
-				return 'Sibling-in-law';
+				return '姻亲兄弟姐妹';
 			}
-			return 'Related by marriage';
+			return '姻亲关系';
 		}
 
 		const baseTerm = this.getBaseRelationshipTerm(generationsUp, generationsDown, path);
@@ -560,15 +559,15 @@ export class RelationshipCalculator {
 
 		// Siblings (same parents)
 		if (generationsUp === 1 && generationsDown === 1) {
-			return 'Sibling';
+			return '兄弟姐妹';
 		}
 
 		// Aunts/Uncles and Nieces/Nephews
 		if (generationsUp === 1 && generationsDown === 2) {
-			return 'Niece/Nephew';
+			return '侄/甥';
 		}
 		if (generationsUp === 2 && generationsDown === 1) {
-			return 'Aunt/Uncle';
+			return '叔伯/姑姨';
 		}
 
 		// Cousins
@@ -579,17 +578,17 @@ export class RelationshipCalculator {
 		// Great aunts/uncles and grand nieces/nephews
 		if (generationsUp > 1 && generationsDown === 1) {
 			const greats = generationsUp - 2;
-			const prefix = greats > 0 ? 'Great-'.repeat(greats) : '';
-			return `${prefix}Grand Aunt/Uncle`;
+			const prefix = greats > 0 ? '隔'.repeat(greats) : '';
+			return `${prefix}叔伯/姑姨`;
 		}
 		if (generationsUp === 1 && generationsDown > 2) {
 			const greats = generationsDown - 2;
-			const prefix = greats > 0 ? 'Great-'.repeat(greats) : '';
-			return `${prefix}Grand Niece/Nephew`;
+			const prefix = greats > 0 ? '隔'.repeat(greats) : '';
+			return `${prefix}侄/甥`;
 		}
 
 		// Fallback for complex relationships
-		return `Related (${generationsUp} gen. up, ${generationsDown} gen. down)`;
+		return `亲属（上${generationsUp}代、下${generationsDown}代）`;
 	}
 
 	/**
@@ -597,11 +596,10 @@ export class RelationshipCalculator {
 	 * Closed compounds for Parent / Child / Sibling; hyphen prefix elsewhere.
 	 */
 	private applyStepPrefix(baseTerm: string): string {
-		if (baseTerm === 'Parent') return 'Stepparent';
-		if (baseTerm === 'Child') return 'Stepchild';
-		if (baseTerm === 'Sibling') return 'Stepsibling';
-		// Hyphen prefix with lowercase tail (matches "Sibling-in-law" style).
-		return `Step-${baseTerm.toLowerCase()}`;
+		if (baseTerm === '父母') return '继父母';
+		if (baseTerm === '子女') return '继子女';
+		if (baseTerm === '兄弟姐妹') return '继兄弟姐妹';
+		return `继${baseTerm}`;
 	}
 
 	/**
@@ -609,8 +607,8 @@ export class RelationshipCalculator {
 	 * "Adopted" for the direct child case; "Adoptive" elsewhere.
 	 */
 	private applyAdoptivePrefix(baseTerm: string): string {
-		if (baseTerm === 'Child') return 'Adopted child';
-		return `Adoptive ${baseTerm.toLowerCase()}`;
+		if (baseTerm === '子女') return '养子女';
+		return `收养的${baseTerm}`;
 	}
 
 	/**
@@ -618,12 +616,12 @@ export class RelationshipCalculator {
 	 */
 	private getAncestorTerm(generations: number): string {
 		switch (generations) {
-			case 1: return 'Parent';
-			case 2: return 'Grandparent';
-			case 3: return 'Great-Grandparent';
+			case 1: return '父母';
+			case 2: return '祖父母';
+			case 3: return '曾祖父母';
 			default: {
 				const greats = generations - 2;
-				return 'Great-'.repeat(greats) + 'Grandparent';
+				return '隔'.repeat(greats) + '祖父母';
 			}
 		}
 	}
@@ -634,12 +632,12 @@ export class RelationshipCalculator {
 	private getDescendantTerm(generations: number, _path: RelationshipStep[]): string {
 		// Try to determine gender from the final person if available
 		switch (generations) {
-			case 1: return 'Child';
-			case 2: return 'Grandchild';
-			case 3: return 'Great-Grandchild';
+			case 1: return '子女';
+			case 2: return '孙辈';
+			case 3: return '曾孙辈';
 			default: {
 				const greats = generations - 2;
-				return 'Great-'.repeat(greats) + 'Grandchild';
+				return '隔'.repeat(greats) + '孙辈';
 			}
 		}
 	}
@@ -653,21 +651,16 @@ export class RelationshipCalculator {
 		const removal = Math.abs(generationsUp - generationsDown);
 
 		const ordinal = this.getOrdinal(minGen);
-		const removalText = removal > 0
-			? ` ${removal} ${pluralize(removal, 'time')} removed`
-			: '';
+		const removalText = removal > 0 ? `，隔${removal}代` : '';
 
-		return `${ordinal} Cousin${removalText}`;
+		return `${ordinal}堂/表亲${removalText}`;
 	}
 
 	/**
 	 * Get ordinal string for a number
 	 */
 	private getOrdinal(n: number): string {
-		if (n === 1) return '1st';
-		if (n === 2) return '2nd';
-		if (n === 3) return '3rd';
-		return `${n}th`;
+		return `第${n}代`;
 	}
 
 	/**

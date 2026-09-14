@@ -29,15 +29,15 @@ export interface ImportProgress {
  * Phase display configuration
  */
 const PHASE_CONFIG: Record<ImportPhase, { label: string; icon: LucideIconName }> = {
-	validating: { label: 'Validating file', icon: 'file-check' },
-	parsing: { label: 'Parsing GEDCOM', icon: 'file-code' },
-	media: { label: 'Extracting media', icon: 'image' },
-	places: { label: 'Creating places', icon: 'map-pin' },
-	sources: { label: 'Creating sources', icon: 'book-open' },
-	people: { label: 'Creating people', icon: 'users' },
-	relationships: { label: 'Linking relationships', icon: 'git-branch' },
-	events: { label: 'Creating events', icon: 'calendar' },
-	complete: { label: 'Complete', icon: 'check' }
+	validating: { label: '正在验证文件', icon: 'file-check' },
+	parsing: { label: '正在解析 GEDCOM', icon: 'file-code' },
+	media: { label: '正在提取媒体', icon: 'image' },
+	places: { label: '正在创建地点', icon: 'map-pin' },
+	sources: { label: '正在创建来源', icon: 'book-open' },
+	people: { label: '正在创建人物', icon: 'users' },
+	relationships: { label: '正在关联关系', icon: 'git-branch' },
+	events: { label: '正在创建事件', icon: 'calendar' },
+	complete: { label: '完成', icon: 'check' }
 };
 
 /**
@@ -73,7 +73,7 @@ export class GedcomImportProgressModal extends Modal {
 
 		// Title
 		contentEl.createEl('h2', {
-			text: 'Importing GEDCOM',
+			text: '正在导入 GEDCOM',
 			cls: 'crc-modal-title'
 		});
 
@@ -82,7 +82,7 @@ export class GedcomImportProgressModal extends Modal {
 		this.phaseIcon = phaseContainer.createDiv({ cls: 'cr-import-phase__icon' });
 		this.phaseLabel = phaseContainer.createEl('span', {
 			cls: 'cr-import-phase__label',
-			text: 'Validating file…'
+			text: '正在验证文件…'
 		});
 
 		// Progress bar container
@@ -94,7 +94,7 @@ export class GedcomImportProgressModal extends Modal {
 		// Progress text
 		this.progressText = contentEl.createDiv({
 			cls: 'cr-import-progress__text',
-			text: 'Starting…'
+			text: '正在开始…'
 		});
 
 		// Stats container (shows running totals)
@@ -134,9 +134,9 @@ export class GedcomImportProgressModal extends Modal {
 		if (progress.message) {
 			this.progressText.textContent = progress.message;
 		} else if (progress.total > 0) {
-			this.progressText.textContent = `${progress.current} of ${progress.total}`;
+			this.progressText.textContent = `第 ${progress.current} / ${progress.total}`;
 		} else {
-			this.progressText.textContent = 'Processing…';
+			this.progressText.textContent = '正在处理…';
 		}
 	}
 
@@ -155,10 +155,10 @@ export class GedcomImportProgressModal extends Modal {
 		if (!this.progressBar || !this.progressText || !this.phaseLabel) return;
 
 		this.currentPhase = 'complete';
-		this.phaseLabel.textContent = 'Import complete';
+		this.phaseLabel.textContent = '导入完成';
 		this.updatePhaseIcon('complete');
 		this.progressBar.setCssProps({ '--progress-width': '100%' });
-		this.progressText.textContent = 'Done!';
+		this.progressText.textContent = '完成！';
 	}
 
 	/**
@@ -187,19 +187,19 @@ export class GedcomImportProgressModal extends Modal {
 		const items: { label: string; value: number; icon: LucideIconName }[] = [];
 
 		if (this.stats.media > 0) {
-			items.push({ label: 'Media', value: this.stats.media, icon: 'image' });
+			items.push({ label: '媒体', value: this.stats.media, icon: 'image' });
 		}
 		if (this.stats.places > 0) {
-			items.push({ label: 'Places', value: this.stats.places, icon: 'map-pin' });
+			items.push({ label: '地点', value: this.stats.places, icon: 'map-pin' });
 		}
 		if (this.stats.sources > 0) {
-			items.push({ label: 'Sources', value: this.stats.sources, icon: 'book-open' });
+			items.push({ label: '来源', value: this.stats.sources, icon: 'book-open' });
 		}
 		if (this.stats.people > 0) {
-			items.push({ label: 'People', value: this.stats.people, icon: 'users' });
+			items.push({ label: '人物', value: this.stats.people, icon: 'users' });
 		}
 		if (this.stats.events > 0) {
-			items.push({ label: 'Events', value: this.stats.events, icon: 'calendar' });
+			items.push({ label: '事件', value: this.stats.events, icon: 'calendar' });
 		}
 
 		for (const item of items) {

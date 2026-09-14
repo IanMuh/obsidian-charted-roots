@@ -13,9 +13,9 @@ import type { FictionalDateSystem } from '../../dates/types/date-types';
 
 /** Available status options */
 const STATUS_OPTIONS: Record<UniverseStatus, string> = {
-	active: 'Active',
-	draft: 'Draft',
-	archived: 'Archived'
+	active: '活跃',
+	draft: '草稿',
+	archived: '已归档'
 };
 
 /** Available genre options */
@@ -89,17 +89,17 @@ export class EditUniverseModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('globe', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Edit universe');
+		titleContainer.appendText('编辑宇宙');
 
 		// Form container
 		const form = contentEl.createDiv({ cls: 'crc-form' });
 
 		// Name (required)
 		new Setting(form)
-			.setName('Name')
-			.setDesc('The display name for this universe')
+			.setName('名称')
+			.setDesc('此宇宙的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., Middle-earth')
+				.setPlaceholder('例如：中土世界')
 				.setValue(this.name)
 				.onChange(value => {
 					this.name = value;
@@ -107,11 +107,11 @@ export class EditUniverseModal extends Modal {
 
 		// Description
 		new Setting(form)
-			.setName('Description')
-			.setDesc('Brief description of the universe')
+			.setName('描述')
+			.setDesc('宇宙的简要描述')
 			.addTextArea(text => {
 				text
-					.setPlaceholder('A rich fantasy world...')
+					.setPlaceholder('一个丰富的奇幻世界…')
 					.setValue(this.description)
 					.onChange(value => {
 						this.description = value;
@@ -121,10 +121,10 @@ export class EditUniverseModal extends Modal {
 
 		// Author
 		new Setting(form)
-			.setName('Author')
-			.setDesc('Creator or author of the fictional world')
+			.setName('作者')
+			.setDesc('虚构世界的创作者或作者')
 			.addText(text => text
-				.setPlaceholder('e.g., J.R.R. Tolkien')
+				.setPlaceholder('例如：J.R.R. 托尔金')
 				.setValue(this.author)
 				.onChange(value => {
 					this.author = value;
@@ -132,11 +132,11 @@ export class EditUniverseModal extends Modal {
 
 		// Genre
 		new Setting(form)
-			.setName('Genre')
-			.setDesc('Primary genre of the fictional world')
+			.setName('题材')
+			.setDesc('虚构世界的主要题材')
 			.addDropdown(dropdown => {
 				for (const genre of GENRE_OPTIONS) {
-					dropdown.addOption(genre, genre || 'Not specified');
+					dropdown.addOption(genre, genre || '未指定');
 				}
 				dropdown.setValue(this.genre);
 				dropdown.onChange(value => {
@@ -146,8 +146,8 @@ export class EditUniverseModal extends Modal {
 
 		// Status
 		new Setting(form)
-			.setName('Status')
-			.setDesc('Current status of this universe')
+			.setName('状态')
+			.setDesc('此宇宙的当前状态')
 			.addDropdown(dropdown => {
 				for (const [value, label] of Object.entries(STATUS_OPTIONS)) {
 					dropdown.addOption(value, label);
@@ -162,18 +162,18 @@ export class EditUniverseModal extends Modal {
 		// Lists built-ins and user-defined custom calendar systems; '(unset)'
 		// removes the link.
 		new Setting(form)
-			.setName('Calendar')
-			.setDesc('Default calendar for fictional dates in this universe')
+			.setName('历法')
+			.setDesc('此宇宙中虚构日期的默认历法')
 			.addDropdown(dropdown => {
-				dropdown.addOption('', '(unset)');
+				dropdown.addOption('', '（未设置）');
 				for (const sys of this.collectAvailableCalendars()) {
-					dropdown.addOption(sys.id, sys.builtIn ? `${sys.name} (built-in)` : sys.name);
+					dropdown.addOption(sys.id, sys.builtIn ? `${sys.name}（内置）` : sys.name);
 				}
 				// Preserve the current value even if the system is no longer
 				// in the list (e.g., a custom calendar was removed) so the
 				// user can deliberately clear it rather than silently lose it.
 				if (this.defaultCalendar && !this.collectAvailableCalendars().some(s => s.id === this.defaultCalendar)) {
-					dropdown.addOption(this.defaultCalendar, `${this.defaultCalendar} (missing)`);
+					dropdown.addOption(this.defaultCalendar, `${this.defaultCalendar}（缺失）`);
 				}
 				dropdown.setValue(this.defaultCalendar);
 				dropdown.onChange(value => {
@@ -185,10 +185,10 @@ export class EditUniverseModal extends Modal {
 		// characters for record superlatives (#749). Real-world universes can
 		// leave this blank (today is assumed for people without a universe).
 		new Setting(form)
-			.setName('Current date')
-			.setDesc("The universe's present, in its own calendar (e.g. \"342 AE\"). Used to age living characters in statistics. Leave blank to use today.")
+			.setName('当前日期')
+			.setDesc('宇宙自身的"现在"，采用其自身历法（例如 "342 AE"）。用于在统计中计算在世人物的年龄。留空则使用今天。')
 			.addText(text => text
-				.setPlaceholder('e.g. 342 AE')
+				.setPlaceholder('例如 342 AE')
 				.setValue(this.currentDate)
 				.onChange(value => {
 					this.currentDate = value;
@@ -202,7 +202,7 @@ export class EditUniverseModal extends Modal {
 		});
 		if (this.universe.created) {
 			info.createEl('p', {
-				text: `Created: ${this.universe.created}`,
+				text: `创建于：${this.universe.created}`,
 				cls: 'crc-info-text'
 			});
 		}
@@ -212,7 +212,7 @@ export class EditUniverseModal extends Modal {
 
 		// Cancel button
 		const cancelBtn = actions.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn crc-btn-secondary'
 		});
 		cancelBtn.addEventListener('click', () => {
@@ -221,7 +221,7 @@ export class EditUniverseModal extends Modal {
 
 		// Save button
 		const saveBtn = actions.createEl('button', {
-			text: 'Save changes',
+			text: '保存更改',
 			cls: 'crc-btn crc-btn-primary'
 		});
 		saveBtn.addEventListener('click', () => {
@@ -235,7 +235,7 @@ export class EditUniverseModal extends Modal {
 	private async save(): Promise<void> {
 		// Validate required fields
 		if (!this.name.trim()) {
-			new Notice('Name is required');
+			new Notice('名称为必填项');
 			return;
 		}
 
@@ -255,7 +255,7 @@ export class EditUniverseModal extends Modal {
 			this.close();
 			this.onUpdated?.(this.file);
 		} catch (error) {
-			new Notice(`Failed to update universe: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`更新宇宙失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 

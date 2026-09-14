@@ -13,7 +13,6 @@ import { DataQualityService } from '../core/data-quality';
 import type { BidirectionalInconsistency, ImpossibleDateIssue } from '../core/data-quality';
 import { getErrorMessage } from '../core/error-utils';
 import { AddPersonTypePreviewModal } from './add-person-type-modal';
-import { pluralize } from '../utils/format-utils';
 import { isMalformedWikilink, normalizePersonNameCasing } from './data-quality-value-checks';
 import {
 	DuplicateRelationshipsPreviewModal,
@@ -47,10 +46,10 @@ export function previewRemoveDuplicateRelationships(plugin: CanvasRootsPlugin, a
 			const dupCount = fm.spouse.length - unique.length;
 			if (dupCount > 0) {
 				changes.push({
-					person: { name: person.name || 'Unknown' },
+					person: { name: person.name || '未知' },
 					field: 'spouse',
-					oldValue: `${fm.spouse.length} ${pluralize(fm.spouse.length, 'entry', 'entries')} (${dupCount} ${pluralize(dupCount, 'duplicate')})`,
-					newValue: `${unique.length} ${pluralize(unique.length, 'entry', 'entries')} (deduplicated)`,
+					oldValue: `${fm.spouse.length} 个条目（${dupCount} 个重复）`,
+					newValue: `${unique.length} 个条目（已去重）`,
 					file: person.file
 				});
 			}
@@ -62,10 +61,10 @@ export function previewRemoveDuplicateRelationships(plugin: CanvasRootsPlugin, a
 			const dupCount = fm.spouse_id.length - unique.length;
 			if (dupCount > 0) {
 				changes.push({
-					person: { name: person.name || 'Unknown' },
+					person: { name: person.name || '未知' },
 					field: 'spouse_id',
-					oldValue: `${fm.spouse_id.length} ${pluralize(fm.spouse_id.length, 'entry', 'entries')} (${dupCount} ${pluralize(dupCount, 'duplicate')})`,
-					newValue: `${unique.length} ${pluralize(unique.length, 'entry', 'entries')} (deduplicated)`,
+					oldValue: `${fm.spouse_id.length} 个条目（${dupCount} 个重复）`,
+					newValue: `${unique.length} 个条目（已去重）`,
 					file: person.file
 				});
 			}
@@ -79,10 +78,10 @@ export function previewRemoveDuplicateRelationships(plugin: CanvasRootsPlugin, a
 			if (dupCount > 0) {
 				const fieldName = fm.children ? 'children' : 'child';
 				changes.push({
-					person: { name: person.name || 'Unknown' },
+					person: { name: person.name || '未知' },
 					field: fieldName,
-					oldValue: `${childrenArray.length} ${pluralize(childrenArray.length, 'entry', 'entries')} (${dupCount} ${pluralize(dupCount, 'duplicate')})`,
-					newValue: `${unique.length} ${pluralize(unique.length, 'entry', 'entries')} (deduplicated)`,
+					oldValue: `${childrenArray.length} 个条目（${dupCount} 个重复）`,
+					newValue: `${unique.length} 个条目（已去重）`,
 					file: person.file
 				});
 			}
@@ -94,10 +93,10 @@ export function previewRemoveDuplicateRelationships(plugin: CanvasRootsPlugin, a
 			const dupCount = fm.children_id.length - unique.length;
 			if (dupCount > 0) {
 				changes.push({
-					person: { name: person.name || 'Unknown' },
+					person: { name: person.name || '未知' },
 					field: 'children_id',
-					oldValue: `${fm.children_id.length} ${pluralize(fm.children_id.length, 'entry', 'entries')} (${dupCount} ${pluralize(dupCount, 'duplicate')})`,
-					newValue: `${unique.length} ${pluralize(unique.length, 'entry', 'entries')} (deduplicated)`,
+					oldValue: `${fm.children_id.length} 个条目（${dupCount} 个重复）`,
+					newValue: `${unique.length} 个条目（已去重）`,
 					file: person.file
 				});
 			}
@@ -105,7 +104,7 @@ export function previewRemoveDuplicateRelationships(plugin: CanvasRootsPlugin, a
 	}
 
 	if (changes.length === 0) {
-		new Notice('No duplicate relationships found');
+		new Notice('未发现重复关系');
 		return;
 	}
 
@@ -122,7 +121,7 @@ export function previewRemoveDuplicateRelationships(plugin: CanvasRootsPlugin, a
  * Remove duplicate relationships
  */
 export async function removeDuplicateRelationships(plugin: CanvasRootsPlugin, app: App, showTab: (tabId: string) => void): Promise<void> {
-	new Notice('Removing duplicate relationships...');
+	new Notice('正在移除重复关系……');
 
 	const familyGraph = plugin.createFamilyGraphService();
 	familyGraph.ensureCacheLoaded();
@@ -198,13 +197,13 @@ export async function removeDuplicateRelationships(plugin: CanvasRootsPlugin, ap
 
 	// Show result
 	if (modified > 0) {
-		new Notice(`\u2713 Removed duplicates from ${modified} ${pluralize(modified, 'file')}`);
+		new Notice(`\u2713 已从 ${modified} 个文件移除重复项`);
 	} else {
-		new Notice('No duplicate relationships found');
+		new Notice('未发现重复关系');
 	}
 
 	if (errors.length > 0) {
-		new Notice(`\u26A0 ${errors.length} errors occurred. Check console for details.`);
+		new Notice(`\u26A0 发生 ${errors.length} 个错误。详情请查看控制台。`);
 		console.error('Remove duplicates errors:', errors);
 	}
 
@@ -279,10 +278,10 @@ export function previewRemovePlaceholders(plugin: CanvasRootsPlugin, app: App, s
 		// Check name field
 		if (fm.name && isPlaceholder(fm.name)) {
 			changes.push({
-				person: { name: person.name || 'Unknown' },
+				person: { name: person.name || '未知' },
 				field: 'name',
 				oldValue: String(fm.name as string),
-				newValue: '(remove field)',
+				newValue: '（移除字段）',
 				file: person.file
 			});
 		}
@@ -296,16 +295,16 @@ export function previewRemovePlaceholders(plugin: CanvasRootsPlugin, app: App, s
 				if (cleaned === null) {
 					// Entirely placeholder
 					changes.push({
-						person: { name: person.name || 'Unknown' },
+						person: { name: person.name || '未知' },
 						field,
 						oldValue: value,
-						newValue: '(remove field)',
+						newValue: '（移除字段）',
 						file: person.file
 					});
 				} else if (cleaned !== value) {
 					// Has cleanup needed
 					changes.push({
-						person: { name: person.name || 'Unknown' },
+						person: { name: person.name || '未知' },
 						field,
 						oldValue: value,
 						newValue: cleaned,
@@ -314,10 +313,10 @@ export function previewRemovePlaceholders(plugin: CanvasRootsPlugin, app: App, s
 				}
 			} else if (field in fm && isPlaceholder(value)) {
 				changes.push({
-					person: { name: person.name || 'Unknown' },
+					person: { name: person.name || '未知' },
 					field,
 					oldValue: String(value),
-					newValue: '(remove field)',
+					newValue: '（移除字段）',
 					file: person.file
 				});
 			}
@@ -332,27 +331,27 @@ export function previewRemovePlaceholders(plugin: CanvasRootsPlugin, app: App, s
 				const nonPlaceholders = value.filter(v => !isPlaceholder(v));
 				if (nonPlaceholders.length === 0 && value.length > 0) {
 					changes.push({
-						person: { name: person.name || 'Unknown' },
+						person: { name: person.name || '未知' },
 						field,
-						oldValue: `[${value.length} placeholder ${pluralize(value.length, 'entry', 'entries')}]`,
-						newValue: '(remove field)',
+						oldValue: `[${value.length} 个占位条目]`,
+						newValue: '（移除字段）',
 						file: person.file
 					});
 				} else if (nonPlaceholders.length < value.length) {
 					changes.push({
-						person: { name: person.name || 'Unknown' },
+						person: { name: person.name || '未知' },
 						field,
-						oldValue: `${value.length} entries (${value.length - nonPlaceholders.length} placeholders)`,
-						newValue: `${nonPlaceholders.length} entries (cleaned)`,
+						oldValue: `${value.length} 个条目（${value.length - nonPlaceholders.length} 个占位符）`,
+						newValue: `${nonPlaceholders.length} 个条目（已清理）`,
 						file: person.file
 					});
 				}
 			} else if (field in fm && isPlaceholder(value)) {
 				changes.push({
-					person: { name: person.name || 'Unknown' },
+					person: { name: person.name || '未知' },
 					field,
 					oldValue: String(value),
-					newValue: '(remove field)',
+					newValue: '（移除字段）',
 					file: person.file
 				});
 			}
@@ -363,7 +362,7 @@ export function previewRemovePlaceholders(plugin: CanvasRootsPlugin, app: App, s
 	}
 
 	if (changes.length === 0) {
-		new Notice('No placeholder values found');
+		new Notice('未发现占位符值');
 		return;
 	}
 
@@ -380,7 +379,7 @@ export function previewRemovePlaceholders(plugin: CanvasRootsPlugin, app: App, s
  * Remove empty/placeholder values
  */
 export async function removePlaceholders(plugin: CanvasRootsPlugin, app: App, showTab: (tabId: string) => void): Promise<void> {
-	new Notice('Removing placeholder values...');
+	new Notice('正在移除占位符值……');
 
 	const familyGraph = plugin.createFamilyGraphService();
 	familyGraph.ensureCacheLoaded();
@@ -509,13 +508,13 @@ export async function removePlaceholders(plugin: CanvasRootsPlugin, app: App, sh
 
 	// Show result
 	if (modified > 0) {
-		new Notice(`\u2713 Removed placeholders from ${modified} ${pluralize(modified, 'file')}`);
+		new Notice(`\u2713 已从 ${modified} 个文件移除占位符`);
 	} else {
-		new Notice('No placeholder values found');
+		new Notice('未发现占位符值');
 	}
 
 	if (errors.length > 0) {
-		new Notice(`\u26A0 ${errors.length} errors occurred. Check console for details.`);
+		new Notice(`\u26A0 发生 ${errors.length} 个错误。详情请查看控制台。`);
 		console.error('Remove placeholders errors:', errors);
 	}
 
@@ -548,7 +547,7 @@ export function previewAddPersonType(plugin: CanvasRootsPlugin, app: App, showTa
 		// Check if cr_type already exists
 		if (!fm.cr_type) {
 			changes.push({
-				person: { name: person.name || 'Unknown' },
+				person: { name: person.name || '未知' },
 				file: person.file
 			});
 		}
@@ -568,7 +567,7 @@ export function previewAddPersonType(plugin: CanvasRootsPlugin, app: App, showTa
  * Add cr_type: person to all person notes
  */
 export async function addPersonType(plugin: CanvasRootsPlugin, app: App, showTab: (tabId: string) => void): Promise<void> {
-	new Notice('Adding cr_type property...');
+	new Notice('正在添加 cr_type 属性……');
 
 	const familyGraph = plugin.createFamilyGraphService();
 	familyGraph.ensureCacheLoaded();
@@ -605,13 +604,13 @@ export async function addPersonType(plugin: CanvasRootsPlugin, app: App, showTab
 
 	// Show result
 	if (modified > 0) {
-		new Notice(`\u2713 Added cr_type property to ${modified} ${pluralize(modified, 'file')}`);
+		new Notice(`\u2713 已为 ${modified} 个文件添加 cr_type 属性`);
 	} else {
-		new Notice('All person notes already have cr_type property');
+		new Notice('所有人物笔记均已有 cr_type 属性');
 	}
 
 	if (errors.length > 0) {
-		new Notice(`\u26A0 ${errors.length} errors occurred. Check console for details.`);
+		new Notice(`\u26A0 发生 ${errors.length} 个错误。详情请查看控制台。`);
 		console.error('Add person type errors:', errors);
 	}
 
@@ -648,7 +647,7 @@ export function previewNormalizeNames(plugin: CanvasRootsPlugin, app: App, showT
 			const normalized = normalizeName(fm.name);
 			if (normalized) {
 				changes.push({
-					person: { name: person.name || 'Unknown' },
+					person: { name: person.name || '未知' },
 					field: 'name',
 					oldValue: fm.name,
 					newValue: normalized,
@@ -659,7 +658,7 @@ export function previewNormalizeNames(plugin: CanvasRootsPlugin, app: App, showT
 	}
 
 	if (changes.length === 0) {
-		new Notice('No names need normalization');
+		new Notice('没有需要规范化的名称');
 		return;
 	}
 
@@ -675,7 +674,7 @@ export function previewNormalizeNames(plugin: CanvasRootsPlugin, app: App, showT
  * Apply name formatting normalization
  */
 export async function normalizeNames(plugin: CanvasRootsPlugin, app: App, showTab: (tabId: string) => void): Promise<void> {
-	new Notice('Normalizing name formatting...');
+	new Notice('正在规范化名称格式……');
 
 	const familyGraph = plugin.createFamilyGraphService();
 	familyGraph.ensureCacheLoaded();
@@ -721,13 +720,13 @@ export async function normalizeNames(plugin: CanvasRootsPlugin, app: App, showTa
 
 	// Show result
 	if (modified > 0) {
-		new Notice(`\u2713 Normalized names in ${modified} ${pluralize(modified, 'file')}`);
+		new Notice(`\u2713 已规范化 ${modified} 个文件中的名称`);
 	} else {
-		new Notice('No names needed normalization');
+		new Notice('没有需要规范化的名称');
 	}
 
 	if (errors.length > 0) {
-		new Notice(`\u26A0 ${errors.length} errors occurred. Check console for details.`);
+		new Notice(`\u26A0 发生 ${errors.length} 个错误。详情请查看控制台。`);
 		console.error('Normalize names errors:', errors);
 	}
 
@@ -831,7 +830,7 @@ export function previewRemoveOrphanedRefs(plugin: CanvasRootsPlugin, app: App, s
 	}
 
 	if (changes.length === 0) {
-		new Notice('No orphaned cr_id references found');
+		new Notice('未发现孤立的 cr_id 引用');
 		return;
 	}
 
@@ -854,7 +853,7 @@ export async function removeOrphanedRefs(plugin: CanvasRootsPlugin, app: App, sh
 	const modifiedFiles: TFile[] = [];
 	const errors: Array<{ file: string; error: string }> = [];
 
-	new Notice('Removing orphaned cr_id references...');
+	new Notice('正在移除孤立的 cr_id 引用……');
 
 	// Build a map of all valid cr_ids
 	const validCrIds = new Set<string>();
@@ -971,13 +970,13 @@ export async function removeOrphanedRefs(plugin: CanvasRootsPlugin, app: App, sh
 	}
 
 	if (modified > 0) {
-		new Notice(`\u2713 Removed orphaned references from ${modified} ${pluralize(modified, 'file')}`);
+		new Notice(`\u2713 已从 ${modified} 个文件移除孤立引用`);
 	} else {
-		new Notice('No orphaned cr_id references found');
+		new Notice('未发现孤立的 cr_id 引用');
 	}
 
 	if (errors.length > 0) {
-		new Notice(`\u26A0 ${errors.length} errors occurred. Check console for details.`);
+		new Notice(`\u26A0 发生 ${errors.length} 个错误。详情请查看控制台。`);
 		console.error('Remove orphaned refs errors:', errors);
 	}
 
@@ -1012,12 +1011,12 @@ export async function previewFixBidirectionalRelationships(plugin: CanvasRootsPl
 		dataQuality1.setPersonIndex(plugin.personIndex);
 	}
 
-	new Notice('Detecting bidirectional relationship inconsistencies...');
+	new Notice('正在检测双向关系不一致……');
 
 	const inconsistencies = dataQuality1.detectBidirectionalInconsistencies();
 
 	if (inconsistencies.length === 0) {
-		new Notice('No bidirectional relationship inconsistencies found');
+		new Notice('未发现双向关系不一致');
 		return;
 	}
 
@@ -1027,12 +1026,12 @@ export async function previewFixBidirectionalRelationships(plugin: CanvasRootsPl
 
 	// Notify about conflicts (handled separately in People tab)
 	if (conflictCount > 0) {
-		new Notice(`Found ${conflictCount} parent claim ${pluralize(conflictCount, 'conflict')}. See the "Parent claim conflicts" card in the People tab to resolve.`, 8000);
+		new Notice(`发现 ${conflictCount} 个父母声明冲突。请在「人物」标签页的「父母声明冲突」卡片中解决。`, 8000);
 	}
 
 	if (fixableInconsistencies.length === 0) {
 		if (conflictCount > 0) {
-			new Notice('No auto-fixable inconsistencies found. Only conflicts requiring manual resolution.');
+			new Notice('未发现可自动修复的不一致。仅存在需要手动解决的冲突。');
 		}
 		return;
 	}
@@ -1083,16 +1082,16 @@ export async function fixBidirectionalRelationships(plugin: CanvasRootsPlugin, a
 		dataQuality2.setPersonIndex(plugin.personIndex);
 	}
 
-	new Notice('Detecting inconsistencies...');
+	new Notice('正在检测不一致……');
 
 	const inconsistencies = dataQuality2.detectBidirectionalInconsistencies();
 
 	if (inconsistencies.length === 0) {
-		new Notice('No bidirectional relationship inconsistencies found');
+		new Notice('未发现双向关系不一致');
 		return;
 	}
 
-	new Notice('Fixing bidirectional relationship inconsistencies...');
+	new Notice('正在修复双向关系不一致……');
 
 	// Suspend automatic bidirectional linking during batch operation
 	// to prevent interference with our updates
@@ -1102,13 +1101,13 @@ export async function fixBidirectionalRelationships(plugin: CanvasRootsPlugin, a
 		const result = await dataQuality2.fixBidirectionalInconsistencies(inconsistencies);
 
 		if (result.modified > 0) {
-			new Notice(`\u2713 Fixed ${result.modified} of ${result.processed} ${pluralize(result.processed, 'inconsistency', 'inconsistencies')}. Wait a moment before re-checking.`, 5000);
+			new Notice(`\u2713 已修复 ${result.processed} 处不一致中的 ${result.modified} 处。请稍候再重新检查。`, 5000);
 		} else {
-			new Notice('No inconsistencies were fixed');
+			new Notice('未修复任何不一致');
 		}
 
 		if (result.errors.length > 0) {
-			new Notice(`\u26A0 ${result.errors.length} errors occurred. Check console for details.`);
+			new Notice(`\u26A0 发生 ${result.errors.length} 个错误。详情请查看控制台。`);
 			console.error('Fix bidirectional relationships errors:', result.errors);
 		}
 
@@ -1149,11 +1148,11 @@ function makeChildrenAlignmentService(plugin: CanvasRootsPlugin, app: App): Data
 export async function previewRepairMisalignedChildren(plugin: CanvasRootsPlugin, app: App, showTab: (tabId: string) => void): Promise<void> {
 	const service = makeChildrenAlignmentService(plugin, app);
 
-	new Notice('Detecting misaligned children arrays...');
+	new Notice('正在检测子女数组错位……');
 	const repairs = service.detectChildrenAlignmentRepairs();
 
 	if (repairs.length === 0) {
-		new Notice('No misaligned children arrays found');
+		new Notice('未发现错位的子女数组');
 		return;
 	}
 
@@ -1171,7 +1170,7 @@ export async function previewRepairMisalignedChildren(plugin: CanvasRootsPlugin,
 				person: parentRef,
 				relatedPerson: { name: child.name, file: repair.parent.file },
 				type: 'recover-child',
-				description: `Recover ${child.name} into ${parentRef.name}'s children (lists ${parentRef.name} as a parent)`
+				description: `将 ${child.name} 恢复到 ${parentRef.name} 的子女中（其中列出了 ${parentRef.name} 作为父母）`
 			});
 		}
 		for (const link of repair.removedBroken) {
@@ -1179,7 +1178,7 @@ export async function previewRepairMisalignedChildren(plugin: CanvasRootsPlugin,
 				person: parentRef,
 				relatedPerson: { name: link, file: repair.parent.file },
 				type: 'remove-broken',
-				description: `Remove broken link ${link} from ${parentRef.name}'s children (resolves to no person)`
+				description: `从 ${parentRef.name} 的子女中移除失效链接 ${link}（无法解析到任何人物）`
 			});
 		}
 		for (const child of repair.noReciprocal) {
@@ -1187,7 +1186,7 @@ export async function previewRepairMisalignedChildren(plugin: CanvasRootsPlugin,
 				person: parentRef,
 				relatedPerson: { name: child.name, file: repair.parent.file },
 				type: 'no-reciprocal',
-				description: `Keep ${child.name}, but ${child.name} does not list ${parentRef.name} as a parent (review)`
+				description: `保留 ${child.name}，但 ${child.name} 未列出 ${parentRef.name} 作为父母（待审核）`
 			});
 		}
 		if (repair.recovered.length === 0 && repair.removedBroken.length === 0 && repair.noReciprocal.length === 0) {
@@ -1195,7 +1194,7 @@ export async function previewRepairMisalignedChildren(plugin: CanvasRootsPlugin,
 				person: parentRef,
 				relatedPerson: parentRef,
 				type: 'realign',
-				description: `Re-align ${parentRef.name}'s children_id with children (no membership change)`
+				description: `将 ${parentRef.name} 的 children_id 与 children 重新对齐（成员无变化）`
 			});
 		}
 	}
@@ -1205,14 +1204,14 @@ export async function previewRepairMisalignedChildren(plugin: CanvasRootsPlugin,
 		changes,
 		async () => await repairMisalignedChildren(plugin, app, showTab),
 		{
-			title: 'Preview: Repair misaligned children',
-			intro: 'This operation rebuilds each affected parent\'s children list from the people who list them as a parent:',
+			title: '预览：修复错位的子女',
+			intro: '此操作会根据将父级列为其父母的人物，重建每个受影响父母级人物的子女列表：',
 			bullets: [
-				'Recover a child that was dropped from the list',
-				'Remove a link that resolves to no person (stale / renamed away)',
-				'Re-align children_id with children and clean up misleading aliases'
+				'恢复从列表中被遗漏的子女',
+				'移除无法解析到任何人物的链接（失效/已重命名）',
+				'将 children_id 与 children 重新对齐，并清理有误导性的别名'
 			],
-			warning: 'Backup your vault before proceeding. This rebuilds each affected parent\'s children list, removing links that resolve to no person.'
+			warning: '继续操作前请备份库。此操作会重建每个受影响父母级人物的子女列表，移除无法解析到任何人物的链接。'
 		}
 	);
 	modal.open();
@@ -1226,11 +1225,11 @@ export async function repairMisalignedChildren(plugin: CanvasRootsPlugin, app: A
 	const repairs = service.detectChildrenAlignmentRepairs();
 
 	if (repairs.length === 0) {
-		new Notice('No misaligned children arrays found');
+		new Notice('未发现错位的子女数组');
 		return;
 	}
 
-	new Notice('Repairing misaligned children arrays...');
+	new Notice('正在修复错位的子女数组……');
 
 	// Suspend bidirectional linking so it doesn't fight our rewrites.
 	plugin.bidirectionalLinker?.suspend();
@@ -1238,13 +1237,13 @@ export async function repairMisalignedChildren(plugin: CanvasRootsPlugin, app: A
 		const result = await service.applyChildrenAlignmentRepairs(repairs);
 
 		if (result.modified > 0) {
-			new Notice(`✓ Repaired children arrays in ${result.modified} ${pluralize(result.modified, 'note')}. Wait a moment before re-checking.`, 5000);
+			new Notice(`✓ 已修复 ${result.modified} 个笔记中的子女数组。请稍候再重新检查。`, 5000);
 		} else {
-			new Notice('No children arrays were repaired');
+			new Notice('未修复任何子女数组');
 		}
 
 		if (result.errors.length > 0) {
-			new Notice(`⚠ ${result.errors.length} errors occurred. Check console for details.`);
+			new Notice(`⚠ 发生 ${result.errors.length} 个错误。详情请查看控制台。`);
 			console.error('Repair misaligned children errors:', result.errors);
 		}
 
@@ -1317,7 +1316,7 @@ export function previewValidateDates(plugin: CanvasRootsPlugin, app: App): void 
 		issue: string;
 	}> = [];
 
-	new Notice('Analyzing date formats...');
+	new Notice('正在分析日期格式……');
 
 	const files = app.vault.getMarkdownFiles();
 
@@ -1363,7 +1362,7 @@ export function previewValidateDates(plugin: CanvasRootsPlugin, app: App): void 
 	}
 
 	if (issues.length === 0) {
-		new Notice('\u2713 All dates are valid according to your validation settings');
+		new Notice('\u2713 根据你的校验设置，所有日期均有效');
 		return;
 	}
 
@@ -1387,7 +1386,7 @@ function validateDateFormat(dateStr: string, plugin: CanvasRootsPlugin): string 
 	);
 
 	if (hasCirca && !settings.allowCircaDates) {
-		return 'Circa dates not allowed (check "Allow circa dates" setting)';
+		return '不允许约日期（请检查「允许约日期」设置）';
 	}
 
 	// Remove circa prefix for further validation
@@ -1410,7 +1409,7 @@ function validateDateFormat(dateStr: string, plugin: CanvasRootsPlugin): string 
 		(cleanDate.includes('-') && cleanDate.split('-').length === 3 && cleanDate.split('-')[2].length === 4);
 
 	if (hasRange && !settings.allowDateRanges) {
-		return 'Date ranges not allowed (check "Allow date ranges" setting)';
+		return '不允许日期范围（请检查「允许日期范围」设置）';
 	}
 
 	// If it's a range, validate each part separately
@@ -1453,11 +1452,11 @@ function validateSingleDate(dateStr: string, plugin: CanvasRootsPlugin): string 
 			if (iso8601Full.test(dateStr)) return null;
 			if (settings.allowPartialDates && iso8601Month.test(dateStr)) return null;
 			if (settings.allowPartialDates && iso8601Year.test(dateStr)) return null;
-			return 'ISO 8601 format required with leading zeros (YYYY-MM-DD)';
+			return 'ISO 8601 格式要求补前导零（YYYY-MM-DD）';
 		} else {
 			if (iso8601Full.test(dateStr) || iso8601NoZeros.test(dateStr)) return null;
 			if (settings.allowPartialDates && (iso8601Month.test(dateStr) || iso8601Year.test(dateStr))) return null;
-			return 'ISO 8601 format required (YYYY-MM-DD or YYYY-M-D)';
+			return '要求 ISO 8601 格式（YYYY-MM-DD 或 YYYY-M-D）';
 		}
 	}
 
@@ -1466,7 +1465,7 @@ function validateSingleDate(dateStr: string, plugin: CanvasRootsPlugin): string 
 		if (gedcomFull.test(dateStr)) return null;
 		if (settings.allowPartialDates && gedcomMonth.test(dateStr)) return null;
 		if (settings.allowPartialDates && iso8601Year.test(dateStr)) return null;
-		return 'GEDCOM format required (DD MMM YYYY, e.g., 15 JAN 1920)';
+		return '要求 GEDCOM 格式（DD MMM YYYY，例如 15 JAN 1920）';
 	}
 
 	// Flexible standard: accept multiple formats
@@ -1480,10 +1479,10 @@ function validateSingleDate(dateStr: string, plugin: CanvasRootsPlugin): string 
 		if (settings.allowPartialDates && gedcomMonth.test(dateStr)) return null;
 
 		// If we got here, the format is not recognized
-		return 'Unrecognized date format (expected YYYY-MM-DD or DD MMM YYYY)';
+		return '无法识别的日期格式（应为 YYYY-MM-DD 或 DD MMM YYYY）';
 	}
 
-	return 'Unknown date format standard';
+	return '未知的日期格式标准';
 }
 
 /**
@@ -1491,7 +1490,7 @@ function validateSingleDate(dateStr: string, plugin: CanvasRootsPlugin): string 
  * Note: We don't auto-correct dates as this could introduce errors
  */
 export function validateDates(plugin: CanvasRootsPlugin, app: App): void {
-	new Notice('Date validation is preview-only. Review issues and manually correct dates in your notes.');
+	new Notice('日期校验仅提供预览。请在笔记中查看问题并手动修正日期。');
 	previewValidateDates(plugin, app);
 }
 

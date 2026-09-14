@@ -6,7 +6,6 @@
 import { App, Modal } from 'obsidian';
 import { createLucideIcon } from './lucide-icons';
 import { PlaceGraphService } from '../core/place-graph';
-import { pluralize } from '../utils/format-utils';
 
 interface DetailedMigration {
 	personId: string;
@@ -76,17 +75,17 @@ export class MigrationDiagramModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('arrow-right', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Migration patterns');
+		titleContainer.appendText('迁移模式');
 
 		// Description
 		contentEl.createEl('p', {
-			text: 'Visualizing migration flows from birth locations to death locations.',
+			text: '将出生地点到去世地点的迁移流向可视化。',
 			cls: 'crc-text--muted'
 		});
 
 		if (this.allMigrations.length === 0) {
 			contentEl.createEl('p', {
-				text: 'No migration patterns found. People must have different birth and death places to show migration.',
+				text: '未发现迁移模式。人物的出生地和去世地不同才会显示迁移。',
 				cls: 'crc-text--muted crc-mt-3'
 			});
 			return;
@@ -97,7 +96,7 @@ export class MigrationDiagramModal extends Modal {
 
 		// Row 1: Minimum people filter
 		const controlsRow1 = controlsContainer.createDiv({ cls: 'crc-migration-controls' });
-		controlsRow1.createEl('span', { text: 'Minimum people: ', cls: 'crc-text--muted' });
+		controlsRow1.createEl('span', { text: '最少人数：', cls: 'crc-text--muted' });
 
 		const slider = controlsRow1.createEl('input', {
 			type: 'range',
@@ -115,7 +114,7 @@ export class MigrationDiagramModal extends Modal {
 		// Row 2: Time period filter (only if we have year data)
 		if (this.yearRange) {
 			const controlsRow2 = controlsContainer.createDiv({ cls: 'crc-migration-controls crc-migration-time-controls' });
-			controlsRow2.createEl('span', { text: 'Time period: ', cls: 'crc-text--muted' });
+			controlsRow2.createEl('span', { text: '时间范围：', cls: 'crc-text--muted' });
 
 			// Start year input
 			const startInput = controlsRow2.createEl('input', {
@@ -141,7 +140,7 @@ export class MigrationDiagramModal extends Modal {
 
 			// Year range info
 			controlsRow2.createEl('span', {
-				text: `(data spans ${this.yearRange.min}–${this.yearRange.max})`,
+				text: `（数据范围 ${this.yearRange.min}–${this.yearRange.max}）`,
 				cls: 'crc-text--muted crc-migration-year-info'
 			});
 
@@ -159,7 +158,7 @@ export class MigrationDiagramModal extends Modal {
 
 			// Quick preset buttons
 			const presetsRow = controlsContainer.createDiv({ cls: 'crc-migration-presets' });
-			presetsRow.createEl('span', { text: 'Presets: ', cls: 'crc-text--muted' });
+			presetsRow.createEl('span', { text: '预设：', cls: 'crc-text--muted' });
 
 			const presetContainer = presetsRow.createDiv({ cls: 'crc-migration-preset-buttons' });
 
@@ -177,7 +176,7 @@ export class MigrationDiagramModal extends Modal {
 
 				if (hasMigrations) {
 					const btn = presetContainer.createEl('button', {
-						text: `${century}s`,
+						text: `${century}年代`,
 						cls: 'crc-btn crc-btn--small'
 					});
 					btn.addEventListener('click', () => {
@@ -192,7 +191,7 @@ export class MigrationDiagramModal extends Modal {
 
 			// "All" preset
 			const allBtn = presetContainer.createEl('button', {
-				text: 'All',
+				text: '全部',
 				cls: 'crc-btn crc-btn--small'
 			});
 			allBtn.addEventListener('click', () => {
@@ -207,7 +206,7 @@ export class MigrationDiagramModal extends Modal {
 		// Row 3: Aggregation level (only if we have place hierarchy)
 		if (this.maxHierarchyDepth > 1) {
 			const controlsRow3 = controlsContainer.createDiv({ cls: 'crc-migration-controls crc-migration-aggregation-controls' });
-			controlsRow3.createEl('span', { text: 'Group by: ', cls: 'crc-text--muted' });
+			controlsRow3.createEl('span', { text: '分组依据：', cls: 'crc-text--muted' });
 
 			const aggregationSelect = controlsRow3.createEl('select', {
 				cls: 'crc-migration-aggregation-select dropdown'
@@ -215,12 +214,12 @@ export class MigrationDiagramModal extends Modal {
 
 			// "No grouping" option
 			aggregationSelect.createEl('option', {
-				text: 'No grouping (show all places)',
+				text: '不分组（显示所有地点）',
 				value: '-1'
 			});
 
 			// Add level options based on hierarchy depth
-			const levelLabels = ['Country/Root', 'State/Region', 'County', 'City/Town', 'District', 'Locality'];
+			const levelLabels = ['国家/根', '州/地区', '县', '市/镇', '区', '居民点'];
 			for (let level = 0; level < Math.min(this.maxHierarchyDepth, levelLabels.length); level++) {
 				aggregationSelect.createEl('option', {
 					text: levelLabels[level],
@@ -236,7 +235,7 @@ export class MigrationDiagramModal extends Modal {
 
 			// Add help text
 			controlsRow3.createEl('span', {
-				text: '(aggregates places by hierarchy level)',
+				text: '（按层级聚合地点）',
 				cls: 'crc-text--muted crc-migration-aggregation-help'
 			});
 		}
@@ -244,7 +243,7 @@ export class MigrationDiagramModal extends Modal {
 		// Row 4: Collection filter (only if we have collections)
 		if (this.collections.length > 0) {
 			const controlsRow4 = controlsContainer.createDiv({ cls: 'crc-migration-controls crc-migration-collection-controls' });
-			controlsRow4.createEl('span', { text: 'Collection: ', cls: 'crc-text--muted' });
+			controlsRow4.createEl('span', { text: '合集：', cls: 'crc-text--muted' });
 
 			const collectionSelect = controlsRow4.createEl('select', {
 				cls: 'crc-migration-collection-select dropdown'
@@ -252,14 +251,14 @@ export class MigrationDiagramModal extends Modal {
 
 			// "All collections" option
 			collectionSelect.createEl('option', {
-				text: 'All collections',
+				text: '全部合集',
 				value: ''
 			});
 
 			// Add collection options
 			for (const collection of this.collections) {
 				collectionSelect.createEl('option', {
-					text: `${collection.name} (${collection.count})`,
+					text: `${collection.name}（${collection.count}）`,
 					value: collection.name
 				});
 			}
@@ -272,7 +271,7 @@ export class MigrationDiagramModal extends Modal {
 
 			// Add help text
 			controlsRow4.createEl('span', {
-				text: '(filter by family branch)',
+				text: '（按家族分支筛选）',
 				cls: 'crc-text--muted crc-migration-collection-help'
 			});
 		}
@@ -294,15 +293,15 @@ export class MigrationDiagramModal extends Modal {
 		const legend = contentEl.createDiv({ cls: 'crc-migration-legend' });
 		const birthItem = legend.createEl('div', { cls: 'crc-migration-legend-item' });
 		birthItem.createSpan({ cls: 'crc-migration-legend-dot crc-migration-legend-dot--birth' });
-		birthItem.appendText(' Birth location');
+		birthItem.appendText(' 出生地点');
 
 		const deathItem = legend.createEl('div', { cls: 'crc-migration-legend-item' });
 		deathItem.createSpan({ cls: 'crc-migration-legend-dot crc-migration-legend-dot--death' });
-		deathItem.appendText(' Death location');
+		deathItem.appendText(' 去世地点');
 
 		const flowItem = legend.createEl('div', { cls: 'crc-migration-legend-item' });
 		flowItem.createSpan({ cls: 'crc-migration-legend-line' });
-		flowItem.appendText(' Migration flow (thicker = more people)');
+		flowItem.appendText(' 迁移流向（越粗表示人数越多）');
 	}
 
 	onClose() {
@@ -405,7 +404,7 @@ export class MigrationDiagramModal extends Modal {
 
 		if (flows.length === 0) {
 			container.createEl('p', {
-				text: 'No migration patterns match the current filters.',
+				text: '没有符合当前筛选条件的迁移模式。',
 				cls: 'crc-text--muted crc-text--center'
 			});
 			return;
@@ -424,12 +423,12 @@ export class MigrationDiagramModal extends Modal {
 
 		// Add collection info if filtered
 		if (this.collectionFilter !== null) {
-			filterParts.push(`collection: ${this.collectionFilter}`);
+			filterParts.push(`合集：${this.collectionFilter}`);
 		}
 
 		if (filterParts.length > 0) {
 			container.createEl('p', {
-				text: `Showing ${shownMigrations} migrations (${filterParts.join(', ')})`,
+				text: `显示 ${shownMigrations} 条迁移记录（${filterParts.join('、')}）`,
 				cls: 'crc-text--muted crc-text--center crc-mb-2'
 			});
 		}
@@ -544,7 +543,7 @@ export class MigrationDiagramModal extends Modal {
 			path.setAttribute('marker-end', `url(#${arrowId})`);
 
 			// Tooltip
-			path.setAttribute('data-tooltip', `${flow.from} → ${flow.to}: ${flow.count} ${pluralize(flow.count, 'person', 'people')}`);
+			path.setAttribute('data-tooltip', `${flow.from} → ${flow.to}：${flow.count} 人`);
 
 			svg.appendChild(path);
 		}

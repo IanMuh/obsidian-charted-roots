@@ -64,7 +64,7 @@ export class UniverseEntitiesProcessor {
 			const context = this.resolveUniverseContext(ctx);
 
 			if (!context) {
-				renderBlockError(el, 'This block must be placed in a universe note with a cr_id.');
+				renderBlockError(el, '此块必须放置在带有 cr_id 的宇宙笔记中。');
 				return;
 			}
 
@@ -98,7 +98,7 @@ export class UniverseEntitiesProcessor {
 
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			renderBlockError(el, `Error rendering universe entities: ${message}`);
+			renderBlockError(el, `渲染宇宙实体失败：${message}`);
 		}
 	}
 

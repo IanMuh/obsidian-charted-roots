@@ -13,7 +13,6 @@
  */
 
 import { App, Modal, TFile, setIcon, Notice, Setting } from 'obsidian';
-import { pluralize } from '../../utils/format-utils';
 import type CanvasRootsPlugin from '../../../main';
 import { MediaService, type MediaEntityType } from '../media-service';
 import { BulkMediaLinkProgressModal } from './bulk-media-link-progress-modal';
@@ -72,11 +71,11 @@ interface EntityTypeConfig {
 }
 
 const ENTITY_TYPES: EntityTypeConfig[] = [
-	{ value: 'person', label: 'People', icon: 'user' },
-	{ value: 'event', label: 'Events', icon: 'calendar' },
-	{ value: 'place', label: 'Places', icon: 'map-pin' },
-	{ value: 'organization', label: 'Organizations', icon: 'building' },
-	{ value: 'source', label: 'Sources', icon: 'book-open' }
+	{ value: 'person', label: '人物', icon: 'user' },
+	{ value: 'event', label: '事件', icon: 'calendar' },
+	{ value: 'place', label: '地点', icon: 'map-pin' },
+	{ value: 'organization', label: '组织', icon: 'building' },
+	{ value: 'source', label: '来源', icon: 'book-open' }
 ];
 
 /**
@@ -142,10 +141,10 @@ export class EntityPickerModal extends Modal {
 		const titleSection = header.createDiv({ cls: 'crc-picker-title' });
 		const icon = titleSection.createSpan();
 		setIcon(icon, 'link');
-		titleSection.appendText('Link media to entities');
+		titleSection.appendText('将媒体链接到实体');
 
 		const fileCount = this.preselectedFiles.length;
-		const subtitleText = `Select entities to link ${fileCount} media file${fileCount > 1 ? 's' : ''} to`;
+		const subtitleText = `选择要链接 ${fileCount} 个媒体文件的实体`;
 		header.createDiv({
 			cls: 'crc-picker-subtitle',
 			text: subtitleText
@@ -155,8 +154,8 @@ export class EntityPickerModal extends Modal {
 		const selectorSection = contentEl.createDiv({ cls: 'crc-entity-picker-selector' });
 
 		new Setting(selectorSection)
-			.setName('Entity type')
-			.setDesc('Select the type of entities to link media to')
+			.setName('实体类型')
+			.setDesc('选择要链接媒体的实体类型')
 			.addDropdown(dropdown => {
 				this.entityTypeSelect = dropdown.selectEl;
 				ENTITY_TYPES.forEach(type => {
@@ -174,7 +173,7 @@ export class EntityPickerModal extends Modal {
 		const searchSection = contentEl.createDiv({ cls: 'crc-entity-picker-search' });
 		this.searchInput = searchSection.createEl('input', {
 			type: 'text',
-			placeholder: 'Search entities...',
+			placeholder: '搜索实体…',
 			cls: 'crc-picker-search-input'
 		});
 		this.searchInput.addEventListener('input', () => {
@@ -189,7 +188,7 @@ export class EntityPickerModal extends Modal {
 		// Instructions
 		const instructions = contentEl.createDiv({ cls: 'crc-info-callout crc-mb-3' });
 		instructions.createEl('p', {
-			text: 'Select one or more entities to link your media files to. Entities that already have these files linked are marked.',
+			text: '选择一个或多个实体来链接你的媒体文件。已链接这些文件的实体会被标记。',
 			cls: 'crc-text--small'
 		});
 
@@ -198,13 +197,13 @@ export class EntityPickerModal extends Modal {
 
 		const selectAllBtn = bulkActions.createEl('button', {
 			cls: 'crc-btn crc-btn--small',
-			text: 'Select all'
+			text: '全选'
 		});
 		selectAllBtn.addEventListener('click', () => this.selectAll());
 
 		const deselectAllBtn = bulkActions.createEl('button', {
 			cls: 'crc-btn crc-btn--small',
-			text: 'Deselect all'
+			text: '取消全选'
 		});
 		deselectAllBtn.addEventListener('click', () => this.deselectAll());
 
@@ -218,12 +217,12 @@ export class EntityPickerModal extends Modal {
 
 		const footerButtons = footer.createDiv({ cls: 'crc-picker-footer__buttons' });
 
-		const cancelBtn = footerButtons.createEl('button', { text: 'Cancel' });
+		const cancelBtn = footerButtons.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		this.linkButton = footerButtons.createEl('button', {
 			cls: 'mod-cta',
-			text: 'Link to selected entities'
+			text: '链接到所选实体'
 		});
 		this.linkButton.disabled = true;
 		this.linkButton.addEventListener('click', () => { void this.linkMediaToEntities(); });
@@ -345,7 +344,7 @@ export class EntityPickerModal extends Modal {
 				name: o.name,
 				file: o.file,
 				isSelected: false,
-				subtitle: typeDef?.name || o.orgType || 'Organization',
+					subtitle: typeDef?.name || o.orgType || '组织',
 				hasMedia: this.hasAnyPreselectedMedia(o.media || [])
 			};
 		});
@@ -368,7 +367,7 @@ export class EntityPickerModal extends Modal {
 					name: s.title,
 					file,
 					isSelected: false,
-					subtitle: s.sourceType || 'Source',
+					subtitle: s.sourceType || '来源',
 					hasMedia: this.hasAnyPreselectedMedia(s.media || [])
 				};
 				return entity;
@@ -395,8 +394,8 @@ export class EntityPickerModal extends Modal {
 	 */
 	private formatPersonSubtitle(person: PersonNode): string {
 		const parts: string[] = [];
-		if (person.birthDate) parts.push(`b. ${person.birthDate}`);
-		if (person.deathDate) parts.push(`d. ${person.deathDate}`);
+		if (person.birthDate) parts.push(`生 ${person.birthDate}`);
+		if (person.deathDate) parts.push(`卒 ${person.deathDate}`);
 		return parts.length > 0 ? parts.join(' · ') : '';
 	}
 
@@ -428,15 +427,15 @@ export class EntityPickerModal extends Modal {
 
 		// Sort dropdown
 		const sortContainer = this.personFiltersContainer.createDiv({ cls: 'crc-picker-sort' });
-		sortContainer.createSpan({ cls: 'crc-picker-sort__label', text: 'Sort by:' });
+		sortContainer.createSpan({ cls: 'crc-picker-sort__label', text: '排序方式：' });
 		const sortSelect = sortContainer.createEl('select', { cls: 'crc-form-select' });
 
 		const sortOptions: Array<{ value: PersonSortOption; label: string }> = [
-			{ value: 'name-asc', label: 'Name (A-Z)' },
-			{ value: 'name-desc', label: 'Name (Z-A)' },
-			{ value: 'birth-asc', label: 'Birth year (oldest first)' },
-			{ value: 'birth-desc', label: 'Birth year (youngest first)' },
-			{ value: 'recent', label: 'Recently modified' }
+			{ value: 'name-asc', label: '名称（A-Z）' },
+			{ value: 'name-desc', label: '名称（Z-A）' },
+			{ value: 'birth-asc', label: '出生年份（最早优先）' },
+			{ value: 'birth-desc', label: '出生年份（最晚优先）' },
+			{ value: 'recent', label: '最近修改' }
 		];
 
 		sortOptions.forEach(opt => {
@@ -457,12 +456,12 @@ export class EntityPickerModal extends Modal {
 
 		// Living status filter
 		const livingFilter = filtersContainer.createDiv({ cls: 'crc-picker-filter' });
-		livingFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Living:' });
+		livingFilter.createSpan({ cls: 'crc-picker-filter__label', text: '在世：' });
 		const livingSelect = livingFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 		[
-			{ value: 'all', label: 'All' },
-			{ value: 'living', label: 'Living only' },
-			{ value: 'deceased', label: 'Deceased only' }
+			{ value: 'all', label: '全部' },
+			{ value: 'living', label: '仅在世' },
+			{ value: 'deceased', label: '仅已故' }
 		].forEach(opt => {
 			const option = livingSelect.createEl('option', { value: opt.value, text: opt.label });
 			if (opt.value === this.personFilters.livingStatus) {
@@ -476,12 +475,12 @@ export class EntityPickerModal extends Modal {
 
 		// Birth date filter
 		const birthFilter = filtersContainer.createDiv({ cls: 'crc-picker-filter' });
-		birthFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Birth date:' });
+		birthFilter.createSpan({ cls: 'crc-picker-filter__label', text: '出生日期：' });
 		const birthSelect = birthFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 		[
-			{ value: 'all', label: 'All' },
-			{ value: 'yes', label: 'Has date' },
-			{ value: 'no', label: 'Missing date' }
+			{ value: 'all', label: '全部' },
+			{ value: 'yes', label: '有日期' },
+			{ value: 'no', label: '缺少日期' }
 		].forEach(opt => {
 			const option = birthSelect.createEl('option', { value: opt.value, text: opt.label });
 			if (opt.value === this.personFilters.hasBirthDate) {
@@ -495,12 +494,12 @@ export class EntityPickerModal extends Modal {
 
 		// Sex filter
 		const sexFilter = filtersContainer.createDiv({ cls: 'crc-picker-filter' });
-		sexFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Sex:' });
+		sexFilter.createSpan({ cls: 'crc-picker-filter__label', text: '生理性别：' });
 		const sexSelect = sexFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 		[
-			{ value: 'all', label: 'All' },
-			{ value: 'M', label: 'Male' },
-			{ value: 'F', label: 'Female' }
+			{ value: 'all', label: '全部' },
+			{ value: 'M', label: '男' },
+			{ value: 'F', label: '女' }
 		].forEach(opt => {
 			const option = sexSelect.createEl('option', { value: opt.value, text: opt.label });
 			if (opt.value === this.personFilters.sex) {
@@ -648,15 +647,15 @@ export class EntityPickerModal extends Modal {
 		setIcon(emptyIcon, 'search');
 
 		if (this.searchQuery) {
-			emptyState.createEl('p', { text: 'No entities found' });
+			emptyState.createEl('p', { text: '未找到实体' });
 			emptyState.createEl('p', {
-				text: `Try a different search term`,
+				text: `请尝试其他搜索词`,
 				cls: 'crc-text-muted'
 			});
 		} else {
 			const typeConfig = ENTITY_TYPES.find(t => t.value === this.selectedEntityType);
-			const typeName = typeConfig?.label.toLowerCase() || 'entities';
-			emptyState.createEl('p', { text: `No ${typeName} found` });
+			const typeName = typeConfig?.label || '实体';
+			emptyState.createEl('p', { text: `未找到${typeName}` });
 		}
 	}
 
@@ -694,7 +693,7 @@ export class EntityPickerModal extends Modal {
 		if (entity.hasMedia) {
 			const badge = nameContainer.createSpan({ cls: 'crc-entity-picker-row__badge' });
 			setIcon(badge, 'check');
-			badge.title = 'Already has this media';
+			badge.title = '已链接此媒体';
 		}
 
 		if (entity.subtitle) {
@@ -764,11 +763,11 @@ export class EntityPickerModal extends Modal {
 		const count = this.selectedEntities.size;
 
 		if (count === 0) {
-			this.selectionCountEl.setText('No entities selected');
+			this.selectionCountEl.setText('未选择实体');
 		} else if (count === 1) {
-			this.selectionCountEl.setText('1 entity selected');
+			this.selectionCountEl.setText('已选择 1 个实体');
 		} else {
-			this.selectionCountEl.setText(`${count} entities selected`);
+			this.selectionCountEl.setText(`已选择 ${count} 个实体`);
 		}
 
 		this.linkButton.disabled = count === 0;
@@ -836,9 +835,9 @@ export class EntityPickerModal extends Modal {
 			// Show result notification for small operations
 			const fileCount = this.preselectedFiles.length;
 			if (errorCount === 0) {
-				new Notice(`Linked ${fileCount} media ${pluralize(fileCount, 'file')} to ${successCount} ${pluralize(successCount, 'entity', 'entities')}`);
+				new Notice(`已将 ${fileCount} 个媒体文件链接到 ${successCount} 个实体`);
 			} else {
-				new Notice(`Linked media to ${successCount} ${pluralize(successCount, 'entity', 'entities')}, ${errorCount} failed`);
+				new Notice(`已将媒体链接到 ${successCount} 个实体，${errorCount} 个失败`);
 			}
 		}
 

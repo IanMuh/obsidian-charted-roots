@@ -8,6 +8,7 @@
 import type { App } from 'obsidian';
 import type { PersonProfileData, SectionToggleFn, SectionState } from '../profile-types';
 import { renderProfileSection } from './section-base';
+import { FACT_KEY_LABELS, type FactKey } from '../../sources/types/source-types';
 
 interface DataQualitySectionOptions {
 	sectionStates: SectionState;
@@ -17,13 +18,13 @@ interface DataQualitySectionOptions {
 
 /** Research level labels (Hoitink's Six Levels) */
 const RESEARCH_LEVEL_LABELS: Record<number, string> = {
-	0: 'Unidentified',
-	1: 'Name only',
-	2: 'Dates & places',
-	3: 'Sources attached',
-	4: 'Evidence analyzed',
-	5: 'Proof complete',
-	6: 'Biography'
+	0: '未识别',
+	1: '仅有姓名',
+	2: '日期与地点',
+	3: '已附来源',
+	4: '已分析证据',
+	5: '已完成证明',
+	6: '传记'
 };
 
 export function renderDataQualitySection(
@@ -41,16 +42,16 @@ export function renderDataQualitySection(
 	// Build summary
 	const summaryParts: string[] = [];
 	if (hasLevel) {
-		summaryParts.push(`Level ${data.node.researchLevel}`);
+		summaryParts.push(`第 ${data.node.researchLevel} 级`);
 	}
 	if (hasCoverage) {
-		summaryParts.push(`${data.researchCoverage!.coveragePercent}% sourced`);
+		summaryParts.push(`已提供来源 ${data.researchCoverage!.coveragePercent}%`);
 	}
-	const summary = summaryParts.length > 0 ? summaryParts.join(' · ') : 'No research data';
+	const summary = summaryParts.length > 0 ? summaryParts.join(' · ') : '无研究数据';
 
 	const content = renderProfileSection(parent, {
 		sectionId: 'data-quality',
-		title: 'Data quality',
+		title: '数据质量',
 		summary,
 		expanded: options.sectionStates['data-quality'] ?? false,
 		onToggle: options.onToggle,
@@ -62,9 +63,9 @@ export function renderDataQualitySection(
 	if (hasLevel) {
 		const levelEl = content.createDiv({ cls: 'cr-profile__dq-level' });
 		const level = data.node.researchLevel!;
-		levelEl.createSpan({ text: 'Research level: ', cls: 'cr-profile__dq-label' });
+		levelEl.createSpan({ text: '研究等级：', cls: 'cr-profile__dq-label' });
 		levelEl.createSpan({
-			text: `${level} — ${RESEARCH_LEVEL_LABELS[level] || 'Unknown'}`,
+			text: `${level} — ${RESEARCH_LEVEL_LABELS[level] || '未知'}`,
 			cls: 'cr-profile__dq-value'
 		});
 
@@ -78,9 +79,9 @@ export function renderDataQualitySection(
 	if (hasCoverage) {
 		const coverage = data.researchCoverage!;
 		const covEl = content.createDiv({ cls: 'cr-profile__dq-coverage' });
-		covEl.createSpan({ text: 'Source coverage: ', cls: 'cr-profile__dq-label' });
+		covEl.createSpan({ text: '来源覆盖率：', cls: 'cr-profile__dq-label' });
 		covEl.createSpan({
-			text: `${coverage.coveragePercent}% (${coverage.sourcedFactCount}/${coverage.totalFactCount} facts)`,
+			text: `${coverage.coveragePercent}%（${coverage.sourcedFactCount}/${coverage.totalFactCount} 项事实）`,
 			cls: 'cr-profile__dq-value'
 		});
 
@@ -89,7 +90,7 @@ export function renderDataQualitySection(
 			const factList = content.createDiv({ cls: 'cr-profile__dq-facts' });
 			for (const fact of coverage.facts) {
 				const factRow = factList.createDiv({ cls: 'cr-profile__dq-fact-row' });
-				const factLabel = fact.factKey.replace(/_/g, ' ');
+				const factLabel = FACT_KEY_LABELS[fact.factKey as FactKey] ?? fact.factKey.replace(/_/g, ' ');
 				factRow.createSpan({ text: factLabel, cls: 'cr-profile__dq-fact-key' });
 				factRow.createSpan({
 					text: fact.status,
@@ -103,7 +104,7 @@ export function renderDataQualitySection(
 	if (hasQuestions) {
 		const qEl = content.createDiv({ cls: 'cr-profile__dq-questions' });
 		qEl.createSpan({
-			text: `Research questions (${data.needsResearch.length})`,
+			text: `研究问题（${data.needsResearch.length}）`,
 			cls: 'cr-profile__dq-label'
 		});
 		const qList = qEl.createEl('ul');
@@ -116,7 +117,7 @@ export function renderDataQualitySection(
 	if (hasProofs) {
 		const proofEl = content.createDiv({ cls: 'cr-profile__dq-proofs' });
 		proofEl.createSpan({
-			text: `Proof summaries (${data.proofSummaries.length})`,
+			text: `证明摘要（${data.proofSummaries.length}）`,
 			cls: 'cr-profile__dq-label'
 		});
 		const proofList = proofEl.createDiv();

@@ -67,7 +67,7 @@ export class NegativeFindingsProcessor {
 
 			const file = this.plugin.app.vault.getAbstractFileByPath(ctx.sourcePath);
 			if (!(file instanceof TFile)) {
-				renderBlockError(el, `Could not find file: ${ctx.sourcePath}`);
+				renderBlockError(el, `找不到文件：${ctx.sourcePath}`);
 				return;
 			}
 
@@ -84,7 +84,7 @@ export class NegativeFindingsProcessor {
 
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			renderBlockError(el, `Error rendering negative findings: ${message}`);
+			renderBlockError(el, `渲染阴性结果失败：${message}`);
 		}
 	}
 

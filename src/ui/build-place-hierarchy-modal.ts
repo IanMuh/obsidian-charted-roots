@@ -62,17 +62,17 @@ export class BuildPlaceHierarchyModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('layers', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Build place hierarchy');
+		titleContainer.appendText('构建地点层级');
 
 		// Description
 		contentEl.createEl('p', {
-			text: `Found ${this.orphanPlaces.length} place${this.orphanPlaces.length !== 1 ? 's' : ''} without parent assignments. Select a parent for each place to build the hierarchy.`,
+			text: `发现 ${this.orphanPlaces.length} 个地点没有父级归属。为每个地点选择父级以构建层级。`,
 			cls: 'crc-text--muted'
 		});
 
 		if (this.potentialParents.length === 0) {
 			contentEl.createEl('p', {
-				text: 'No potential parent places found. Create country, state, or region place notes first.',
+				text: '未找到可用的父级地点。请先创建国家、州/省或地区地点笔记。',
 				cls: 'crc-text--warning'
 			});
 		}
@@ -85,13 +85,13 @@ export class BuildPlaceHierarchyModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				this.close();
 			});
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Apply assignments')
+			.setButtonText('应用归属')
 			.setCta()
 			.onClick(() => void this.applyAssignments());
 	}
@@ -141,9 +141,9 @@ export class BuildPlaceHierarchyModal extends Modal {
 
 				new Setting(typeSection)
 					.setName(orphan.name)
-					.setDesc(orphan.aliases.length > 0 ? `Also known as: ${orphan.aliases.join(', ')}` : '')
+					.setDesc(orphan.aliases.length > 0 ? `别名：${orphan.aliases.join('、')}` : '')
 					.addDropdown(dropdown => {
-						dropdown.addOption('', '(No parent)');
+						dropdown.addOption('', '（无父级）');
 
 						for (const [groupName, options] of parentOptions.entries()) {
 							// Add optgroup-like separator
@@ -207,22 +207,22 @@ export class BuildPlaceHierarchyModal extends Modal {
 	 */
 	private formatPlaceType(type: string): string {
 		const names: Record<string, string> = {
-			continent: 'Continents',
-			country: 'Countries',
-			state: 'States',
-			province: 'Provinces',
-			region: 'Regions',
-			county: 'Counties',
-			city: 'Cities',
-			town: 'Towns',
-			village: 'Villages',
-			district: 'Districts',
-			parish: 'Parishes',
-			castle: 'Castles',
-			estate: 'Estates',
-			cemetery: 'Cemeteries',
-			church: 'Churches',
-			other: 'Other'
+			continent: '大陆',
+			country: '国家',
+			state: '州',
+			province: '省',
+			region: '地区',
+			county: '县',
+			city: '城市',
+			town: '城镇',
+			village: '村庄',
+			district: '区',
+			parish: '教区',
+			castle: '城堡',
+			estate: '庄园',
+			cemetery: '墓地',
+			church: '教堂',
+			other: '其他'
 		};
 		return names[type] || capitalize(type);
 	}
@@ -257,7 +257,7 @@ export class BuildPlaceHierarchyModal extends Modal {
 
 		if (errors.length > 0) {
 			console.error('Errors updating place notes:', errors);
-			new Notice(`Updated ${updated} places. ${errors.length} failed.`);
+			new Notice(`已更新 ${updated} 个地点，${errors.length} 个失败。`);
 		}
 
 		if (this.onComplete) {

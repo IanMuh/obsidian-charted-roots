@@ -70,7 +70,7 @@ describe('RelationshipCalculator — adoptive relationships (#525)', () => {
 		// Child → Parent (the failure direction in the bug report)
 		const galenToBen = calc.calculateRelationship('galen', 'ben');
 		expect(galenToBen).not.toBeNull();
-		expect(galenToBen!.relationshipDescription).toBe('Adoptive parent');
+		expect(galenToBen!.relationshipDescription).toBe('收养的父母');
 		expect(galenToBen!.pathKind).toBe('adoptive');
 		expect(galenToBen!.isBloodRelation).toBe(false);
 
@@ -78,7 +78,7 @@ describe('RelationshipCalculator — adoptive relationships (#525)', () => {
 		// the wrong "blood relation" label)
 		const benToGalen = calc.calculateRelationship('ben', 'galen');
 		expect(benToGalen).not.toBeNull();
-		expect(benToGalen!.relationshipDescription).toBe('Adopted child');
+		expect(benToGalen!.relationshipDescription).toBe('养子女');
 		expect(benToGalen!.pathKind).toBe('adoptive');
 		expect(benToGalen!.isBloodRelation).toBe(false);
 	});
@@ -93,7 +93,7 @@ describe('RelationshipCalculator — adoptive relationships (#525)', () => {
 		const calc = makeCalculator([parent, child]);
 
 		const result = calc.calculateRelationship('child', 'parent');
-		expect(result!.relationshipDescription).toBe('Adoptive parent');
+		expect(result!.relationshipDescription).toBe('收养的父母');
 		expect(result!.pathKind).toBe('adoptive');
 	});
 
@@ -109,7 +109,7 @@ describe('RelationshipCalculator — adoptive relationships (#525)', () => {
 		const calc = makeCalculator([anna, brian, carla]);
 
 		const result = calc.calculateRelationship('anna', 'carla');
-		expect(result!.relationshipDescription).toBe('Adoptive grandparent');
+		expect(result!.relationshipDescription).toBe('收养的祖父母');
 		expect(result!.pathKind).toBe('adoptive');
 		expect(result!.isBloodRelation).toBe(false);
 	});
@@ -128,13 +128,13 @@ describe('RelationshipCalculator — step relationships (#526)', () => {
 
 		// Child → Stepparent (the "Parent-in-law" misreport direction)
 		const anakinToCliegg = calc.calculateRelationship('anakin', 'cliegg');
-		expect(anakinToCliegg!.relationshipDescription).toBe('Stepparent');
+		expect(anakinToCliegg!.relationshipDescription).toBe('继父母');
 		expect(anakinToCliegg!.pathKind).toBe('step');
 		expect(anakinToCliegg!.isBloodRelation).toBe(false);
 
 		// Stepparent → Child (the "Child / Blood: Yes" misreport direction)
 		const clieggToAnakin = calc.calculateRelationship('cliegg', 'anakin');
-		expect(clieggToAnakin!.relationshipDescription).toBe('Stepchild');
+		expect(clieggToAnakin!.relationshipDescription).toBe('继子女');
 		expect(clieggToAnakin!.pathKind).toBe('step');
 		expect(clieggToAnakin!.isBloodRelation).toBe(false);
 	});
@@ -157,7 +157,7 @@ describe('RelationshipCalculator — step relationships (#526)', () => {
 		const result = calc.calculateRelationship('anakin', 'owen');
 		expect(result!.isBloodRelation).toBe(false);
 		expect(result!.pathKind).toBe('step');
-		expect(result!.relationshipDescription).toBe('Stepsibling');
+		expect(result!.relationshipDescription).toBe('继兄弟姐妹');
 	});
 
 	it('labels step grandparent through stepfather → bio mother', () => {
@@ -170,7 +170,7 @@ describe('RelationshipCalculator — step relationships (#526)', () => {
 		const calc = makeCalculator([child, stepdad, gran]);
 
 		const result = calc.calculateRelationship('child', 'gran');
-		expect(result!.relationshipDescription).toBe('Step-grandparent');
+		expect(result!.relationshipDescription).toBe('继祖父母');
 		expect(result!.pathKind).toBe('step');
 	});
 });
@@ -186,7 +186,7 @@ describe('RelationshipCalculator — adoptive siblings (DigitalDreamn follow-up)
 		const calc = makeCalculator([parent, kidA, kidB]);
 
 		const result = calc.calculateRelationship('kid_a', 'kid_b');
-		expect(result!.relationshipDescription).toBe('Adoptive sibling');
+		expect(result!.relationshipDescription).toBe('收养的兄弟姐妹');
 		expect(result!.pathKind).toBe('adoptive');
 		expect(result!.isBloodRelation).toBe(false);
 	});
@@ -203,7 +203,7 @@ describe('RelationshipCalculator — adoptive siblings (DigitalDreamn follow-up)
 		const calc = makeCalculator([parent, bioKid, adoptedKid]);
 
 		const result = calc.calculateRelationship('bio_kid', 'adopted_kid');
-		expect(result!.relationshipDescription).toBe('Adoptive sibling');
+		expect(result!.relationshipDescription).toBe('收养的兄弟姐妹');
 		expect(result!.pathKind).toBe('adoptive');
 		expect(result!.isBloodRelation).toBe(false);
 	});
@@ -216,12 +216,12 @@ describe('RelationshipCalculator — bio paths unchanged (regression guard)', ()
 		const calc = makeCalculator([parent, child]);
 
 		const childToParent = calc.calculateRelationship('child', 'parent');
-		expect(childToParent!.relationshipDescription).toBe('Parent');
+		expect(childToParent!.relationshipDescription).toBe('父母');
 		expect(childToParent!.pathKind).toBe('bio');
 		expect(childToParent!.isBloodRelation).toBe(true);
 
 		const parentToChild = calc.calculateRelationship('parent', 'child');
-		expect(parentToChild!.relationshipDescription).toBe('Child');
+		expect(parentToChild!.relationshipDescription).toBe('子女');
 		expect(parentToChild!.isBloodRelation).toBe(true);
 	});
 
@@ -232,7 +232,7 @@ describe('RelationshipCalculator — bio paths unchanged (regression guard)', ()
 		const calc = makeCalculator([parent, a, b]);
 
 		const result = calc.calculateRelationship('a', 'b');
-		expect(result!.relationshipDescription).toBe('Sibling');
+		expect(result!.relationshipDescription).toBe('兄弟姐妹');
 		expect(result!.pathKind).toBe('bio');
 		expect(result!.isBloodRelation).toBe(true);
 	});
@@ -246,7 +246,7 @@ describe('RelationshipCalculator — bio paths unchanged (regression guard)', ()
 		const calc = makeCalculator([a, b, p]);
 
 		const result = calc.calculateRelationship('a', 'p');
-		expect(result!.relationshipDescription).toBe('Parent-in-law');
+		expect(result!.relationshipDescription).toBe('姻亲父母');
 		expect(result!.pathKind).toBe('bio');
 		expect(result!.isBloodRelation).toBe(false);
 	});

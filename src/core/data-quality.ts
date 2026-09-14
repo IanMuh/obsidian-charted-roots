@@ -331,7 +331,7 @@ export class DataQualityService {
 		if (birthYear && deathYear && deathYear < birthYear) {
 			issues.push({
 				code: 'DEATH_BEFORE_BIRTH',
-				message: `Death year (${deathYear}) is before birth year (${birthYear})`,
+				message: `去世年份（${deathYear}）早于出生年份（${birthYear}）`,
 				severity: 'error',
 				category: 'date_inconsistency',
 				person,
@@ -343,7 +343,7 @@ export class DataQualityService {
 		if (birthYear && deathYear && deathYear - birthYear > 120) {
 			issues.push({
 				code: 'UNREASONABLE_AGE',
-				message: `Lived for ${deathYear - birthYear} years (over 120)`,
+				message: `寿命为 ${deathYear - birthYear} 年（超过120年）`,
 				severity: 'warning',
 				category: 'date_inconsistency',
 				person,
@@ -357,7 +357,7 @@ export class DataQualityService {
 		if (!personIsFictional && birthYear && birthYear > currentYear) {
 			issues.push({
 				code: 'FUTURE_BIRTH',
-				message: `Birth year (${birthYear}) is in the future`,
+				message: `出生年份（${birthYear}）在未来`,
 				severity: 'error',
 				category: 'date_inconsistency',
 				person,
@@ -368,7 +368,7 @@ export class DataQualityService {
 		if (!personIsFictional && deathYear && deathYear > currentYear) {
 			issues.push({
 				code: 'FUTURE_DEATH',
-				message: `Death year (${deathYear}) is in the future`,
+				message: `去世年份（${deathYear}）在未来`,
 				severity: 'error',
 				category: 'date_inconsistency',
 				person,
@@ -384,7 +384,7 @@ export class DataQualityService {
 				if (fatherBirthYear && birthYear <= fatherBirthYear) {
 					issues.push({
 						code: 'BORN_BEFORE_PARENT',
-						message: `Born in ${birthYear}, but father was born in ${fatherBirthYear}`,
+						message: `出生于 ${birthYear} 年，但父亲出生于 ${fatherBirthYear} 年`,
 						severity: 'error',
 						category: 'date_inconsistency',
 						person,
@@ -396,7 +396,7 @@ export class DataQualityService {
 				if (fatherBirthYear && birthYear - fatherBirthYear < 12) {
 					issues.push({
 						code: 'PARENT_TOO_YOUNG',
-						message: `Father was only ${birthYear - fatherBirthYear} years old at birth`,
+						message: `父亲在子女出生时仅 ${birthYear - fatherBirthYear} 岁`,
 						severity: 'warning',
 						category: 'date_inconsistency',
 						person,
@@ -408,7 +408,7 @@ export class DataQualityService {
 				if (fatherBirthYear && birthYear - fatherBirthYear > 80) {
 					issues.push({
 						code: 'PARENT_TOO_OLD',
-						message: `Father was ${birthYear - fatherBirthYear} years old at birth`,
+						message: `父亲在子女出生时 ${birthYear - fatherBirthYear} 岁`,
 						severity: 'warning',
 						category: 'date_inconsistency',
 						person,
@@ -426,7 +426,7 @@ export class DataQualityService {
 				if (motherBirthYear && birthYear <= motherBirthYear) {
 					issues.push({
 						code: 'BORN_BEFORE_PARENT',
-						message: `Born in ${birthYear}, but mother was born in ${motherBirthYear}`,
+						message: `出生于 ${birthYear} 年，但母亲出生于 ${motherBirthYear} 年`,
 						severity: 'error',
 						category: 'date_inconsistency',
 						person,
@@ -438,7 +438,7 @@ export class DataQualityService {
 				if (motherBirthYear && birthYear - motherBirthYear < 12) {
 					issues.push({
 						code: 'PARENT_TOO_YOUNG',
-						message: `Mother was only ${birthYear - motherBirthYear} years old at birth`,
+						message: `母亲在子女出生时仅 ${birthYear - motherBirthYear} 岁`,
 						severity: 'warning',
 						category: 'date_inconsistency',
 						person,
@@ -450,7 +450,7 @@ export class DataQualityService {
 				if (motherBirthYear && birthYear - motherBirthYear > 55) {
 					issues.push({
 						code: 'PARENT_TOO_OLD',
-						message: `Mother was ${birthYear - motherBirthYear} years old at birth`,
+						message: `母亲在子女出生时 ${birthYear - motherBirthYear} 岁`,
 						severity: 'warning',
 						category: 'date_inconsistency',
 						person,
@@ -463,7 +463,7 @@ export class DataQualityService {
 				if (motherDeathYear && birthYear > motherDeathYear) {
 					issues.push({
 						code: 'BORN_AFTER_PARENT_DEATH',
-						message: `Born in ${birthYear}, but mother died in ${motherDeathYear}`,
+						message: `出生于 ${birthYear} 年，但母亲已于 ${motherDeathYear} 年去世`,
 						severity: 'error',
 						category: 'date_inconsistency',
 						person,
@@ -492,7 +492,7 @@ export class DataQualityService {
 				if (other.fatherCrId === person.crId) {
 					issues.push({
 						code: 'GENDER_ROLE_MISMATCH',
-						message: `Listed as father of ${other.name}, but gender is Female`,
+						message: `被列为 ${other.name} 的父亲，但性别为女性`,
 						severity: 'warning',
 						category: 'relationship_inconsistency',
 						person,
@@ -509,7 +509,7 @@ export class DataQualityService {
 				if (other.motherCrId === person.crId) {
 					issues.push({
 						code: 'GENDER_ROLE_MISMATCH',
-						message: `Listed as mother of ${other.name}, but gender is Male`,
+						message: `被列为 ${other.name} 的母亲，但性别为男性`,
 						severity: 'warning',
 						category: 'relationship_inconsistency',
 						person,
@@ -524,7 +524,7 @@ export class DataQualityService {
 		if (person.fatherCrId === person.crId) {
 			issues.push({
 				code: 'SELF_REFERENCE',
-				message: 'Person is listed as their own father',
+				message: '此人被列为自己的父亲',
 				severity: 'error',
 				category: 'relationship_inconsistency',
 				person,
@@ -533,7 +533,7 @@ export class DataQualityService {
 		if (person.motherCrId === person.crId) {
 			issues.push({
 				code: 'SELF_REFERENCE',
-				message: 'Person is listed as their own mother',
+				message: '此人被列为自己的母亲',
 				severity: 'error',
 				category: 'relationship_inconsistency',
 				person,
@@ -542,7 +542,7 @@ export class DataQualityService {
 		if (person.spouseCrIds.includes(person.crId)) {
 			issues.push({
 				code: 'SELF_REFERENCE',
-				message: 'Person is listed as their own spouse',
+				message: '此人被列为自己的配偶',
 				severity: 'error',
 				category: 'relationship_inconsistency',
 				person,
@@ -555,7 +555,7 @@ export class DataQualityService {
 			if (father && (father.fatherCrId === person.crId || father.motherCrId === person.crId)) {
 				issues.push({
 					code: 'CIRCULAR_RELATIONSHIP',
-					message: `Circular parent-child relationship with ${father.name}`,
+					message: `与 ${father.name} 存在循环的父母子女关系`,
 					severity: 'error',
 					category: 'relationship_inconsistency',
 					person,
@@ -568,7 +568,7 @@ export class DataQualityService {
 			if (mother && (mother.fatherCrId === person.crId || mother.motherCrId === person.crId)) {
 				issues.push({
 					code: 'CIRCULAR_RELATIONSHIP',
-					message: `Circular parent-child relationship with ${mother.name}`,
+					message: `与 ${mother.name} 存在循环的父母子女关系`,
 					severity: 'error',
 					category: 'relationship_inconsistency',
 					person,
@@ -582,7 +582,7 @@ export class DataQualityService {
 		if (uniqueSpouses.size < person.spouseCrIds.length) {
 			issues.push({
 				code: 'DUPLICATE_SPOUSE',
-				message: 'Same spouse listed multiple times',
+				message: '同一配偶被多次列出',
 				severity: 'warning',
 				category: 'relationship_inconsistency',
 				person,
@@ -602,7 +602,7 @@ export class DataQualityService {
 		if (!person.name) {
 			issues.push({
 				code: 'NO_NAME',
-				message: 'Name not specified',
+				message: '未指定姓名',
 				severity: 'warning',
 				category: 'missing_data',
 				person,
@@ -613,7 +613,7 @@ export class DataQualityService {
 		if (!person.fatherCrId && !person.motherCrId) {
 			issues.push({
 				code: 'NO_PARENTS',
-				message: 'No parents defined',
+				message: '未定义父母',
 				severity: 'info',
 				category: 'missing_data',
 				person,
@@ -624,7 +624,7 @@ export class DataQualityService {
 		if ((person.fatherCrId && !person.motherCrId) || (!person.fatherCrId && person.motherCrId)) {
 			issues.push({
 				code: 'ONE_PARENT_ONLY',
-				message: person.fatherCrId ? 'Mother not defined' : 'Father not defined',
+				message: person.fatherCrId ? '母亲未定义' : '父亲未定义',
 				severity: 'info',
 				category: 'missing_data',
 				person,
@@ -635,7 +635,7 @@ export class DataQualityService {
 		if (!person.birthDate) {
 			issues.push({
 				code: 'NO_BIRTH_DATE',
-				message: 'No birth date',
+				message: '无出生日期',
 				severity: 'info',
 				category: 'missing_data',
 				person,
@@ -646,7 +646,7 @@ export class DataQualityService {
 		if (!person.sex) {
 			issues.push({
 				code: 'NO_GENDER',
-				message: 'Gender not specified',
+				message: '未指定性别',
 				severity: 'info',
 				category: 'missing_data',
 				person,
@@ -685,7 +685,7 @@ export class DataQualityService {
 		if (birthDate && !this.isStandardDateFormat(birthDate, person.universe)) {
 			issues.push({
 				code: 'NON_STANDARD_DATE',
-				message: `Birth date "${birthDate}" is not in standard format (YYYY-MM-DD or YYYY)`,
+				message: `出生日期 "${birthDate}" 不是标准格式（YYYY-MM-DD 或 YYYY）`,
 				severity: 'info',
 				category: 'data_format',
 				person,
@@ -697,7 +697,7 @@ export class DataQualityService {
 		if (deathDate && !this.isStandardDateFormat(deathDate, person.universe)) {
 			issues.push({
 				code: 'NON_STANDARD_DATE',
-				message: `Death date "${deathDate}" is not in standard format (YYYY-MM-DD or YYYY)`,
+				message: `去世日期 "${deathDate}" 不是标准格式（YYYY-MM-DD 或 YYYY）`,
 				severity: 'info',
 				category: 'data_format',
 				person,
@@ -717,7 +717,7 @@ export class DataQualityService {
 			if (!isCanonical && !hasSynonym) {
 				issues.push({
 					code: 'INVALID_GENDER',
-					message: `Sex value "${rawSex}" is not recognized (expected M/F/X/U or common synonyms like male/female)`,
+					message: `性别值 "${rawSex}" 无法识别（应为 M/F/X/U 或 male/female 等常见同义词）`,
 					severity: 'warning',
 					category: 'data_format',
 					person,
@@ -754,7 +754,7 @@ export class DataQualityService {
 			if (!this.isValidCrIdFormat(person.fatherCrId)) {
 				issues.push({
 					code: 'CORRUPT_CRID_FORMAT',
-					message: `Father reference has invalid cr_id format: ${person.fatherCrId}`,
+					message: `父亲引用的 cr_id 格式无效：${person.fatherCrId}`,
 					severity: 'error',
 					category: 'orphan_reference',
 					person,
@@ -763,7 +763,7 @@ export class DataQualityService {
 			} else if (!peopleMap.has(person.fatherCrId)) {
 				issues.push({
 					code: 'ORPHAN_FATHER_REF',
-					message: `Father reference (${person.fatherCrId}) points to non-existent person`,
+					message: `父亲引用（${person.fatherCrId}）指向不存在的人物`,
 					severity: 'warning',
 					category: 'orphan_reference',
 					person,
@@ -777,7 +777,7 @@ export class DataQualityService {
 			if (!this.isValidCrIdFormat(person.motherCrId)) {
 				issues.push({
 					code: 'CORRUPT_CRID_FORMAT',
-					message: `Mother reference has invalid cr_id format: ${person.motherCrId}`,
+					message: `母亲引用的 cr_id 格式无效：${person.motherCrId}`,
 					severity: 'error',
 					category: 'orphan_reference',
 					person,
@@ -786,7 +786,7 @@ export class DataQualityService {
 			} else if (!peopleMap.has(person.motherCrId)) {
 				issues.push({
 					code: 'ORPHAN_MOTHER_REF',
-					message: `Mother reference (${person.motherCrId}) points to non-existent person`,
+					message: `母亲引用（${person.motherCrId}）指向不存在的人物`,
 					severity: 'warning',
 					category: 'orphan_reference',
 					person,
@@ -800,7 +800,7 @@ export class DataQualityService {
 			if (!this.isValidCrIdFormat(spouseCrId)) {
 				issues.push({
 					code: 'CORRUPT_CRID_FORMAT',
-					message: `Spouse reference has invalid cr_id format: ${spouseCrId}`,
+					message: `配偶引用的 cr_id 格式无效：${spouseCrId}`,
 					severity: 'error',
 					category: 'orphan_reference',
 					person,
@@ -809,7 +809,7 @@ export class DataQualityService {
 			} else if (!peopleMap.has(spouseCrId)) {
 				issues.push({
 					code: 'ORPHAN_SPOUSE_REF',
-					message: `Spouse reference (${spouseCrId}) points to non-existent person`,
+					message: `配偶引用（${spouseCrId}）指向不存在的人物`,
 					severity: 'warning',
 					category: 'orphan_reference',
 					person,
@@ -823,7 +823,7 @@ export class DataQualityService {
 			if (!this.isValidCrIdFormat(childCrId)) {
 				issues.push({
 					code: 'CORRUPT_CRID_FORMAT',
-					message: `Child reference has invalid cr_id format: ${childCrId}`,
+					message: `子女引用的 cr_id 格式无效：${childCrId}`,
 					severity: 'error',
 					category: 'orphan_reference',
 					person,
@@ -832,7 +832,7 @@ export class DataQualityService {
 			} else if (!peopleMap.has(childCrId)) {
 				issues.push({
 					code: 'ORPHAN_CHILD_REF',
-					message: `Child reference (${childCrId}) points to non-existent person`,
+					message: `子女引用（${childCrId}）指向不存在的人物`,
 					severity: 'warning',
 					category: 'orphan_reference',
 					person,
@@ -868,7 +868,7 @@ export class DataQualityService {
 				const nestedKeys = this.getNestedKeys(value);
 				issues.push({
 					code: 'NESTED_PROPERTY',
-					message: `Property "${key}" contains nested structure with keys: ${nestedKeys.join(', ')}`,
+					message: `属性 "${key}" 包含嵌套结构，键为：${nestedKeys.join('、')}`,
 					severity: 'warning',
 					category: 'nested_property',
 					person,
@@ -925,7 +925,7 @@ export class DataQualityService {
 		// Found a note with legacy 'type' property that should be migrated
 		issues.push({
 			code: 'LEGACY_TYPE_PROPERTY',
-			message: `Uses legacy 'type' property (${typeValue}) instead of 'cr_type'. Migration recommended.`,
+			message: `使用了旧版 'type' 属性（${typeValue}）而非 'cr_type'。建议迁移。`,
 			severity: 'info',
 			category: 'legacy_type_property',
 			person,
@@ -959,7 +959,7 @@ export class DataQualityService {
 			const count = fm['memberships'].length;
 			issues.push({
 				code: 'LEGACY_MEMBERSHIPS_NESTED',
-				message: `Uses legacy nested 'memberships' array with ${count} membership${count > 1 ? 's' : ''}. Migration to flat format recommended.`,
+				message: `使用了旧版嵌套的 'memberships' 数组，共 ${count} 个成员关系。建议迁移为扁平格式。`,
 				severity: 'info',
 				category: 'legacy_membership',
 				person,
@@ -976,7 +976,7 @@ export class DataQualityService {
 			const orgRef = (fm['house'] || fm['organization']) as string;
 			issues.push({
 				code: 'LEGACY_MEMBERSHIPS_SIMPLE',
-				message: `Uses legacy simple '${fm['house'] ? 'house' : 'organization'}' field for membership. Migration to flat format recommended.`,
+				message: `使用了旧版简单的 '${fm['house'] ? 'house' : 'organization'}' 字段表示成员关系。建议迁移为扁平格式。`,
 				severity: 'info',
 				category: 'legacy_membership',
 				person,
@@ -1044,7 +1044,7 @@ export class DataQualityService {
 							const matchCount = this.personIndex.getFilesWithBasename(wikilink).length;
 							issues.push({
 								code: 'AMBIGUOUS_WIKILINK',
-								message: `Wikilink [[${wikilink}]] matches ${matchCount} files`,
+								message: `Wiki 链接 [[${wikilink}]] 匹配到 ${matchCount} 个文件`,
 								severity: 'warning',
 								category: 'relationship_inconsistency',
 								person,
@@ -1052,7 +1052,7 @@ export class DataQualityService {
 									field,
 									wikilink: val,
 									matchCount,
-									suggestion: `Add ${idField} field to disambiguate`
+									suggestion: `添加 ${idField} 字段以消除歧义`
 								}
 							});
 						}
@@ -1129,7 +1129,7 @@ export class DataQualityService {
 							// Can be repaired - report as info
 							issues.push({
 								code: 'MISSING_RELATIONSHIP_ID',
-								message: `Missing ${idField} for wikilink [[${wikilinkPath}]]`,
+								message: `Wiki 链接 [[${wikilinkPath}]] 缺少 ${idField}`,
 								severity: 'info',
 								category: 'relationship_inconsistency',
 								person,
@@ -1147,7 +1147,7 @@ export class DataQualityService {
 							// Broken link or target missing cr_id
 							issues.push({
 								code: 'UNRESOLVABLE_RELATIONSHIP_WIKILINK',
-								message: `Cannot resolve wikilink [[${wikilinkPath}]] for ${field}`,
+								message: `无法解析 ${field} 的 Wiki 链接 [[${wikilinkPath}]]`,
 								severity: 'warning',
 								category: 'relationship_inconsistency',
 								person,
@@ -1206,7 +1206,7 @@ export class DataQualityService {
 				: 'a name is paired with the wrong id';
 			issues.push({
 				code: 'RELATIONSHIP_ARRAY_MISALIGNED',
-				message: `The "${field}" list and "${field}_id" list are out of alignment (${detail}); relationships may be mislabeled.`,
+				message: `"${field}" 列表与 "${field}_id" 列表不一致（${detail}）；关系可能被错误标记。`,
 				severity: 'error',
 				category: 'relationship_inconsistency',
 				person,
@@ -1946,7 +1946,7 @@ export class DataQualityService {
 							person,
 							relatedPerson: father,
 							field: 'father_id',
-							description: `Will add ${person.name || person.file.basename} to ${father.name || father.file.basename}'s children_id (${person.name || person.file.basename} lists them as father)`
+							description: `将把 ${person.name || person.file.basename} 添加到 ${father.name || father.file.basename} 的 children_id（${person.name || person.file.basename} 将其列为父亲）`
 						});
 					}
 				}
@@ -1963,7 +1963,7 @@ export class DataQualityService {
 							person,
 							relatedPerson: mother,
 							field: 'mother_id',
-							description: `Will add ${person.name || person.file.basename} to ${mother.name || mother.file.basename}'s children_id (${person.name || person.file.basename} lists them as mother)`
+							description: `将把 ${person.name || person.file.basename} 添加到 ${mother.name || mother.file.basename} 的 children_id（${person.name || person.file.basename} 将其列为母亲）`
 						});
 					}
 				}
@@ -2126,7 +2126,7 @@ export class DataQualityService {
 								person,
 								relatedPerson: spouse,
 								field: 'spouse_id',
-								description: `Will add ${person.name || person.file.basename} to ${spouse.name || spouse.file.basename}'s spouse_id (${person.name || person.file.basename} lists them as spouse)`
+								description: `将把 ${person.name || person.file.basename} 添加到 ${spouse.name || spouse.file.basename} 的 spouse_id（${person.name || person.file.basename} 将其列为配偶）`
 							});
 						}
 					}
@@ -2522,7 +2522,7 @@ export class DataQualityService {
 				issues.push({
 					type: 'birth-after-death',
 					person,
-					description: `Born ${person.birthDate} after death ${person.deathDate}`,
+					description: `出生日期 ${person.birthDate} 晚于去世日期 ${person.deathDate}`,
 					personDate: person.birthDate,
 					relatedDate: person.deathDate
 				});
@@ -2535,7 +2535,7 @@ export class DataQualityService {
 					issues.push({
 						type: 'unrealistic-lifespan',
 						person,
-						description: `Lived ${Math.round(ageInYears)} years (birth: ${person.birthDate}, death: ${person.deathDate})`,
+						description: `寿命 ${Math.round(ageInYears)} 年（出生：${person.birthDate}，去世：${person.deathDate}）`,
 						personDate: person.birthDate,
 						relatedDate: person.deathDate
 					});
@@ -2555,7 +2555,7 @@ export class DataQualityService {
 							type: 'parent-born-after-child',
 							person,
 							relatedPerson: father,
-							description: `Father ${father.name || father.file.basename} born ${father.birthDate} after child born ${person.birthDate}`,
+							description: `父亲 ${father.name || father.file.basename} 出生于 ${father.birthDate}，晚于子女出生 ${person.birthDate}`,
 							personDate: person.birthDate,
 							relatedDate: father.birthDate
 						});
@@ -2569,7 +2569,7 @@ export class DataQualityService {
 								type: 'parent-too-young',
 								person,
 								relatedPerson: father,
-								description: `Father ${father.name || father.file.basename} was ${Math.round(parentAgeAtBirth)} years old at child's birth`,
+								description: `父亲 ${father.name || father.file.basename} 在子女出生时 ${Math.round(parentAgeAtBirth)} 岁`,
 								personDate: person.birthDate,
 								relatedDate: father.birthDate
 							});
@@ -2584,7 +2584,7 @@ export class DataQualityService {
 								type: 'child-born-after-parent-death',
 								person,
 								relatedPerson: father,
-								description: `Born ${person.birthDate}, ${Math.round(monthsAfterDeath)} months after father died ${father.deathDate}`,
+								description: `出生于 ${person.birthDate}，在父亲去世（${father.deathDate}）后 ${Math.round(monthsAfterDeath)} 个月`,
 								personDate: person.birthDate,
 								relatedDate: father.deathDate
 							});
@@ -2606,7 +2606,7 @@ export class DataQualityService {
 							type: 'parent-born-after-child',
 							person,
 							relatedPerson: mother,
-							description: `Mother ${mother.name || mother.file.basename} born ${mother.birthDate} after child born ${person.birthDate}`,
+							description: `母亲 ${mother.name || mother.file.basename} 出生于 ${mother.birthDate}，晚于子女出生 ${person.birthDate}`,
 							personDate: person.birthDate,
 							relatedDate: mother.birthDate
 						});
@@ -2620,7 +2620,7 @@ export class DataQualityService {
 								type: 'parent-too-young',
 								person,
 								relatedPerson: mother,
-								description: `Mother ${mother.name || mother.file.basename} was ${Math.round(parentAgeAtBirth)} years old at child's birth`,
+								description: `母亲 ${mother.name || mother.file.basename} 在子女出生时 ${Math.round(parentAgeAtBirth)} 岁`,
 								personDate: person.birthDate,
 								relatedDate: mother.birthDate
 							});
@@ -2633,7 +2633,7 @@ export class DataQualityService {
 							type: 'child-born-after-parent-death',
 							person,
 							relatedPerson: mother,
-							description: `Born ${person.birthDate} after mother died ${mother.deathDate}`,
+							description: `出生于 ${person.birthDate}，晚于母亲去世 ${mother.deathDate}`,
 							personDate: person.birthDate,
 							relatedDate: mother.deathDate
 						});

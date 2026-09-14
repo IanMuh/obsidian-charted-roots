@@ -119,26 +119,26 @@ export class EventTypeEditorModal extends Modal {
 		contentEl.addClass('cr-event-type-editor-modal');
 
 		const title = this.customizeMode
-			? `Customize "${this.builtInDefaults?.name}"`
+			? `自定义"${this.builtInDefaults?.name}"`
 			: this.editMode
-				? 'Edit event type'
-				: 'Create event type';
+				? '编辑事件类型'
+				: '创建事件类型';
 		contentEl.createEl('h2', { text: title });
 
 		if (this.customizeMode) {
 			const info = contentEl.createDiv({ cls: 'cr-modal-info' });
 			info.createEl('p', {
-				text: 'Customize this built-in type. Changes only affect display; existing notes still work.',
+				text: '自定义此内置类型。更改仅影响显示；现有笔记仍然有效。',
 				cls: 'crc-text-muted'
 			});
 		}
 
 		// Name
 		new Setting(contentEl)
-			.setName('Name')
-			.setDesc('Display name for this event type')
+			.setName('名称')
+			.setDesc('此事件类型的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., Coronation')
+				.setPlaceholder('例如：加冕典礼')
 				.setValue(this.name)
 				.onChange(value => {
 					this.name = value;
@@ -153,7 +153,7 @@ export class EventTypeEditorModal extends Modal {
 		if (!this.editMode && !this.customizeMode) {
 			new Setting(contentEl)
 				.setName('ID')
-				.setDesc('Unique identifier (used in frontmatter)')
+				.setDesc('唯一标识符（用于 frontmatter）')
 				.addText(text => text
 					.setPlaceholder('coronation')
 					.setValue(this.id)
@@ -162,18 +162,18 @@ export class EventTypeEditorModal extends Modal {
 
 		// Description
 		new Setting(contentEl)
-			.setName('Description')
-			.setDesc('Brief description of this event type')
+			.setName('描述')
+			.setDesc('此事件类型的简要描述')
 			.addText(text => text
-				.setPlaceholder('e.g., Royal coronation ceremony')
+				.setPlaceholder('例如：王室加冕仪式')
 				.setValue(this.description)
 				.onChange(value => this.description = value));
 
 		// Category (only for new types and editing user types)
 		if (!this.customizeMode) {
 			new Setting(contentEl)
-				.setName('Category')
-				.setDesc('Group this type with similar events')
+				.setName('分类')
+				.setDesc('将此类型与相似事件归为一组')
 				.addDropdown(dropdown => {
 					// Get all categories (built-in + custom, with customizations and hiding)
 					const categories = getAllCategories(
@@ -193,8 +193,8 @@ export class EventTypeEditorModal extends Modal {
 
 		// Color picker
 		const colorSetting = new Setting(contentEl)
-			.setName('Color')
-			.setDesc('Badge color for this event type');
+			.setName('颜色')
+			.setDesc('此事件类型的徽章颜色');
 
 		const colorContainer = colorSetting.controlEl.createDiv({ cls: 'cr-color-picker' });
 
@@ -227,14 +227,14 @@ export class EventTypeEditorModal extends Modal {
 		const updateColorPreview = () => {
 			colorPreview.style.setProperty('background-color', this.color);
 			colorPreview.style.setProperty('color', this.getContrastColor(this.color));
-			colorPreview.textContent = this.name || 'Preview';
+			colorPreview.textContent = this.name || '预览';
 		};
 		updateColorPreview();
 
 		// Icon picker
 		const iconSetting = new Setting(contentEl)
-			.setName('Icon')
-			.setDesc('Icon to display with this event type');
+			.setName('图标')
+			.setDesc('此事件类型显示的图标');
 
 		const iconContainer = iconSetting.controlEl.createDiv({ cls: 'cr-icon-picker' });
 
@@ -270,15 +270,15 @@ export class EventTypeEditorModal extends Modal {
 
 		// Reset button for customizations
 		if (this.customizeMode) {
-			const resetBtn = buttonContainer.createEl('button', { text: 'Reset to default' });
+			const resetBtn = buttonContainer.createEl('button', { text: '重置为默认' });
 			resetBtn.addEventListener('click', () => void this.resetToDefault());
 		}
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const saveBtn = buttonContainer.createEl('button', {
-			text: this.customizeMode ? 'Save customization' : this.editMode ? 'Save changes' : 'Create type',
+			text: this.customizeMode ? '保存自定义' : this.editMode ? '保存更改' : '创建类型',
 			cls: 'mod-cta'
 		});
 		saveBtn.addEventListener('click', () => void this.saveType());
@@ -292,12 +292,12 @@ export class EventTypeEditorModal extends Modal {
 	private async saveType(): Promise<void> {
 		// Validation
 		if (!this.name.trim()) {
-			new Notice('Please enter a name');
+			new Notice('请输入名称');
 			return;
 		}
 
 		if (!this.customizeMode && !this.id.trim()) {
-			new Notice('Please enter an ID');
+			new Notice('请输入 ID');
 			return;
 		}
 
@@ -316,7 +316,7 @@ export class EventTypeEditorModal extends Modal {
 			this.close();
 			this.onSave();
 		} catch (error) {
-			new Notice(`Failed to save event type: ${error}`);
+			new Notice(`保存事件类型失败：${error}`);
 		}
 	}
 
@@ -343,7 +343,7 @@ export class EventTypeEditorModal extends Modal {
 		}
 
 		await this.plugin.saveSettings();
-		new Notice('Event type customized');
+		new Notice('事件类型已自定义');
 	}
 
 	private async updateUserType(): Promise<void> {
@@ -363,7 +363,7 @@ export class EventTypeEditorModal extends Modal {
 		}
 
 		await this.plugin.saveSettings();
-		new Notice('Event type updated');
+		new Notice('事件类型已更新');
 	}
 
 	private async createUserType(): Promise<void> {
@@ -373,7 +373,7 @@ export class EventTypeEditorModal extends Modal {
 		const customConflict = existingTypes.find(t => t.id === this.id);
 
 		if (builtInConflict || customConflict) {
-			new Notice('An event type with this ID already exists');
+			new Notice('已存在使用此 ID 的事件类型');
 			return;
 		}
 
@@ -389,7 +389,7 @@ export class EventTypeEditorModal extends Modal {
 
 		existingTypes.push(typeDef);
 		await this.plugin.saveSettings();
-		new Notice('Event type created');
+		new Notice('事件类型已创建');
 	}
 
 	private async resetToDefault(): Promise<void> {
@@ -401,7 +401,7 @@ export class EventTypeEditorModal extends Modal {
 		}
 
 		await this.plugin.saveSettings();
-		new Notice('Reset to default');
+		new Notice('已重置为默认');
 		this.close();
 		this.onSave();
 	}

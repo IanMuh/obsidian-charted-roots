@@ -32,11 +32,11 @@ export function renderParticipantsSection(
 	}
 
 	const count = participants.length;
-	const summary = `${count} participant${count !== 1 ? 's' : ''}`;
+	const summary = `${count} 名参与者`;
 
 	const content = renderProfileSection(parent, {
 		sectionId: 'participants',
-		title: 'Participants',
+		title: '参与者',
 		summary,
 		expanded: options.sectionStates['participants'] ?? true,
 		onToggle: options.onToggle,
@@ -61,7 +61,7 @@ export function renderParticipantsSection(
 
 		// Mark principal
 		if (i === 0 && event.person) {
-			row.createSpan({ text: '(principal)', cls: 'cr-profile__participant-badge' });
+			row.createSpan({ text: '（当事人）', cls: 'cr-profile__participant-badge' });
 		}
 
 		// Resolve file for navigation

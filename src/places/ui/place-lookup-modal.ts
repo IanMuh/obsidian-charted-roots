@@ -7,7 +7,6 @@
  */
 
 import { App, Modal, Setting, Notice, setIcon } from 'obsidian';
-import { pluralize } from '../../utils/format-utils';
 import {
 	PlaceLookupService,
 	PlaceLookupResult,
@@ -44,27 +43,27 @@ const SOURCE_INFO: Record<PlaceLookupSource, { name: string; icon: string; descr
 	wikidata: {
 		name: 'Wikidata',
 		icon: 'globe',
-		description: 'Structured knowledge base with detailed place information'
+		description: '包含详细地点信息的结构化知识库'
 	},
 	geonames: {
 		name: 'GeoNames',
 		icon: 'map',
-		description: 'Comprehensive geographic database with hierarchy'
+		description: '带层级结构的综合地理数据库'
 	},
 	nominatim: {
 		name: 'OpenStreetMap',
 		icon: 'map-pin',
-		description: 'Geocoding from OpenStreetMap data'
+		description: '来自 OpenStreetMap 数据的地理编码'
 	},
 	familysearch: {
 		name: 'FamilySearch',
 		icon: 'users',
-		description: 'Historical place data (Phase 3)'
+		description: '历史地点数据（第三阶段）'
 	},
 	gov: {
 		name: 'GOV',
 		icon: 'building-2',
-		description: 'German/European historical jurisdictions (Phase 3)'
+		description: '德国/欧洲历史行政区划（第三阶段）'
 	}
 };
 
@@ -119,19 +118,19 @@ export class PlaceLookupModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'crc-modal-header' });
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		setIcon(titleContainer.createSpan(), 'search');
-		titleContainer.appendText('Look up place');
+		titleContainer.appendText('查找地点');
 
 		// Form container (using crc-form for consistent styling)
 		const form = contentEl.createDiv({ cls: 'crc-form' });
 
 		// Search input with button - use standard Setting pattern
 		new Setting(form)
-			.setName('Place name')
-			.setDesc('Enter a place name to search')
+			.setName('地点名称')
+			.setDesc('输入要搜索的地点名称')
 			.addText(text => {
 				this.searchInputEl = text.inputEl;
 				text
-					.setPlaceholder('e.g., London, Springfield IL, München')
+					.setPlaceholder('例如：伦敦、斯普林菲尔德 IL、慕尼黑')
 					.setValue(this.searchQuery)
 					.onChange(value => {
 						this.searchQuery = value;
@@ -147,14 +146,14 @@ export class PlaceLookupModal extends Modal {
 			})
 			.addButton(btn => {
 				btn
-					.setButtonText('Search')
+					.setButtonText('搜索')
 					.setCta()
 					.onClick(() => void this.performSearch());
 			});
 
 		// Source selection
 		const sourcesSection = form.createDiv({ cls: 'cr-lookup-sources-section' });
-		sourcesSection.createEl('label', { text: 'Sources', cls: 'cr-lookup-sources-label' });
+		sourcesSection.createEl('label', { text: '来源', cls: 'cr-lookup-sources-label' });
 
 		const sourcesRow = sourcesSection.createDiv({ cls: 'cr-lookup-sources-row' });
 
@@ -188,7 +187,7 @@ export class PlaceLookupModal extends Modal {
 		// Loading indicator
 		this.loadingEl = contentEl.createDiv({ cls: 'cr-lookup-loading cr-hidden' });
 		this.loadingEl.createDiv({ cls: 'cr-lookup-spinner' });
-		this.loadingEl.createSpan({ text: 'Searching...' });
+		this.loadingEl.createSpan({ text: '搜索中…' });
 
 		// Error message
 		this.errorEl = contentEl.createDiv({ cls: 'cr-lookup-error cr-hidden' });
@@ -207,7 +206,7 @@ export class PlaceLookupModal extends Modal {
 		// Footer with cancel button
 		const footer = contentEl.createDiv({ cls: 'cr-modal-footer' });
 		const cancelBtn = footer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'cr-btn'
 		});
 		cancelBtn.addEventListener('click', () => this.close());
@@ -238,15 +237,15 @@ export class PlaceLookupModal extends Modal {
 	 */
 	private getDisabledReason(source: PlaceLookupSource): string {
 		if (source === 'geonames' && !this.settings?.geonamesUsername) {
-			return 'GeoNames requires a username. Configure in Settings → Places → Place lookup';
+			return 'GeoNames 需要用户名。请在设置 → 地点 → 地点查找中配置';
 		}
 		if (source === 'familysearch') {
-			return 'FamilySearch integration coming in Phase 3';
+			return 'FamilySearch 集成将在第三阶段推出';
 		}
 		if (source === 'gov') {
-			return 'GOV integration coming in Phase 3';
+			return 'GOV 集成将在第三阶段推出';
 		}
-		return 'Source not available';
+		return '来源不可用';
 	}
 
 	/**
@@ -270,12 +269,12 @@ export class PlaceLookupModal extends Modal {
 		const query = this.searchQuery.trim();
 
 		if (!query) {
-			new Notice('Please enter a place name to search');
+			new Notice('请输入要搜索的地点名称');
 			return;
 		}
 
 		if (this.selectedSources.size === 0) {
-			new Notice('Please select at least one source');
+			new Notice('请至少选择一个来源');
 			return;
 		}
 
@@ -283,7 +282,7 @@ export class PlaceLookupModal extends Modal {
 		const enabledSources = Array.from(this.selectedSources).filter(s => this.isSourceEnabled(s));
 
 		if (enabledSources.length === 0) {
-			new Notice('No enabled sources selected. Configure GeoNames username in settings.');
+			new Notice('未选择已启用的来源。请在设置中配置 GeoNames 用户名。');
 			return;
 		}
 
@@ -301,11 +300,11 @@ export class PlaceLookupModal extends Modal {
 			this.results = await this.service.lookup(query, options);
 
 			if (this.results.length === 0) {
-				this.errorMessage = `No results found for "${query}". Try a different spelling or add more context (e.g., city, country).`;
+				this.errorMessage = `未找到"${query}"的结果。请尝试其他拼写或添加更多上下文（例如：城市、国家）。`;
 			}
 		} catch (error) {
 			console.error('Place lookup failed:', error);
-			this.errorMessage = `Search failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+			this.errorMessage = `搜索失败：${error instanceof Error ? error.message : '未知错误'}`;
 		} finally {
 			this.isLoading = false;
 			this.updateUI();
@@ -360,9 +359,9 @@ export class PlaceLookupModal extends Modal {
 		const empty = this.resultsContainerEl.createDiv({ cls: 'cr-lookup-empty' });
 		const emptyIcon = empty.createDiv({ cls: 'cr-lookup-empty-icon' });
 		setIcon(emptyIcon, 'search');
-		empty.createEl('p', { text: 'Enter a place name and click Search to look up place information.' });
+		empty.createEl('p', { text: '输入地点名称并点击"搜索"以查找地点信息。' });
 		empty.createEl('p', {
-			text: 'Results include coordinates, place type, and hierarchy from multiple sources.',
+			text: '结果包含来自多个来源的坐标、地点类型和层级。',
 			cls: 'cr-text-muted'
 		});
 	}
@@ -374,7 +373,7 @@ export class PlaceLookupModal extends Modal {
 		if (!this.resultsContainerEl) return;
 
 		const resultsHeader = this.resultsContainerEl.createDiv({ cls: 'cr-lookup-results-header' });
-		resultsHeader.createEl('h4', { text: `Found ${this.results.length} ${pluralize(this.results.length, 'result')}` });
+		resultsHeader.createEl('h4', { text: `找到 ${this.results.length} 个结果` });
 
 		const resultsList = this.resultsContainerEl.createDiv({ cls: 'cr-lookup-results-list' });
 
@@ -441,7 +440,7 @@ export class PlaceLookupModal extends Modal {
 			const parentRow = details.createDiv({ cls: 'cr-lookup-result-detail' });
 			const parentIcon = parentRow.createSpan({ cls: 'cr-lookup-detail-icon' });
 			setIcon(parentIcon, 'corner-up-right');
-			parentRow.createSpan({ text: `Parent: ${result.parentPlace}` });
+				parentRow.createSpan({ text: `父级：${result.parentPlace}` });
 		}
 
 		// External ID
@@ -456,7 +455,7 @@ export class PlaceLookupModal extends Modal {
 		const cardFooter = card.createDiv({ cls: 'cr-lookup-result-footer' });
 
 		const useButton = cardFooter.createEl('button', {
-			text: 'Use this place',
+			text: '使用此地点',
 			cls: 'cr-btn cr-btn--primary cr-btn--small'
 		});
 		useButton.addEventListener('click', () => {

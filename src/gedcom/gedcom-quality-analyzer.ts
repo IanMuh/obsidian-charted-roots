@@ -186,7 +186,7 @@ function analyzeIndividualDates(individual: GedcomIndividualV2, issues: GedcomQu
 	if (birthYear && deathYear && deathYear < birthYear) {
 		issues.push({
 			code: 'death_before_birth',
-			message: `Death date (${individual.deathDate}) is before birth date (${individual.birthDate})`,
+			message: `去世日期（${individual.deathDate}）早于出生日期（${individual.birthDate}）`,
 			severity: 'error',
 			category: 'date',
 			recordId: individual.id,
@@ -203,7 +203,7 @@ function analyzeIndividualDates(individual: GedcomIndividualV2, issues: GedcomQu
 	if (birthYear && birthYear > currentYear) {
 		issues.push({
 			code: 'future_birth',
-			message: `Birth date (${individual.birthDate}) is in the future`,
+			message: `出生日期（${individual.birthDate}）在未来`,
 			severity: 'warning',
 			category: 'date',
 			recordId: individual.id,
@@ -217,7 +217,7 @@ function analyzeIndividualDates(individual: GedcomIndividualV2, issues: GedcomQu
 	if (birthYear && birthYear < 1900 && !individual.deathDate) {
 		issues.push({
 			code: 'very_old_no_death',
-			message: `Born in ${birthYear} with no death date recorded`,
+			message: `出生于 ${birthYear} 年，未记录去世日期`,
 			severity: 'info',
 			category: 'date',
 			recordId: individual.id,
@@ -277,7 +277,7 @@ function analyzeIndividualData(individual: GedcomIndividualV2, issues: GedcomQua
 	if (!individual.name || individual.name === '//' || individual.name.trim() === '') {
 		issues.push({
 			code: 'missing_name',
-			message: 'Individual has no name',
+			message: '此人物没有姓名',
 			severity: 'warning',
 			category: 'data',
 			recordId: individual.id,
@@ -290,7 +290,7 @@ function analyzeIndividualData(individual: GedcomIndividualV2, issues: GedcomQua
 	if (!individual.sex || individual.sex === 'U') {
 		issues.push({
 			code: 'unknown_sex',
-			message: 'Sex is unknown or not specified',
+			message: '性别未知或未指定',
 			severity: 'info',
 			category: 'data',
 			recordId: individual.id,
@@ -303,7 +303,7 @@ function analyzeIndividualData(individual: GedcomIndividualV2, issues: GedcomQua
 	if (!individual.birthDate && !individual.deathDate && individual.events.length === 0) {
 		issues.push({
 			code: 'no_dates',
-			message: 'No dates or events recorded',
+			message: '未记录任何日期或事件',
 			severity: 'info',
 			category: 'data',
 			recordId: individual.id,
@@ -371,7 +371,7 @@ function analyzeFamilyRelationships(
 			if (fatherBirthYear && fatherBirthYear >= childBirthYear) {
 				issues.push({
 					code: 'parent_younger_than_child',
-					message: `Father ${husband.name} (b. ${fatherBirthYear}) is same age or younger than child ${child.name} (b. ${childBirthYear})`,
+					message: `父亲 ${husband.name}（生于 ${fatherBirthYear}）与子女 ${child.name}（生于 ${childBirthYear}）同龄或更年轻`,
 					severity: 'error',
 					category: 'relationship',
 					recordId: family.id,
@@ -393,7 +393,7 @@ function analyzeFamilyRelationships(
 			if (motherBirthYear && motherBirthYear >= childBirthYear) {
 				issues.push({
 					code: 'parent_younger_than_child',
-					message: `Mother ${wife.name} (b. ${motherBirthYear}) is same age or younger than child ${child.name} (b. ${childBirthYear})`,
+					message: `母亲 ${wife.name}（生于 ${motherBirthYear}）与子女 ${child.name}（生于 ${childBirthYear}）同龄或更年轻`,
 					severity: 'error',
 					category: 'relationship',
 					recordId: family.id,
@@ -413,7 +413,7 @@ function analyzeFamilyRelationships(
 		if (marriageYear && childBirthYear && marriageYear > childBirthYear) {
 			issues.push({
 				code: 'child_before_marriage',
-				message: `Child ${child.name} (b. ${childBirthYear}) born before parents' marriage (${marriageYear})`,
+					message: `子女 ${child.name}（生于 ${childBirthYear}）出生早于父母婚姻（${marriageYear}）`,
 				severity: 'info',
 				category: 'relationship',
 				recordId: family.id,
@@ -432,7 +432,7 @@ function analyzeFamilyRelationships(
 	if (!family.husbandRef && !family.wifeRef && family.childRefs.length === 0) {
 		issues.push({
 			code: 'empty_family',
-			message: 'Family has no members',
+			message: '家族没有成员',
 			severity: 'warning',
 			category: 'data',
 			recordId: family.id,
@@ -454,7 +454,7 @@ function analyzeFamilyReferences(
 	if (family.husbandRef && !data.individuals.has(family.husbandRef)) {
 		issues.push({
 			code: 'missing_person_ref',
-			message: `HUSB references non-existent person @${family.husbandRef}@`,
+			message: `HUSB 引用了不存在的人物 @${family.husbandRef}@`,
 			severity: 'error',
 			category: 'reference',
 			recordId: family.id,
@@ -468,7 +468,7 @@ function analyzeFamilyReferences(
 	if (family.wifeRef && !data.individuals.has(family.wifeRef)) {
 		issues.push({
 			code: 'missing_person_ref',
-			message: `WIFE references non-existent person @${family.wifeRef}@`,
+			message: `WIFE 引用了不存在的人物 @${family.wifeRef}@`,
 			severity: 'error',
 			category: 'reference',
 			recordId: family.id,
@@ -483,7 +483,7 @@ function analyzeFamilyReferences(
 		if (!data.individuals.has(childRef)) {
 			issues.push({
 				code: 'missing_person_ref',
-				message: `CHIL references non-existent person @${childRef}@`,
+					message: `CHIL 引用了不存在的人物 @${childRef}@`,
 				severity: 'error',
 				category: 'reference',
 				recordId: family.id,
@@ -505,7 +505,7 @@ function analyzeOrphanReferences(data: GedcomDataV2, issues: GedcomQualityIssue[
 			if (!data.families.has(famcRef.familyRef)) {
 				issues.push({
 					code: 'missing_family_ref',
-					message: `FAMC references non-existent family @${famcRef.familyRef}@`,
+					message: `FAMC 引用了不存在的家族 @${famcRef.familyRef}@`,
 					severity: 'error',
 					category: 'reference',
 					recordId: individual.id,
@@ -521,7 +521,7 @@ function analyzeOrphanReferences(data: GedcomDataV2, issues: GedcomQualityIssue[
 			if (!data.families.has(famRef)) {
 				issues.push({
 					code: 'missing_family_ref',
-					message: `FAMS references non-existent family @${famRef}@`,
+					message: `FAMS 引用了不存在的家族 @${famRef}@`,
 					severity: 'error',
 					category: 'reference',
 					recordId: individual.id,
@@ -548,7 +548,7 @@ function analyzeOrphanReferences(data: GedcomDataV2, issues: GedcomQualityIssue[
 			const child = data.individuals.get(childId);
 			issues.push({
 				code: 'multiple_parent_families',
-				message: `Child is claimed by ${families.length} families: ${families.map(f => '@' + f + '@').join(', ')}`,
+					message: `该子女被 ${families.length} 个家族同时认领：${families.map(f => '@' + f + '@').join('、')}`,
 				severity: 'warning',
 				category: 'relationship',
 				recordId: childId,

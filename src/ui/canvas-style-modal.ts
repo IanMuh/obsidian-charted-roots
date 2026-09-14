@@ -31,7 +31,7 @@ export class CanvasStyleModal extends Modal {
 		const { contentEl } = this;
 		contentEl.empty();
 
-		contentEl.createEl('h2', { text: 'Customize canvas styles' });
+		contentEl.createEl('h2', { text: '自定义画布样式' });
 
 		// Load current metadata
 		try {
@@ -48,13 +48,13 @@ export class CanvasStyleModal extends Modal {
 
 		// Description
 		contentEl.createEl('p', {
-			text: 'Customize styles for this canvas. Changes will be applied when you regenerate the canvas.',
+			text: '自定义此画布的样式。重新生成画布后更改将生效。',
 			cls: 'setting-item-description'
 		});
 
 		// Global settings notice
 		contentEl.createEl('p', {
-			text: `Current global settings will be used for any options left at their default. Toggle individual settings to override them for this canvas only.`,
+			text: `保留默认的选项将使用当前全局设置。单独切换某项设置可仅为此画布覆盖。`,
 			cls: 'setting-item-description'
 		});
 
@@ -69,15 +69,15 @@ export class CanvasStyleModal extends Modal {
 
 		// Node color scheme
 		new Setting(contentEl)
-			.setName('Node coloring')
-			.setDesc('Color scheme for person nodes')
+			.setName('节点配色')
+			.setDesc('人物节点的配色方案')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', '(Use global setting)')
-					.addOption('sex', 'Sex (green/purple)')
-					.addOption('generation', 'Generation (gradient)')
-					.addOption('collection', 'Collection (multi-color)')
-					.addOption('monochrome', 'Monochrome (neutral)')
+					.addOption('', '（使用全局设置）')
+					.addOption('sex', '性别（绿/紫）')
+					.addOption('generation', '世代（渐变）')
+					.addOption('collection', '合集（多色）')
+					.addOption('monochrome', '单色（中性）')
 					.setValue(nodeColorScheme || '')
 					.onChange(value => {
 						nodeColorScheme = value ? value as ColorScheme : undefined;
@@ -86,14 +86,14 @@ export class CanvasStyleModal extends Modal {
 
 		// Parent-child arrow style
 		new Setting(contentEl)
-			.setName('Parent-child arrows')
-			.setDesc('Arrow style for parent-child relationships')
+			.setName('父母子女箭头')
+			.setDesc('父母子女关系的箭头样式')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', '(Use global setting)')
-					.addOption('directed', 'Directed (→)')
-					.addOption('bidirectional', 'Bidirectional (↔)')
-					.addOption('undirected', 'Undirected (—)')
+					.addOption('', '（使用全局设置）')
+					.addOption('directed', '单向（→）')
+					.addOption('bidirectional', '双向（↔）')
+					.addOption('undirected', '无向（—）')
 					.setValue(parentChildArrowStyle || '')
 					.onChange(value => {
 						parentChildArrowStyle = value ? value as ArrowStyle : undefined;
@@ -103,13 +103,13 @@ export class CanvasStyleModal extends Modal {
 		// Spouse arrow style
 		new Setting(contentEl)
 			.setName(getSpouseCompoundLabel(this.plugin.settings, 'arrows'))
-			.setDesc('Arrow style for spouse/partner relationships')
+			.setDesc('配偶/伴侣关系的箭头样式')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', '(Use global setting)')
-					.addOption('directed', 'Directed (→)')
-					.addOption('bidirectional', 'Bidirectional (↔)')
-					.addOption('undirected', 'Undirected (—)')
+					.addOption('', '（使用全局设置）')
+					.addOption('directed', '单向（→）')
+					.addOption('bidirectional', '双向（↔）')
+					.addOption('undirected', '无向（—）')
 					.setValue(spouseArrowStyle || '')
 					.onChange(value => {
 						spouseArrowStyle = value ? value as ArrowStyle : undefined;
@@ -118,19 +118,19 @@ export class CanvasStyleModal extends Modal {
 
 		// Parent-child edge color
 		new Setting(contentEl)
-			.setName('Parent-child edge color')
-			.setDesc('Color for parent-child relationship edges')
-			.addDropdown(dropdown => {
-				dropdown
-					.addOption('', '(Use global setting)')
-					.addOption('none', 'Theme default')
-					.addOption('1', 'Red')
-					.addOption('2', 'Orange')
-					.addOption('3', 'Yellow')
-					.addOption('4', 'Green')
-					.addOption('5', 'Cyan')
-					.addOption('6', 'Purple')
-					.setValue(parentChildEdgeColor || '')
+			.setName('父母子女连线颜色')
+			.setDesc('父母子女关系连线的颜色')
+				.addDropdown(dropdown => {
+					dropdown
+						.addOption('', '（使用全局设置）')
+						.addOption('none', '主题默认')
+						.addOption('1', '红')
+						.addOption('2', '橙')
+						.addOption('3', '黄')
+						.addOption('4', '绿')
+						.addOption('5', '青')
+						.addOption('6', '紫')
+						.setValue(parentChildEdgeColor || '')
 					.onChange(value => {
 						parentChildEdgeColor = value ? value as CanvasColor : undefined;
 					});
@@ -139,18 +139,18 @@ export class CanvasStyleModal extends Modal {
 		// Spouse edge color
 		new Setting(contentEl)
 			.setName(getSpouseCompoundLabel(this.plugin.settings, 'edge color'))
-			.setDesc('Color for spouse/partner relationship edges')
-			.addDropdown(dropdown => {
-				dropdown
-					.addOption('', '(Use global setting)')
-					.addOption('none', 'Theme default')
-					.addOption('1', 'Red')
-					.addOption('2', 'Orange')
-					.addOption('3', 'Yellow')
-					.addOption('4', 'Green')
-					.addOption('5', 'Cyan')
-					.addOption('6', 'Purple')
-					.setValue(spouseEdgeColor || '')
+			.setDesc('配偶/伴侣关系连线的颜色')
+				.addDropdown(dropdown => {
+					dropdown
+						.addOption('', '（使用全局设置）')
+						.addOption('none', '主题默认')
+						.addOption('1', '红')
+						.addOption('2', '橙')
+						.addOption('3', '黄')
+						.addOption('4', '绿')
+						.addOption('5', '青')
+						.addOption('6', '紫')
+						.setValue(spouseEdgeColor || '')
 					.onChange(value => {
 						spouseEdgeColor = value ? value as CanvasColor : undefined;
 					});
@@ -158,13 +158,13 @@ export class CanvasStyleModal extends Modal {
 
 		// Show spouse edges
 		new Setting(contentEl)
-			.setName(`Show ${getSpouseCompoundLabel(this.plugin.settings, 'edges').toLowerCase()}`)
-			.setDesc('Display marriage relationship edges on canvas')
+			.setName(`显示${getSpouseCompoundLabel(this.plugin.settings, 'edges').toLowerCase()}`)
+			.setDesc('在画布上显示婚姻关系连线')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', '(Use global setting)')
-					.addOption('true', 'Enabled')
-					.addOption('false', 'Disabled')
+					.addOption('', '（使用全局设置）')
+					.addOption('true', '启用')
+					.addOption('false', '禁用')
 					.setValue(showSpouseEdges === undefined ? '' : String(showSpouseEdges))
 					.onChange(value => {
 						showSpouseEdges = value === '' ? undefined : value === 'true';
@@ -174,14 +174,14 @@ export class CanvasStyleModal extends Modal {
 		// Spouse label format
 		new Setting(contentEl)
 			.setName(getSpouseCompoundLabel(this.plugin.settings, 'edge labels'))
-			.setDesc('Label format for spouse/partner relationship edges')
+			.setDesc('配偶/伴侣关系连线的标签格式')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', '(Use global setting)')
-					.addOption('none', 'None')
-					.addOption('date-only', 'Date only')
-					.addOption('date-location', 'Date + location')
-					.addOption('full', 'Full (date + location + status)')
+					.addOption('', '（使用全局设置）')
+					.addOption('none', '无')
+					.addOption('date-only', '仅日期')
+					.addOption('date-location', '日期 + 地点')
+					.addOption('full', '完整（日期 + 地点 + 状态）')
 					.setValue(spouseEdgeLabelFormat || '')
 					.onChange(value => {
 						spouseEdgeLabelFormat = value ? value as SpouseEdgeLabelFormat : undefined;
@@ -193,7 +193,7 @@ export class CanvasStyleModal extends Modal {
 
 		// Save button
 		buttonContainer.createEl('button', {
-			text: 'Save styles',
+			text: '保存样式',
 			cls: 'mod-cta'
 		}).addEventListener('click', () => {
 			void this.saveStyleOverrides({
@@ -209,14 +209,14 @@ export class CanvasStyleModal extends Modal {
 
 		// Clear all button
 		buttonContainer.createEl('button', {
-			text: 'Clear all overrides'
+			text: '清除所有覆盖'
 		}).addEventListener('click', () => {
 			void this.saveStyleOverrides({});
 		});
 
 		// Cancel button
 		buttonContainer.createEl('button', {
-			text: 'Cancel'
+			text: '取消'
 		}).addEventListener('click', () => {
 			this.close();
 		});
@@ -253,11 +253,11 @@ export class CanvasStyleModal extends Modal {
 			const formattedJson = this.formatCanvasJson(canvasData);
 			await this.app.vault.modify(this.canvasFile, formattedJson);
 
-			new Notice('Canvas styles updated! Regenerate the canvas to see changes.');
+			new Notice('画布样式已更新！重新生成画布以查看更改。');
 			this.close();
 		} catch (error: unknown) {
 			logger.error('style-modal', 'Failed to save style overrides', error);
-			new Notice('Failed to save style overrides. Check console for details.');
+			new Notice('保存样式覆盖失败。详情请查看控制台。');
 		}
 	}
 

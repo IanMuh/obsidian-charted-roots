@@ -72,7 +72,7 @@ export class ValidationService {
 				isValid: false,
 				errors: [{
 					type: 'missing_required' as ValidationErrorType,
-					message: 'Note has no frontmatter'
+					message: '笔记没有 frontmatter'
 				}],
 				warnings: []
 			}));
@@ -272,7 +272,7 @@ export class ValidationService {
 				errors.push({
 					type: 'missing_required',
 					property: propName,
-					message: `Missing required property: ${propName}`
+					message: `缺少必填属性：${propName}`
 				});
 			}
 		}
@@ -287,7 +287,7 @@ export class ValidationService {
 					errors.push({
 						type: 'conditional_required',
 						property: propName,
-						message: `Property "${propName}" is required when ${this.describeCondition(propDef.requiredIf)}`
+						message: `当 ${this.describeCondition(propDef.requiredIf)} 时，属性"${propName}"为必填`
 					});
 					continue;
 				}
@@ -390,8 +390,8 @@ export class ValidationService {
 	private describeCondition(condition: ConditionalRequirement): string {
 		if (condition.exists !== undefined) {
 			return condition.exists
-				? `"${condition.property}" is set`
-				: `"${condition.property}" is not set`;
+				? `"${condition.property}"已设置`
+				: `"${condition.property}"未设置`;
 		}
 		if (condition.equals !== undefined) {
 			let eqStr: string;
@@ -400,7 +400,7 @@ export class ValidationService {
 			} else {
 				eqStr = String(condition.equals as string | number | boolean | bigint | symbol);
 			}
-			return `"${condition.property}" equals "${eqStr}"`;
+			return `"${condition.property}"等于"${eqStr}"`;
 		}
 		if (condition.notEquals !== undefined) {
 			let neqStr: string;
@@ -409,9 +409,9 @@ export class ValidationService {
 			} else {
 				neqStr = String(condition.notEquals as string | number | boolean | bigint | symbol);
 			}
-			return `"${condition.property}" is not "${neqStr}"`;
+			return `"${condition.property}"不等于"${neqStr}"`;
 		}
-		return 'condition is met';
+		return '条件已满足';
 	}
 
 	/**
@@ -428,7 +428,7 @@ export class ValidationService {
 					return {
 						type: 'invalid_type',
 						property: propName,
-						message: `Expected string for "${propName}", got ${typeof value}`,
+						message: `"${propName}"应为字符串，实际为 ${typeof value}`,
 						expectedType: 'string'
 					};
 				}
@@ -439,7 +439,7 @@ export class ValidationService {
 					return {
 						type: 'invalid_type',
 						property: propName,
-						message: `Expected number for "${propName}", got ${typeof value}`,
+						message: `"${propName}"应为数字，实际为 ${typeof value}`,
 						expectedType: 'number'
 					};
 				}
@@ -450,7 +450,7 @@ export class ValidationService {
 					return {
 						type: 'invalid_type',
 						property: propName,
-						message: `Expected boolean for "${propName}", got ${typeof value}`,
+						message: `"${propName}"应为布尔值，实际为 ${typeof value}`,
 						expectedType: 'boolean'
 					};
 				}
@@ -462,7 +462,7 @@ export class ValidationService {
 					return {
 						type: 'invalid_type',
 						property: propName,
-						message: `Expected date for "${propName}", got ${typeof value}`,
+						message: `"${propName}"应为日期，实际为 ${typeof value}`,
 						expectedType: 'date'
 					};
 				}
@@ -473,7 +473,7 @@ export class ValidationService {
 					return {
 						type: 'invalid_type',
 						property: propName,
-						message: `Expected wikilink for "${propName}" (format: [[Target]])`,
+						message: `"${propName}"应为 wikilink（格式：[[Target]]）`,
 						expectedType: 'wikilink'
 					};
 				}
@@ -484,7 +484,7 @@ export class ValidationService {
 					return {
 						type: 'invalid_type',
 						property: propName,
-						message: `Expected array for "${propName}", got ${typeof value}`,
+						message: `"${propName}"应为数组，实际为 ${typeof value}`,
 						expectedType: 'array'
 					};
 				}
@@ -496,7 +496,7 @@ export class ValidationService {
 					return {
 						type: 'invalid_type',
 						property: propName,
-						message: `Expected string for enum "${propName}", got ${typeof value}`,
+						message: `枚举"${propName}"应为字符串，实际为 ${typeof value}`,
 						expectedType: 'enum'
 					};
 				}
@@ -532,7 +532,7 @@ export class ValidationService {
 			return {
 				type: 'invalid_type',
 				property: propName,
-				message: `Expected object for "${propName}", got ${Array.isArray(value) ? 'array' : typeof value}`,
+				message: `"${propName}"应为对象，实际为 ${Array.isArray(value) ? 'array' : typeof value}`,
 				expectedType: 'sourced_facts'
 			};
 		}
@@ -546,7 +546,7 @@ export class ValidationService {
 				return {
 					type: 'invalid_type',
 					property: propName,
-					message: `Invalid fact key "${factKey}" in "${propName}". Valid keys: ${FACT_KEYS.join(', ')}`,
+					message: `"${propName}"中的事实键"${factKey}"无效。有效键：${FACT_KEYS.join(', ')}`,
 					expectedType: 'sourced_facts'
 				};
 			}
@@ -556,7 +556,7 @@ export class ValidationService {
 				return {
 					type: 'invalid_type',
 					property: propName,
-					message: `Expected object for "${propName}.${factKey}", got ${typeof factEntry}`,
+					message: `"${propName}.${factKey}"应为对象，实际为 ${typeof factEntry}`,
 					expectedType: 'sourced_facts'
 				};
 			}
@@ -568,7 +568,7 @@ export class ValidationService {
 				return {
 					type: 'invalid_type',
 					property: propName,
-					message: `Missing "sources" array in "${propName}.${factKey}"`,
+					message: `"${propName}.${factKey}"中缺少"sources"数组`,
 					expectedType: 'sourced_facts'
 				};
 			}
@@ -577,7 +577,7 @@ export class ValidationService {
 				return {
 					type: 'invalid_type',
 					property: propName,
-					message: `Expected array for "${propName}.${factKey}.sources", got ${typeof entry.sources}`,
+					message: `"${propName}.${factKey}.sources"应为数组，实际为 ${typeof entry.sources}`,
 					expectedType: 'sourced_facts'
 				};
 			}
@@ -589,7 +589,7 @@ export class ValidationService {
 					return {
 						type: 'invalid_type',
 						property: propName,
-						message: `Invalid source at "${propName}.${factKey}.sources[${i}]": expected wikilink format [[Source]]`,
+						message: `"${propName}.${factKey}.sources[${i}]"处的来源无效：应为 wikilink 格式 [[Source]]`,
 						expectedType: 'sourced_facts'
 					};
 				}
@@ -611,7 +611,7 @@ export class ValidationService {
 			return {
 				type: 'invalid_enum',
 				property: propName,
-				message: `Invalid value "${String(value)}" for "${propName}". Allowed: ${allowedValues.join(', ')}`,
+				message: `"${propName}"的值"${String(value)}"无效。允许值：${allowedValues.join(', ')}`,
 				expectedValues: allowedValues
 			};
 		}
@@ -630,7 +630,7 @@ export class ValidationService {
 			return {
 				type: 'out_of_range',
 				property: propName,
-				message: `Value ${value} for "${propName}" is below minimum ${propDef.min}`
+				message: `"${propName}"的值 ${value} 低于最小值 ${propDef.min}`
 			};
 		}
 
@@ -638,7 +638,7 @@ export class ValidationService {
 			return {
 				type: 'out_of_range',
 				property: propName,
-				message: `Value ${value} for "${propName}" is above maximum ${propDef.max}`
+				message: `"${propName}"的值 ${value} 超过最大值 ${propDef.max}`
 			};
 		}
 
@@ -674,7 +674,7 @@ export class ValidationService {
 			return {
 				type: 'invalid_wikilink_target',
 				property: propName,
-				message: `"${propName}" should link to a place note, but "${linkTarget}" is not a place`
+				message: `"${propName}"应链接到地点笔记，但"${linkTarget}"不是地点`
 			};
 		}
 
@@ -682,7 +682,7 @@ export class ValidationService {
 			return {
 				type: 'invalid_wikilink_target',
 				property: propName,
-				message: `"${propName}" should link to a map note, but "${linkTarget}" is not a map`
+				message: `"${propName}"应链接到地图笔记，但"${linkTarget}"不是地图`
 			};
 		}
 
@@ -690,7 +690,7 @@ export class ValidationService {
 			return {
 				type: 'invalid_wikilink_target',
 				property: propName,
-				message: `"${propName}" should link to a person note, but "${linkTarget}" is not a person`
+				message: `"${propName}"应链接到人物笔记，但"${linkTarget}"不是人物`
 			};
 		}
 

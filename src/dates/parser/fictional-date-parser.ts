@@ -13,7 +13,6 @@ import type {
 	DateFormatOptions,
 	AgeCalculation
 } from '../types/date-types';
-import { pluralize } from '../../utils/format-utils';
 
 /**
  * Strip approximation markers ("ish", "?", "circa", etc.) from a date string,
@@ -134,12 +133,12 @@ export class FictionalDateParser {
 	 */
 	public parse(dateStr: string, universe?: string, preferredSystemId?: string): DateParseResult {
 		if (!dateStr || typeof dateStr !== 'string') {
-			return { success: false, error: 'Empty or invalid date string', raw: String(dateStr) };
+			return { success: false, error: '日期字符串为空或无效', raw: String(dateStr) };
 		}
 
 		const trimmed = dateStr.trim();
 		if (!trimmed) {
-			return { success: false, error: 'Empty date string', raw: dateStr };
+			return { success: false, error: '日期字符串为空', raw: dateStr };
 		}
 
 		// Strip approximation markers ("ish", "?", "circa", etc.) before pattern
@@ -232,7 +231,7 @@ export class FictionalDateParser {
 		if (!abbrev || !yearStr) {
 			return {
 				success: false,
-				error: `Could not parse date format: "${trimmed}"`,
+				error: `无法解析日期格式："${trimmed}"`,
 				raw: dateStr
 			};
 		}
@@ -244,7 +243,7 @@ export class FictionalDateParser {
 		if (!lookup) {
 			return {
 				success: false,
-				error: `Unknown era abbreviation: "${abbrev}"`,
+				error: `未知的纪元缩写："${abbrev}"`,
 				raw: dateStr
 			};
 		}
@@ -274,7 +273,7 @@ export class FictionalDateParser {
 		if (isNaN(year)) {
 			return {
 				success: false,
-				error: `Invalid year: "${yearStr}"`,
+				error: `无效的年份："${yearStr}"`,
 				raw: dateStr
 			};
 		}
@@ -374,7 +373,7 @@ export class FictionalDateParser {
 		const eraStr = useLong ? era.name : era.abbrev;
 
 		if (options?.includeYearPrefix) {
-			return `${eraStr} Year ${year}`;
+			return `${eraStr} ${year} 年`;
 		}
 
 		return `${eraStr} ${year}`;
@@ -404,7 +403,7 @@ export class FictionalDateParser {
 			return {
 				years: 0,
 				isExact: false,
-				display: 'Unknown',
+				display: '未知',
 				error: 'No death date or current year provided'
 			};
 		}
@@ -415,7 +414,7 @@ export class FictionalDateParser {
 			return {
 				years: Math.abs(years),
 				isExact: false,
-				display: `${Math.abs(years)} years (dates may be reversed)`,
+				display: `${Math.abs(years)} 岁（日期顺序可能有误）`,
 				error: 'Death date appears to be before birth date'
 			};
 		}
@@ -423,7 +422,7 @@ export class FictionalDateParser {
 		return {
 			years,
 			isExact: true,
-			display: `${years} ${pluralize(years, 'year')}`
+			display: `${years} 岁`
 		};
 	}
 

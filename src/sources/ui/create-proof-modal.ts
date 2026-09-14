@@ -116,27 +116,27 @@ export class CreateProofModal extends Modal {
 		const headerTitle = header.createDiv({ cls: 'crc-modal-header__title' });
 		const icon = createLucideIcon(this.editMode ? 'edit' : 'scale', 24);
 		headerTitle.appendChild(icon);
-		headerTitle.createSpan({ text: this.editMode ? 'Edit proof summary' : 'Create proof summary' });
+		headerTitle.createSpan({ text: this.editMode ? '编辑论证摘要' : '创建论证摘要' });
 
 		// Form container
 		const form = contentEl.createDiv({ cls: 'crc-modal-form' });
 
 		// Title
 		new Setting(form)
-			.setName('Title')
-			.setDesc('A descriptive title for this proof summary')
+			.setName('标题')
+			.setDesc('该论证摘要的描述性标题')
 			.addText(text => text
-				.setPlaceholder('e.g., Birth date of John Smith')
+				.setPlaceholder('例如：John Smith 的出生日期')
 				.setValue(this.title)
 				.onChange(value => { this.title = value; })
 			);
 
 		// Subject Person (readonly in edit mode - can't change subject)
 		const subjectSetting = new Setting(form)
-			.setName('Subject person')
-			.setDesc('The person this proof is about (wikilink)')
+			.setName('主体人物')
+			.setDesc('该论证所针对的人物（wikilink）')
 			.addText(text => {
-				text.setPlaceholder('[[Person Name]]')
+				text.setPlaceholder('[[人物姓名]]')
 					.setValue(this.subjectPerson)
 					.onChange(value => { this.subjectPerson = value; });
 				if (this.editMode) {
@@ -146,13 +146,13 @@ export class CreateProofModal extends Modal {
 			});
 
 		if (this.editMode) {
-			subjectSetting.setDesc('The person this proof is about (cannot be changed)');
+			subjectSetting.setDesc('该论证所针对的人物（不可更改）');
 		}
 
 		// Fact Type (readonly in edit mode)
 		new Setting(form)
-			.setName('Fact type')
-			.setDesc(this.editMode ? 'Which fact this proof addresses (cannot be changed)' : 'Which fact this proof addresses')
+			.setName('事实类型')
+			.setDesc(this.editMode ? '该论证针对的事实（不可更改）' : '该论证针对的事实')
 			.addDropdown(dropdown => {
 				for (const key of FACT_KEYS) {
 					dropdown.addOption(key, FACT_KEY_LABELS[key]);
@@ -167,18 +167,18 @@ export class CreateProofModal extends Modal {
 
 		// Conclusion
 		new Setting(form)
-			.setName('Conclusion')
-			.setDesc('The conclusion being proven')
+			.setName('结论')
+			.setDesc('待证实的结论')
 			.addTextArea(textarea => textarea
-				.setPlaceholder('State the conclusion clearly...')
+				.setPlaceholder('清晰地陈述结论…')
 				.setValue(this.conclusion)
 				.onChange(value => { this.conclusion = value; })
 			);
 
 		// Status
 		new Setting(form)
-			.setName('Status')
-			.setDesc('Current status of this proof')
+			.setName('状态')
+			.setDesc('该论证的当前状态')
 			.addDropdown(dropdown => {
 				for (const [key, info] of Object.entries(PROOF_STATUS_LABELS)) {
 					dropdown.addOption(key, info.label);
@@ -189,8 +189,8 @@ export class CreateProofModal extends Modal {
 
 		// Confidence
 		new Setting(form)
-			.setName('Confidence')
-			.setDesc('How confident are you in this conclusion?')
+			.setName('置信度')
+			.setDesc('你对这一结论的信心如何？')
 			.addDropdown(dropdown => {
 				for (const [key, info] of Object.entries(PROOF_CONFIDENCE_LABELS)) {
 					dropdown.addOption(key, info.label);
@@ -202,11 +202,11 @@ export class CreateProofModal extends Modal {
 		// Evidence section
 		const evidenceSection = form.createDiv({ cls: 'crc-proof-evidence-section' });
 		const evidenceHeader = evidenceSection.createDiv({ cls: 'crc-proof-evidence-header' });
-		evidenceHeader.createSpan({ text: 'Evidence' });
+		evidenceHeader.createSpan({ text: '证据' });
 
 		const addEvidenceBtn = evidenceHeader.createEl('button', {
 			cls: 'crc-btn crc-btn--small',
-			text: 'Add source'
+			text: '添加来源'
 		});
 		addEvidenceBtn.addEventListener('click', () => this.addEvidence());
 
@@ -217,11 +217,11 @@ export class CreateProofModal extends Modal {
 		const actions = contentEl.createDiv({ cls: 'crc-modal-actions' });
 
 		new ButtonComponent(actions)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => this.close());
 
 		new ButtonComponent(actions)
-			.setButtonText(this.editMode ? 'Save changes' : 'Create proof summary')
+			.setButtonText(this.editMode ? '保存更改' : '创建论证摘要')
 			.setCta()
 			.onClick(() => {
 				if (this.editMode) {
@@ -238,7 +238,7 @@ export class CreateProofModal extends Modal {
 		if (this.evidence.length === 0) {
 			this.evidenceContainer.createDiv({
 				cls: 'crc-proof-evidence-empty',
-				text: 'No evidence added yet. Add sources to support your conclusion.'
+				text: '尚未添加证据。请添加来源以支持你的结论。'
 			});
 			return;
 		}
@@ -260,7 +260,7 @@ export class CreateProofModal extends Modal {
 		// Remove button
 		const removeBtn = sourceRow.createEl('button', {
 			cls: 'crc-btn crc-btn--icon crc-btn--danger',
-			attr: { 'aria-label': 'Remove evidence' }
+			attr: { 'aria-label': '移除证据' }
 		});
 		const removeIcon = createLucideIcon('x', 14);
 		removeBtn.appendChild(removeIcon);
@@ -271,11 +271,11 @@ export class CreateProofModal extends Modal {
 
 		// Information field
 		const infoRow = item.createDiv({ cls: 'crc-proof-evidence-info' });
-		infoRow.createSpan({ cls: 'crc-proof-evidence-label', text: 'Information:' });
+		infoRow.createSpan({ cls: 'crc-proof-evidence-label', text: '信息：' });
 		const infoInput = infoRow.createEl('input', {
 			type: 'text',
 			cls: 'crc-form-input',
-			placeholder: 'What does this source say?',
+			placeholder: '该来源说明了什么？',
 			value: ev.information
 		});
 		infoInput.addEventListener('input', () => {
@@ -284,7 +284,7 @@ export class CreateProofModal extends Modal {
 
 		// Supports dropdown
 		const supportsRow = item.createDiv({ cls: 'crc-proof-evidence-supports' });
-		supportsRow.createSpan({ cls: 'crc-proof-evidence-label', text: 'Support level:' });
+		supportsRow.createSpan({ cls: 'crc-proof-evidence-label', text: '支持程度：' });
 		const supportsSelect = supportsRow.createEl('select', { cls: 'crc-form-select' });
 
 		for (const [key, info] of Object.entries(EVIDENCE_SUPPORT_LABELS)) {
@@ -303,11 +303,11 @@ export class CreateProofModal extends Modal {
 
 		// Notes field (optional)
 		const notesRow = item.createDiv({ cls: 'crc-proof-evidence-notes' });
-		notesRow.createSpan({ cls: 'crc-proof-evidence-label', text: 'Notes:' });
+		notesRow.createSpan({ cls: 'crc-proof-evidence-label', text: '笔记：' });
 		const notesInput = notesRow.createEl('input', {
 			type: 'text',
 			cls: 'crc-form-input',
-			placeholder: 'Optional notes about this evidence',
+			placeholder: '关于该证据的可选笔记',
 			value: ev.notes || ''
 		});
 		notesInput.addEventListener('input', () => {
@@ -337,17 +337,17 @@ export class CreateProofModal extends Modal {
 	private async createProof(): Promise<void> {
 		// Validation
 		if (!this.title.trim()) {
-			new Notice('Please enter a title for the proof summary.');
+			new Notice('请输入论证摘要的标题。');
 			return;
 		}
 
 		if (!this.subjectPerson.trim()) {
-			new Notice('Please enter the subject person.');
+			new Notice('请输入主体人物。');
 			return;
 		}
 
 		if (!this.conclusion.trim()) {
-			new Notice('Please enter a conclusion.');
+			new Notice('请输入结论。');
 			return;
 		}
 
@@ -372,24 +372,24 @@ export class CreateProofModal extends Modal {
 			}
 		} catch (error) {
 			console.error('Failed to create proof summary:', error);
-			new Notice('Failed to create proof summary. Check the console for details.');
+			new Notice('创建论证摘要失败。请查看控制台了解详情。');
 		}
 	}
 
 	private async updateProof(): Promise<void> {
 		// Validation
 		if (!this.title.trim()) {
-			new Notice('Please enter a title for the proof summary.');
+			new Notice('请输入论证摘要的标题。');
 			return;
 		}
 
 		if (!this.conclusion.trim()) {
-			new Notice('Please enter a conclusion.');
+			new Notice('请输入结论。');
 			return;
 		}
 
 		if (!this.editingFile) {
-			new Notice('No file to update.');
+			new Notice('没有可更新的文件。');
 			return;
 		}
 
@@ -402,7 +402,7 @@ export class CreateProofModal extends Modal {
 				evidence: this.evidence
 			});
 
-			new Notice(`Updated proof summary: ${this.editingFile.basename}`);
+			new Notice(`论证摘要已更新：${this.editingFile.basename}`);
 
 			this.close();
 
@@ -411,7 +411,7 @@ export class CreateProofModal extends Modal {
 			}
 		} catch (error) {
 			console.error('Failed to update proof summary:', error);
-			new Notice('Failed to update proof summary. Check the console for details.');
+			new Notice('更新论证摘要失败。请查看控制台了解详情。');
 		}
 	}
 }

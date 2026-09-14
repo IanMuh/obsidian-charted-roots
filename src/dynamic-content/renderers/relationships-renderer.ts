@@ -95,7 +95,7 @@ export class RelationshipsRenderer {
 		if (isEmpty) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No family relationships found.'
+				text: '未找到家族关系。'
 			});
 			return;
 		}
@@ -110,7 +110,7 @@ export class RelationshipsRenderer {
 	private renderHeader(container: HTMLElement, config: DynamicBlockConfig): void {
 		const header = container.createDiv({ cls: 'cr-dynamic-block__header' });
 
-		const title = config.title as string || 'Family';
+		const title = config.title as string || '家族';
 		header.createSpan({ cls: 'cr-dynamic-block__title', text: title });
 
 		const toolbar = header.createDiv({ cls: 'cr-dynamic-block__toolbar' });
@@ -118,7 +118,7 @@ export class RelationshipsRenderer {
 		// Freeze button
 		const freezeBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Freeze to Markdown' }
+			attr: { 'aria-label': '冻结为 Markdown' }
 		});
 		freezeBtn.textContent = '❄️';
 		freezeBtn.addEventListener('click', () => {
@@ -159,52 +159,52 @@ export class RelationshipsRenderer {
 			if (person.fatherCrId) {
 				const father = familyGraph.getPersonByCrId(person.fatherCrId);
 				if (father) {
-					groups.parents.push(this.personToEntry(father, 'Father'));
+					groups.parents.push(this.personToEntry(father, '父亲'));
 				}
 			}
 			if (person.motherCrId) {
 				const mother = familyGraph.getPersonByCrId(person.motherCrId);
 				if (mother) {
-					groups.parents.push(this.personToEntry(mother, 'Mother'));
+					groups.parents.push(this.personToEntry(mother, '母亲'));
 				}
 			}
 			// Gender-neutral parents
 			for (const parentCrId of person.parentCrIds) {
 				const parent = familyGraph.getPersonByCrId(parentCrId);
 				if (parent) {
-					groups.parents.push(this.personToEntry(parent, 'Parent'));
+					groups.parents.push(this.personToEntry(parent, '父母'));
 				}
 			}
 			// Adoptive parents (#392)
 			if (person.adoptiveFatherCrId) {
 				const adoptiveFather = familyGraph.getPersonByCrId(person.adoptiveFatherCrId);
 				if (adoptiveFather) {
-					groups.parents.push(this.personToEntry(adoptiveFather, 'Adoptive father'));
+					groups.parents.push(this.personToEntry(adoptiveFather, '养父'));
 				}
 			}
 			if (person.adoptiveMotherCrId) {
 				const adoptiveMother = familyGraph.getPersonByCrId(person.adoptiveMotherCrId);
 				if (adoptiveMother) {
-					groups.parents.push(this.personToEntry(adoptiveMother, 'Adoptive mother'));
+					groups.parents.push(this.personToEntry(adoptiveMother, '养母'));
 				}
 			}
 			for (const adoptiveParentCrId of person.adoptiveParentCrIds) {
 				const adoptiveParent = familyGraph.getPersonByCrId(adoptiveParentCrId);
 				if (adoptiveParent) {
-					groups.parents.push(this.personToEntry(adoptiveParent, 'Adoptive parent'));
+					groups.parents.push(this.personToEntry(adoptiveParent, '养父母'));
 				}
 			}
 			// Step-parents
 			for (const stepfatherCrId of person.stepfatherCrIds) {
 				const stepfather = familyGraph.getPersonByCrId(stepfatherCrId);
 				if (stepfather) {
-					groups.parents.push(this.personToEntry(stepfather, 'Stepfather'));
+					groups.parents.push(this.personToEntry(stepfather, '继父'));
 				}
 			}
 			for (const stepmotherCrId of person.stepmotherCrIds) {
 				const stepmother = familyGraph.getPersonByCrId(stepmotherCrId);
 				if (stepmother) {
-					groups.parents.push(this.personToEntry(stepmother, 'Stepmother'));
+					groups.parents.push(this.personToEntry(stepmother, '继母'));
 				}
 			}
 		}
@@ -228,8 +228,8 @@ export class RelationshipsRenderer {
 		if (shouldInclude('children')) {
 			const items: { person: PersonNode; label?: string }[] = [];
 			for (const { person: child, kind } of familyGraph.getQueryService().getChildren(person, { include: 'all' })) {
-				const label = kind === 'adopted' ? 'Adopted child'
-					: kind === 'step' ? 'Stepchild'
+				const label = kind === 'adopted' ? '养子女'
+					: kind === 'step' ? '继子女'
 					: undefined;
 				items.push({ person: child, label });
 			}
@@ -253,7 +253,7 @@ export class RelationshipsRenderer {
 			this.sortByBirthDate(items, context.person?.universe);
 			for (const item of items) {
 				groups.siblings.push(
-					this.personToEntry(item.person, item.isAdoptive ? 'Adoptive sibling' : undefined)
+					this.personToEntry(item.person, item.isAdoptive ? '养兄弟姐妹' : undefined)
 				);
 			}
 		}
@@ -278,7 +278,7 @@ export class RelationshipsRenderer {
 				seen.add(key);
 				const targetPerson = familyGraph.getPersonByCrId(rel.targetCrId);
 				if (!targetPerson) return;
-				const typeName = rel.type?.name || rel.type?.id || 'Related';
+				const typeName = rel.type?.name || rel.type?.id || '相关';
 				const list = groups.customByType.get(typeName) ?? [];
 				list.push(this.personToEntry(targetPerson));
 				groups.customByType.set(typeName, list);
@@ -351,7 +351,7 @@ export class RelationshipsRenderer {
 		if (person.birthDate || person.deathDate) {
 			const birth = person.birthDate ? this.service.formatYearForDisplay(person.birthDate, person.universe) : '?';
 			const death = person.deathDate ? this.service.formatYearForDisplay(person.deathDate, person.universe) : '';
-			entry.dates = death ? `(${birth}–${death})` : `(b. ${birth})`;
+			entry.dates = death ? `（${birth}–${death}）` : `（生于 ${birth}）`;
 		}
 
 		// Prepend label if provided
@@ -376,10 +376,10 @@ export class RelationshipsRenderer {
 		// Custom-typed relationship groups (#539, `type: all` only) render after
 		// these and are iterated separately from `groups.customByType` below.
 		const sections: { key: 'parents' | 'spouse' | 'children' | 'siblings'; label: string }[] = [
-			{ key: 'parents', label: 'Parents' },
-			{ key: 'spouse', label: 'Spouse' },
-			{ key: 'children', label: 'Children' },
-			{ key: 'siblings', label: 'Siblings' }
+			{ key: 'parents', label: '父母' },
+			{ key: 'spouse', label: '配偶' },
+			{ key: 'children', label: '子女' },
+			{ key: 'siblings', label: '兄弟姐妹' }
 		];
 
 		// Check config for display type
@@ -475,15 +475,15 @@ export class RelationshipsRenderer {
 			return '';
 		}
 
-		const lines: string[] = ['## Family', ''];
+		const lines: string[] = ['## 家族', ''];
 
 		// Define section order and labels for the family-graph-derived groups.
 		// Custom-typed groups (#539, `type: all` only) follow these.
 		const sections: { key: 'parents' | 'spouse' | 'children' | 'siblings'; label: string }[] = [
-			{ key: 'parents', label: 'Parents' },
-			{ key: 'spouse', label: 'Spouse' },
-			{ key: 'children', label: 'Children' },
-			{ key: 'siblings', label: 'Siblings' }
+			{ key: 'parents', label: '父母' },
+			{ key: 'spouse', label: '配偶' },
+			{ key: 'children', label: '子女' },
+			{ key: 'siblings', label: '兄弟姐妹' }
 		];
 
 		// Check config for display type

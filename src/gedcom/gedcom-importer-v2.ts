@@ -392,8 +392,8 @@ export class GedcomImporterV2 {
 				gedcomData = preParsedData;
 				// Use cached preprocessing result from analyzeFile/parseContent if available
 				preprocessResult = this.lastPreprocessResult;
-				reportProgress({ phase: 'validating', current: 1, total: 1, message: 'Using pre-validated data' });
-				reportProgress({ phase: 'parsing', current: 1, total: 1, message: `Found ${gedcomData.individuals.size} individuals` });
+				reportProgress({ phase: 'validating', current: 1, total: 1, message: '使用已校验的数据' });
+				reportProgress({ phase: 'parsing', current: 1, total: 1, message: `找到 ${gedcomData.individuals.size} 位人物` });
 			} else {
 				// Apply preprocessing asynchronously for large files
 				preprocessResult = await preprocessGedcomAsync(content, compatibilityMode);
@@ -408,7 +408,7 @@ export class GedcomImporterV2 {
 				}
 
 				// Validate GEDCOM first
-				reportProgress({ phase: 'validating', current: 0, total: 1, message: 'Validating GEDCOM file…' });
+				reportProgress({ phase: 'validating', current: 0, total: 1, message: '正在校验 GEDCOM 文件…' });
 				const validation = GedcomParserV2.validate(processedContent);
 
 				if (!validation.valid) {
@@ -423,14 +423,14 @@ export class GedcomImporterV2 {
 				}
 
 				// Parse GEDCOM with v2 parser (async to prevent UI freeze)
-				reportProgress({ phase: 'parsing', current: 0, total: 1, message: 'Parsing GEDCOM file…' });
+				reportProgress({ phase: 'parsing', current: 0, total: 1, message: '正在解析 GEDCOM 文件…' });
 				gedcomData = await GedcomParserV2.parseAsync(processedContent, (current, total) => {
 					// Update progress during parsing
 					const percent = Math.round((current / total) * 100);
-					reportProgress({ phase: 'parsing', current, total, message: `Parsing line ${current} of ${total} (${percent}%)…` });
+					reportProgress({ phase: 'parsing', current, total, message: `正在解析第 ${current}/${total} 行（${percent}%）…` });
 				});
 
-				reportProgress({ phase: 'parsing', current: 1, total: 1, message: `Found ${gedcomData.individuals.size} individuals` });
+				reportProgress({ phase: 'parsing', current: 1, total: 1, message: `找到 ${gedcomData.individuals.size} 位人物` });
 			}
 
 			// Store preprocessing info in result
@@ -478,7 +478,7 @@ export class GedcomImporterV2 {
 			if (options.createPlaceNotes) {
 				const allPlaces = this.collectAllPlaces(gedcomData);
 				if (allPlaces.size > 0) {
-					reportProgress({ phase: 'places', current: 0, total: allPlaces.size, message: 'Creating place notes…' });
+					reportProgress({ phase: 'places', current: 0, total: allPlaces.size, message: '正在创建地点笔记…' });
 					const placeResult = await this.createPlaceNotes(allPlaces, options, reportProgress);
 					placeToNoteInfo = placeResult.placeToNoteInfo;
 					result.placesCreated = placeResult.created;
@@ -499,7 +499,7 @@ export class GedcomImporterV2 {
 						result.sourcesCreated++;
 					} catch (error: unknown) {
 						result.errors.push(
-							`Failed to create source ${source.title || sourceId}: ${getErrorMessage(error)}`
+							`创建来源 ${source.title || sourceId} 失败：${getErrorMessage(error)}`
 						);
 					}
 					sourceIndex++;
@@ -538,16 +538,16 @@ export class GedcomImporterV2 {
 							result.separateNoteFilesCreated = (result.separateNoteFilesCreated || 0) + 1;
 						} else {
 							result.errors.push(
-								`Failed to create note file ${noteId}: ${writeResult.error}`
+								`创建笔记文件 ${noteId} 失败：${writeResult.error}`
 							);
 						}
 					} catch (error: unknown) {
 						result.errors.push(
-							`Failed to create note ${noteId}: ${getErrorMessage(error)}`
+							`创建笔记 ${noteId} 失败：${getErrorMessage(error)}`
 						);
 					}
 					noteIndex++;
-					reportProgress({ phase: 'people', current: noteIndex, total: totalNotes, message: `Creating note files (${noteIndex}/${totalNotes})...` });
+					reportProgress({ phase: 'people', current: noteIndex, total: totalNotes, message: `正在创建笔记文件（${noteIndex}/${totalNotes}）…` });
 					// Yield periodically to prevent UI freezing
 					if (noteIndex % YIELD_INTERVAL === 0) {
 						await this.yieldToEventLoop();
@@ -591,7 +591,7 @@ export class GedcomImporterV2 {
 						}
 					} catch (error: unknown) {
 						result.errors.push(
-							`Failed to import ${individual.name || 'Unknown'}: ${getErrorMessage(error)}`
+							`导入 ${individual.name || '未知'} 失败：${getErrorMessage(error)}`
 						);
 					}
 					personIndex++;
@@ -616,7 +616,7 @@ export class GedcomImporterV2 {
 						);
 					} catch (error: unknown) {
 						result.errors.push(
-							`Failed to update relationships for ${individual.name || 'Unknown'}: ${getErrorMessage(error)}`
+							`更新 ${individual.name || '未知'} 的关系失败：${getErrorMessage(error)}`
 						);
 					}
 					relIndex++;
@@ -656,7 +656,7 @@ export class GedcomImporterV2 {
 							result.eventsCreated++;
 						} catch (error: unknown) {
 							result.errors.push(
-								`Failed to create event ${event.eventType} for ${individual.name || 'Unknown'}: ${getErrorMessage(error)}`
+								`为 ${individual.name || 'Unknown'} 创建事件 ${event.eventType} 失败：${getErrorMessage(error)}`
 							);
 						}
 						eventIndex++;
@@ -690,7 +690,7 @@ export class GedcomImporterV2 {
 							const spouse1 = family.husbandRef ? gedcomData.individuals.get(family.husbandRef)?.name : 'Unknown';
 							const spouse2 = family.wifeRef ? gedcomData.individuals.get(family.wifeRef)?.name : 'Unknown';
 							result.errors.push(
-								`Failed to create event ${event.eventType} for ${spouse1} & ${spouse2}: ${getErrorMessage(error)}`
+								`为 ${spouse1} 和 ${spouse2} 创建事件 ${event.eventType} 失败：${getErrorMessage(error)}`
 							);
 						}
 						eventIndex++;
@@ -704,7 +704,7 @@ export class GedcomImporterV2 {
 
 			// Phase 4: Create citation notes from collected citation data
 			if (pendingCitations.length > 0) {
-				reportProgress({ phase: 'citations', current: 0, total: pendingCitations.length, message: 'Creating citation notes…' });
+				reportProgress({ phase: 'citations', current: 0, total: pendingCitations.length, message: '正在创建引文笔记…' });
 				try {
 					const citationService = new CitationNoteService(this.plugin);
 					const citationFiles = await citationService.createCitationNotes(pendingCitations);
@@ -735,38 +735,38 @@ export class GedcomImporterV2 {
 					result.citationsCreated = citationFiles.length;
 					logger.info('citations', `Created ${citationFiles.length} citation notes`);
 				} catch (error: unknown) {
-					result.errors.push(`Failed to create citation notes: ${getErrorMessage(error)}`);
+					result.errors.push(`创建引文笔记失败：${getErrorMessage(error)}`);
 				}
 			}
 
 			// Mark complete
-			reportProgress({ phase: 'complete', current: 1, total: 1, message: 'Import complete' });
+			reportProgress({ phase: 'complete', current: 1, total: 1, message: '导入完成' });
 
 			// Build import complete message
-			let importMessage = `Import complete: ${result.individualsImported} people`;
+			let importMessage = `导入完成：${result.individualsImported} 人`;
 			if (result.placesCreated > 0 || result.placesUpdated > 0) {
 				const placeParts: string[] = [];
-				if (result.placesCreated > 0) placeParts.push(`${result.placesCreated} created`);
-				if (result.placesUpdated > 0) placeParts.push(`${result.placesUpdated} updated`);
-				importMessage += `, ${placeParts.join('/')} places`;
+				if (result.placesCreated > 0) placeParts.push(`新建 ${result.placesCreated}`);
+				if (result.placesUpdated > 0) placeParts.push(`更新 ${result.placesUpdated}`);
+				importMessage += `，地点 ${placeParts.join('、')}`;
 			}
 			if (result.sourcesCreated > 0) {
-				importMessage += `, ${result.sourcesCreated} sources`;
+				importMessage += `，${result.sourcesCreated} 个来源`;
 			}
 			if (result.eventsCreated > 0) {
-				importMessage += `, ${result.eventsCreated} events`;
+				importMessage += `，${result.eventsCreated} 个事件`;
 			}
 			if (result.citationsCreated && result.citationsCreated > 0) {
-				importMessage += `, ${result.citationsCreated} citations`;
+				importMessage += `，${result.citationsCreated} 条引文`;
 			}
 			if (result.notesImported > 0) {
-				importMessage += `, ${result.notesImported} notes`;
+				importMessage += `，${result.notesImported} 条笔记`;
 			}
 			if (result.mediaReferencesLinked && result.mediaReferencesLinked > 0) {
-				importMessage += `, ${result.mediaReferencesLinked} media`;
+				importMessage += `，${result.mediaReferencesLinked} 个媒体`;
 			}
 			if (result.errors.length > 0) {
-				importMessage += `. ${result.errors.length} errors occurred`;
+				importMessage += `。发生 ${result.errors.length} 个错误`;
 			}
 
 			new Notice(importMessage, 8000);
@@ -775,11 +775,11 @@ export class GedcomImporterV2 {
 			if (result.unresolvedMediaRefs && result.unresolvedMediaRefs.length > 0) {
 				const missingCount = result.unresolvedMediaRefs.length;
 				const maxToShow = 3;
-				let missingMsg = `${missingCount} media file${missingCount > 1 ? 's' : ''} not found in vault`;
+				let missingMsg = `有 ${missingCount} 个媒体文件未在库中找到`;
 				if (missingCount <= maxToShow) {
-					missingMsg += `: ${result.unresolvedMediaRefs.join(', ')}`;
+					missingMsg += `：${result.unresolvedMediaRefs.join('、')}`;
 				} else {
-					missingMsg += `: ${result.unresolvedMediaRefs.slice(0, maxToShow).join(', ')} and ${missingCount - maxToShow} more`;
+					missingMsg += `：${result.unresolvedMediaRefs.slice(0, maxToShow).join('、')} 等另外 ${missingCount - maxToShow} 个`;
 				}
 				new Notice(missingMsg, 10000);
 			}
@@ -793,8 +793,8 @@ export class GedcomImporterV2 {
 
 		} catch (error: unknown) {
 			const errorMsg = getErrorMessage(error);
-			result.errors.push(`GEDCOM parse error: ${errorMsg}`);
-			new Notice(`Import failed: ${errorMsg}`);
+			result.errors.push(`GEDCOM 解析错误：${errorMsg}`);
+			new Notice(`导入失败：${errorMsg}`);
 		}
 
 		return result;
@@ -1631,7 +1631,7 @@ export class GedcomImporterV2 {
 			counter++;
 		}
 		if (counter >= MAX_DUPLICATE_ATTEMPTS) {
-			throw new Error(`Too many duplicate event files with name "${title}"`);
+			throw new Error(`名为 "${title}" 的重复事件文件过多`);
 		}
 
 		// Track this path as created before actually creating the file
@@ -1854,7 +1854,7 @@ export class GedcomImporterV2 {
 			counter++;
 		}
 		if (counter >= MAX_DUPLICATE_ATTEMPTS) {
-			throw new Error(`Too many duplicate source files with name "${title}"`);
+			throw new Error(`名为 "${title}" 的重复来源文件过多`);
 		}
 
 		await this.app.vault.create(finalPath, content);
@@ -2149,7 +2149,7 @@ export class GedcomImporterV2 {
 		if (!folder) {
 			await this.app.vault.createFolder(normalizedPath);
 		} else if (!(folder instanceof TFolder)) {
-			throw new Error(`Path exists but is not a folder: ${normalizedPath}`);
+			throw new Error(`路径已存在但不是文件夹：${normalizedPath}`);
 		}
 	}
 
@@ -2802,7 +2802,7 @@ export class GedcomImporterV2 {
 			counter++;
 		}
 		if (counter >= MAX_DUPLICATE_ATTEMPTS) {
-			throw new Error(`Too many duplicate place files with name "${baseName}"`);
+			throw new Error(`名为 "${baseName}" 的重复地点文件过多`);
 		}
 
 		await this.app.vault.create(finalPath, content);

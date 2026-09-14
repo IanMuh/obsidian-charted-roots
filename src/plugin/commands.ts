@@ -44,7 +44,7 @@ import {
 function showRelationshipHistory(plugin: CanvasRootsPlugin): void {
 	const relationshipHistory = plugin.getRelationshipHistory();
 	if (!relationshipHistory) {
-		new Notice('Relationship history is disabled. Enable it in settings.');
+		new Notice('关系历史已禁用。请在设置中启用。');
 		return;
 	}
 
@@ -57,26 +57,26 @@ function showRelationshipHistory(plugin: CanvasRootsPlugin): void {
 async function undoLastRelationshipChange(plugin: CanvasRootsPlugin): Promise<void> {
 	const relationshipHistory = plugin.getRelationshipHistory();
 	if (!relationshipHistory) {
-		new Notice('Relationship history is disabled. Enable it in settings.');
+		new Notice('关系历史已禁用。请在设置中启用。');
 		return;
 	}
 
 	const change = await relationshipHistory.undoLastChange();
 	if (change) {
-		new Notice(`Undone: ${formatChangeDescription(change)}`);
+		new Notice(`已撤销：${formatChangeDescription(change)}`);
 	}
 }
 
 export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add ribbon icon for control center
-	plugin.addRibbonIcon('users', 'Open Charted Roots control center', () => {
+	plugin.addRibbonIcon('users', '打开 Charted Roots 控制中心', () => {
 		new ControlCenterModal(plugin.app, plugin).open();
 	});
 
 	// Add command: Open quick actions (#290 — categorized command launcher)
 	plugin.addCommand({
 		id: 'open-quick-actions',
-		name: 'Open quick actions',
+		name: '打开快速操作',
 		callback: () => {
 			new CommandMenuModal(plugin.app).open();
 		}
@@ -85,7 +85,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Control Center
 	plugin.addCommand({
 		id: 'open-control-center',
-		name: 'Open control center',
+		name: '打开控制中心',
 		callback: () => {
 			new ControlCenterModal(plugin.app, plugin).open();
 		}
@@ -94,7 +94,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Manage Staging Area
 	plugin.addCommand({
 		id: 'manage-staging-area',
-		name: 'Manage staging area',
+		name: '管理暂存区',
 		callback: async () => {
 			const { StagingManagementModal } = await import('../ui/staging-management-modal');
 			new StagingManagementModal(plugin.app, plugin).open();
@@ -104,7 +104,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Statistics Dashboard
 	plugin.addCommand({
 		id: 'open-statistics-dashboard',
-		name: 'Open statistics dashboard',
+		name: '打开统计仪表盘',
 		callback: () => {
 			void plugin.activateStatisticsView();
 		}
@@ -113,7 +113,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Relationships view
 	plugin.addCommand({
 		id: 'open-relationships-view',
-		name: 'Open relationships',
+		name: '打开关系视图',
 		callback: () => {
 			void plugin.activateRelationshipsView();
 		}
@@ -122,7 +122,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open People view
 	plugin.addCommand({
 		id: 'open-people-view',
-		name: 'Open people',
+		name: '打开人物视图',
 		callback: () => {
 			void plugin.activatePeopleView();
 		}
@@ -131,7 +131,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Events view
 	plugin.addCommand({
 		id: 'open-events-view',
-		name: 'Open events',
+		name: '打开事件视图',
 		callback: () => {
 			void plugin.activateEventsView();
 		}
@@ -140,7 +140,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Places view
 	plugin.addCommand({
 		id: 'open-places-view',
-		name: 'Open places',
+		name: '打开地点视图',
 		callback: () => {
 			void plugin.activatePlacesView();
 		}
@@ -149,7 +149,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Organizations view
 	plugin.addCommand({
 		id: 'open-organizations-view',
-		name: 'Open organizations',
+		name: '打开组织视图',
 		callback: () => {
 			void plugin.activateOrganizationsView();
 		}
@@ -158,7 +158,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Sources view
 	plugin.addCommand({
 		id: 'open-sources-view',
-		name: 'Open sources',
+		name: '打开来源视图',
 		callback: () => {
 			void plugin.activateSourcesView();
 		}
@@ -167,7 +167,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Universes view
 	plugin.addCommand({
 		id: 'open-universes-view',
-		name: 'Open universes',
+		name: '打开宇宙视图',
 		callback: () => {
 			void plugin.activateUniversesView();
 		}
@@ -176,7 +176,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Collections view
 	plugin.addCommand({
 		id: 'open-collections-view',
-		name: 'Open collections',
+		name: '打开合集视图',
 		callback: () => {
 			void plugin.activateCollectionsView();
 		}
@@ -185,7 +185,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Data Quality view
 	plugin.addCommand({
 		id: 'open-data-quality-view',
-		name: 'Open data quality',
+		name: '打开数据质量视图',
 		callback: () => {
 			void plugin.activateDataQualityView();
 		}
@@ -194,7 +194,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Entity Profile
 	plugin.addCommand({
 		id: 'open-entity-profile',
-		name: 'Open entity profile',
+		name: '打开实体档案',
 		callback: () => {
 			void plugin.activateProfileView();
 		}
@@ -203,7 +203,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Add research question to current note
 	plugin.addCommand({
 		id: 'add-research-question',
-		name: 'Add research question to current note',
+		name: '向当前笔记添加研究问题',
 		checkCallback: (checking: boolean) => {
 			const file = plugin.app.workspace.getActiveFile();
 			if (!file) return false;
@@ -229,7 +229,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Add citation to current note
 	plugin.addCommand({
 		id: 'add-citation',
-		name: 'Add citation to current note',
+		name: '向当前笔记添加引文',
 		checkCallback: (checking: boolean) => {
 			const file = plugin.app.workspace.getActiveFile();
 			if (!file) return false;
@@ -256,7 +256,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Sync sourced fields from citations
 	plugin.addCommand({
 		id: 'sync-sourced-from-citations',
-		name: 'Sync sourced fields from citation notes (current note)',
+		name: '从引文笔记同步来源字段（当前笔记）',
 		checkCallback: (checking: boolean) => {
 			const file = plugin.app.workspace.getActiveFile();
 			if (!file) return false;
@@ -269,8 +269,8 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 				const syncService = new CitationSyncService(plugin);
 				void syncService.syncSourcedFieldsForPerson(file).then(count => {
 					new Notice(count > 0
-						? `Updated ${count} sourced field${count !== 1 ? 's' : ''}`
-						: 'No citation notes found for this person'
+						? `已更新 ${count} 个来源字段`
+						: '未找到此人的引文笔记'
 					);
 				});
 			}
@@ -281,7 +281,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Generate citations from sourced_* fields
 	plugin.addCommand({
 		id: 'generate-citations-from-sourced',
-		name: 'Generate citation notes from sourced fields (current note)',
+		name: '从来源字段生成引文笔记（当前笔记）',
 		checkCallback: (checking: boolean) => {
 			const file = plugin.app.workspace.getActiveFile();
 			if (!file) return false;
@@ -294,8 +294,8 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 				const syncService = new CitationSyncService(plugin);
 				void syncService.generateCitationsFromSourcedFields(file).then(count => {
 					new Notice(count > 0
-						? `Created ${count} citation note${count !== 1 ? 's' : ''}`
-						: 'No new citations to generate (all sourced facts already have citation notes)'
+						? `已创建 ${count} 条引文笔记`
+						: '没有可生成的新引文（所有来源事实都已有引文笔记）'
 					);
 				});
 			}
@@ -306,12 +306,12 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Sync sourced fields vault-wide
 	plugin.addCommand({
 		id: 'sync-sourced-from-citations-vault',
-		name: 'Sync sourced fields from citation notes (all people)',
+		name: '从引文笔记同步来源字段（所有人物）',
 		callback: () => {
 			const syncService = new CitationSyncService(plugin);
-			new Notice('Syncing sourced fields from citations...');
+			new Notice('正在从引文同步来源字段…');
 			void syncService.syncSourcedFieldsVaultWide().then(result => {
-				new Notice(`Updated ${result.fieldsUpdated} fields across ${result.peopleUpdated} people`);
+				new Notice(`已更新 ${result.peopleUpdated} 个人物的 ${result.fieldsUpdated} 个字段`);
 			});
 		}
 	});
@@ -319,7 +319,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Post-Import Cleanup Wizard
 	plugin.addCommand({
 		id: 'open-cleanup-wizard',
-		name: 'Post-import cleanup wizard',
+		name: '导入后清理向导',
 		callback: () => {
 			new CleanupWizardModal(plugin.app, plugin).open();
 		}
@@ -353,7 +353,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Generate Tree for Current Note
 	plugin.addCommand({
 		id: 'generate-tree-for-current-note',
-		name: 'Generate tree for current note',
+		name: '为当前笔记生成树',
 		callback: () => {
 			void generateTreeForCurrentNote(plugin);
 		}
@@ -362,12 +362,12 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Regenerate Tree
 	plugin.addCommand({
 		id: 'regenerate-tree',
-		name: 'Regenerate tree',
+		name: '重新生成树',
 		callback: () => {
 			const activeFile = plugin.app.workspace.getActiveFile();
 
 			if (!activeFile || activeFile.extension !== 'canvas') {
-				new Notice('No active canvas. Please open a canvas file first.');
+				new Notice('没有活动画布。请先打开一个画布文件。');
 				return;
 			}
 
@@ -379,7 +379,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Person Note
 	plugin.addCommand({
 		id: 'create-person-note',
-		name: 'Create person note',
+		name: '创建人物笔记',
 		callback: () => {
 			createPersonNote(plugin);
 		}
@@ -388,7 +388,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Family Wizard
 	plugin.addCommand({
 		id: 'create-family-wizard',
-		name: 'Create family wizard',
+		name: '创建家族向导',
 		callback: () => {
 			void import('../ui/family-creation-wizard').then(({ FamilyCreationWizardModal }) => {
 				new FamilyCreationWizardModal(plugin.app, plugin).open();
@@ -399,7 +399,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Event Note
 	plugin.addCommand({
 		id: 'create-event-note',
-		name: 'Create event note',
+		name: '创建事件笔记',
 		callback: () => {
 			const eventService = plugin.getEventService();
 			if (eventService) {
@@ -411,7 +411,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Edit current note (opens appropriate edit modal based on note type)
 	plugin.addCommand({
 		id: 'edit-current-note',
-		name: 'Edit current note',
+		name: '编辑当前笔记',
 		checkCallback: (checking) => {
 			const activeFile = plugin.app.workspace.getActiveFile();
 			if (!activeFile || activeFile.extension !== 'md') {
@@ -448,7 +448,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Generate All Trees (for multi-family vaults)
 	plugin.addCommand({
 		id: 'generate-all-trees',
-		name: 'Generate all trees',
+		name: '生成所有树',
 		callback: () => {
 			void plugin.generateAllTrees();
 		}
@@ -457,7 +457,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Base Template
 	plugin.addCommand({
 		id: 'create-base-template',
-		name: 'Create base template',
+		name: '创建 base 模板',
 		callback: () => {
 			void plugin.createBaseTemplate();
 		}
@@ -466,7 +466,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Organizations Base Template
 	plugin.addCommand({
 		id: 'create-organizations-base-template',
-		name: 'Create organizations base template',
+		name: '创建组织 base 模板',
 		callback: () => {
 			void plugin.createOrganizationsBaseTemplate();
 		}
@@ -475,7 +475,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Sources Base Template
 	plugin.addCommand({
 		id: 'create-sources-base-template',
-		name: 'Create sources base template',
+		name: '创建来源 base 模板',
 		callback: () => {
 			void plugin.createSourcesBaseTemplate();
 		}
@@ -484,7 +484,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Places Base Template
 	plugin.addCommand({
 		id: 'create-places-base-template',
-		name: 'Create places base template',
+		name: '创建地点 base 模板',
 		callback: () => {
 			void plugin.createPlacesBaseTemplate();
 		}
@@ -493,7 +493,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Events Base Template
 	plugin.addCommand({
 		id: 'create-events-base-template',
-		name: 'Create events base template',
+		name: '创建事件 base 模板',
 		callback: () => {
 			void plugin.createEventsBaseTemplate();
 		}
@@ -502,7 +502,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Universe
 	plugin.addCommand({
 		id: 'create-universe',
-		name: 'Create universe',
+		name: '创建宇宙',
 		callback: () => {
 			new UniverseWizardModal(plugin, {
 				onComplete: () => {
@@ -515,7 +515,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Universes Base Template
 	plugin.addCommand({
 		id: 'create-universes-base-template',
-		name: 'Create universes base template',
+		name: '创建宇宙 base 模板',
 		callback: () => {
 			void plugin.createUniversesBaseTemplate();
 		}
@@ -524,7 +524,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Notes Base Template
 	plugin.addCommand({
 		id: 'create-notes-base-template',
-		name: 'Create notes base template',
+		name: '创建笔记 base 模板',
 		callback: () => {
 			void plugin.createNotesBaseTemplate();
 		}
@@ -533,7 +533,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Research Base Template
 	plugin.addCommand({
 		id: 'create-research-base-template',
-		name: 'Create research base template',
+		name: '创建研究 base 模板',
 		callback: () => {
 			void plugin.createResearchBaseTemplate();
 		}
@@ -542,7 +542,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create All Base Templates
 	plugin.addCommand({
 		id: 'create-all-bases',
-		name: 'Create all base templates',
+		name: '创建所有 base 模板',
 		callback: () => {
 			void plugin.createAllBases();
 		}
@@ -551,7 +551,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Calculate Relationship
 	plugin.addCommand({
 		id: 'calculate-relationship',
-		name: 'Calculate relationship between people',
+		name: '计算人物之间的关系',
 		callback: () => {
 			new RelationshipCalculatorModal(plugin.app, plugin.settings).open();
 		}
@@ -560,7 +560,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Find Related Research
 	plugin.addCommand({
 		id: 'find-related-research',
-		name: 'Find related research for person',
+		name: '查找人物的相关研究',
 		callback: async () => {
 			const { FindRelatedResearchModal } = await import('../ui/find-related-research-modal');
 			const activeFile = plugin.app.workspace.getActiveFile();
@@ -581,7 +581,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Find Duplicates
 	plugin.addCommand({
 		id: 'find-duplicates',
-		name: 'Find duplicate people',
+		name: '查找重复人物',
 		callback: async () => {
 			const { DuplicateDetectionModal } = await import('../ui/duplicate-detection-modal');
 			new DuplicateDetectionModal(plugin.app, plugin).open();
@@ -592,7 +592,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// If a person note is active, use it as the root; otherwise show picker/empty state
 	plugin.addCommand({
 		id: 'open-family-chart',
-		name: 'Open Family Chart',
+		name: '打开家族图表',
 		callback: () => {
 			// Try to get cr_id from active note if it's a person note
 			const activeFile = plugin.app.workspace.getActiveFile();
@@ -608,7 +608,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Map View
 	plugin.addCommand({
 		id: 'open-map-view',
-		name: 'Open map view',
+		name: '打开地图视图',
 		callback: () => {
 			void plugin.activateMapView();
 		}
@@ -617,7 +617,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Calendar View
 	plugin.addCommand({
 		id: 'open-calendar-view',
-		name: 'Open calendar view',
+		name: '打开日历视图',
 		callback: () => {
 			void plugin.activateCalendarView();
 		}
@@ -626,7 +626,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Report Wizard (#372)
 	plugin.addCommand({
 		id: 'open-report-wizard',
-		name: 'Open report wizard',
+		name: '打开报告向导',
 		callback: () => {
 			void import('../reports/ui/report-wizard-modal').then(({ ReportWizardModal }) => {
 				new ReportWizardModal(plugin).open();
@@ -637,7 +637,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open New Map View (for side-by-side comparison)
 	plugin.addCommand({
 		id: 'open-new-map-view',
-		name: 'Open new map view (for comparison)',
+		name: '打开新地图视图（用于对比）',
 		callback: () => {
 			void plugin.activateMapView(undefined, true);
 		}
@@ -646,7 +646,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open new Family Chart (always creates new tab)
 	plugin.addCommand({
 		id: 'open-new-family-chart',
-		name: 'Open new Family Chart',
+		name: '打开新家族图表',
 		callback: () => {
 			void plugin.activateFamilyChartView(undefined, true, true);
 		}
@@ -655,7 +655,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Family Chart for Current Note
 	plugin.addCommand({
 		id: 'open-family-chart-for-note',
-		name: 'Open current note in Family Chart',
+		name: '在家族图表中打开当前笔记',
 		checkCallback: (checking) => {
 			const activeFile = plugin.app.workspace.getActiveFile();
 			if (!activeFile || activeFile.extension !== 'md') {
@@ -676,7 +676,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Assign Ahnentafel Numbers
 	plugin.addCommand({
 		id: 'assign-ahnentafel',
-		name: 'Assign Ahnentafel numbers (ancestors)',
+		name: '分配 Ahnentafel 编号（祖先）',
 		callback: () => {
 			promptAssignReferenceNumbers(plugin, 'ahnentafel');
 		}
@@ -685,7 +685,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Assign d'Aboville Numbers
 	plugin.addCommand({
 		id: 'assign-daboville',
-		name: "Assign d'Aboville numbers (descendants)",
+		name: "分配 d'Aboville 编号（后代）",
 		callback: () => {
 			promptAssignReferenceNumbers(plugin, 'daboville');
 		}
@@ -694,7 +694,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Assign Henry Numbers
 	plugin.addCommand({
 		id: 'assign-henry',
-		name: 'Assign Henry numbers (descendants)',
+		name: '分配 Henry 编号（后代）',
 		callback: () => {
 			promptAssignReferenceNumbers(plugin, 'henry');
 		}
@@ -703,7 +703,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Assign Generation Numbers
 	plugin.addCommand({
 		id: 'assign-generation',
-		name: 'Assign generation numbers (all relatives)',
+		name: '分配世代编号（所有亲属）',
 		callback: () => {
 			promptAssignReferenceNumbers(plugin, 'generation');
 		}
@@ -712,7 +712,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Clear Reference Numbers
 	plugin.addCommand({
 		id: 'clear-reference-numbers',
-		name: 'Clear reference numbers',
+		name: '清除编号',
 		callback: () => {
 			promptClearReferenceNumbers(plugin);
 		}
@@ -721,7 +721,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Assign Lineage
 	plugin.addCommand({
 		id: 'assign-lineage',
-		name: 'Assign lineage from root person',
+		name: '从根人物分配世系',
 		callback: () => {
 			promptAssignLineage(plugin);
 		}
@@ -730,7 +730,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Remove Lineage
 	plugin.addCommand({
 		id: 'remove-lineage',
-		name: 'Remove lineage tags',
+		name: '移除世系标签',
 		callback: () => {
 			promptRemoveLineage(plugin);
 		}
@@ -739,7 +739,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: View relationship history
 	plugin.addCommand({
 		id: 'view-relationship-history',
-		name: 'View relationship history',
+		name: '查看关系历史',
 		callback: () => {
 			showRelationshipHistory(plugin);
 		}
@@ -748,7 +748,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Undo last relationship change
 	plugin.addCommand({
 		id: 'undo-relationship-change',
-		name: 'Undo last relationship change',
+		name: '撤销上次关系更改',
 		callback: () => {
 			void undoLastRelationshipChange(plugin);
 		}
@@ -757,7 +757,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Split Tree Wizard
 	plugin.addCommand({
 		id: 'split-tree-wizard',
-		name: 'Split tree wizard',
+		name: '拆分树向导',
 		callback: () => {
 			new SplitWizardModal(plugin.app, plugin.settings, plugin.getFolderFilter() ?? undefined).open();
 		}
@@ -766,7 +766,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Place Note
 	plugin.addCommand({
 		id: 'create-place-note',
-		name: 'Create place note',
+		name: '创建地点笔记',
 		callback: () => {
 			new CreatePlaceModal(plugin.app, {
 				directory: plugin.settings.placesFolder || '',
@@ -781,7 +781,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Look up Place (#218)
 	plugin.addCommand({
 		id: 'lookup-place',
-		name: 'Look up place',
+		name: '查询地点',
 		callback: () => {
 			new PlaceLookupModal(plugin.app, {
 				settings: plugin.settings,
@@ -808,7 +808,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Custom Map
 	plugin.addCommand({
 		id: 'create-custom-map',
-		name: 'Create custom map',
+		name: '创建自定义地图',
 		callback: () => {
 			new CreateMapWizardModal(plugin.app, plugin, {
 				directory: plugin.settings.mapsFolder
@@ -819,7 +819,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Places Tab
 	plugin.addCommand({
 		id: 'open-places-tab',
-		name: 'Open places tab',
+		name: '打开地点标签页',
 		callback: () => {
 			const modal = new ControlCenterModal(plugin.app, plugin);
 			modal.openToTab('places');
@@ -829,14 +829,14 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Merge Duplicate Places
 	plugin.addCommand({
 		id: 'merge-duplicate-places',
-		name: 'Merge duplicate place notes',
+		name: '合并重复地点笔记',
 		callback: () => {
 			const duplicateGroups = findDuplicatePlaceNotes(plugin.app, {
 				settings: plugin.settings,
 				folderFilter: plugin.getFolderFilter()
 			});
 			if (duplicateGroups.length === 0) {
-				new Notice('No duplicate place notes found. Your places are unique!');
+				new Notice('未发现重复的地点笔记。你的地点都是唯一的！');
 				return;
 			}
 			new MergeDuplicatePlacesModal(plugin.app, duplicateGroups).open();
@@ -846,7 +846,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Schemas Tab
 	plugin.addCommand({
 		id: 'open-schemas-tab',
-		name: 'Open schemas tab',
+		name: '打开 Schema 标签页',
 		callback: () => {
 			const modal = new ControlCenterModal(plugin.app, plugin);
 			modal.openToTab('schemas');
@@ -856,12 +856,12 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Validate Vault Against Schemas
 	plugin.addCommand({
 		id: 'validate-vault-schemas',
-		name: 'Validate vault against schemas',
+		name: '根据 Schema 验证库',
 		callback: async () => {
 			const schemaService = new SchemaService(plugin);
 			const validationService = new ValidationService(plugin, schemaService);
 
-			new Notice('Running schema validation...');
+			new Notice('正在运行 Schema 验证…');
 
 			try {
 				const results = await validationService.validateVault();
@@ -870,13 +870,13 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 				const failedCount = new Set(results.filter(r => !r.isValid).map(r => r.filePath)).size;
 				const passedCount = summary.totalPeopleValidated - failedCount;
 
-				new Notice(`Schema validation: ${passedCount} passed, ${failedCount} failed, ${summary.totalErrors} errors`);
+				new Notice(`Schema 验证：${passedCount} 通过，${failedCount} 失败，${summary.totalErrors} 个错误`);
 
 				// Open Control Center to Schemas tab to show full results
 				const modal = new ControlCenterModal(plugin.app, plugin);
 				modal.openToTab('schemas');
 			} catch (error) {
-				new Notice(`Schema validation failed: ${getErrorMessage(error)}`);
+				new Notice(`Schema 验证失败：${getErrorMessage(error)}`);
 			}
 		}
 	});
@@ -884,19 +884,19 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Add Custom Relationship
 	plugin.addCommand({
 		id: 'add-custom-relationship',
-		name: 'Add custom relationship to current person',
+		name: '为当前人物添加自定义关系',
 		callback: () => {
 			const activeFile = plugin.app.workspace.getActiveFile();
 
 			if (!activeFile || activeFile.extension !== 'md') {
-				new Notice('No active Markdown file. Please open a person note first.');
+				new Notice('没有活动的 Markdown 文件。请先打开一个人物笔记。');
 				return;
 			}
 
 			// Check if the file has a cr_id (is a person note)
 			const cache = plugin.app.metadataCache.getFileCache(activeFile);
 			if (!cache?.frontmatter?.cr_id) {
-				new Notice('Current file is not a person note (missing cr_id)');
+				new Notice('当前文件不是人物笔记（缺少 cr_id）');
 				return;
 			}
 
@@ -907,19 +907,19 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Insert Dynamic Blocks
 	plugin.addCommand({
 		id: 'insert-dynamic-blocks',
-		name: 'Insert dynamic blocks in current note',
+		name: '在当前笔记中插入动态块',
 		callback: async () => {
 			const activeFile = plugin.app.workspace.getActiveFile();
 
 			if (!activeFile || activeFile.extension !== 'md') {
-				new Notice('No active Markdown file. Please open a person note first.');
+				new Notice('没有活动的 Markdown 文件。请先打开一个人物笔记。');
 				return;
 			}
 
 			// Check if the file has a cr_id (is a person note)
 			const cache = plugin.app.metadataCache.getFileCache(activeFile);
 			if (!cache?.frontmatter?.cr_id) {
-				new Notice('Current file is not a person note (missing cr_id)');
+				new Notice('当前文件不是人物笔记（缺少 cr_id）');
 				return;
 			}
 
@@ -930,7 +930,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Relationships Tab
 	plugin.addCommand({
 		id: 'open-relationships-tab',
-		name: 'Open relationships tab',
+		name: '打开关系标签页',
 		callback: () => {
 			const modal = new ControlCenterModal(plugin.app, plugin);
 			modal.openToTab('relationships');
@@ -940,7 +940,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Organization Note
 	plugin.addCommand({
 		id: 'create-organization-note',
-		name: 'Create organization note',
+		name: '创建组织笔记',
 		callback: async () => {
 			const { CreateOrganizationModal } = await import('../organizations');
 			new CreateOrganizationModal(plugin.app, plugin, () => {
@@ -952,7 +952,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Organizations Tab
 	plugin.addCommand({
 		id: 'open-organizations-tab',
-		name: 'Open organizations tab',
+		name: '打开组织标签页',
 		callback: () => {
 			const modal = new ControlCenterModal(plugin.app, plugin);
 			modal.openToTab('organizations');
@@ -962,7 +962,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Source Note
 	plugin.addCommand({
 		id: 'create-source-note',
-		name: 'Create source note',
+		name: '创建来源笔记',
 		callback: async () => {
 			const { CreateSourceModal } = await import('../sources');
 			new CreateSourceModal(plugin.app, plugin, () => {
@@ -974,7 +974,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Create Note (Phase 4 Gramps Notes)
 	plugin.addCommand({
 		id: 'create-note',
-		name: 'Create note',
+		name: '创建笔记',
 		callback: async () => {
 			const { CreateNoteModal } = await import('../ui/create-note-modal');
 			new CreateNoteModal(plugin.app, plugin).open();
@@ -984,7 +984,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Sources Tab
 	plugin.addCommand({
 		id: 'open-sources-tab',
-		name: 'Open sources tab',
+		name: '打开来源标签页',
 		callback: () => {
 			const modal = new ControlCenterModal(plugin.app, plugin);
 			modal.openToTab('sources');
@@ -994,7 +994,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Generate Place Notes
 	plugin.addCommand({
 		id: 'generate-place-notes',
-		name: 'Generate place notes from place strings',
+		name: '从地点字符串生成地点笔记',
 		callback: async () => {
 			const { PlaceGeneratorModal } = await import('../enhancement/ui/place-generator-modal');
 			new PlaceGeneratorModal(plugin.app, plugin.settings).open();
@@ -1004,7 +1004,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Open Book Builder
 	plugin.addCommand({
 		id: 'open-book-builder',
-		name: 'Open book builder',
+		name: '打开书籍构建器',
 		callback: async () => {
 			const { BookBuilderModal } = await import('../book/ui/book-builder-modal');
 			new BookBuilderModal(plugin).open();
@@ -1014,7 +1014,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 	// Add command: Regenerate book from .book.json
 	plugin.addCommand({
 		id: 'regenerate-book',
-		name: 'Regenerate book from definition',
+		name: '从定义重新生成书籍',
 		checkCallback: (checking: boolean) => {
 			const file = plugin.app.workspace.getActiveFile();
 			if (!file || !file.path.endsWith('.book.json')) return false;
@@ -1027,7 +1027,7 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 					const { BookGenerationService } = await import('../book/services/book-generation-service');
 					const service = new BookGenerationService(plugin.app, plugin.settings, plugin);
 
-					new Notice('Regenerating book...');
+						new Notice('正在重新生成书籍…');
 					const result = await service.generateBook(definition);
 
 					if (result.success && result.blob) {
@@ -1040,14 +1040,14 @@ export function registerCommandsAndEvents(plugin: CanvasRootsPlugin): void {
 
 						const changedCount = result.changedChapters?.length ?? 0;
 						const changeMsg = definition.lastChapterHashes
-							? ` (${changedCount} chapter${changedCount !== 1 ? 's' : ''} changed)`
+							? `（${changedCount} 个章节已更改）`
 							: '';
-						new Notice(`Book regenerated: ${result.stats.chapterCount} chapters${changeMsg}`);
+						new Notice(`书籍已重新生成：${result.stats.chapterCount} 个章节${changeMsg}`);
 					} else {
-						new Notice(`Book generation failed: ${result.errors.join(', ')}`);
+						new Notice(`书籍生成失败：${result.errors.join(', ')}`);
 					}
 				} catch (err) {
-					new Notice(`Failed to regenerate book: ${err instanceof Error ? err.message : String(err)}`);
+					new Notice(`重新生成书籍失败：${err instanceof Error ? err.message : String(err)}`);
 				}
 			})();
 			return true;

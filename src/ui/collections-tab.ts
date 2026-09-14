@@ -12,7 +12,6 @@ import type { LucideIconName } from './lucide-icons';
 import { CanvasGenerator, CanvasData } from '../core/canvas-generator';
 import { ensureFolderExists } from '../core/canvas-utils';
 import { getErrorMessage } from '../core/error-utils';
-import { pluralize } from '../utils/format-utils';
 import type { PersonNode } from '../core/family-graph';
 import { mergeFamilyComponentsByCollectionName } from '../core/family-component-merge';
 import { aggregateCollections, type AggregatedCollection } from '../core/collections-aggregator';
@@ -66,10 +65,10 @@ function loadAggregatedCollections(plugin: CanvasRootsPlugin): AggregatedCollect
  */
 function formatCollectionBadge(collection: AggregatedCollection): string {
 	const personPart = collection.personCount > 0
-		? `${collection.personCount} ${pluralize(collection.personCount, 'person', 'people')}`
+		? `${collection.personCount} 位人物`
 		: '';
 	const placePart = collection.placeCount > 0
-		? `${collection.placeCount} ${pluralize(collection.placeCount, 'place')}`
+		? `${collection.placeCount} 个地点`
 		: '';
 	if (personPart && placePart) return `${personPart}, ${placePart}`;
 	return personPart || placePart;
@@ -80,9 +79,9 @@ export function renderCollectionsTab(options: CollectionsTabOptions): void {
 
 	// Browse Mode Card
 	const browseCard = createCard({
-		title: 'Browse by',
+		title: '浏览方式',
 		icon: 'folder',
-		subtitle: 'Choose how to organize and view people'
+		subtitle: '选择如何组织与查看人物'
 	});
 
 	const browseContent = browseCard.createDiv({ cls: 'crc-card__content' });
@@ -91,12 +90,12 @@ export function renderCollectionsTab(options: CollectionsTabOptions): void {
 	let selectedMode = 'families'; // Default to families
 
 	new Setting(browseContent)
-		.setName('View')
-		.setDesc('Choose how to organize and view people')
+		.setName('视图')
+		.setDesc('选择如何组织与查看人物')
 		.addDropdown(dropdown => dropdown
-			.addOption('all', 'All people - show everyone in the vault')
-			.addOption('families', 'Detected families - auto-detected family groups')
-			.addOption('collections', 'My collections - user-defined collections')
+			.addOption('all', '全部人物 - 显示库中的所有人')
+			.addOption('families', '检测到的家族 - 自动检测的家族分组')
+			.addOption('collections', '我的合集 - 用户定义的合集')
 			.setValue(selectedMode)
 			.onChange((value) => {
 				selectedMode = value;
@@ -108,17 +107,17 @@ export function renderCollectionsTab(options: CollectionsTabOptions): void {
 
 	// Generate Overview Canvas button
 	const overviewCard = createCard({
-		title: 'Collection overview',
+		title: '合集概览',
 		icon: 'git-branch'
 	});
 
 	const overviewContent = overviewCard.querySelector('.crc-card__content') as HTMLElement;
 
 	new Setting(overviewContent)
-		.setName('Generate overview canvas')
-		.setDesc('Create a master canvas showing all collections and their connections')
+		.setName('生成概览画布')
+		.setDesc('创建一张显示所有合集及其连接的总体画布')
 		.addButton(button => button
-			.setButtonText('Generate overview')
+			.setButtonText('生成概览')
 			.setCta()
 			.onClick(async () => {
 				await generateCollectionOverviewCanvas(plugin, app, closeModal, formatCanvasJson);
@@ -128,13 +127,13 @@ export function renderCollectionsTab(options: CollectionsTabOptions): void {
 
 	// Analytics Card
 	const analyticsCard = createCard({
-		title: 'Analytics',
+		title: '统计',
 		icon: 'activity'
 	});
 
 	const analyticsContent = analyticsCard.querySelector('.crc-card__content') as HTMLElement;
 	analyticsContent.createEl('p', {
-		text: 'Loading analytics...',
+		text: '正在加载统计…',
 		cls: 'crc-text--muted'
 	});
 
@@ -170,16 +169,16 @@ function updateCollectionsList(
 		const allPeople = graphService.getAllPeople();
 
 		const listCard = createCard({
-			title: `All people (${allPeople.length})`,
+			title: `全部人物（${allPeople.length}）`,
 			icon: 'users',
-			subtitle: 'Everyone in your vault'
+			subtitle: '库中的所有人'
 		});
 		listCard.addClass('crc-collections-list');
 
 		const listContent = listCard.createDiv({ cls: 'crc-card__content' });
 		listContent.createEl('p', {
 			cls: 'crc-text--muted',
-			text: `Found ${allPeople.length} ${pluralize(allPeople.length, 'person', 'people')} in your vault.`
+			text: `在库中找到 ${allPeople.length} 位人物。`
 		});
 
 		container.appendChild(listCard);
@@ -191,9 +190,9 @@ function updateCollectionsList(
 		const components = mergeFamilyComponentsByCollectionName(graphService.findAllFamilyComponents());
 
 		const listCard = createCard({
-			title: `Detected families (${components.length})`,
+			title: `检测到的家族（${components.length}）`,
 			icon: 'users',
-			subtitle: 'Auto-detected family groups'
+			subtitle: '自动检测的家族分组'
 		});
 		listCard.addClass('crc-collections-list');
 
@@ -202,7 +201,7 @@ function updateCollectionsList(
 		if (components.length === 0) {
 			listContent.createEl('p', {
 				cls: 'crc-text--muted',
-				text: 'No families found. Add some person notes to get started.'
+				text: '未找到家族。添加一些人物笔记即可开始。'
 			});
 		} else {
 			// Paginated table display
@@ -218,9 +217,9 @@ function updateCollectionsList(
 				const table = tableContainer.createEl('table', { cls: 'crc-person-table' });
 				const thead = table.createEl('thead');
 				const headerRow = thead.createEl('tr');
-				headerRow.createEl('th', { text: 'Family name', cls: 'crc-person-table__th' });
-				headerRow.createEl('th', { text: 'Size', cls: 'crc-person-table__th' });
-				headerRow.createEl('th', { text: 'Representative', cls: 'crc-person-table__th' });
+				headerRow.createEl('th', { text: '家族名称', cls: 'crc-person-table__th' });
+				headerRow.createEl('th', { text: '规模', cls: 'crc-person-table__th' });
+				headerRow.createEl('th', { text: '代表人物', cls: 'crc-person-table__th' });
 
 				const tbody = table.createEl('tbody');
 
@@ -232,14 +231,14 @@ function updateCollectionsList(
 
 					// Family name cell
 					const nameCell = row.createEl('td', { cls: 'crc-person-table__td crc-person-table__td--name' });
-					const familyName = component.collectionName || `Family ${index + 1}`;
+					const familyName = component.collectionName || `家族 ${index + 1}`;
 					nameCell.createEl('strong', { text: familyName });
 
 					// Size cell
 					const sizeCell = row.createEl('td', { cls: 'crc-person-table__td' });
 					sizeCell.createEl('span', {
 						cls: 'crc-badge',
-						text: `${component.size} ${pluralize(component.size, 'person', 'people')}`
+						text: `${component.size} 位人物`
 					});
 
 					// Representative cell
@@ -253,12 +252,12 @@ function updateCollectionsList(
 				const countText = footer.createEl('span', {
 					cls: 'crc-text-muted crc-text-small'
 				});
-				countText.textContent = `Showing ${displayedComponents.length} of ${components.length} ${components.length !== 1 ? 'families' : 'family'}`;
+				countText.textContent = `显示 ${displayedComponents.length} / ${components.length} 个家族`;
 
 				if (components.length > displayLimit) {
 					const remaining = components.length - displayLimit;
 					const loadMoreBtn = footer.createEl('button', {
-						text: `Load more (${Math.min(PAGE_SIZE, remaining)} more)`,
+						text: `加载更多（还有 ${Math.min(PAGE_SIZE, remaining)} 个）`,
 						cls: 'crc-btn crc-btn--small crc-ml-2'
 					});
 					loadMoreBtn.addEventListener('click', () => {
@@ -278,9 +277,9 @@ function updateCollectionsList(
 		const collections = loadAggregatedCollections(plugin);
 
 		const listCard = createCard({
-			title: `My collections (${collections.length})`,
+			title: `我的合集（${collections.length}）`,
 			icon: 'folder',
-			subtitle: 'User-defined collections'
+			subtitle: '用户定义的合集'
 		});
 		listCard.addClass('crc-collections-list');
 
@@ -289,7 +288,7 @@ function updateCollectionsList(
 		if (collections.length === 0) {
 			listContent.createEl('p', {
 				cls: 'crc-text--muted',
-				text: 'No collections yet. Right-click a person or place note and select "Set collection" to create one.'
+				text: '还没有合集。右键点击人物或地点笔记并选择"设置合集"即可创建一个。'
 			});
 		} else {
 			collections.forEach(collection => {
@@ -312,9 +311,9 @@ function updateCollectionsList(
 
 			if (connections.length > 0) {
 				const connectionsCard = createCard({
-					title: `Collection connections (${connections.length})`,
+					title: `合集连接（${connections.length}）`,
 					icon: 'link',
-					subtitle: 'People who bridge multiple collections'
+					subtitle: '连接多个合集的人物'
 				});
 				connectionsCard.addClass('crc-collections-list');
 
@@ -329,13 +328,13 @@ function updateCollectionsList(
 					});
 					connectionHeader.createEl('span', {
 						cls: 'crc-badge',
-						text: `${connection.relationshipCount} ${pluralize(connection.relationshipCount, 'link')}`
+						text: `${connection.relationshipCount} 条连接`
 					});
 
 					const bridgeInfo = connectionItem.createDiv({ cls: 'crc-text--muted' });
 					const bridgeNames = connection.bridgePeople.map(p => p.name).slice(0, 3).join(', ');
 					const remainingCount = connection.bridgePeople.length - 3;
-					bridgeInfo.textContent = `Bridge people: ${bridgeNames}${remainingCount > 0 ? ` +${remainingCount} more` : ''}`;
+					bridgeInfo.textContent = `桥梁人物：${bridgeNames}${remainingCount > 0 ? ` 还有 ${remainingCount} 位` : ''}`;
 				});
 
 				container.appendChild(connectionsCard);
@@ -354,7 +353,7 @@ async function generateCollectionOverviewCanvas(
 	formatCanvasJson: (data: CanvasData) => string
 ): Promise<void> {
 	try {
-		new Notice('Generating collection overview...');
+		new Notice('正在生成合集概览…');
 
 		const graphService = plugin.createFamilyGraphService();
 
@@ -367,7 +366,7 @@ async function generateCollectionOverviewCanvas(
 		// Combine them into a single collection list
 		const allCollections = [
 			...families.map(f => ({
-				name: f.collectionName || `Family ${families.indexOf(f) + 1}`,
+				name: f.collectionName || `家族 ${families.indexOf(f) + 1}`,
 				size: f.size,
 				representative: f.representative
 			})),
@@ -379,7 +378,7 @@ async function generateCollectionOverviewCanvas(
 		];
 
 		if (allCollections.length === 0) {
-			new Notice('No collections found. Add some person notes to get started.');
+			new Notice('未找到合集。添加一些人物笔记即可开始。');
 			return;
 		}
 
@@ -412,11 +411,11 @@ async function generateCollectionOverviewCanvas(
 			// Update existing file
 			await app.vault.modify(existingFile, canvasContent);
 			file = existingFile;
-			new Notice(`Updated existing overview: ${fileName}`);
+			new Notice(`已更新现有概览：${fileName}`);
 		} else {
 			// Create new file
 			file = await app.vault.create(filePath, canvasContent);
-			new Notice(`Created overview: ${fileName}`);
+			new Notice(`已创建概览：${fileName}`);
 		}
 
 		// Wait for file system to settle
@@ -426,11 +425,11 @@ async function generateCollectionOverviewCanvas(
 		const leaf = app.workspace.getLeaf(false);
 		await leaf.openFile(file);
 
-		new Notice(`Collection overview generated! (${allCollections.length} collections)`);
+		new Notice(`合集概览已生成！（${allCollections.length} 个合集）`);
 		closeModal();
 	} catch (error: unknown) {
 		console.error('Error generating collection overview:', error);
-		new Notice(`Error generating overview: ${getErrorMessage(error)}`);
+		new Notice(`生成概览时出错：${getErrorMessage(error)}`);
 	}
 }
 
@@ -458,15 +457,15 @@ function loadAnalyticsData(container: HTMLElement, plugin: CanvasRootsPlugin): v
 			return box;
 		};
 
-		createStatBox('Total people', analytics.totalPeople);
-		createStatBox('Collections', analytics.totalCollections,
-			`${analytics.totalFamilies} families, ${analytics.totalUserCollections} custom`);
-		createStatBox('Average size', analytics.averageCollectionSize, 'people per collection');
-		createStatBox('Bridge people', analytics.crossCollectionMetrics.totalBridgePeople,
-			'connecting collections');
+		createStatBox('人物总数', analytics.totalPeople);
+		createStatBox('合集', analytics.totalCollections,
+			`${analytics.totalFamilies} 个家族，${analytics.totalUserCollections} 个自定义`);
+		createStatBox('平均规模', analytics.averageCollectionSize, '每个合集的人物数');
+		createStatBox('桥梁人物', analytics.crossCollectionMetrics.totalBridgePeople,
+			'连接多个合集');
 
 		// Data Quality Section
-		container.createEl('h4', { text: 'Data completeness', cls: 'crc-mt-4 crc-mb-2' });
+		container.createEl('h4', { text: '数据完整度', cls: 'crc-mt-4 crc-mb-2' });
 		const qualityGrid = container.createDiv({ cls: 'crc-quality-grid' });
 
 		const createProgressBar = (label: string, percent: number) => {
@@ -482,45 +481,45 @@ function loadAnalyticsData(container: HTMLElement, plugin: CanvasRootsPlugin): v
 			return item;
 		};
 
-		createProgressBar('Birth dates', analytics.dataCompleteness.birthDatePercent);
-		createProgressBar('Death dates', analytics.dataCompleteness.deathDatePercent);
-		createProgressBar('Sex/Gender', analytics.dataCompleteness.sexPercent);
+		createProgressBar('出生日期', analytics.dataCompleteness.birthDatePercent);
+		createProgressBar('去世日期', analytics.dataCompleteness.deathDatePercent);
+		createProgressBar('性别', analytics.dataCompleteness.sexPercent);
 
 		// Top Collections Section
 		if (analytics.largestCollection) {
-			container.createEl('h4', { text: 'Collection highlights', cls: 'crc-mt-4 crc-mb-2' });
+			container.createEl('h4', { text: '合集亮点', cls: 'crc-mt-4 crc-mb-2' });
 			const highlightsList = container.createEl('ul', { cls: 'crc-highlights-list' });
 
 			highlightsList.createEl('li', {
-				text: `Largest: ${analytics.largestCollection.name} (${analytics.largestCollection.size} people)`
+				text: `最大：${analytics.largestCollection.name}（${analytics.largestCollection.size} 位人物）`
 			});
 
 			if (analytics.smallestCollection) {
 				highlightsList.createEl('li', {
-					text: `Smallest: ${analytics.smallestCollection.name} (${analytics.smallestCollection.size} people)`
+					text: `最小：${analytics.smallestCollection.name}（${analytics.smallestCollection.size} 位人物）`
 				});
 			}
 
 			const dateRanges = analytics.dateRange.byUniverse;
 			if (dateRanges.length === 1) {
 				highlightsList.createEl('li', {
-					text: `Date range: ${formatDateRangeLine(dateRanges[0], false)}`
+					text: `日期范围：${formatDateRangeLine(dateRanges[0], false)}`
 				});
 			} else if (dateRanges.length > 1) {
 				for (const range of dateRanges) {
-					highlightsList.createEl('li', { text: `Date range — ${formatDateRangeLine(range, true)}` });
+					highlightsList.createEl('li', { text: `日期范围 — ${formatDateRangeLine(range, true)}` });
 				}
 			}
 		}
 
 		// Cross-Collection Connections
 		if (analytics.crossCollectionMetrics.topConnections.length > 0) {
-			container.createEl('h4', { text: 'Top connections', cls: 'crc-mt-4 crc-mb-2' });
+			container.createEl('h4', { text: '热门连接', cls: 'crc-mt-4 crc-mb-2' });
 			const connectionsList = container.createEl('ul', { cls: 'crc-connections-list' });
 
 			analytics.crossCollectionMetrics.topConnections.forEach(conn => {
 				connectionsList.createEl('li', {
-					text: `${conn.from} ↔ ${conn.to} (${conn.bridgeCount} ${pluralize(conn.bridgeCount, 'person', 'people')})`
+					text: `${conn.from} ↔ ${conn.to}（${conn.bridgeCount} 位人物）`
 				});
 			});
 		}
@@ -529,7 +528,7 @@ function loadAnalyticsData(container: HTMLElement, plugin: CanvasRootsPlugin): v
 		console.error('Error loading analytics:', error);
 		container.empty();
 		container.createEl('p', {
-			text: 'Failed to load analytics data.',
+			text: '加载统计数据失败。',
 			cls: 'crc-error-text'
 		});
 	}
@@ -544,7 +543,7 @@ function addCollectionsDockButton(card: HTMLElement, plugin: CanvasRootsPlugin):
 
 	const dockBtn = activeDocument.createElement('button');
 	dockBtn.className = 'crc-card__dock-btn clickable-icon';
-	dockBtn.setAttribute('aria-label', 'Open in sidebar');
+	dockBtn.setAttribute('aria-label', '在侧边栏中打开');
 	setIcon(dockBtn, 'panel-right');
 	dockBtn.addEventListener('click', (e) => {
 		e.stopPropagation();
@@ -588,9 +587,9 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 	// Mode dropdown
 	const modeSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 	const modeOptions: { value: CollectionBrowseMode; label: string }[] = [
-		{ value: 'all', label: 'All people' },
-		{ value: 'families', label: 'Detected families' },
-		{ value: 'collections', label: 'My collections' }
+		{ value: 'all', label: '全部人物' },
+		{ value: 'families', label: '检测到的家族' },
+		{ value: 'collections', label: '我的合集' }
 	];
 	modeOptions.forEach(opt => {
 		const option = modeSelect.createEl('option', { text: opt.label, value: opt.value });
@@ -602,7 +601,7 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 		cls: 'crc-filter-input',
 		attr: {
 			type: 'text',
-			placeholder: 'Search...'
+			placeholder: '搜索…'
 		}
 	});
 	if (currentSearch) searchInput.value = currentSearch;
@@ -624,13 +623,13 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 
 			listContainer.createEl('p', {
 				cls: 'crc-text--muted',
-				text: `Found ${allPeople.length} ${pluralize(allPeople.length, 'person', 'people')} in your vault.`
+				text: `在库中找到 ${allPeople.length} 位人物。`
 			});
 
 		} else if (currentMode === 'families') {
 			// Detected families — paginated table
 			searchInput.show();
-			searchInput.placeholder = 'Search families...';
+			searchInput.placeholder = '搜索家族…';
 
 			const components = mergeFamilyComponentsByCollectionName(graphService.findAllFamilyComponents());
 
@@ -638,7 +637,7 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 			let filtered = components;
 			if (query) {
 				filtered = components.filter((c, i) => {
-					const familyName = (c.collectionName || `Family ${i + 1}`).toLowerCase();
+					const familyName = (c.collectionName || `家族 ${i + 1}`).toLowerCase();
 					const repName = c.representative.name.toLowerCase();
 					return familyName.includes(query) || repName.includes(query);
 				});
@@ -646,7 +645,7 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 
 			if (filtered.length === 0) {
 				listContainer.createEl('p', {
-					text: query ? 'No matching families found.' : 'No families found. Add some person notes to get started.',
+					text: query ? '未找到匹配的家族。' : '未找到家族。添加一些人物笔记即可开始。',
 					cls: 'crc-text--muted'
 				});
 				return;
@@ -656,9 +655,9 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 			const table = listContainer.createEl('table', { cls: 'crc-person-table' });
 			const thead = table.createEl('thead');
 			const headerRow = thead.createEl('tr');
-			headerRow.createEl('th', { text: 'Family name', cls: 'crc-person-table__th' });
-			headerRow.createEl('th', { text: 'Size', cls: 'crc-person-table__th' });
-			headerRow.createEl('th', { text: 'Representative', cls: 'crc-person-table__th' });
+			headerRow.createEl('th', { text: '家族名称', cls: 'crc-person-table__th' });
+			headerRow.createEl('th', { text: '规模', cls: 'crc-person-table__th' });
+			headerRow.createEl('th', { text: '代表人物', cls: 'crc-person-table__th' });
 			headerRow.createEl('th', { text: '', cls: 'crc-person-table__th crc-person-table__th--icon' });
 
 			const tbody = table.createEl('tbody');
@@ -674,13 +673,13 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 
 				footer.createEl('span', {
 					cls: 'crc-text-muted crc-text-small',
-					text: `Showing ${visible.length} of ${filtered.length} ${filtered.length !== 1 ? 'families' : 'family'}`
+					text: `显示 ${visible.length} / ${filtered.length} 个家族`
 				});
 
 				if (filtered.length > displayLimit) {
 					const remaining = filtered.length - displayLimit;
 					const loadMoreBtn = footer.createEl('button', {
-						text: `Load more (${remaining} remaining)`,
+						text: `加载更多（还剩 ${remaining} 个）`,
 						cls: 'crc-btn crc-btn--secondary crc-btn--full-width crc-mt-3'
 					});
 					loadMoreBtn.addEventListener('click', () => {
@@ -693,7 +692,7 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 		} else if (currentMode === 'collections') {
 			// Cross-entity user collections (persons + places) — #426.
 			searchInput.show();
-			searchInput.placeholder = 'Search collections...';
+			searchInput.placeholder = '搜索合集…';
 
 			const collections = loadAggregatedCollections(plugin);
 
@@ -709,8 +708,8 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 				listContainer.createEl('p', {
 					cls: 'crc-text--muted',
 					text: query
-						? 'No matching collections found.'
-						: 'No collections yet. Right-click a person or place note and select "Set collection" to create one.'
+						? '未找到匹配的合集。'
+						: '还没有合集。右键点击人物或地点笔记并选择"设置合集"即可创建一个。'
 				});
 				return;
 			}
@@ -732,7 +731,7 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 
 				if (connections.length > 0) {
 					listContainer.createEl('h4', {
-						text: `Collection connections (${connections.length})`,
+						text: `合集连接（${connections.length}）`,
 						cls: 'crc-mt-4 crc-mb-2'
 					});
 
@@ -745,13 +744,13 @@ export function renderCollectionsList(options: CollectionsListOptions): void {
 						});
 						connectionHeader.createEl('span', {
 							cls: 'crc-badge',
-							text: `${connection.relationshipCount} ${pluralize(connection.relationshipCount, 'link')}`
-						});
+						text: `${connection.relationshipCount} 条连接`
+					});
 
 						const bridgeInfo = connectionItem.createDiv({ cls: 'crc-text--muted' });
 						const bridgeNames = connection.bridgePeople.map(p => p.name).slice(0, 3).join(', ');
 						const remainingCount = connection.bridgePeople.length - 3;
-						bridgeInfo.textContent = `Bridge people: ${bridgeNames}${remainingCount > 0 ? ` +${remainingCount} more` : ''}`;
+						bridgeInfo.textContent = `桥梁人物：${bridgeNames}${remainingCount > 0 ? ` 还有 ${remainingCount} 位` : ''}`;
 					});
 				}
 			}
@@ -792,14 +791,14 @@ function renderBrowseFamilyRow(
 
 	// Family name cell
 	const nameCell = row.createEl('td', { cls: 'crc-person-table__td crc-person-table__td--name' });
-	const familyName = component.collectionName || `Family ${index + 1}`;
+	const familyName = component.collectionName || `家族 ${index + 1}`;
 	nameCell.createEl('strong', { text: familyName });
 
 	// Size cell
 	const sizeCell = row.createEl('td', { cls: 'crc-person-table__td' });
 	sizeCell.createEl('span', {
 		cls: 'crc-badge',
-		text: `${component.size} ${pluralize(component.size, 'person', 'people')}`
+		text: `${component.size} 位人物`
 	});
 
 	// Representative cell
@@ -810,7 +809,7 @@ function renderBrowseFamilyRow(
 	const actionsCell = row.createEl('td', { cls: 'crc-person-table__td crc-person-table__td--actions' });
 	const openBtn = actionsCell.createEl('button', {
 		cls: 'crc-person-table__open-btn clickable-icon',
-		attr: { 'aria-label': 'Open note' }
+		attr: { 'aria-label': '打开笔记' }
 	});
 	setIcon(openBtn, 'file-text');
 	openBtn.addEventListener('click', (e) => {
@@ -824,7 +823,7 @@ function renderBrowseFamilyRow(
 		const menu = new Menu();
 
 		menu.addItem(item => {
-			item.setTitle('Open note');
+			item.setTitle('打开笔记');
 			item.setIcon('file-text');
 			item.onClick(() => {
 				void app.workspace.getLeaf(false).openFile(component.representative.file);
@@ -832,7 +831,7 @@ function renderBrowseFamilyRow(
 		});
 
 		menu.addItem(item => {
-			item.setTitle('Open in new tab');
+			item.setTitle('在新标签页中打开');
 			item.setIcon('file-plus');
 			item.onClick(() => {
 				void app.workspace.getLeaf('tab').openFile(component.representative.file);

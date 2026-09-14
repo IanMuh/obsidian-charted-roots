@@ -122,7 +122,7 @@ export class PlacePickerModal extends Modal {
 		const { contentEl } = this;
 		this.loadingEl = contentEl.createDiv({ cls: 'crc-picker-loading' });
 		this.loadingEl.createDiv({ cls: 'crc-picker-loading__spinner' });
-		this.loadingEl.createDiv({ cls: 'crc-picker-loading__text', text: 'Loading places...' });
+		this.loadingEl.createDiv({ cls: 'crc-picker-loading__text', text: '正在加载地点…' });
 	}
 
 	/**
@@ -230,7 +230,7 @@ export class PlacePickerModal extends Modal {
 		const titleSection = header.createDiv({ cls: 'crc-picker-title' });
 		const icon = createLucideIcon('map-pin', 20);
 		titleSection.appendChild(icon);
-		titleSection.appendText('Select place');
+		titleSection.appendText('选择地点');
 
 		// Search section
 		const searchSection = contentEl.createDiv({ cls: 'crc-picker-search' });
@@ -241,7 +241,7 @@ export class PlacePickerModal extends Modal {
 		});
 		const plusIcon = createLucideIcon('plus', 16);
 		createNewBtn.appendChild(plusIcon);
-		createNewBtn.appendText(' Create new place');
+		createNewBtn.appendText(' 创建新地点');
 
 		createNewBtn.addEventListener('click', () => {
 			this.openCreatePlaceModal();
@@ -252,7 +252,7 @@ export class PlacePickerModal extends Modal {
 			cls: 'crc-form-input',
 			attr: {
 				type: 'text',
-				placeholder: 'Search by name...'
+				placeholder: '按名称搜索…'
 			}
 		});
 
@@ -266,15 +266,15 @@ export class PlacePickerModal extends Modal {
 
 		// Sort dropdown
 		const sortContainer = contentEl.createDiv({ cls: 'crc-picker-sort' });
-		sortContainer.createSpan({ cls: 'crc-picker-sort__label', text: 'Sort by:' });
+		sortContainer.createSpan({ cls: 'crc-picker-sort__label', text: '排序方式：' });
 		const sortSelect = sortContainer.createEl('select', { cls: 'crc-form-select' });
 
 		const sortOptions: Array<{ value: SortOption; label: string }> = [
-			{ value: 'name-asc', label: 'Name (A-Z)' },
-			{ value: 'name-desc', label: 'Name (Z-A)' },
-			{ value: 'category', label: 'Category' },
-			{ value: 'type', label: 'Place type' },
-			{ value: 'recent', label: 'Recently modified' }
+			{ value: 'name-asc', label: '名称（A-Z）' },
+			{ value: 'name-desc', label: '名称（Z-A）' },
+			{ value: 'category', label: '分类' },
+			{ value: 'type', label: '地点类型' },
+			{ value: 'recent', label: '最近修改' }
 		];
 
 		sortOptions.forEach(opt => {
@@ -296,17 +296,17 @@ export class PlacePickerModal extends Modal {
 
 		// Category filter
 		const categoryFilter = filtersContainer.createDiv({ cls: 'crc-picker-filter' });
-		categoryFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Category:' });
+		categoryFilter.createSpan({ cls: 'crc-picker-filter__label', text: '分类：' });
 		const categorySelect = categoryFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 
 		const categoryOptions: Array<{ value: string; label: string }> = [
-			{ value: 'all', label: 'All' },
-			{ value: 'real', label: 'Real' },
-			{ value: 'historical', label: 'Historical' },
-			{ value: 'fictional', label: 'Fictional' },
-			{ value: 'mythological', label: 'Mythological' },
-			{ value: 'legendary', label: 'Legendary' },
-			{ value: 'disputed', label: 'Disputed' }
+			{ value: 'all', label: '全部' },
+			{ value: 'real', label: '真实' },
+			{ value: 'historical', label: '历史' },
+			{ value: 'fictional', label: '虚构' },
+			{ value: 'mythological', label: '神话' },
+			{ value: 'legendary', label: '传说' },
+			{ value: 'disputed', label: '存疑' }
 		];
 
 		categoryOptions.forEach(opt => {
@@ -359,11 +359,11 @@ export class PlacePickerModal extends Modal {
 			const emptyState = this.resultsContainer.createDiv({ cls: 'crc-picker-empty' });
 			const emptyIcon = createLucideIcon('search', 48);
 			emptyState.appendChild(emptyIcon);
-			emptyState.createEl('p', { text: 'No places found' });
+			emptyState.createEl('p', { text: '未找到地点' });
 			emptyState.createEl('p', {
 				text: this.allPlaces.length === 0
-					? 'Create place notes to link them here'
-					: 'Try a different search term or create a new place',
+					? '创建地点笔记即可在此关联'
+					: '请尝试其他搜索词或创建新地点',
 				cls: 'crc-text-muted'
 			});
 			return;

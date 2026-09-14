@@ -128,17 +128,17 @@ function loadCustomMapsGrid(
 	if (customMaps.length === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No custom maps found.',
+			text: '未找到自定义地图。',
 			cls: 'crc-text--muted'
 		});
 		emptyState.createEl('p', {
-			text: 'Create a note with cr_type: map in frontmatter to define custom image maps for fictional worlds.',
+			text: '创建一篇 frontmatter 中带 cr_type: map 的笔记，即可为虚构世界定义自定义图片地图。',
 			cls: 'crc-text--muted crc-text--small'
 		});
 
 		// Link to wiki
 		const wikiLink = emptyState.createEl('a', {
-			text: 'Learn more about custom maps \u2192',
+			text: '了解自定义地图 \u2192',
 			href: 'https://github.com/banisterious/obsidian-charted-roots/wiki/Geographic-Features#custom-image-maps',
 			cls: 'crc-link external-link crc-mt-2'
 		});
@@ -194,7 +194,7 @@ function loadCustomMapsGrid(
 		// Edit button
 		const editBtn = actionsContainer.createDiv({ cls: 'cr-map-thumbnail__action-btn' });
 		setLucideIcon(editBtn, 'edit', 14);
-		editBtn.setAttribute('aria-label', 'Edit map');
+		editBtn.setAttribute('aria-label', '编辑地图');
 		editBtn.addEventListener('click', (e) => {
 			e.stopPropagation(); // Prevent thumbnail click
 			const file = app.vault.getAbstractFileByPath(mapNote.filePath);
@@ -216,7 +216,7 @@ function loadCustomMapsGrid(
 		// Menu button
 		const menuBtn = actionsContainer.createDiv({ cls: 'cr-map-thumbnail__action-btn' });
 		setLucideIcon(menuBtn, 'more-vertical', 14);
-		menuBtn.setAttribute('aria-label', 'More options');
+		menuBtn.setAttribute('aria-label', '更多选项');
 		menuBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			showMapContextMenu(mapNote, container, e, options);
@@ -250,7 +250,7 @@ function showMapContextMenu(
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Open in map view')
+			.setTitle('在地图视图中打开')
 			.setIcon('map')
 			.onClick(async () => {
 				closeModal();
@@ -260,7 +260,7 @@ function showMapContextMenu(
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Edit map')
+			.setTitle('编辑地图')
 			.setIcon('edit')
 			.onClick(() => {
 				const file = app.vault.getAbstractFileByPath(mapNote.filePath);
@@ -282,7 +282,7 @@ function showMapContextMenu(
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Duplicate map')
+			.setTitle('复制地图')
 			.setIcon('copy')
 			.onClick(async () => {
 				await duplicateMap(mapNote.filePath, gridContainer, options);
@@ -291,7 +291,7 @@ function showMapContextMenu(
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Export to JSON')
+			.setTitle('导出为 JSON')
 			.setIcon('download')
 			.onClick(async () => {
 				await exportMapToJson(mapNote.filePath, app);
@@ -302,7 +302,7 @@ function showMapContextMenu(
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Open note')
+			.setTitle('打开笔记')
 			.setIcon('file-text')
 			.onClick(async () => {
 				const file = app.vault.getAbstractFileByPath(mapNote.filePath);
@@ -315,7 +315,7 @@ function showMapContextMenu(
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Delete map')
+			.setTitle('删除地图')
 			.setIcon('trash')
 			.onClick(async () => {
 				await deleteMap(mapNote.filePath, mapNote.name, gridContainer, options);
@@ -336,7 +336,7 @@ async function duplicateMap(
 	const { app, plugin } = options;
 	const file = app.vault.getAbstractFileByPath(filePath);
 	if (!(file instanceof TFile)) {
-		new Notice('Map file not found');
+		new Notice('未找到地图文件');
 		return;
 	}
 
@@ -346,7 +346,7 @@ async function duplicateMap(
 	const frontmatter = cache?.frontmatter;
 
 	if (!frontmatter) {
-		new Notice('Could not read map frontmatter');
+		new Notice('无法读取地图 frontmatter');
 		return;
 	}
 
@@ -408,7 +408,7 @@ async function duplicateMap(
 
 	try {
 		const newFile = await app.vault.create(newFilePath, newContent);
-		new Notice(`Created "${finalName}"`);
+		new Notice(`已创建“${finalName}”`);
 
 		// Refresh the grid
 		loadCustomMapsGrid(gridContainer, options);
@@ -424,7 +424,7 @@ async function duplicateMap(
 			}
 		}).open();
 	} catch (error) {
-		new Notice(`Failed to duplicate map: ${getErrorMessage(error)}`);
+		new Notice(`复制地图失败：${getErrorMessage(error)}`);
 	}
 }
 
@@ -434,7 +434,7 @@ async function duplicateMap(
 async function exportMapToJson(filePath: string, app: App): Promise<void> {
 	const file = app.vault.getAbstractFileByPath(filePath);
 	if (!(file instanceof TFile)) {
-		new Notice('Map file not found');
+		new Notice('未找到地图文件');
 		return;
 	}
 
@@ -442,7 +442,7 @@ async function exportMapToJson(filePath: string, app: App): Promise<void> {
 	const frontmatter = cache?.frontmatter;
 
 	if (!frontmatter) {
-		new Notice('Could not read map frontmatter');
+		new Notice('无法读取地图 frontmatter');
 		return;
 	}
 
@@ -511,9 +511,9 @@ async function exportMapToJson(filePath: string, app: App): Promise<void> {
 		} else if (!existingFile) {
 			await app.vault.create(exportFileName, jsonContent);
 		}
-		new Notice(`Exported "${mapName}" to ${exportFileName}`);
+		new Notice(`已导出“${mapName}”到 ${exportFileName}`);
 	} catch (error) {
-		new Notice(`Failed to export: ${getErrorMessage(error)}`);
+		new Notice(`导出失败：${getErrorMessage(error)}`);
 	}
 }
 
@@ -541,7 +541,7 @@ function importMapFromJson(
 
 			// Validate required fields
 			if (!data.name || typeof data.name !== 'string') {
-				new Notice('Invalid JSON: missing "name" field');
+				new Notice('JSON 无效：缺少 "name" 字段');
 				return;
 			}
 
@@ -555,7 +555,7 @@ function importMapFromJson(
 			const existingMaps = getCustomMaps(app);
 			const existingMap = existingMaps.find(m => m.id === mapId);
 			if (existingMap) {
-				new Notice(`A map with ID "${mapId}" already exists. Please edit the JSON or delete the existing map.`);
+				new Notice(`已存在 ID 为“${mapId}”的地图。请编辑 JSON 或删除现有地图。`);
 				return;
 			}
 
@@ -631,7 +631,7 @@ function importMapFromJson(
 			// Check if file already exists
 			const existingFile = app.vault.getAbstractFileByPath(filePath);
 			if (existingFile) {
-				new Notice(`File "${filePath}" already exists`);
+				new Notice(`文件“${filePath}”已存在`);
 				return;
 			}
 
@@ -645,16 +645,16 @@ function importMapFromJson(
 
 			// Create the file
 			await app.vault.create(filePath, content);
-			new Notice(`Imported "${data.name}" from JSON`);
+			new Notice(`已从 JSON 导入“${data.name}”`);
 
 			// Refresh the grid
 			loadCustomMapsGrid(gridContainer, options);
 
 		} catch (error) {
 			if (error instanceof SyntaxError) {
-				new Notice('Invalid JSON file');
+				new Notice('JSON 文件无效');
 			} else {
-				new Notice(`Failed to import: ${getErrorMessage(error)}`);
+				new Notice(`导入失败：${getErrorMessage(error)}`);
 			}
 		}
 	})());
@@ -675,7 +675,7 @@ async function deleteMap(
 	const { app } = options;
 	const file = app.vault.getAbstractFileByPath(filePath);
 	if (!(file instanceof TFile)) {
-		new Notice('Map file not found');
+		new Notice('未找到地图文件');
 		return;
 	}
 
@@ -687,10 +687,10 @@ async function deleteMap(
 
 	try {
 		await app.fileManager.trashFile(file);
-		new Notice(`Deleted "${mapName}"`);
+		new Notice(`已删除“${mapName}”`);
 		loadCustomMapsGrid(gridContainer, options);
 	} catch (error) {
-		new Notice(`Failed to delete: ${getErrorMessage(error)}`);
+		new Notice(`删除失败：${getErrorMessage(error)}`);
 	}
 }
 
@@ -700,26 +700,26 @@ async function deleteMap(
 function showDeleteConfirmation(mapName: string, app: App): Promise<boolean> {
 	return new Promise((resolve) => {
 		const modal = new Modal(app);
-		modal.titleEl.setText('Delete map');
+		modal.titleEl.setText('删除地图');
 
 		modal.contentEl.createEl('p', {
-			text: `Are you sure you want to delete "${mapName}"?`
+			text: `确定要删除“${mapName}”吗？`
 		});
 		modal.contentEl.createEl('p', {
-			text: 'The map note will be moved to trash. The image file will not be deleted.',
+			text: '地图笔记将被移至回收站，图片文件不会被删除。',
 			cls: 'crc-text--muted'
 		});
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
 
-		buttonContainer.createEl('button', { text: 'Cancel' })
+		buttonContainer.createEl('button', { text: '取消' })
 			.addEventListener('click', () => {
 				modal.close();
 				resolve(false);
 			});
 
 		const deleteBtn = buttonContainer.createEl('button', {
-			text: 'Delete',
+			text: '删除',
 			cls: 'mod-warning'
 		});
 		deleteBtn.addEventListener('click', () => {
@@ -746,32 +746,32 @@ function renderMapStatistics(
 	const coordPercent = stats.totalPlaces > 0
 		? Math.round((stats.withCoordinates / stats.totalPlaces) * 100)
 		: 0;
-	createStatItem(statsGrid, 'With coordinates', `${stats.withCoordinates}/${stats.totalPlaces} (${coordPercent}%)`, 'globe');
+	createStatItem(statsGrid, '有坐标', `${stats.withCoordinates}/${stats.totalPlaces} (${coordPercent}%)`, 'globe');
 
 	// Places without coordinates
 	const withoutCoords = stats.totalPlaces - stats.withCoordinates;
-	createStatItem(statsGrid, 'Without any coordinates', withoutCoords.toString(), 'map-pin');
+	createStatItem(statsGrid, '无任何坐标', withoutCoords.toString(), 'map-pin');
 
 	// Universes
 	const universeCount = Object.keys(stats.byUniverse).length;
 	if (universeCount > 0) {
-		createStatItem(statsGrid, 'Universes', universeCount.toString(), 'globe');
+		createStatItem(statsGrid, '宇宙', universeCount.toString(), 'globe');
 
 		// List universes
 		const universeSection = container.createDiv({ cls: 'crc-mt-3' });
-		universeSection.createEl('h4', { text: 'Universes', cls: 'crc-section-title' });
+		universeSection.createEl('h4', { text: '宇宙', cls: 'crc-section-title' });
 		const universeList = universeSection.createEl('ul', { cls: 'crc-list' });
 
 		for (const [universe, count] of Object.entries(stats.byUniverse).sort((a, b) => b[1] - a[1])) {
 			const item = universeList.createEl('li');
 			item.createEl('span', { text: universe });
-			item.createEl('span', { text: ` (${count} places)`, cls: 'crc-text--muted' });
+			item.createEl('span', { text: `（${count} 个地点）`, cls: 'crc-text--muted' });
 		}
 	}
 
 	// View full statistics link
 	const statsLink = container.createDiv({ cls: 'cr-stats-link' });
-	const link = statsLink.createEl('a', { text: 'View full statistics \u2192', cls: 'crc-text-muted' });
+	const link = statsLink.createEl('a', { text: '查看完整统计 \u2192', cls: 'crc-text-muted' });
 	link.addEventListener('click', (e) => {
 		e.preventDefault();
 		closeModal();
@@ -787,9 +787,9 @@ export function renderMapsTab(options: MapsTabOptions): void {
 
 	// Card 1: World map preview
 	const mapViewCard = createCard({
-		title: 'World map',
+		title: '世界地图',
 		icon: 'map',
-		subtitle: 'Interactive geographic visualization'
+		subtitle: '交互式地理可视化'
 	});
 
 	const mapViewContent = mapViewCard.querySelector('.crc-card__content') as HTMLElement;
@@ -811,10 +811,10 @@ export function renderMapsTab(options: MapsTabOptions): void {
 
 	// Open new map button (for side-by-side comparison)
 	new Setting(mapViewContent)
-		.setName('Open new map view')
-		.setDesc('Open a second map view for side-by-side comparison')
+		.setName('打开新的地图视图')
+		.setDesc('打开第二个地图视图以进行并排比较')
 		.addButton(button => button
-			.setButtonText('Open new map')
+			.setButtonText('打开新地图')
 			.onClick(() => {
 				closeModal();
 				app.commands.executeCommandById('charted-roots:open-new-map-view');
@@ -827,10 +827,10 @@ export function renderMapsTab(options: MapsTabOptions): void {
 
 	if (placesWithoutCoords.length > 0) {
 		new Setting(mapViewContent)
-			.setName('Bulk geocode places')
-			.setDesc(`${placesWithoutCoords.length} place${placesWithoutCoords.length !== 1 ? 's' : ''} without coordinates. Look up using OpenStreetMap.`)
+			.setName('批量地理编码地点')
+			.setDesc(`${placesWithoutCoords.length} 个地点缺少坐标。使用 OpenStreetMap 查询。`)
 			.addButton(button => button
-				.setButtonText('Geocode')
+				.setButtonText('地理编码')
 				.onClick(() => {
 					new BulkGeocodeModal(app, placeService, {
 						onComplete: () => {
@@ -846,19 +846,19 @@ export function renderMapsTab(options: MapsTabOptions): void {
 
 	// Card 2: Custom Maps
 	const customMapsCard = createCard({
-		title: 'Custom maps',
+		title: '自定义地图',
 		icon: 'globe',
-		subtitle: 'Image maps for fictional worlds'
+		subtitle: '用于虚构世界的图片地图'
 	});
 
 	const customMapsContent = customMapsCard.querySelector('.crc-card__content') as HTMLElement;
 
 	// Create map buttons
 	new Setting(customMapsContent)
-		.setName('Create custom map')
-		.setDesc('Create a new map note for a fictional or historical world')
+		.setName('创建自定义地图')
+		.setDesc('为虚构或历史世界创建新的地图笔记')
 		.addButton(button => button
-			.setButtonText('Wizard')
+			.setButtonText('向导')
 			.setCta()
 			.onClick(() => {
 				closeModal();
@@ -867,7 +867,7 @@ export function renderMapsTab(options: MapsTabOptions): void {
 				}).open();
 			}))
 		.addButton(button => button
-			.setButtonText('Quick create')
+			.setButtonText('快速创建')
 			.onClick(() => {
 				closeModal();
 				new CreateMapModal(app, {
@@ -879,19 +879,19 @@ export function renderMapsTab(options: MapsTabOptions): void {
 				}).open();
 			}))
 		.addButton(button => button
-			.setButtonText('Import JSON')
+			.setButtonText('导入 JSON')
 			.onClick(() => {
 				importMapFromJson(mapsGridContainer, options);
 			}));
 
 	// Gallery section with heading
 	const gallerySection = customMapsContent.createDiv({ cls: 'cr-map-gallery-section' });
-	gallerySection.createEl('h4', { text: 'Gallery', cls: 'cr-map-gallery-heading' });
+	gallerySection.createEl('h4', { text: '图库', cls: 'cr-map-gallery-heading' });
 
 	// Placeholder for loading maps
 	const mapsGridContainer = gallerySection.createDiv();
 	mapsGridContainer.createEl('p', {
-		text: 'Loading custom maps...',
+		text: '正在加载自定义地图…',
 		cls: 'crc-text--muted'
 	});
 
@@ -902,27 +902,27 @@ export function renderMapsTab(options: MapsTabOptions): void {
 
 	// Card 3: Visualizations
 	const vizCard = createCard({
-		title: 'Visualizations',
+		title: '可视化',
 		icon: 'activity',
-		subtitle: 'Migration and network diagrams'
+		subtitle: '迁移与关系网络图'
 	});
 
 	const vizContent = vizCard.querySelector('.crc-card__content') as HTMLElement;
 
 	new Setting(vizContent)
-		.setName('Migration diagram')
-		.setDesc('Visualize migration patterns from birth to death locations')
+		.setName('迁移图')
+		.setDesc('可视化从出生地到去世地的迁移模式')
 		.addButton(button => button
-			.setButtonText('View diagram')
+			.setButtonText('查看图表')
 			.onClick(() => {
 				new MigrationDiagramModal(app).open();
 			}));
 
 	new Setting(vizContent)
-		.setName('Place hierarchy')
-		.setDesc('Visualize place relationships as a network diagram')
+		.setName('地点层级')
+		.setDesc('以网络图形式可视化地点关系')
 		.addButton(button => button
-			.setButtonText('View hierarchy')
+			.setButtonText('查看层级')
 			.onClick(() => {
 				new PlaceNetworkModal(app).open();
 			}));
@@ -931,9 +931,9 @@ export function renderMapsTab(options: MapsTabOptions): void {
 
 	// Card 4: Place Timeline
 	const placeTimelineCard = createCard({
-		title: 'Place timeline',
+		title: '地点时间轴',
 		icon: 'map-pin',
-		subtitle: 'Events at a location over time'
+		subtitle: '某地点随时间发生的事件'
 	});
 
 	const placeTimelineContent = placeTimelineCard.querySelector('.crc-card__content') as HTMLElement;
@@ -953,7 +953,7 @@ export function renderMapsTab(options: MapsTabOptions): void {
 		);
 	} else {
 		placeTimelineContent.createEl('p', {
-			text: 'Event service not available.',
+			text: '事件服务不可用。',
 			cls: 'crc-text--muted'
 		});
 	}
@@ -962,9 +962,9 @@ export function renderMapsTab(options: MapsTabOptions): void {
 
 	// Card 5: Map Statistics
 	const statsCard = createCard({
-		title: 'Map statistics',
+		title: '地图统计',
 		icon: 'bar-chart',
-		subtitle: 'Geographic data overview'
+		subtitle: '地理数据概览'
 	});
 
 	const statsContent = statsCard.querySelector('.crc-card__content') as HTMLElement;

@@ -2,8 +2,8 @@
  * Date display utilities for formatting dates in the UI
  */
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-	'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTHS = ['1月', '2月', '3月', '4月', '5月', '6月',
+	'7月', '8月', '9月', '10月', '11月', '12月'];
 
 /**
  * Trailing `T HH:MM[:SS]` suffix used to disambiguate twin birth orders
@@ -61,11 +61,11 @@ export function formatDisplayDate(dateStr: string | number | undefined | null): 
 			case 'ABT':
 			case 'CAL':
 			case 'EST':
-				return `c. ${year}`;
+				return `约${year}`;
 			case 'BEF':
-				return `before ${year}`;
+				return `早于${year}`;
 			case 'AFT':
-				return `after ${year}`;
+				return `晚于${year}`;
 		}
 	}
 
@@ -75,34 +75,34 @@ export function formatDisplayDate(dateStr: string | number | undefined | null): 
 		const qualifier = qualifierPartialMatch[1].toUpperCase();
 		const year = qualifierPartialMatch[2];
 		const monthIdx = parseInt(qualifierPartialMatch[3], 10) - 1;
-		const formattedDate = `${MONTHS[monthIdx]} ${year}`;
+		const formattedDate = `${year}年${MONTHS[monthIdx]}`;
 		switch (qualifier) {
 			case 'ABT':
 			case 'CAL':
 			case 'EST':
-				return `c. ${formattedDate}`;
+				return `约${formattedDate}`;
 			case 'BEF':
-				return `before ${formattedDate}`;
+				return `早于${formattedDate}`;
 			case 'AFT':
-				return `after ${formattedDate}`;
+				return `晚于${formattedDate}`;
 		}
 	}
 
-	// Convert ISO to readable format (YYYY-MM-DD → "D Mon YYYY")
+	// Convert ISO to readable format (YYYY-MM-DD → "YYYY年M月D日")
 	const isoMatch = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})/);
 	if (isoMatch) {
 		const year = isoMatch[1];
 		const monthIdx = parseInt(isoMatch[2], 10) - 1;
 		const day = parseInt(isoMatch[3], 10);
-		return `${day} ${MONTHS[monthIdx]} ${year}`;
+		return `${year}年${MONTHS[monthIdx]}${day}日`;
 	}
 
-	// Year-month only (YYYY-MM → "Mon YYYY")
+	// Year-month only (YYYY-MM → "YYYY年M月")
 	const yearMonthMatch = trimmed.match(/^(\d{4})-(\d{2})$/);
 	if (yearMonthMatch) {
 		const year = yearMonthMatch[1];
 		const monthIdx = parseInt(yearMonthMatch[2], 10) - 1;
-		return `${MONTHS[monthIdx]} ${year}`;
+		return `${year}年${MONTHS[monthIdx]}`;
 	}
 
 	// Return as-is for year-only, GEDCOM-like format, or unrecognized

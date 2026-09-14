@@ -12,7 +12,6 @@ import { App, Modal, TFile, setIcon } from 'obsidian';
 import type CanvasRootsPlugin from '../../main';
 import { createLucideIcon } from './lucide-icons';
 import type { NormalizationPreview } from '../core/data-quality';
-import { pluralize } from '../utils/format-utils';
 
 // ==========================================================================
 // DuplicateRelationshipsPreviewModal
@@ -53,7 +52,7 @@ export class DuplicateRelationshipsPreviewModal extends Modal {
 		// Add modal class for sizing
 		this.modalEl.addClass('crc-batch-preview-modal');
 
-		titleEl.setText('Preview: Remove duplicate relationships');
+		titleEl.setText('预览：移除重复关系');
 
 		// Count display
 		this.countEl = contentEl.createEl('p', { cls: 'crc-batch-count' });
@@ -65,7 +64,7 @@ export class DuplicateRelationshipsPreviewModal extends Modal {
 		const searchContainer = controlsRow.createDiv({ cls: 'crc-batch-search' });
 		const searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search by name...',
+			placeholder: '按姓名搜索…',
 			cls: 'crc-batch-search-input'
 		});
 		searchInput.addEventListener('input', () => {
@@ -78,7 +77,7 @@ export class DuplicateRelationshipsPreviewModal extends Modal {
 		if (uniqueFields.length > 1) {
 			const filterContainer = controlsRow.createDiv({ cls: 'crc-batch-filter' });
 			const filterSelect = filterContainer.createEl('select', { cls: 'crc-batch-filter-select' });
-			filterSelect.createEl('option', { text: 'All fields', value: 'all' });
+			filterSelect.createEl('option', { text: '所有字段', value: 'all' });
 			for (const field of uniqueFields.sort()) {
 				filterSelect.createEl('option', { text: field, value: field });
 			}
@@ -107,11 +106,11 @@ export class DuplicateRelationshipsPreviewModal extends Modal {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Field' });
-		headerRow.createEl('th', { text: 'Current' });
-		headerRow.createEl('th', { text: 'After' });
-		headerRow.createEl('th', { text: 'Actions' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '字段' });
+		headerRow.createEl('th', { text: '当前' });
+		headerRow.createEl('th', { text: '更改后' });
+		headerRow.createEl('th', { text: '操作' });
 
 		this.tbody = table.createEl('tbody');
 
@@ -123,20 +122,20 @@ export class DuplicateRelationshipsPreviewModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+			text: ' 操作前请备份你的库。此操作将修改现有笔记。'
 		});
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelButton = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelButton.addEventListener('click', () => this.close());
 
 		const applyButton = buttonContainer.createEl('button', {
-			text: `Apply ${this.allChanges.length} ${pluralize(this.allChanges.length, 'change')}`,
+			text: `应用 ${this.allChanges.length} 项更改`,
 			cls: 'mod-cta'
 		});
 		applyButton.addEventListener('click', () => {
@@ -144,7 +143,7 @@ export class DuplicateRelationshipsPreviewModal extends Modal {
 				// Disable buttons during operation
 				applyButton.disabled = true;
 				cancelButton.disabled = true;
-				applyButton.textContent = 'Applying changes...';
+				applyButton.textContent = '正在应用更改…';
 
 				// Run the operation
 				await this.onApply();
@@ -183,9 +182,9 @@ export class DuplicateRelationshipsPreviewModal extends Modal {
 		if (this.countEl) {
 			const peopleCount = new Set(this.allChanges.map(c => c.person.name)).size;
 			if (this.filteredChanges.length === this.allChanges.length) {
-				this.countEl.textContent = `Found ${this.allChanges.length} duplicate relationship ${pluralize(this.allChanges.length, 'entry', 'entries')} across ${peopleCount} ${pluralize(peopleCount, 'person', 'people')}:`;
+				this.countEl.textContent = `在 ${peopleCount} 位人物中发现 ${this.allChanges.length} 条重复关系：`;
 			} else {
-				this.countEl.textContent = `Showing ${this.filteredChanges.length} of ${this.allChanges.length} duplicate entries:`;
+				this.countEl.textContent = `显示 ${this.allChanges.length} 条重复条目中的 ${this.filteredChanges.length} 条：`;
 			}
 		}
 
@@ -216,7 +215,7 @@ export class DuplicateRelationshipsPreviewModal extends Modal {
 			// Open in new tab button
 			const openTabBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': 'Open note in new tab' }
+				attr: { 'aria-label': '在新标签页中打开笔记' }
 			});
 			const fileIcon = createLucideIcon('file-text', 14);
 			openTabBtn.appendChild(fileIcon);
@@ -227,7 +226,7 @@ export class DuplicateRelationshipsPreviewModal extends Modal {
 			// Open in new window button
 			const openWindowBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': 'Open note in new window' }
+				attr: { 'aria-label': '在新窗口中打开笔记' }
 			});
 			const windowIcon = createLucideIcon('external-link', 14);
 			openWindowBtn.appendChild(windowIcon);
@@ -239,7 +238,7 @@ export class DuplicateRelationshipsPreviewModal extends Modal {
 		if (this.filteredChanges.length === 0 && this.allChanges.length > 0) {
 			const row = this.tbody.createEl('tr');
 			const cell = row.createEl('td', {
-				text: 'No matches found',
+				text: '未找到匹配项',
 				cls: 'crc-text-muted'
 			});
 			cell.setAttribute('colspan', '5');
@@ -291,18 +290,18 @@ export class PlaceholderRemovalPreviewModal extends Modal {
 		// Add modal class for sizing
 		this.modalEl.addClass('crc-batch-preview-modal');
 
-		titleEl.setText('Preview: Remove placeholder values');
+		titleEl.setText('预览：移除占位符值');
 
 		// Description
 		const description = contentEl.createDiv({ cls: 'crc-batch-description' });
 		description.createEl('p', {
-			text: 'This operation removes common placeholder values from GEDCOM imports and data entry mistakes:'
+			text: '此操作会移除 GEDCOM 导入和数据录入错误中常见的占位符值：'
 		});
 		const useCases = description.createEl('ul');
-		useCases.createEl('li', { text: 'Placeholder text: (unknown), Unknown, N/A, ???, Empty, None' });
-		useCases.createEl('li', { text: 'Malformed wikilinks: [[unknown) ]] with mismatched brackets' });
-		useCases.createEl('li', { text: 'Leading commas in places: ", , , Canada" → "Canada"' });
-		useCases.createEl('li', { text: 'Empty parent/spouse fields showing as "Empty"' });
+		useCases.createEl('li', { text: '占位文本：(unknown)、Unknown、N/A、???、Empty、None' });
+		useCases.createEl('li', { text: '格式错误的 wikilink：括号不匹配的 [[unknown) ]]' });
+		useCases.createEl('li', { text: '地点中的前导逗号：", , , Canada" → "Canada"' });
+		useCases.createEl('li', { text: '显示为"Empty"的空父母/配偶字段' });
 
 		// Count display
 		this.countEl = contentEl.createEl('p', { cls: 'crc-batch-count' });
@@ -314,7 +313,7 @@ export class PlaceholderRemovalPreviewModal extends Modal {
 		const searchContainer = controlsRow.createDiv({ cls: 'crc-batch-search' });
 		const searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search by name...',
+			placeholder: '按姓名搜索…',
 			cls: 'crc-batch-search-input'
 		});
 		searchInput.addEventListener('input', () => {
@@ -327,7 +326,7 @@ export class PlaceholderRemovalPreviewModal extends Modal {
 		if (uniqueFields.length > 1) {
 			const filterContainer = controlsRow.createDiv({ cls: 'crc-batch-filter' });
 			const filterSelect = filterContainer.createEl('select', { cls: 'crc-batch-filter-select' });
-			filterSelect.createEl('option', { text: 'All fields', value: 'all' });
+			filterSelect.createEl('option', { text: '所有字段', value: 'all' });
 			for (const field of uniqueFields.sort()) {
 				filterSelect.createEl('option', { text: field, value: field });
 			}
@@ -356,11 +355,11 @@ export class PlaceholderRemovalPreviewModal extends Modal {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Field' });
-		headerRow.createEl('th', { text: 'Current' });
-		headerRow.createEl('th', { text: 'After' });
-		headerRow.createEl('th', { text: 'Actions' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '字段' });
+		headerRow.createEl('th', { text: '当前' });
+		headerRow.createEl('th', { text: '更改后' });
+		headerRow.createEl('th', { text: '操作' });
 
 		this.tbody = table.createEl('tbody');
 
@@ -372,20 +371,20 @@ export class PlaceholderRemovalPreviewModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+			text: ' 操作前请备份你的库。此操作将修改现有笔记。'
 		});
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelButton = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelButton.addEventListener('click', () => this.close());
 
 		const applyButton = buttonContainer.createEl('button', {
-			text: `Apply ${this.allChanges.length} ${pluralize(this.allChanges.length, 'change')}`,
+			text: `应用 ${this.allChanges.length} 项更改`,
 			cls: 'mod-cta'
 		});
 		applyButton.addEventListener('click', () => {
@@ -393,7 +392,7 @@ export class PlaceholderRemovalPreviewModal extends Modal {
 				// Disable buttons during operation
 				applyButton.disabled = true;
 				cancelButton.disabled = true;
-				applyButton.textContent = 'Applying changes...';
+				applyButton.textContent = '正在应用更改…';
 
 				// Run the operation
 				await this.onApply();
@@ -432,9 +431,9 @@ export class PlaceholderRemovalPreviewModal extends Modal {
 		if (this.countEl) {
 			const peopleCount = new Set(this.allChanges.map(c => c.person.name)).size;
 			if (this.filteredChanges.length === this.allChanges.length) {
-				this.countEl.textContent = `Found ${this.allChanges.length} placeholder ${pluralize(this.allChanges.length, 'value')} across ${peopleCount} ${pluralize(peopleCount, 'person', 'people')}:`;
+				this.countEl.textContent = `在 ${peopleCount} 位人物中发现 ${this.allChanges.length} 个占位符值：`;
 			} else {
-				this.countEl.textContent = `Showing ${this.filteredChanges.length} of ${this.allChanges.length} placeholder values:`;
+				this.countEl.textContent = `显示 ${this.allChanges.length} 个占位符值中的 ${this.filteredChanges.length} 个：`;
 			}
 		}
 
@@ -463,7 +462,7 @@ export class PlaceholderRemovalPreviewModal extends Modal {
 			// Open in new tab button
 			const openTabBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': 'Open note in new tab' }
+				attr: { 'aria-label': '在新标签页中打开笔记' }
 			});
 			const fileIcon = createLucideIcon('file-text', 14);
 			openTabBtn.appendChild(fileIcon);
@@ -474,7 +473,7 @@ export class PlaceholderRemovalPreviewModal extends Modal {
 			// Open in new window button
 			const openWindowBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': 'Open note in new window' }
+				attr: { 'aria-label': '在新窗口中打开笔记' }
 			});
 			const windowIcon = createLucideIcon('external-link', 14);
 			openWindowBtn.appendChild(windowIcon);
@@ -486,7 +485,7 @@ export class PlaceholderRemovalPreviewModal extends Modal {
 		if (this.filteredChanges.length === 0 && this.allChanges.length > 0) {
 			const row = this.tbody.createEl('tr');
 			const cell = row.createEl('td', {
-				text: 'No matches found',
+				text: '未找到匹配项',
 				cls: 'crc-text-muted'
 			});
 			cell.setAttribute('colspan', '5');
@@ -537,20 +536,20 @@ export class NameNormalizationPreviewModal extends Modal {
 		// Add modal class for sizing
 		this.modalEl.addClass('crc-batch-preview-modal');
 
-		titleEl.setText('Preview: Normalize name formatting');
+		titleEl.setText('预览：规范化姓名格式');
 
 		// Description
 		const description = contentEl.createDiv({ cls: 'crc-batch-description' });
 		description.createEl('p', {
-			text: 'This operation standardizes name capitalization and handles surname prefixes:'
+			text: '此操作会统一姓名大小写并处理姓氏前缀：'
 		});
 		const useCases = description.createEl('ul');
-		useCases.createEl('li', { text: 'ALL CAPS names: "JOHN SMITH" → "John Smith"' });
-		useCases.createEl('li', { text: 'Lowercase names: "john doe" → "John Doe"' });
-		useCases.createEl('li', { text: 'Mac/Mc prefixes: "macdonald" → "MacDonald", "mccarthy" → "McCarthy"' });
-		useCases.createEl('li', { text: "O' prefix: \"o'brien\" → \"O'Brien\"" });
-		useCases.createEl('li', { text: 'Dutch/German prefixes: "Vincent Van Gogh" → "Vincent van Gogh"' });
-		useCases.createEl('li', { text: 'Multiple spaces collapsed to single space' });
+		useCases.createEl('li', { text: '全大写姓名："JOHN SMITH" → "John Smith"' });
+		useCases.createEl('li', { text: '小写姓名："john doe" → "John Doe"' });
+		useCases.createEl('li', { text: 'Mac/Mc 前缀："macdonald" → "MacDonald"，"mccarthy" → "McCarthy"' });
+		useCases.createEl('li', { text: "O' 前缀：\"o'brien\" → \"O'Brien\"" });
+		useCases.createEl('li', { text: '荷兰语/德语前缀："Vincent Van Gogh" → "Vincent van Gogh"' });
+		useCases.createEl('li', { text: '多个连续空格合并为单个空格' });
 
 		// Count display
 		this.countEl = contentEl.createEl('p', { cls: 'crc-batch-count' });
@@ -562,7 +561,7 @@ export class NameNormalizationPreviewModal extends Modal {
 		const searchContainer = controlsRow.createDiv({ cls: 'crc-batch-search' });
 		const searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search by name...',
+			placeholder: '按姓名搜索…',
 			cls: 'crc-batch-search-input'
 		});
 		searchInput.addEventListener('input', () => {
@@ -589,10 +588,10 @@ export class NameNormalizationPreviewModal extends Modal {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Current name' });
-		headerRow.createEl('th', { text: 'Normalized name' });
-		headerRow.createEl('th', { text: 'Actions' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '当前姓名' });
+		headerRow.createEl('th', { text: '规范化后姓名' });
+		headerRow.createEl('th', { text: '操作' });
 
 		this.tbody = table.createEl('tbody');
 
@@ -604,20 +603,20 @@ export class NameNormalizationPreviewModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+			text: ' 操作前请备份你的库。此操作将修改现有笔记。'
 		});
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelButton = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelButton.addEventListener('click', () => this.close());
 
 		const applyButton = buttonContainer.createEl('button', {
-			text: `Apply ${this.allChanges.length} ${pluralize(this.allChanges.length, 'change')}`,
+			text: `应用 ${this.allChanges.length} 项更改`,
 			cls: 'mod-cta'
 		});
 		applyButton.addEventListener('click', () => {
@@ -625,7 +624,7 @@ export class NameNormalizationPreviewModal extends Modal {
 				// Disable buttons during operation
 				applyButton.disabled = true;
 				cancelButton.disabled = true;
-				applyButton.textContent = 'Applying changes...';
+				applyButton.textContent = '正在应用更改…';
 
 				// Run the operation
 				await this.onApply();
@@ -660,9 +659,9 @@ export class NameNormalizationPreviewModal extends Modal {
 		if (this.countEl) {
 			const peopleCount = new Set(this.allChanges.map(c => c.person.name)).size;
 			if (this.filteredChanges.length === this.allChanges.length) {
-				this.countEl.textContent = `Found ${this.allChanges.length} ${pluralize(this.allChanges.length, 'name')} to normalize across ${peopleCount} ${pluralize(peopleCount, 'person', 'people')}:`;
+				this.countEl.textContent = `在 ${peopleCount} 位人物中发现 ${this.allChanges.length} 个待规范化的姓名：`;
 			} else {
-				this.countEl.textContent = `Showing ${this.filteredChanges.length} of ${this.allChanges.length} names:`;
+				this.countEl.textContent = `显示 ${this.allChanges.length} 个姓名中的 ${this.filteredChanges.length} 个：`;
 			}
 		}
 
@@ -690,7 +689,7 @@ export class NameNormalizationPreviewModal extends Modal {
 			// Open in new tab button
 			const openTabBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': 'Open note in new tab' }
+				attr: { 'aria-label': '在新标签页中打开笔记' }
 			});
 			const fileIcon = createLucideIcon('file-text', 14);
 			openTabBtn.appendChild(fileIcon);
@@ -701,7 +700,7 @@ export class NameNormalizationPreviewModal extends Modal {
 			// Open in new window button
 			const openWindowBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': 'Open note in new window' }
+				attr: { 'aria-label': '在新窗口中打开笔记' }
 			});
 			const windowIcon = createLucideIcon('external-link', 14);
 			openWindowBtn.appendChild(windowIcon);
@@ -713,7 +712,7 @@ export class NameNormalizationPreviewModal extends Modal {
 		if (this.filteredChanges.length === 0 && this.allChanges.length > 0) {
 			const row = this.tbody.createEl('tr');
 			const cell = row.createEl('td', {
-				text: 'No matches found',
+				text: '未找到匹配项',
 				cls: 'crc-text-muted'
 			});
 			cell.setAttribute('colspan', '4');
@@ -762,19 +761,19 @@ export class OrphanedRefsPreviewModal extends Modal {
 		const { contentEl, titleEl } = this;
 
 		this.modalEl.addClass('crc-batch-preview-modal');
-		titleEl.setText('Preview: Remove orphaned cr_id references');
+		titleEl.setText('预览：移除孤立的 cr_id 引用');
 
 		// Description with use cases
 		const description = contentEl.createDiv({ cls: 'crc-batch-description' });
 		description.createEl('p', {
-			text: 'This operation removes broken relationship references (cr_id values) that point to deleted or non-existent person notes:'
+			text: '此操作会移除指向已删除或不存在的人物笔记的损坏关系引用（cr_id 值）：'
 		});
 		const useCases = description.createEl('ul');
-		useCases.createEl('li', { text: 'father_id, mother_id: Parent references' });
-		useCases.createEl('li', { text: 'spouse_id, partners_id: Spouse/partner references' });
-		useCases.createEl('li', { text: 'children_id: Child references' });
+		useCases.createEl('li', { text: 'father_id、mother_id：父母引用' });
+		useCases.createEl('li', { text: 'spouse_id、partners_id：配偶/伴侣引用' });
+		useCases.createEl('li', { text: 'children_id：子女引用' });
 		description.createEl('p', {
-			text: 'Note: Only the _id fields are cleaned. Wikilink references (father, mother, spouse, children) are left unchanged.',
+			text: '注意：仅清理 _id 字段。wikilink 引用（father、mother、spouse、children）保持不变。',
 			cls: 'crc-text--muted'
 		});
 
@@ -782,7 +781,7 @@ export class OrphanedRefsPreviewModal extends Modal {
 		const searchContainer = contentEl.createDiv({ cls: 'crc-filter-container' });
 		const searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search by person name or orphaned ID...',
+			placeholder: '按人物姓名或孤立 ID 搜索…',
 			cls: 'crc-search-input'
 		});
 		searchInput.addEventListener('input', (e) => {
@@ -792,14 +791,14 @@ export class OrphanedRefsPreviewModal extends Modal {
 
 		// Field filter dropdown
 		const filterContainer = contentEl.createDiv({ cls: 'crc-filter-container' });
-		filterContainer.createSpan({ text: 'Filter by field: ', cls: 'crc-filter-label' });
+		filterContainer.createSpan({ text: '按字段筛选：', cls: 'crc-filter-label' });
 		const fieldSelect = filterContainer.createEl('select', { cls: 'dropdown' });
 
 		const fields = ['all', 'father_id', 'mother_id', 'spouse_id', 'partners_id', 'children_id'];
 		fields.forEach(field => {
 			const option = fieldSelect.createEl('option', {
 				value: field,
-				text: field === 'all' ? 'All fields' : field
+				text: field === 'all' ? '所有字段' : field
 			});
 			if (field === this.selectedField) {
 				option.selected = true;
@@ -814,12 +813,12 @@ export class OrphanedRefsPreviewModal extends Modal {
 		// Sort toggle
 		const sortContainer = contentEl.createDiv({ cls: 'crc-filter-container' });
 		const sortButton = sortContainer.createEl('button', {
-			text: `Sort: ${this.sortAscending ? 'A-Z' : 'Z-A'}`,
+			text: `排序：${this.sortAscending ? 'A-Z' : 'Z-A'}`,
 			cls: 'crc-btn-secondary'
 		});
 		sortButton.addEventListener('click', () => {
 			this.sortAscending = !this.sortAscending;
-			sortButton.textContent = `Sort: ${this.sortAscending ? 'A-Z' : 'Z-A'}`;
+			sortButton.textContent = `排序：${this.sortAscending ? 'A-Z' : 'Z-A'}`;
 			this.applyFiltersAndSort();
 		});
 
@@ -832,10 +831,10 @@ export class OrphanedRefsPreviewModal extends Modal {
 
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Field' });
-		headerRow.createEl('th', { text: 'Orphaned ID' });
-		headerRow.createEl('th', { text: 'Actions' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '字段' });
+		headerRow.createEl('th', { text: '孤立 ID' });
+		headerRow.createEl('th', { text: '操作' });
 
 		this.tbody = table.createEl('tbody');
 
@@ -847,20 +846,20 @@ export class OrphanedRefsPreviewModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+			text: ' 操作前请备份你的库。此操作将修改现有笔记。'
 		});
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelButton = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelButton.addEventListener('click', () => this.close());
 
 		const applyButton = buttonContainer.createEl('button', {
-			text: `Apply ${this.allChanges.length} ${pluralize(this.allChanges.length, 'change')}`,
+			text: `应用 ${this.allChanges.length} 项更改`,
 			cls: 'mod-cta'
 		});
 		applyButton.addEventListener('click', () => {
@@ -868,7 +867,7 @@ export class OrphanedRefsPreviewModal extends Modal {
 				// Disable buttons during operation
 				applyButton.disabled = true;
 				cancelButton.disabled = true;
-				applyButton.textContent = 'Applying changes...';
+				applyButton.textContent = '正在应用更改…';
 
 				// Run the operation
 				await this.onApply();
@@ -913,7 +912,7 @@ export class OrphanedRefsPreviewModal extends Modal {
 		if (!this.tbody || !this.countEl) return;
 
 		// Update count
-		this.countEl.textContent = `Showing ${this.filteredChanges.length} of ${this.allChanges.length} orphaned ${pluralize(this.allChanges.length, 'reference')}`;
+		this.countEl.textContent = `显示 ${this.filteredChanges.length} / ${this.allChanges.length} 个孤立引用`;
 
 		// Clear table
 		this.tbody.empty();
@@ -931,7 +930,7 @@ export class OrphanedRefsPreviewModal extends Modal {
 			// Open in tab button
 			const openTabBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': 'Open note in tab' }
+				attr: { 'aria-label': '在标签页中打开笔记' }
 			});
 			const fileIcon = createLucideIcon('file-text', 14);
 			openTabBtn.appendChild(fileIcon);
@@ -942,7 +941,7 @@ export class OrphanedRefsPreviewModal extends Modal {
 			// Open in new window button
 			const openWindowBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': 'Open note in new window' }
+				attr: { 'aria-label': '在新窗口中打开笔记' }
 			});
 			const windowIcon = createLucideIcon('external-link', 14);
 			openWindowBtn.appendChild(windowIcon);
@@ -956,8 +955,8 @@ export class OrphanedRefsPreviewModal extends Modal {
 			const row = this.tbody.createEl('tr');
 			const cell = row.createEl('td', {
 				text: this.searchQuery || this.selectedField !== 'all'
-					? 'No orphaned references match your filters'
-					: 'No orphaned references found',
+					? '没有符合筛选条件的孤立引用'
+					: '未发现孤立引用',
 				cls: 'crc-text--muted'
 			});
 			cell.colSpan = 4;
@@ -1017,14 +1016,14 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 		this.allChanges = changes;
 		this.onApply = onApply;
 		this.labels = {
-			title: labels?.title ?? 'Preview: Fix bidirectional relationship inconsistencies',
-			intro: labels?.intro ?? 'This operation fixes one-way relationships by adding the missing reciprocal links:',
+			title: labels?.title ?? '预览：修复双向关系不一致',
+			intro: labels?.intro ?? '此操作通过补充缺失的互惠链接来修复单向关系：',
 			bullets: labels?.bullets ?? [
-				'Parent lists child, but child doesn\'t list parent',
-				'Child lists parent, but parent doesn\'t list child',
-				'Person A lists Person B as spouse, but B doesn\'t list A'
+				'父母列出了子女，但子女未列出父母',
+				'子女列出了父母，但父母未列出子女',
+				'人物 A 将人物 B 列为配偶，但 B 未列出 A'
 			],
-			warning: labels?.warning ?? 'Backup your vault before proceeding. This operation will add missing relationship links to notes.'
+			warning: labels?.warning ?? '操作前请备份你的库。此操作会向笔记添加缺失的关系链接。'
 		};
 	}
 
@@ -1054,7 +1053,7 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 		const searchContainer = controlsRow.createDiv({ cls: 'crc-batch-search' });
 		const searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search by name...',
+			placeholder: '按姓名搜索…',
 			cls: 'crc-batch-search-input'
 		});
 		searchInput.addEventListener('input', () => {
@@ -1067,12 +1066,12 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 		if (uniqueTypes.length > 1) {
 			const filterContainer = controlsRow.createDiv({ cls: 'crc-batch-filter' });
 			const filterSelect = filterContainer.createEl('select', { cls: 'crc-batch-filter-select' });
-			filterSelect.createEl('option', { text: 'All types', value: 'all' });
+			filterSelect.createEl('option', { text: '所有类型', value: 'all' });
 			for (const type of uniqueTypes.sort()) {
 				const displayText = type
-					.replace('missing-child-in-parent', 'Missing child in parent')
-					.replace('missing-parent-in-child', 'Missing parent in child')
-					.replace('missing-spouse-in-spouse', 'Missing spouse link');
+					.replace('missing-child-in-parent', '父母缺少子女')
+					.replace('missing-parent-in-child', '子女缺少父母')
+					.replace('missing-spouse-in-spouse', '缺少配偶链接');
 				filterSelect.createEl('option', { text: displayText, value: type });
 			}
 			filterSelect.addEventListener('change', () => {
@@ -1100,10 +1099,10 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Related person' });
-		headerRow.createEl('th', { text: 'Issue' });
-		headerRow.createEl('th', { text: 'Actions' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '相关人物' });
+		headerRow.createEl('th', { text: '问题' });
+		headerRow.createEl('th', { text: '操作' });
 
 		this.tbody = table.createEl('tbody');
 
@@ -1120,13 +1119,13 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelButton = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelButton.addEventListener('click', () => this.close());
 
 		const applyButton = buttonContainer.createEl('button', {
-			text: `Fix ${this.allChanges.length} ${pluralize(this.allChanges.length, 'inconsistency', 'inconsistencies')}`,
+			text: `修复 ${this.allChanges.length} 处不一致`,
 			cls: 'mod-cta'
 		});
 		applyButton.addEventListener('click', () => {
@@ -1134,7 +1133,7 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 				// Disable buttons during operation
 				applyButton.disabled = true;
 				cancelButton.disabled = true;
-				applyButton.textContent = 'Fixing inconsistencies...';
+				applyButton.textContent = '正在修复不一致…';
 
 				// Run the operation
 				await this.onApply();
@@ -1176,9 +1175,9 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 		if (this.countEl) {
 			const peopleCount = new Set(this.allChanges.map(c => c.person.name)).size;
 			if (this.filteredChanges.length === this.allChanges.length) {
-				this.countEl.textContent = `Found ${this.allChanges.length} ${pluralize(this.allChanges.length, 'inconsistency', 'inconsistencies')} across ${peopleCount} ${pluralize(peopleCount, 'person', 'people')}:`;
+				this.countEl.textContent = `在 ${peopleCount} 位人物中发现 ${this.allChanges.length} 处不一致：`;
 			} else {
-				this.countEl.textContent = `Showing ${this.filteredChanges.length} of ${this.allChanges.length} inconsistencies:`;
+				this.countEl.textContent = `显示 ${this.allChanges.length} 处不一致中的 ${this.filteredChanges.length} 处：`;
 			}
 		}
 
@@ -1206,7 +1205,7 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 			// Open person in tab
 			const openPersonTabBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': `Open ${change.person.name} in tab` }
+				attr: { 'aria-label': `在标签页中打开${change.person.name}` }
 			});
 			const fileIcon1 = createLucideIcon('file-text', 14);
 			openPersonTabBtn.appendChild(fileIcon1);
@@ -1217,7 +1216,7 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 			// Open person in new window
 			const openPersonWindowBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': `Open ${change.person.name} in new window` }
+				attr: { 'aria-label': `在新窗口中打开${change.person.name}` }
 			});
 			const windowIcon1 = createLucideIcon('external-link', 14);
 			openPersonWindowBtn.appendChild(windowIcon1);
@@ -1231,7 +1230,7 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 			// Open related person in tab
 			const openRelatedTabBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': `Open ${change.relatedPerson.name} in tab` }
+				attr: { 'aria-label': `在标签页中打开${change.relatedPerson.name}` }
 			});
 			const fileIcon2 = createLucideIcon('file-text', 14);
 			openRelatedTabBtn.appendChild(fileIcon2);
@@ -1242,7 +1241,7 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 			// Open related person in new window
 			const openRelatedWindowBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': `Open ${change.relatedPerson.name} in new window` }
+				attr: { 'aria-label': `在新窗口中打开${change.relatedPerson.name}` }
 			});
 			const windowIcon2 = createLucideIcon('external-link', 14);
 			openRelatedWindowBtn.appendChild(windowIcon2);
@@ -1254,7 +1253,7 @@ export class BidirectionalInconsistencyPreviewModal extends Modal {
 		if (this.filteredChanges.length === 0 && this.allChanges.length > 0) {
 			const row = this.tbody.createEl('tr');
 			const cell = row.createEl('td', {
-				text: 'No matches found',
+				text: '未找到匹配项',
 				cls: 'crc-text-muted'
 			});
 			cell.setAttribute('colspan', '4');
@@ -1316,24 +1315,24 @@ export class ImpossibleDatesPreviewModal extends Modal {
 		// Add modal class for sizing
 		this.modalEl.addClass('crc-batch-preview-modal');
 
-		titleEl.setText('Preview: Impossible date issues');
+		titleEl.setText('预览：不可能的日期问题');
 
 		// Description
 		const description = contentEl.createDiv({ cls: 'crc-batch-description' });
 		description.createEl('p', {
-			text: 'This preview shows logical date errors that need manual review and correction:'
+			text: '此预览显示需要人工审查和纠正的逻辑日期错误：'
 		});
 		const useCases = description.createEl('ul');
-		useCases.createEl('li', { text: 'Birth after death or death before birth' });
-		useCases.createEl('li', { text: 'Unrealistic lifespans (>120 years)' });
-		useCases.createEl('li', { text: 'Parents born after children or children born after parent death' });
-		useCases.createEl('li', { text: 'Parents too young at child\'s birth (<10 years)' });
+		useCases.createEl('li', { text: '出生晚于去世，或去世早于出生' });
+		useCases.createEl('li', { text: '不合理的寿命（>120 年）' });
+		useCases.createEl('li', { text: '父母出生于子女之后，或子女出生于父母去世之后' });
+		useCases.createEl('li', { text: '父母在子女生育时过于年轻（<10 岁）' });
 
 		const warningNote = contentEl.createDiv({ cls: 'crc-warning-callout' });
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warningNote.appendChild(warningIcon);
 		warningNote.createSpan({
-			text: ' This is a preview-only tool. Review the issues and manually correct the dates in the affected notes.'
+			text: ' 这是仅预览的工具。请审查问题并手动更正受影响笔记中的日期。'
 		});
 
 		// Count display
@@ -1346,7 +1345,7 @@ export class ImpossibleDatesPreviewModal extends Modal {
 		const searchContainer = controlsRow.createDiv({ cls: 'crc-batch-search' });
 		const searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search by name...',
+			placeholder: '按姓名搜索…',
 			cls: 'crc-batch-search-input'
 		});
 		searchInput.addEventListener('input', () => {
@@ -1359,15 +1358,15 @@ export class ImpossibleDatesPreviewModal extends Modal {
 		if (uniqueTypes.length > 1) {
 			const filterContainer = controlsRow.createDiv({ cls: 'crc-batch-filter' });
 			const filterSelect = filterContainer.createEl('select', { cls: 'crc-batch-filter-select' });
-			filterSelect.createEl('option', { text: 'All types', value: 'all' });
+			filterSelect.createEl('option', { text: '所有类型', value: 'all' });
 			for (const type of uniqueTypes.sort()) {
 				const displayText = type
-					.replace('birth-after-death', 'Birth after death')
-					.replace('unrealistic-lifespan', 'Unrealistic lifespan')
-					.replace('parent-born-after-child', 'Parent born after child')
-					.replace('parent-died-before-child', 'Parent died before child')
-					.replace('parent-too-young', 'Parent too young')
-					.replace('child-born-after-parent-death', 'Child born after parent death');
+					.replace('birth-after-death', '出生晚于去世')
+					.replace('unrealistic-lifespan', '不合理的寿命')
+					.replace('parent-born-after-child', '父母出生于子女之后')
+					.replace('parent-died-before-child', '父母去世早于子女')
+					.replace('parent-too-young', '父母过于年轻')
+					.replace('child-born-after-parent-death', '子女出生于父母去世之后');
 				filterSelect.createEl('option', { text: displayText, value: type });
 			}
 			filterSelect.addEventListener('change', () => {
@@ -1395,10 +1394,10 @@ export class ImpossibleDatesPreviewModal extends Modal {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Related person' });
-		headerRow.createEl('th', { text: 'Issue' });
-		headerRow.createEl('th', { text: 'Actions' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '相关人物' });
+		headerRow.createEl('th', { text: '问题' });
+		headerRow.createEl('th', { text: '操作' });
 
 		this.tbody = table.createEl('tbody');
 
@@ -1408,7 +1407,7 @@ export class ImpossibleDatesPreviewModal extends Modal {
 		// Close button
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 		const closeButton = buttonContainer.createEl('button', {
-			text: 'Close',
+			text: '关闭',
 			cls: 'mod-cta'
 		});
 		closeButton.addEventListener('click', () => this.close());
@@ -1445,9 +1444,9 @@ export class ImpossibleDatesPreviewModal extends Modal {
 		if (this.countEl) {
 			const peopleCount = new Set(this.allChanges.map(c => c.person.name)).size;
 			if (this.filteredChanges.length === this.allChanges.length) {
-				this.countEl.textContent = `Found ${this.allChanges.length} ${pluralize(this.allChanges.length, 'issue')} across ${peopleCount} ${pluralize(peopleCount, 'person', 'people')}:`;
+				this.countEl.textContent = `在 ${peopleCount} 位人物中发现 ${this.allChanges.length} 个问题：`;
 			} else {
-				this.countEl.textContent = `Showing ${this.filteredChanges.length} of ${this.allChanges.length} issues:`;
+				this.countEl.textContent = `显示 ${this.allChanges.length} 个问题中的 ${this.filteredChanges.length} 个：`;
 			}
 		}
 
@@ -1475,7 +1474,7 @@ export class ImpossibleDatesPreviewModal extends Modal {
 			// Open person in tab
 			const openPersonTabBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': `Open ${change.person.name} in tab` }
+				attr: { 'aria-label': `在标签页中打开${change.person.name}` }
 			});
 			const fileIcon1 = createLucideIcon('file-text', 14);
 			openPersonTabBtn.appendChild(fileIcon1);
@@ -1486,7 +1485,7 @@ export class ImpossibleDatesPreviewModal extends Modal {
 			// Open person in new window
 			const openPersonWindowBtn = actionCell.createEl('button', {
 				cls: 'crc-batch-action-btn clickable-icon',
-				attr: { 'aria-label': `Open ${change.person.name} in new window` }
+				attr: { 'aria-label': `在新窗口中打开${change.person.name}` }
 			});
 			const windowIcon1 = createLucideIcon('external-link', 14);
 			openPersonWindowBtn.appendChild(windowIcon1);
@@ -1502,7 +1501,7 @@ export class ImpossibleDatesPreviewModal extends Modal {
 				// Open related person in tab
 				const openRelatedTabBtn = actionCell.createEl('button', {
 					cls: 'crc-batch-action-btn clickable-icon',
-					attr: { 'aria-label': `Open ${change.relatedPerson.name} in tab` }
+					attr: { 'aria-label': `在标签页中打开${change.relatedPerson.name}` }
 				});
 				const fileIcon2 = createLucideIcon('file-text', 14);
 				openRelatedTabBtn.appendChild(fileIcon2);
@@ -1513,7 +1512,7 @@ export class ImpossibleDatesPreviewModal extends Modal {
 				// Open related person in new window
 				const openRelatedWindowBtn = actionCell.createEl('button', {
 					cls: 'crc-batch-action-btn clickable-icon',
-					attr: { 'aria-label': `Open ${change.relatedPerson.name} in new window` }
+					attr: { 'aria-label': `在新窗口中打开${change.relatedPerson.name}` }
 				});
 				const windowIcon2 = createLucideIcon('external-link', 14);
 				openRelatedWindowBtn.appendChild(windowIcon2);
@@ -1526,7 +1525,7 @@ export class ImpossibleDatesPreviewModal extends Modal {
 		if (this.filteredChanges.length === 0 && this.allChanges.length > 0) {
 			const row = this.tbody.createEl('tr');
 			const cell = row.createEl('td', {
-				text: 'No matches found',
+				text: '未找到匹配项',
 				cls: 'crc-text-muted'
 			});
 			cell.setAttribute('colspan', '4');
@@ -1588,18 +1587,18 @@ export class BatchPreviewModal extends Modal {
 
 		// Set title based on operation
 		const titles: Record<string, string> = {
-			dates: 'Preview: Date normalization',
-			sex: 'Preview: Sex normalization',
-			orphans: 'Preview: Clear orphan references',
-			legacy_type: 'Preview: Migrate legacy type property',
-			missing_ids: 'Preview: Repair missing relationship IDs',
+			dates: '预览：日期规范化',
+			sex: '预览：性别规范化',
+			orphans: '预览：清除孤立引用',
+			legacy_type: '预览：迁移旧版 type 属性',
+			missing_ids: '预览：修复缺失的关系 ID',
 		};
 		titleEl.setText(titles[this.operation]);
 
 		// Add operation-specific descriptions
 		if (this.operation === 'sex') {
 			contentEl.createEl('p', {
-				text: 'Genealogical records use biological sex (M/F) rather than gender identity, as historical documents and DNA analysis require this distinction.',
+				text: '谱系记录使用生理性别（M/F）而非性别认同，因为历史文献和 DNA 分析需要这一区分。',
 				cls: 'crc-text-muted crc-text-small'
 			});
 
@@ -1609,12 +1608,12 @@ export class BatchPreviewModal extends Modal {
 				const infoIcon = createLucideIcon('info', 16);
 				disabledWarning.appendChild(infoIcon);
 				disabledWarning.createSpan({
-					text: ' Sex normalization is disabled. The preview below shows what would be changed, but no changes will be applied. Change this in Settings \u2192 Charted Roots \u2192 Sex & gender.'
+					text: ' 性别规范化已禁用。下方预览显示将要做出的更改，但不会应用任何更改。可在 设置 → Charted Roots → 性别与性别认同 中修改。'
 				});
 			}
 		} else if (this.operation === 'missing_ids') {
 			contentEl.createEl('p', {
-				text: 'Populates missing _id fields by resolving wikilinks to their cr_id values. This improves relationship reliability when notes are renamed.',
+				text: '通过将 wikilink 解析为其 cr_id 值来填充缺失的 _id 字段。这能提高笔记重命名时关系的可靠性。',
 				cls: 'crc-text-muted crc-text-small'
 			});
 
@@ -1624,7 +1623,7 @@ export class BatchPreviewModal extends Modal {
 				const warningIcon = createLucideIcon('alert-triangle', 16);
 				warningDiv.appendChild(warningIcon);
 				warningDiv.createSpan({
-					text: ` ${this.preview.unresolvableWikilinks.length} wikilink(s) could not be resolved (broken links, ambiguous targets, or targets missing cr_id). These will be skipped.`
+					text: ` ${this.preview.unresolvableWikilinks.length} 个 wikilink 无法解析（链接损坏、目标不明确或目标缺少 cr_id）。这些将被跳过。`
 				});
 			}
 		}
@@ -1656,7 +1655,7 @@ export class BatchPreviewModal extends Modal {
 
 		if (this.allChanges.length === 0) {
 			contentEl.createEl('p', {
-				text: 'No changes needed. All values are already in the correct format.',
+				text: '无需更改。所有值都已是正确格式。',
 				cls: 'crc-text-muted'
 			});
 		} else {
@@ -1670,7 +1669,7 @@ export class BatchPreviewModal extends Modal {
 			const searchContainer = controlsRow.createDiv({ cls: 'crc-batch-search' });
 			const searchInput = searchContainer.createEl('input', {
 				type: 'text',
-				placeholder: 'Search by name...',
+				placeholder: '按姓名搜索…',
 				cls: 'crc-batch-search-input'
 			});
 			searchInput.addEventListener('input', () => {
@@ -1683,7 +1682,7 @@ export class BatchPreviewModal extends Modal {
 			if (uniqueFields.length > 1) {
 				const filterContainer = controlsRow.createDiv({ cls: 'crc-batch-filter' });
 				const filterSelect = filterContainer.createEl('select', { cls: 'crc-batch-filter-select' });
-				filterSelect.createEl('option', { text: 'All fields', value: 'all' });
+				filterSelect.createEl('option', { text: '所有字段', value: 'all' });
 				for (const field of uniqueFields.sort()) {
 					filterSelect.createEl('option', { text: field, value: field });
 				}
@@ -1710,10 +1709,10 @@ export class BatchPreviewModal extends Modal {
 			const table = tableContainer.createEl('table', { cls: 'crc-batch-preview-table' });
 			const thead = table.createEl('thead');
 			const headerRow = thead.createEl('tr');
-			headerRow.createEl('th', { text: 'Person' });
-			headerRow.createEl('th', { text: 'Field' });
-			headerRow.createEl('th', { text: 'Current' });
-			headerRow.createEl('th', { text: 'New' });
+			headerRow.createEl('th', { text: '人物' });
+			headerRow.createEl('th', { text: '字段' });
+			headerRow.createEl('th', { text: '当前' });
+			headerRow.createEl('th', { text: '新建值' });
 
 			this.tbody = table.createEl('tbody');
 
@@ -1728,19 +1727,19 @@ export class BatchPreviewModal extends Modal {
 			const infoIcon = createLucideIcon('info', 16);
 			skippedHeader.appendChild(infoIcon);
 			skippedHeader.createSpan({
-				text: ` ${this.preview.genderSkipped.length} ${pluralize(this.preview.genderSkipped.length, 'note')} skipped (schema override)`
+				text: ` 已跳过 ${this.preview.genderSkipped.length} 条笔记（架构覆盖）`
 			});
 
 			// Collapsible details
 			const detailsContainer = skippedSection.createEl('details', { cls: 'crc-batch-skipped-details' });
-			detailsContainer.createEl('summary', { text: 'Show skipped notes' });
+			detailsContainer.createEl('summary', { text: '显示已跳过的笔记' });
 
 			const skippedList = detailsContainer.createEl('ul', { cls: 'crc-batch-skipped-list' });
 			for (const skipped of this.preview.genderSkipped) {
 				const item = skippedList.createEl('li');
 				item.createSpan({ text: skipped.person.name, cls: 'crc-batch-skipped-name' });
 				item.createSpan({
-					text: ` (${skipped.currentValue}) \u2014 schema: ${skipped.schemaName}`,
+					text: `（${skipped.currentValue}）\u2014 架构：${skipped.schemaName}`,
 					cls: 'crc-text-muted'
 				});
 			}
@@ -1752,7 +1751,7 @@ export class BatchPreviewModal extends Modal {
 			const warningIcon = createLucideIcon('alert-triangle', 16);
 			warning.appendChild(warningIcon);
 			warning.createSpan({
-				text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+				text: ' 操作前请备份你的库。此操作将修改现有笔记。'
 			});
 		}
 
@@ -1760,7 +1759,7 @@ export class BatchPreviewModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelBtn = buttonContainer.createEl('button', {
-			text: this.sexNormalizationDisabled ? 'Close' : 'Cancel',
+			text: this.sexNormalizationDisabled ? '关闭' : '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelBtn.addEventListener('click', () => {
@@ -1777,7 +1776,7 @@ export class BatchPreviewModal extends Modal {
 		const actualChanges = this.allChanges.filter(c => !c.newValue.includes('(unrecognized'));
 		if (actualChanges.length > 0) {
 			const applyBtn = buttonContainer.createEl('button', {
-				text: `Apply ${actualChanges.length} ${pluralize(actualChanges.length, 'change')}`,
+				text: `应用 ${actualChanges.length} 项更改`,
 				cls: 'mod-cta'
 			});
 			applyBtn.addEventListener('click', () => {
@@ -1785,27 +1784,27 @@ export class BatchPreviewModal extends Modal {
 					// Disable buttons during operation
 					applyBtn.disabled = true;
 					cancelBtn.disabled = true;
-					applyBtn.textContent = 'Applying changes...';
+					applyBtn.textContent = '正在应用更改…';
 
 					// Run the operation
 					await this.onApply();
 
 					// Show completion and enable close
-					applyBtn.textContent = '\u2713 Changes applied';
+					applyBtn.textContent = '\u2713 更改已应用';
 					applyBtn.addClass('crc-btn-success');
-					cancelBtn.textContent = 'Close';
+					cancelBtn.textContent = '关闭';
 					cancelBtn.disabled = false;
 
 					// Update count to show completion
 					if (this.countEl) {
-						this.countEl.textContent = `\u2713 Successfully applied ${actualChanges.length} ${pluralize(actualChanges.length, 'change')}`;
+						this.countEl.textContent = `\u2713 已成功应用 ${actualChanges.length} 项更改`;
 					}
 				})();
 			});
 		} else if (this.allChanges.length > 0) {
 			// Only unrecognized values, no actual changes to apply
 			contentEl.createEl('p', {
-				text: 'No normalizable values found. The listed values are unrecognized and will not be changed.',
+				text: '未找到可规范化的值。所列值无法识别，将不会被更改。',
 				cls: 'crc-text-muted'
 			});
 		}
@@ -1837,9 +1836,9 @@ export class BatchPreviewModal extends Modal {
 		// Update count
 		if (this.countEl) {
 			if (this.filteredChanges.length === this.allChanges.length) {
-				this.countEl.textContent = `${this.allChanges.length} ${pluralize(this.allChanges.length, 'change')} will be made:`;
+				this.countEl.textContent = `将进行 ${this.allChanges.length} 项更改：`;
 			} else {
-				this.countEl.textContent = `Showing ${this.filteredChanges.length} of ${this.allChanges.length} changes:`;
+				this.countEl.textContent = `显示 ${this.allChanges.length} 项更改中的 ${this.filteredChanges.length} 项：`;
 			}
 		}
 
@@ -1876,7 +1875,7 @@ export class BatchPreviewModal extends Modal {
 		if (this.filteredChanges.length === 0 && this.allChanges.length > 0) {
 			const row = this.tbody.createEl('tr');
 			const cell = row.createEl('td', {
-				text: 'No matches found',
+				text: '未找到匹配项',
 				cls: 'crc-text-muted crc-text--center'
 			});
 			cell.setAttribute('colspan', '4');
@@ -1916,7 +1915,7 @@ export class ConfirmationModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelBtn = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelBtn.addEventListener('click', () => {
@@ -1925,7 +1924,7 @@ export class ConfirmationModal extends Modal {
 		});
 
 		const confirmBtn = buttonContainer.createEl('button', {
-			text: 'Continue',
+			text: '继续',
 			cls: 'mod-warning'
 		});
 		confirmBtn.addEventListener('click', () => {
@@ -1993,16 +1992,16 @@ export class DateValidationPreviewModal extends Modal {
 		const { contentEl, titleEl } = this;
 
 		this.modalEl.addClass('crc-batch-preview-modal');
-		titleEl.setText('Preview: Date format validation issues');
+		titleEl.setText('预览：日期格式验证问题');
 
 		// Summary
 		const summaryEl = contentEl.createDiv({ cls: 'crc-batch-summary' });
 		summaryEl.createEl('p', {
-			text: `Found ${this.allIssues.length} ${pluralize(this.allIssues.length, 'date')} with format issues.`,
+			text: `发现 ${this.allIssues.length} 个存在格式问题的日期。`,
 			cls: 'crc-batch-summary-text'
 		});
 		this.countEl = summaryEl.createEl('p', {
-			text: `Showing ${this.filteredIssues.length} of ${this.allIssues.length}`,
+			text: `显示 ${this.allIssues.length} 个中的 ${this.filteredIssues.length} 个`,
 			cls: 'crc-batch-summary-count'
 		});
 
@@ -2011,10 +2010,10 @@ export class DateValidationPreviewModal extends Modal {
 
 		// Search input
 		const searchContainer = controlsEl.createDiv({ cls: 'crc-batch-control' });
-		searchContainer.createEl('label', { text: 'Search:', cls: 'crc-batch-label' });
+		searchContainer.createEl('label', { text: '搜索：', cls: 'crc-batch-label' });
 		const searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Filter by person name...',
+			placeholder: '按人物姓名筛选…',
 			cls: 'crc-batch-search'
 		});
 		searchInput.addEventListener('input', () => {
@@ -2024,15 +2023,15 @@ export class DateValidationPreviewModal extends Modal {
 
 		// Field filter dropdown
 		const fieldContainer = controlsEl.createDiv({ cls: 'crc-batch-control' });
-		fieldContainer.createEl('label', { text: 'Field:', cls: 'crc-batch-label' });
+		fieldContainer.createEl('label', { text: '字段：', cls: 'crc-batch-label' });
 		const fieldSelect = fieldContainer.createEl('select', { cls: 'crc-batch-select' });
 
 		const fieldOptions = [
-			{ value: 'all', label: 'All fields' },
-			{ value: 'born', label: 'Birth dates' },
-			{ value: 'birth_date', label: 'Birth dates (birth_date)' },
-			{ value: 'died', label: 'Death dates' },
-			{ value: 'death_date', label: 'Death dates (death_date)' }
+			{ value: 'all', label: '所有字段' },
+			{ value: 'born', label: '出生日期' },
+			{ value: 'birth_date', label: '出生日期（birth_date）' },
+			{ value: 'died', label: '去世日期' },
+			{ value: 'death_date', label: '去世日期（death_date）' }
 		];
 
 		for (const opt of fieldOptions) {
@@ -2049,7 +2048,7 @@ export class DateValidationPreviewModal extends Modal {
 
 		// Sort toggle
 		const sortContainer = controlsEl.createDiv({ cls: 'crc-batch-control' });
-		sortContainer.createEl('label', { text: 'Sort:', cls: 'crc-batch-label' });
+		sortContainer.createEl('label', { text: '排序：', cls: 'crc-batch-label' });
 		const sortBtn = sortContainer.createEl('button', {
 			text: this.sortAscending ? 'A \u2192 Z' : 'Z \u2192 A',
 			cls: 'crc-batch-sort-btn'
@@ -2067,11 +2066,11 @@ export class DateValidationPreviewModal extends Modal {
 		// Table header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Field' });
-		headerRow.createEl('th', { text: 'Current value' });
-		headerRow.createEl('th', { text: 'Issue' });
-		headerRow.createEl('th', { text: 'Action' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '字段' });
+		headerRow.createEl('th', { text: '当前值' });
+		headerRow.createEl('th', { text: '问题' });
+		headerRow.createEl('th', { text: '操作' });
 
 		// Table body
 		this.tbody = table.createEl('tbody');
@@ -2084,14 +2083,14 @@ export class DateValidationPreviewModal extends Modal {
 		const infoIcon = infoEl.createEl('span', { cls: 'crc-batch-info-icon' });
 		setIcon(infoIcon, 'info');
 		infoEl.createEl('span', {
-			text: 'Date validation is preview-only. Click "Open note" to manually correct each date. Configure validation rules in Settings \u2192 Charted Roots \u2192 Dates & validation.'
+			text: '日期验证仅为预览。点击"打开笔记"以手动更正每个日期。可在 设置 → Charted Roots → 日期与验证 中配置验证规则。'
 		});
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-batch-buttons' });
 
 		const closeBtn = buttonContainer.createEl('button', {
-			text: 'Close',
+			text: '关闭',
 			cls: 'mod-cta'
 		});
 		closeBtn.addEventListener('click', () => {
@@ -2123,7 +2122,7 @@ export class DateValidationPreviewModal extends Modal {
 
 		// Update count
 		if (this.countEl) {
-			this.countEl.setText(`Showing ${this.filteredIssues.length} of ${this.allIssues.length}`);
+			this.countEl.setText(`显示 ${this.allIssues.length} 个中的 ${this.filteredIssues.length} 个`);
 		}
 
 		// Re-render table
@@ -2159,7 +2158,7 @@ export class DateValidationPreviewModal extends Modal {
 			// Action: Open note button
 			const actionCell = row.createEl('td');
 			const openBtn = actionCell.createEl('button', {
-				text: 'Open note',
+				text: '打开笔记',
 				cls: 'crc-batch-action-btn'
 			});
 			openBtn.addEventListener('click', () => {
@@ -2175,7 +2174,7 @@ export class DateValidationPreviewModal extends Modal {
 				cls: 'crc-batch-empty'
 			});
 			emptyCell.createEl('p', {
-				text: 'No issues match the current filters'
+				text: '没有符合当前筛选条件的问题'
 			});
 		}
 	}

@@ -88,9 +88,9 @@ export class ProfileView extends ItemView {
 
 	getDisplayText(): string {
 		if (this.currentEntityData) {
-			return `Profile: ${this.currentEntityData.name}`;
+			return `档案：${this.currentEntityData.name}`;
 		}
-		return 'Entity profile';
+		return '实体档案';
 	}
 
 	getIcon(): string {
@@ -301,7 +301,7 @@ export class ProfileView extends ItemView {
 		// Load data
 		const data = this.dataLoader.loadEntity(file, entityType);
 		if (!data) {
-			this.renderErrorState('Could not load entity data.');
+			this.renderErrorState('无法加载实体数据。');
 			return;
 		}
 
@@ -507,7 +507,7 @@ export class ProfileView extends ItemView {
 		renderEventsSection(this.sectionsEl, data.events, {
 			...options,
 			sectionId: 'events-at-location',
-			title: 'Events at location'
+			title: '该地点的事件'
 		});
 
 		renderSourcesSection(this.sectionsEl, data.sources, {
@@ -584,7 +584,7 @@ export class ProfileView extends ItemView {
 		renderEventsSection(this.sectionsEl, data.referencedEvents, {
 			...options,
 			sectionId: 'referenced-events',
-			title: 'Referenced events'
+			title: '引用了此来源的事件'
 		});
 
 		renderMediaSection(this.sectionsEl, data.media, {
@@ -604,7 +604,7 @@ export class ProfileView extends ItemView {
 		renderEventsSection(this.sectionsEl, data.events, {
 			...options,
 			sectionId: 'events',
-			title: 'Events'
+			title: '事件'
 		});
 
 		renderSourcesSection(this.sectionsEl, data.sources, {
@@ -627,7 +627,7 @@ export class ProfileView extends ItemView {
 		if (!this.sectionsEl) return;
 		const content = renderProfileSection(this.sectionsEl, {
 			sectionId: 'place-link',
-			title: 'Place',
+			title: '地点',
 			summary: this.stripWikilink(placeLink),
 			expanded: this.sectionStates['place-link'] ?? true,
 			onToggle: options.onToggle,
@@ -651,8 +651,8 @@ export class ProfileView extends ItemView {
 		if (!this.sectionsEl) return;
 		const content = renderProfileSection(this.sectionsEl, {
 			sectionId: 'research-questions',
-			title: 'Research questions',
-			summary: `${questions.length} open question${questions.length !== 1 ? 's' : ''}`,
+			title: '研究问题',
+			summary: `${questions.length} 个待解决问题`,
 			expanded: this.sectionStates['research-questions'] ?? false,
 			onToggle: options.onToggle,
 			icon: 'help-circle'
@@ -721,7 +721,7 @@ export class ProfileView extends ItemView {
 		if (pinBtn) {
 			pinBtn.empty();
 			setIcon(pinBtn as HTMLElement, this.pinned ? 'pin-off' : 'pin');
-			pinBtn.setAttribute('aria-label', this.pinned ? 'Unpin profile' : 'Pin profile');
+			pinBtn.setAttribute('aria-label', this.pinned ? '取消固定档案' : '固定档案');
 		}
 	}
 
@@ -743,9 +743,9 @@ export class ProfileView extends ItemView {
 		const empty = this.sectionsEl.createDiv({ cls: 'cr-profile__empty-state' });
 		const iconEl = empty.createDiv();
 		setIcon(iconEl, 'id-card');
-		empty.createEl('p', { text: 'Open an entity note to see its profile' });
+		empty.createEl('p', { text: '打开一个实体笔记以查看其档案' });
 		empty.createEl('p', {
-			text: 'Navigate to a person, place, event, source, or organization note.',
+			text: '导航到人物、地点、事件、来源或组织笔记。',
 			cls: 'cr-profile__empty-hint'
 		});
 	}

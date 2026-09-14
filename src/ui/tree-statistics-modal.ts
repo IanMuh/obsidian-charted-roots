@@ -32,13 +32,13 @@ export class TreeStatisticsModal extends Modal {
 
 		// Set modal title
 		this.modalEl.addClass('cr-tree-statistics-modal');
-		this.titleEl.setText('Tree statistics');
+		this.titleEl.setText('树统计');
 
 		// Calculate statistics
 		await this.calculateStatistics();
 
 		if (!this.statistics) {
-			contentEl.createEl('p', { text: 'Unable to read canvas data.' });
+			contentEl.createEl('p', { text: '无法读取画布数据。' });
 			return;
 		}
 
@@ -66,15 +66,15 @@ export class TreeStatisticsModal extends Modal {
 			const edgeCount = canvasData.edges.length;
 
 			// Extract generation metadata if available
-			let rootPerson = 'Unknown';
-			let treeType = 'Unknown';
+			let rootPerson = '未知';
+			let treeType = '未知';
 			let maxGenerations = 0;
 			let includeSpouses = true;
 			let direction = 'vertical';
 			let generationDepth = { ancestors: 0, descendants: 0 };
 
 			if (isCanvasRootsTree && metadata.generation) {
-				rootPerson = metadata.generation.rootPersonName || 'Unknown';
+				rootPerson = metadata.generation.rootPersonName || '未知';
 				treeType = this.formatTreeType(metadata.generation.treeType);
 				maxGenerations = metadata.generation.maxGenerations || 0;
 				includeSpouses = metadata.generation.includeSpouses ?? true;
@@ -103,9 +103,9 @@ export class TreeStatisticsModal extends Modal {
 
 	private formatTreeType(treeType: string): string {
 		const typeMap: Record<string, string> = {
-			'full': 'Full family tree',
-			'ancestors': 'Ancestors (pedigree)',
-			'descendants': 'Descendants'
+			'full': '完整家谱',
+			'ancestors': '祖先（谱系）',
+			'descendants': '后代'
 		};
 		return typeMap[treeType] || treeType;
 	}
@@ -142,46 +142,46 @@ export class TreeStatisticsModal extends Modal {
 		const container = contentEl.createDiv({ cls: 'cr-tree-statistics' });
 
 		// File info
-		this.addStatRow(container, 'Canvas file', this.canvasFile.basename, 'file');
+		this.addStatRow(container, '画布文件', this.canvasFile.basename, 'file');
 
 		// Separator
 		container.createEl('hr');
 
 		// Tree composition
-		this.addStatRow(container, 'People', this.statistics.peopleCount.toString(), 'users');
-		this.addStatRow(container, 'Relationships', this.statistics.edgeCount.toString(), 'link');
+		this.addStatRow(container, '人物', this.statistics.peopleCount.toString(), 'users');
+		this.addStatRow(container, '关系', this.statistics.edgeCount.toString(), 'link');
 
 		// Separator
 		container.createEl('hr');
 
 		// Tree configuration
-		this.addStatRow(container, 'Root person', this.statistics.rootPerson, 'user');
-		this.addStatRow(container, 'Tree type', this.statistics.treeType, 'git-fork');
+		this.addStatRow(container, '根人物', this.statistics.rootPerson, 'user');
+		this.addStatRow(container, '树类型', this.statistics.treeType, 'git-fork');
 
 		if (this.statistics.maxGenerations > 0) {
-			this.addStatRow(container, 'Generation limit', this.statistics.maxGenerations.toString(), 'layers');
+			this.addStatRow(container, '世代限制', this.statistics.maxGenerations.toString(), 'layers');
 		} else {
-			this.addStatRow(container, 'Generation limit', 'None (all generations)', 'layers');
+			this.addStatRow(container, '世代限制', '无（所有世代）', 'layers');
 		}
 
 		this.addStatRow(
 			container,
-			'Spouses included',
-			this.statistics.includeSpouses ? 'Yes' : 'No',
+			'包含配偶',
+			this.statistics.includeSpouses ? '是' : '否',
 			'heart'
 		);
-		this.addStatRow(container, 'Layout direction', this.statistics.direction, 'move');
+		this.addStatRow(container, '布局方向', this.statistics.direction, 'move');
 
 		// Separator
 		container.createEl('hr');
 
 		// Generation depth
-		const depthText = `↑ ${this.statistics.generationDepth.ancestors} generations up, ↓ ${this.statistics.generationDepth.descendants} down`;
-		this.addStatRow(container, 'Approximate depth', depthText, 'trending-up');
+		const depthText = `↑ 向上 ${this.statistics.generationDepth.ancestors} 代，↓ 向下 ${this.statistics.generationDepth.descendants} 代`;
+		this.addStatRow(container, '大致深度', depthText, 'trending-up');
 
 		// Close button
 		const buttonContainer = contentEl.createDiv({ cls: 'modal-button-container' });
-		const closeButton = buttonContainer.createEl('button', { text: 'Close' });
+		const closeButton = buttonContainer.createEl('button', { text: '关闭' });
 		closeButton.addEventListener('click', () => this.close());
 	}
 

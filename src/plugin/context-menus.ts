@@ -57,7 +57,7 @@ async function openManageMembershipsForPerson(plugin: CanvasRootsPlugin, file: T
 	const cache = plugin.app.metadataCache.getFileCache(file);
 	const personCrId = cache?.frontmatter?.cr_id as string | undefined;
 	if (!personCrId) {
-		new Notice('Person has no cr_id; cannot resolve memberships');
+		new Notice('人物没有 cr_id；无法解析成员资格');
 		return;
 	}
 
@@ -78,7 +78,7 @@ async function openManageMembershipsForPerson(plugin: CanvasRootsPlugin, file: T
 		// lists available organizations and offers to create one if none exist).
 		const { AddMembershipModal } = await import('../organizations/ui/add-membership-modal');
 		new AddMembershipModal(plugin.app, plugin, file, () => {
-			new Notice('Membership added');
+			new Notice('成员资格已添加');
 		}).open();
 		return;
 	}
@@ -110,7 +110,7 @@ class OrgPickerSuggest extends FuzzySuggestModal<OrganizationInfo> {
 		private readonly onPick: (org: OrganizationInfo) => void
 	) {
 		super(app);
-		this.setPlaceholder('Pick an organization to manage members');
+		this.setPlaceholder('选择要管理成员的组织');
 	}
 
 	getItems(): OrganizationInfo[] {
@@ -146,7 +146,7 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 				if (file instanceof TFile && file.path.endsWith('.book.json')) {
 					menu.addSeparator();
 					menu.addItem((item) => {
-						item.setTitle('Open in book builder');
+							item.setTitle('在书籍构建器中打开');
 						item.setIcon('book-open');
 						item.onClick(async () => {
 							try {
@@ -159,12 +159,12 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 								}).open();
 							} catch (error) {
 								logger.error('open-book-builder', 'Failed to open book definition', error);
-								new Notice('Failed to read book definition file');
+								new Notice('读取书籍定义文件失败');
 							}
 						});
 					});
 					menu.addItem((item) => {
-						item.setTitle('Regenerate book');
+							item.setTitle('重新生成书籍');
 						item.setIcon('refresh-cw');
 						item.onClick(async () => {
 							try {
@@ -173,7 +173,7 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 								const { BookGenerationService } = await import('../book/services/book-generation-service');
 								const service = new BookGenerationService(plugin.app, plugin.settings, plugin);
 
-								new Notice('Regenerating book...');
+								new Notice('正在重新生成书籍…');
 								const result = await service.generateBook(definition);
 
 								if (result.success && result.blob) {
@@ -186,15 +186,15 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 
 									const changedCount = result.changedChapters?.length ?? 0;
 									const changeMsg = definition.lastChapterHashes
-										? ` (${changedCount} chapter${changedCount !== 1 ? 's' : ''} changed)`
+										? `（${changedCount} 个章节已更改）`
 										: '';
-									new Notice(`Book regenerated: ${result.stats.chapterCount} chapters${changeMsg}`);
+									new Notice(`书籍已重新生成：${result.stats.chapterCount} 个章节${changeMsg}`);
 								} else {
-									new Notice(`Book generation failed: ${result.errors.join(', ')}`);
+									new Notice(`书籍生成失败：${result.errors.join(', ')}`);
 								}
 							} catch (error) {
 								logger.error('regenerate-book', 'Failed to regenerate book', error);
-								new Notice('Failed to regenerate book');
+								new Notice('重新生成书籍失败');
 							}
 						});
 					});
@@ -266,7 +266,7 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 
 					menu.addItem((item) => {
 						item
-							.setTitle('Charted Roots: Use as custom map')
+							.setTitle('Charted Roots：用作自定义地图')
 							.setIcon('map')
 							.onClick(() => {
 								new CreateMapWizardModal(plugin.app, plugin, {
@@ -345,14 +345,14 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 					if (useSubmenu) {
 						menu.addItem((item) => {
 							const propsSubmenu: Menu = item
-								.setTitle(`Charted Roots: Add essential properties (${markdownFiles.length} files)`)
+								.setTitle(`Charted Roots：添加基本属性（${markdownFiles.length} 个文件）`)
 								.setIcon('file-plus')
 								.setSubmenu();
 
 							if (hasMissingPersonProperties) {
 								propsSubmenu.addItem((subItem) => {
 									subItem
-										.setTitle('Add essential person properties')
+										.setTitle('添加人物基本属性')
 										.setIcon('user')
 										.onClick(async () => {
 											await addEssentialPersonProperties(plugin, markdownFiles);
@@ -363,7 +363,7 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 							if (hasMissingPlaceProperties) {
 								propsSubmenu.addItem((subItem) => {
 									subItem
-										.setTitle('Add essential place properties')
+										.setTitle('添加地点基本属性')
 										.setIcon('map-pin')
 										.onClick(async () => {
 											await addEssentialPlaceProperties(plugin, markdownFiles);
@@ -374,7 +374,7 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 								if (hasMissingSourceProperties) {
 									propsSubmenu.addItem((subItem) => {
 									subItem
-										.setTitle('Add essential source properties')
+										.setTitle('添加来源基本属性')
 										.setIcon('archive')
 										.onClick(async () => {
 											await addEssentialSourceProperties(plugin, markdownFiles);
@@ -385,7 +385,7 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 							// Add cr_id option
 							propsSubmenu.addItem((subItem) => {
 								subItem
-									.setTitle('Add cr_id')
+									.setTitle('添加 cr_id')
 									.setIcon('key')
 									.onClick(async () => {
 										await addCrId(plugin, markdownFiles);
@@ -397,7 +397,7 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 						if (hasMissingPersonProperties) {
 							menu.addItem((item) => {
 								item
-									.setTitle(`Charted Roots: Add essential person properties (${markdownFiles.length} files)`)
+									.setTitle(`Charted Roots：添加人物基本属性（${markdownFiles.length} 个文件）`)
 									.setIcon('user')
 									.onClick(async () => {
 										await addEssentialPersonProperties(plugin, markdownFiles);
@@ -408,7 +408,7 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 						if (hasMissingPlaceProperties) {
 							menu.addItem((item) => {
 								item
-									.setTitle(`Charted Roots: Add essential place properties (${markdownFiles.length} files)`)
+									.setTitle(`Charted Roots：添加地点基本属性（${markdownFiles.length} 个文件）`)
 									.setIcon('map-pin')
 									.onClick(async () => {
 										await addEssentialPlaceProperties(plugin, markdownFiles);
@@ -419,7 +419,7 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 						if (hasMissingSourceProperties) {
 							menu.addItem((item) => {
 								item
-								.setTitle(`Charted Roots: Add essential source properties (${markdownFiles.length} files)`)
+								.setTitle(`Charted Roots：添加来源基本属性（${markdownFiles.length} 个文件）`)
 								.setIcon('archive')
 								.onClick(async () => {
 									await addEssentialSourceProperties(plugin, markdownFiles);
@@ -430,7 +430,7 @@ export function registerContextMenus(plugin: CanvasRootsPlugin): void {
 						// Add cr_id option (mobile)
 						menu.addItem((item) => {
 							item
-								.setTitle(`Charted Roots: Add cr_id (${markdownFiles.length} files)`)
+								.setTitle(`Charted Roots：添加 cr_id（${markdownFiles.length} 个文件）`)
 								.setIcon('key')
 								.onClick(async () => {
 									await addCrId(plugin, markdownFiles);
@@ -474,7 +474,7 @@ function buildCanvasContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Regenerate canvas')
+					.setTitle('重新生成画布')
 					.setIcon('refresh-cw')
 					.onClick(async () => {
 						// Check if timeline or tree canvas
@@ -498,7 +498,7 @@ function buildCanvasContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Show tree statistics')
+					.setTitle('显示树统计')
 					.setIcon('bar-chart')
 					.onClick(() => {
 						new TreeStatisticsModal(plugin.app, file).open();
@@ -507,7 +507,7 @@ function buildCanvasContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Customize canvas styles')
+					.setTitle('自定义画布样式')
 					.setIcon('layout')
 					.onClick(async () => {
 						// Check if timeline or tree canvas
@@ -524,7 +524,7 @@ function buildCanvasContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open in Family Chart')
+					.setTitle('在家族图表中打开')
 					.setIcon('git-fork')
 					.onClick(async () => {
 						await openCanvasInFamilyChart(plugin, file);
@@ -534,13 +534,13 @@ function buildCanvasContextMenu(
 			// Export submenu (Excalidraw + images)
 			submenu.addItem((subItem) => {
 				const exportSubmenu: Menu = subItem
-					.setTitle('Export')
+					.setTitle('导出')
 					.setIcon('share')
 					.setSubmenu();
 
 				exportSubmenu.addItem((expItem) => {
 					expItem
-						.setTitle('Export to Excalidraw')
+						.setTitle('导出为 Excalidraw')
 						.setIcon('pencil')
 						.onClick(async () => {
 							await exportCanvasToExcalidraw(plugin, file);
@@ -551,7 +551,7 @@ function buildCanvasContextMenu(
 
 				exportSubmenu.addItem((expItem) => {
 					expItem
-						.setTitle('Export as PNG')
+						.setTitle('导出为 PNG')
 						.setIcon('image')
 						.onClick(async () => {
 							await exportCanvasAsImage(plugin, file, 'png');
@@ -560,7 +560,7 @@ function buildCanvasContextMenu(
 
 				exportSubmenu.addItem((expItem) => {
 					expItem
-						.setTitle('Export as SVG')
+						.setTitle('导出为 SVG')
 						.setIcon('file-code')
 						.onClick(async () => {
 							await exportCanvasAsImage(plugin, file, 'svg');
@@ -569,7 +569,7 @@ function buildCanvasContextMenu(
 
 				exportSubmenu.addItem((expItem) => {
 					expItem
-						.setTitle('Export as PDF')
+						.setTitle('导出为 PDF')
 						.setIcon('file-text')
 						.onClick(async () => {
 							await exportCanvasAsImage(plugin, file, 'pdf');
@@ -579,7 +579,7 @@ function buildCanvasContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Split canvas wizard')
+					.setTitle('拆分画布向导')
 					.setIcon('layers')
 					.onClick(() => {
 						new SplitWizardModal(plugin.app, plugin.settings, plugin.getFolderFilter() ?? undefined).open();
@@ -590,7 +590,7 @@ function buildCanvasContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('More options...')
+					.setTitle('更多选项…')
 					.setIcon('settings')
 					.onClick(() => {
 						const modal = new ControlCenterModal(plugin.app, plugin);
@@ -602,7 +602,7 @@ function buildCanvasContextMenu(
 		// Mobile: flat menu with prefix
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Regenerate canvas')
+				.setTitle('Charted Roots：重新生成画布')
 				.setIcon('refresh-cw')
 				.onClick(async () => {
 					// Check if timeline or tree canvas
@@ -620,7 +620,7 @@ function buildCanvasContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Show tree statistics')
+				.setTitle('Charted Roots：显示树统计')
 				.setIcon('bar-chart')
 				.onClick(() => {
 					new TreeStatisticsModal(plugin.app, file).open();
@@ -629,7 +629,7 @@ function buildCanvasContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Customize canvas styles')
+				.setTitle('Charted Roots：自定义画布样式')
 				.setIcon('layout')
 				.onClick(async () => {
 					// Check if timeline or tree canvas
@@ -646,7 +646,7 @@ function buildCanvasContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open in Family Chart')
+				.setTitle('Charted Roots：在家族图表中打开')
 				.setIcon('git-fork')
 				.onClick(async () => {
 					await openCanvasInFamilyChart(plugin, file);
@@ -655,7 +655,7 @@ function buildCanvasContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Export to Excalidraw')
+				.setTitle('Charted Roots：导出为 Excalidraw')
 				.setIcon('pencil')
 				.onClick(async () => {
 					await exportCanvasToExcalidraw(plugin, file);
@@ -664,7 +664,7 @@ function buildCanvasContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Export as PNG')
+				.setTitle('Charted Roots：导出为 PNG')
 				.setIcon('image')
 				.onClick(async () => {
 					await exportCanvasAsImage(plugin, file, 'png');
@@ -673,7 +673,7 @@ function buildCanvasContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Export as SVG')
+				.setTitle('Charted Roots：导出为 SVG')
 				.setIcon('file-code')
 				.onClick(async () => {
 					await exportCanvasAsImage(plugin, file, 'svg');
@@ -682,7 +682,7 @@ function buildCanvasContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Export as PDF')
+				.setTitle('Charted Roots：导出为 PDF')
 				.setIcon('file-text')
 				.onClick(async () => {
 					await exportCanvasAsImage(plugin, file, 'pdf');
@@ -691,7 +691,7 @@ function buildCanvasContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Split canvas wizard')
+				.setTitle('Charted Roots：拆分画布向导')
 				.setIcon('layers')
 				.onClick(() => {
 					new SplitWizardModal(plugin.app, plugin.settings, plugin.getFolderFilter() ?? undefined).open();
@@ -723,7 +723,7 @@ function buildPersonContextMenu(
 			// Edit person
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Edit person')
+					.setTitle('编辑人物')
 					.setIcon('edit')
 					.onClick(() => {
 						plugin.openEditPersonModal(file);
@@ -733,7 +733,7 @@ function buildPersonContextMenu(
 			// Show journey on map
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Show journey on map')
+					.setTitle('在地图上显示旅程')
 					.setIcon('route')
 					.onClick(() => {
 						const cache = plugin.app.metadataCache.getFileCache(file);
@@ -766,7 +766,7 @@ function buildPersonContextMenu(
 			// Show on calendar
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Show on calendar')
+					.setTitle('在日历中显示')
 					.setIcon('calendar')
 					.onClick(() => {
 						const cache = plugin.app.metadataCache.getFileCache(file);
@@ -804,7 +804,7 @@ function buildPersonContextMenu(
 			// Generate report (#372)
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Generate report')
+					.setTitle('生成报告')
 					.setIcon('file-text')
 					.onClick(() => {
 						const cache = plugin.app.metadataCache.getFileCache(file);
@@ -821,7 +821,7 @@ function buildPersonContextMenu(
 			// Manage memberships (#490) - person-side affordance for ManageOrganizationMembersModal
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Manage memberships...')
+					.setTitle('管理成员资格…')
 					.setIcon('users')
 					.onClick(() => {
 						void openManageMembershipsForPerson(plugin, file);
@@ -831,20 +831,20 @@ function buildPersonContextMenu(
 			// Relationships submenu (adding relationships, validation, calculation)
 			submenu.addItem((subItem) => {
 				const relationshipSubmenu: Menu = subItem
-					.setTitle('Relationships')
+					.setTitle('关系')
 					.setIcon('users')
 					.setSubmenu();
 
 				// Create family — open the wizard pre-anchored on this person (#754).
 				relationshipSubmenu.addItem((relItem) => {
 					relItem
-						.setTitle('Create family...')
+						.setTitle('创建家族…')
 						.setIcon('users')
 						.onClick(() => {
 							const cache = plugin.app.metadataCache.getFileCache(file);
 							const fm = cache?.frontmatter;
 							if (!fm?.cr_id) {
-								new Notice('Add a person ID to this note before building a family around it.');
+								new Notice('请先为此笔记添加人物 ID，再围绕它构建家族。');
 								return;
 							}
 							const rawName = fm.name;
@@ -867,7 +867,7 @@ function buildPersonContextMenu(
 
 				relationshipSubmenu.addItem((relItem) => {
 					relItem
-						.setTitle('Add father')
+						.setTitle('添加父亲')
 						.setIcon('user')
 						.onClick(() => {
 							// Build context for inline creation
@@ -893,7 +893,7 @@ function buildPersonContextMenu(
 									);
 								})();
 							}, {
-								title: 'Select father',
+								title: '选择父亲',
 								createContext: createContext,
 								onCreateNew: () => {
 									// Callback signals inline creation support
@@ -906,7 +906,7 @@ function buildPersonContextMenu(
 
 				relationshipSubmenu.addItem((relItem) => {
 					relItem
-						.setTitle('Add mother')
+						.setTitle('添加母亲')
 						.setIcon('user')
 						.onClick(() => {
 							// Build context for inline creation
@@ -932,7 +932,7 @@ function buildPersonContextMenu(
 									);
 								})();
 							}, {
-								title: 'Select mother',
+								title: '选择母亲',
 								createContext: createContext,
 								onCreateNew: () => {
 									// Callback signals inline creation support
@@ -945,7 +945,7 @@ function buildPersonContextMenu(
 
 				relationshipSubmenu.addItem((relItem) => {
 					relItem
-						.setTitle('Add spouse')
+						.setTitle('添加配偶')
 						.setIcon('heart')
 						.onClick(() => {
 							// Build context for inline creation
@@ -975,7 +975,7 @@ function buildPersonContextMenu(
 									await relationshipMgr.addSpouseRelationship(file, selectedPerson.file, selectedPerson.crId);
 								})();
 							}, {
-								title: 'Select spouse',
+								title: '选择配偶',
 								createContext: createContext,
 								onCreateNew: () => {
 									// Callback signals inline creation support
@@ -988,7 +988,7 @@ function buildPersonContextMenu(
 
 				relationshipSubmenu.addItem((relItem) => {
 					relItem
-						.setTitle('Add child')
+						.setTitle('添加子女')
 						.setIcon('baby')
 						.onClick(() => {
 							// Build context for inline creation
@@ -1009,7 +1009,7 @@ function buildPersonContextMenu(
 									await relationshipMgr.addChildRelationship(file, selectedPerson.file, selectedPerson.crId);
 								})();
 							}, {
-								title: 'Select child',
+								title: '选择子女',
 								createContext: createContext,
 								onCreateNew: () => {
 									// Callback signals inline creation support
@@ -1024,7 +1024,7 @@ function buildPersonContextMenu(
 
 				relationshipSubmenu.addItem((relItem) => {
 					relItem
-						.setTitle('Add custom relationship...')
+						.setTitle('添加自定义关系…')
 						.setIcon('link-2')
 						.onClick(() => {
 							new AddRelationshipModal(plugin.app, plugin, file).open();
@@ -1033,12 +1033,12 @@ function buildPersonContextMenu(
 
 				relationshipSubmenu.addItem((relItem) => {
 					relItem
-						.setTitle('Add organization membership...')
+						.setTitle('添加组织成员资格…')
 						.setIcon('building')
 						.onClick(async () => {
 							const { AddMembershipModal } = await import('../organizations/ui/add-membership-modal');
 							new AddMembershipModal(plugin.app, plugin, file, () => {
-								new Notice('Membership added');
+								new Notice('成员资格已添加');
 							}).open();
 						});
 				});
@@ -1048,7 +1048,7 @@ function buildPersonContextMenu(
 				// Validate relationships
 				relationshipSubmenu.addItem((relItem) => {
 					relItem
-						.setTitle('Validate relationships')
+						.setTitle('验证关系')
 						.setIcon('shield-check')
 						.onClick(async () => {
 							const validator = new RelationshipValidator(plugin.app);
@@ -1067,7 +1067,7 @@ function buildPersonContextMenu(
 				// Calculate relationship
 				relationshipSubmenu.addItem((relItem) => {
 					relItem
-						.setTitle('Calculate relationship...')
+						.setTitle('计算关系…')
 						.setIcon('git-compare')
 						.onClick(() => {
 							const cache = plugin.app.metadataCache.getFileCache(file);
@@ -1091,7 +1091,7 @@ function buildPersonContextMenu(
 			// Open in family chart
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open in Family Chart')
+					.setTitle('在家族图表中打开')
 					.setIcon('git-fork')
 					.onClick(async () => {
 						const cache = plugin.app.metadataCache.getFileCache(file);
@@ -1099,7 +1099,7 @@ function buildPersonContextMenu(
 						if (crId) {
 							await plugin.activateFamilyChartView(crId);
 						} else {
-							new Notice('Could not find cr_id for this person note');
+							new Notice('找不到此人物笔记的 cr_id');
 						}
 					});
 			});
@@ -1107,7 +1107,7 @@ function buildPersonContextMenu(
 			// Open profile
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open profile')
+					.setTitle('打开档案')
 					.setIcon('id-card')
 					.onClick(async () => {
 						await plugin.activateProfileView(file);
@@ -1117,7 +1117,7 @@ function buildPersonContextMenu(
 			// Generate visual tree (opens wizard with person pre-selected)
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Generate visual tree')
+					.setTitle('生成可视化树')
 					.setIcon('network')
 					.onClick(() => {
 						const modal = new ControlCenterModal(plugin.app, plugin);
@@ -1130,13 +1130,13 @@ function buildPersonContextMenu(
 			// Events submenu
 			submenu.addItem((subItem) => {
 				const eventsSubmenu: Menu = subItem
-					.setTitle('Events')
+					.setTitle('事件')
 					.setIcon('calendar')
 					.setSubmenu();
 
 				eventsSubmenu.addItem((evItem) => {
 					evItem
-						.setTitle('Create event for this person')
+						.setTitle('为此人物创建事件')
 						.setIcon('calendar-plus')
 						.onClick(async () => {
 							const eventService = plugin.getEventService();
@@ -1160,7 +1160,7 @@ function buildPersonContextMenu(
 
 				eventsSubmenu.addItem((evItem) => {
 					evItem
-						.setTitle('Link to existing event')
+						.setTitle('链接到现有事件')
 						.setIcon('calendar-search')
 						.onClick(async () => {
 							const { EventPickerModal } = await import('../events/ui/event-picker-modal');
@@ -1177,7 +1177,7 @@ function buildPersonContextMenu(
 
 				eventsSubmenu.addItem((evItem) => {
 					evItem
-						.setTitle('Export timeline to Canvas')
+						.setTitle('导出时间轴到画布')
 						.setIcon('layout')
 						.onClick(async () => {
 							await exportPersonTimelineFromFile(plugin, file, 'canvas');
@@ -1186,7 +1186,7 @@ function buildPersonContextMenu(
 
 				eventsSubmenu.addItem((evItem) => {
 					evItem
-						.setTitle('Export timeline to Excalidraw')
+						.setTitle('导出时间轴到 Excalidraw')
 						.setIcon('pencil')
 						.onClick(async () => {
 							await exportPersonTimelineFromFile(plugin, file, 'excalidraw');
@@ -1197,13 +1197,13 @@ function buildPersonContextMenu(
 			// Media submenu
 			submenu.addItem((subItem) => {
 				const mediaSubmenu: Menu = subItem
-					.setTitle('Media')
+					.setTitle('媒体')
 					.setIcon('image')
 					.setSubmenu();
 
 				mediaSubmenu.addItem((mediaItem) => {
 					mediaItem
-						.setTitle('Link media...')
+						.setTitle('链接媒体…')
 						.setIcon('image-plus')
 						.onClick(() => {
 							const personName = cache?.frontmatter?.name || file.basename;
@@ -1213,7 +1213,7 @@ function buildPersonContextMenu(
 
 				mediaSubmenu.addItem((mediaItem) => {
 					mediaItem
-						.setTitle('Manage media...')
+						.setTitle('管理媒体…')
 						.setIcon('settings')
 						.onClick(() => {
 							const personName = cache?.frontmatter?.name || file.basename;
@@ -1225,7 +1225,7 @@ function buildPersonContextMenu(
 			// Add source
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Add source...')
+					.setTitle('添加来源…')
 					.setIcon('archive')
 					.onClick(() => {
 						addSourceToPersonNote(plugin, file);
@@ -1239,7 +1239,7 @@ function buildPersonContextMenu(
 				const cache = plugin.app.metadataCache.getFileCache(file);
 				const isRootPerson = cache?.frontmatter?.root_person === true;
 				subItem
-					.setTitle(isRootPerson ? 'Unmark as root person' : 'Mark as root person')
+					.setTitle(isRootPerson ? '取消根人物标记' : '标记为根人物')
 					.setIcon('crown')
 					.onClick(async () => {
 						await toggleRootPerson(plugin, file);
@@ -1249,13 +1249,13 @@ function buildPersonContextMenu(
 			// Reference numbering submenu
 			submenu.addItem((subItem) => {
 				const refNumberSubmenu: Menu = subItem
-					.setTitle('Assign reference numbers')
+					.setTitle('分配编号')
 					.setIcon('hash')
 					.setSubmenu();
 
 				refNumberSubmenu.addItem((numItem) => {
 					numItem
-						.setTitle('Ahnentafel (ancestors)')
+						.setTitle('Ahnentafel（祖先）')
 						.setIcon('arrow-up')
 						.onClick(async () => {
 							await assignReferenceNumbersFromPerson(plugin, file, 'ahnentafel');
@@ -1264,7 +1264,7 @@ function buildPersonContextMenu(
 
 				refNumberSubmenu.addItem((numItem) => {
 					numItem
-						.setTitle("d'Aboville (descendants)")
+						.setTitle("d'Aboville（后代）")
 						.setIcon('arrow-down')
 						.onClick(async () => {
 							await assignReferenceNumbersFromPerson(plugin, file, 'daboville');
@@ -1273,7 +1273,7 @@ function buildPersonContextMenu(
 
 				refNumberSubmenu.addItem((numItem) => {
 					numItem
-						.setTitle('Henry (descendants)')
+						.setTitle('Henry（后代）')
 						.setIcon('arrow-down')
 						.onClick(async () => {
 							await assignReferenceNumbersFromPerson(plugin, file, 'henry');
@@ -1282,7 +1282,7 @@ function buildPersonContextMenu(
 
 				refNumberSubmenu.addItem((numItem) => {
 					numItem
-						.setTitle('Generation (all relatives)')
+						.setTitle('世代（所有亲属）')
 						.setIcon('users')
 						.onClick(async () => {
 							await assignReferenceNumbersFromPerson(plugin, file, 'generation');
@@ -1293,13 +1293,13 @@ function buildPersonContextMenu(
 			// Lineage tracking submenu
 			submenu.addItem((subItem) => {
 				const lineageSubmenu: Menu = subItem
-					.setTitle('Assign lineage')
+					.setTitle('分配世系')
 					.setIcon('git-branch')
 					.setSubmenu();
 
 				lineageSubmenu.addItem((linItem) => {
 					linItem
-						.setTitle('All descendants')
+						.setTitle('所有后代')
 						.setIcon('users')
 						.onClick(async () => {
 							await assignLineageFromPerson(plugin, file, 'all');
@@ -1308,7 +1308,7 @@ function buildPersonContextMenu(
 
 				lineageSubmenu.addItem((linItem) => {
 					linItem
-						.setTitle('Patrilineal (father\'s line)')
+						.setTitle('父系（父亲一脉）')
 						.setIcon('arrow-down')
 						.onClick(async () => {
 							await assignLineageFromPerson(plugin, file, 'patrilineal');
@@ -1317,7 +1317,7 @@ function buildPersonContextMenu(
 
 				lineageSubmenu.addItem((linItem) => {
 					linItem
-						.setTitle('Matrilineal (mother\'s line)')
+						.setTitle('母系（母亲一脉）')
 						.setIcon('arrow-down')
 						.onClick(async () => {
 							await assignLineageFromPerson(plugin, file, 'matrilineal');
@@ -1328,14 +1328,14 @@ function buildPersonContextMenu(
 			// More submenu - less commonly used actions
 			submenu.addItem((subItem) => {
 				const moreSubmenu: Menu = subItem
-					.setTitle('More')
+					.setTitle('更多')
 					.setIcon('more-horizontal')
 					.setSubmenu();
 
 				// Find on canvas
 				moreSubmenu.addItem((moreItem) => {
 					moreItem
-						.setTitle('Find on canvas')
+						.setTitle('在画布中查找')
 						.setIcon('search')
 						.onClick(() => {
 							const cache = plugin.app.metadataCache.getFileCache(file);
@@ -1350,7 +1350,7 @@ function buildPersonContextMenu(
 				// Open in map view
 				moreSubmenu.addItem((moreItem) => {
 					moreItem
-						.setTitle('Open in map view')
+						.setTitle('在地图视图中打开')
 						.setIcon('map')
 						.onClick(async () => {
 							await plugin.activateMapView();
@@ -1362,7 +1362,7 @@ function buildPersonContextMenu(
 				// Set group name
 				moreSubmenu.addItem((moreItem) => {
 					moreItem
-						.setTitle('Set group name')
+						.setTitle('设置分组名称')
 						.setIcon('tag')
 						.onClick(async () => {
 							await promptSetCollectionName(plugin, file);
@@ -1372,7 +1372,7 @@ function buildPersonContextMenu(
 				// Set collection
 				moreSubmenu.addItem((moreItem) => {
 					moreItem
-						.setTitle('Set collection')
+						.setTitle('设置合集')
 						.setIcon('folder')
 						.onClick(async () => {
 							await promptSetCollection(plugin, file);
@@ -1382,7 +1382,7 @@ function buildPersonContextMenu(
 				// Insert dynamic blocks
 				moreSubmenu.addItem((moreItem) => {
 					moreItem
-						.setTitle('Insert dynamic blocks')
+						.setTitle('插入动态块')
 						.setIcon('layout-template')
 						.onClick(async () => {
 							await plugin.insertDynamicBlocks([file]);
@@ -1392,7 +1392,7 @@ function buildPersonContextMenu(
 				// Create place notes from references
 				moreSubmenu.addItem((moreItem) => {
 					moreItem
-						.setTitle('Create place notes...')
+						.setTitle('创建地点笔记…')
 						.setIcon('map-pin')
 						.onClick(async () => {
 							await showCreatePlaceNotesForPerson(plugin, file);
@@ -1404,7 +1404,7 @@ function buildPersonContextMenu(
 				// Validate against schemas
 				moreSubmenu.addItem((moreItem) => {
 					moreItem
-						.setTitle('Validate against schemas')
+						.setTitle('根据 Schema 验证')
 						.setIcon('clipboard-check')
 						.onClick(async () => {
 							const schemaService = new SchemaService(plugin);
@@ -1413,7 +1413,7 @@ function buildPersonContextMenu(
 							const results = await validationService.validatePerson(file);
 
 							if (results.length === 0) {
-								new Notice('No schemas apply to this person.');
+								new Notice('没有适用于此人的 Schema。');
 								return;
 							}
 
@@ -1421,9 +1421,9 @@ function buildPersonContextMenu(
 							const warnings = results.reduce((sum, r) => sum + r.warnings.length, 0);
 
 							if (errors === 0 && warnings === 0) {
-								new Notice(`✓ Validated against ${results.length} schema${results.length > 1 ? 's' : ''} - all passed`);
+								new Notice(`✓ 已根据 ${results.length} 个 Schema 验证 - 全部通过`);
 							} else {
-								new Notice(`Schema validation: ${errors} error${errors !== 1 ? 's' : ''}, ${warnings} warning${warnings !== 1 ? 's' : ''}`);
+								new Notice(`Schema 验证：${errors} 个错误，${warnings} 个警告`);
 								// Open schemas tab to show details
 								const modal = new ControlCenterModal(plugin.app, plugin);
 								modal.openToTab('schemas');
@@ -1434,13 +1434,13 @@ function buildPersonContextMenu(
 				// Add essential properties submenu
 				moreSubmenu.addItem((moreItem) => {
 					const propsSubmenu: Menu = moreItem
-						.setTitle('Add essential properties')
+						.setTitle('添加基本属性')
 						.setIcon('file-plus')
 						.setSubmenu();
 
 					propsSubmenu.addItem((propItem) => {
 						propItem
-							.setTitle('Add essential person properties')
+							.setTitle('添加人物基本属性')
 							.setIcon('user')
 							.onClick(async () => {
 								await addEssentialPersonProperties(plugin, [file]);
@@ -1449,7 +1449,7 @@ function buildPersonContextMenu(
 
 					propsSubmenu.addItem((propItem) => {
 						propItem
-							.setTitle('Add essential place properties')
+							.setTitle('添加地点基本属性')
 							.setIcon('map-pin')
 							.onClick(async () => {
 								await addEssentialPlaceProperties(plugin, [file]);
@@ -1458,7 +1458,7 @@ function buildPersonContextMenu(
 
 					propsSubmenu.addItem((propItem) => {
 						propItem
-							.setTitle('Add essential source properties')
+							.setTitle('添加来源基本属性')
 							.setIcon('archive')
 							.onClick(async () => {
 								await addEssentialSourceProperties(plugin, [file]);
@@ -1467,7 +1467,7 @@ function buildPersonContextMenu(
 
 					propsSubmenu.addItem((propItem) => {
 						propItem
-							.setTitle('Add essential universe properties')
+							.setTitle('添加宇宙基本属性')
 							.setIcon('globe')
 							.onClick(async () => {
 								await addEssentialUniverseProperties(plugin, [file]);
@@ -1478,7 +1478,7 @@ function buildPersonContextMenu(
 				// Add cr_id only
 				moreSubmenu.addItem((moreItem) => {
 					moreItem
-						.setTitle('Add cr_id')
+						.setTitle('添加 cr_id')
 						.setIcon('key')
 						.onClick(async () => {
 							await addCrId(plugin, [file]);
@@ -1490,7 +1490,7 @@ function buildPersonContextMenu(
 		// Mobile: flat menu with prefix
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Generate visual tree')
+				.setTitle('Charted Roots：生成可视化树')
 				.setIcon('git-fork')
 				.onClick(() => {
 					const modal = new ControlCenterModal(plugin.app, plugin);
@@ -1500,7 +1500,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Edit person')
+				.setTitle('Charted Roots：编辑人物')
 				.setIcon('edit')
 				.onClick(() => {
 					plugin.openEditPersonModal(file);
@@ -1509,7 +1509,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open profile')
+				.setTitle('Charted Roots：打开档案')
 				.setIcon('id-card')
 				.onClick(async () => {
 					await plugin.activateProfileView(file);
@@ -1518,7 +1518,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Manage memberships...')
+				.setTitle('Charted Roots：管理成员资格…')
 				.setIcon('users')
 				.onClick(() => {
 					void openManageMembershipsForPerson(plugin, file);
@@ -1527,7 +1527,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add parent')
+				.setTitle('Charted Roots：添加父母')
 				.setIcon('user')
 				.onClick(() => {
 					const picker = new PersonPickerModal(plugin.app, (selectedPerson) => {
@@ -1550,7 +1550,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add spouse')
+				.setTitle('Charted Roots：添加配偶')
 				.setIcon('heart')
 				.onClick(() => {
 					const picker = new PersonPickerModal(plugin.app, (selectedPerson) => {
@@ -1565,7 +1565,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add child')
+				.setTitle('Charted Roots：添加子女')
 				.setIcon('baby')
 				.onClick(() => {
 					const picker = new PersonPickerModal(plugin.app, (selectedPerson) => {
@@ -1580,7 +1580,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Validate relationships')
+				.setTitle('Charted Roots：验证关系')
 				.setIcon('shield-check')
 				.onClick(async () => {
 					const validator = new RelationshipValidator(plugin.app);
@@ -1598,7 +1598,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Find on canvas')
+				.setTitle('Charted Roots：在画布中查找')
 				.setIcon('search')
 				.onClick(() => {
 					const cache = plugin.app.metadataCache.getFileCache(file);
@@ -1612,7 +1612,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open in map view')
+				.setTitle('Charted Roots：在地图视图中打开')
 				.setIcon('map')
 				.onClick(async () => {
 					await plugin.activateMapView();
@@ -1621,7 +1621,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open in Family Chart')
+				.setTitle('Charted Roots：在家族图表中打开')
 				.setIcon('git-fork')
 				.onClick(async () => {
 					const cache = plugin.app.metadataCache.getFileCache(file);
@@ -1629,14 +1629,14 @@ function buildPersonContextMenu(
 					if (crId) {
 						await plugin.activateFamilyChartView(crId);
 					} else {
-						new Notice('Could not find cr_id for this person note');
+						new Notice('找不到此人物笔记的 cr_id');
 					}
 				});
 		});
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Calculate relationship...')
+				.setTitle('Charted Roots：计算关系…')
 				.setIcon('git-compare')
 				.onClick(() => {
 					const cache = plugin.app.metadataCache.getFileCache(file);
@@ -1658,7 +1658,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Set group name')
+				.setTitle('Charted Roots：设置分组名称')
 				.setIcon('tag')
 				.onClick(async () => {
 					await promptSetCollectionName(plugin, file);
@@ -1667,7 +1667,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Set collection')
+				.setTitle('Charted Roots：设置合集')
 				.setIcon('folder')
 				.onClick(async () => {
 					await promptSetCollection(plugin, file);
@@ -1676,7 +1676,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add source...')
+				.setTitle('Charted Roots：添加来源…')
 				.setIcon('archive')
 				.onClick(() => {
 					addSourceToPersonNote(plugin, file);
@@ -1685,7 +1685,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Link media...')
+				.setTitle('Charted Roots：链接媒体…')
 				.setIcon('image-plus')
 				.onClick(() => {
 					const personName = cache?.frontmatter?.name || file.basename;
@@ -1695,7 +1695,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Manage media...')
+				.setTitle('Charted Roots：管理媒体…')
 				.setIcon('settings')
 				.onClick(() => {
 					const personName = cache?.frontmatter?.name || file.basename;
@@ -1705,7 +1705,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Insert dynamic blocks')
+				.setTitle('Charted Roots：插入动态块')
 				.setIcon('layout-template')
 				.onClick(async () => {
 					await plugin.insertDynamicBlocks([file]);
@@ -1715,7 +1715,7 @@ function buildPersonContextMenu(
 		// Events actions (mobile - flat menu)
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Create event')
+				.setTitle('Charted Roots：创建事件')
 				.setIcon('calendar-plus')
 				.onClick(async () => {
 					const eventService = plugin.getEventService();
@@ -1739,7 +1739,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Link to existing event')
+				.setTitle('Charted Roots：链接到现有事件')
 				.setIcon('calendar-search')
 				.onClick(async () => {
 					const cache = plugin.app.metadataCache.getFileCache(file);
@@ -1756,7 +1756,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Export timeline to Canvas')
+				.setTitle('Charted Roots：导出时间轴到画布')
 				.setIcon('layout')
 				.onClick(async () => {
 					await exportPersonTimelineFromFile(plugin, file, 'canvas');
@@ -1765,7 +1765,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Export timeline to Excalidraw')
+				.setTitle('Charted Roots：导出时间轴到 Excalidraw')
 				.setIcon('pencil')
 				.onClick(async () => {
 					await exportPersonTimelineFromFile(plugin, file, 'excalidraw');
@@ -1776,7 +1776,7 @@ function buildPersonContextMenu(
 			const cache = plugin.app.metadataCache.getFileCache(file);
 			const isRootPerson = cache?.frontmatter?.root_person === true;
 			item
-				.setTitle(isRootPerson ? 'Charted Roots: Unmark as root person' : 'Charted Roots: Mark as root person')
+				.setTitle(isRootPerson ? 'Charted Roots：取消根人物标记' : 'Charted Roots：标记为根人物')
 				.setIcon('crown')
 				.onClick(async () => {
 					await toggleRootPerson(plugin, file);
@@ -1786,7 +1786,7 @@ function buildPersonContextMenu(
 		// Reference numbering (mobile - flat menu)
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Assign Ahnentafel numbers')
+				.setTitle('Charted Roots：分配 Ahnentafel 编号')
 				.setIcon('hash')
 				.onClick(async () => {
 					await assignReferenceNumbersFromPerson(plugin, file, 'ahnentafel');
@@ -1795,7 +1795,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle("Charted Roots: Assign d'Aboville numbers")
+				.setTitle("Charted Roots：分配 d'Aboville 编号")
 				.setIcon('hash')
 				.onClick(async () => {
 					await assignReferenceNumbersFromPerson(plugin, file, 'daboville');
@@ -1804,7 +1804,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Assign Henry numbers')
+				.setTitle('Charted Roots：分配 Henry 编号')
 				.setIcon('hash')
 				.onClick(async () => {
 					await assignReferenceNumbersFromPerson(plugin, file, 'henry');
@@ -1813,7 +1813,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Assign generation numbers')
+				.setTitle('Charted Roots：分配世代编号')
 				.setIcon('hash')
 				.onClick(async () => {
 					await assignReferenceNumbersFromPerson(plugin, file, 'generation');
@@ -1823,7 +1823,7 @@ function buildPersonContextMenu(
 		// Lineage tracking (mobile - flat menu)
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Assign lineage (all)')
+				.setTitle('Charted Roots：分配世系（全部）')
 				.setIcon('git-branch')
 				.onClick(async () => {
 					await assignLineageFromPerson(plugin, file, 'all');
@@ -1832,7 +1832,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Assign lineage (patrilineal)')
+				.setTitle('Charted Roots：分配世系（父系）')
 				.setIcon('git-branch')
 				.onClick(async () => {
 					await assignLineageFromPerson(plugin, file, 'patrilineal');
@@ -1841,7 +1841,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Assign lineage (matrilineal)')
+				.setTitle('Charted Roots：分配世系（母系）')
 				.setIcon('git-branch')
 				.onClick(async () => {
 					await assignLineageFromPerson(plugin, file, 'matrilineal');
@@ -1850,7 +1850,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Create place notes...')
+				.setTitle('Charted Roots：创建地点笔记…')
 				.setIcon('map-pin')
 				.onClick(async () => {
 					await showCreatePlaceNotesForPerson(plugin, file);
@@ -1859,7 +1859,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential person properties')
+				.setTitle('Charted Roots：添加人物基本属性')
 				.setIcon('user')
 				.onClick(async () => {
 					await addEssentialPersonProperties(plugin, [file]);
@@ -1868,7 +1868,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential place properties')
+				.setTitle('Charted Roots：添加地点基本属性')
 				.setIcon('map-pin')
 				.onClick(async () => {
 					await addEssentialPlaceProperties(plugin, [file]);
@@ -1877,7 +1877,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential source properties')
+				.setTitle('Charted Roots：添加来源基本属性')
 				.setIcon('archive')
 				.onClick(async () => {
 					await addEssentialSourceProperties(plugin, [file]);
@@ -1886,7 +1886,7 @@ function buildPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add cr_id')
+				.setTitle('Charted Roots：添加 cr_id')
 				.setIcon('key')
 				.onClick(async () => {
 					await addCrId(plugin, [file]);
@@ -1942,7 +1942,7 @@ function buildFolderContextMenu(
 			if (isPeopleFolder) {
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Create person')
+						.setTitle('创建人物')
 						.setIcon('user-plus')
 						.onClick(() => {
 							const modal = new CreatePersonModal(plugin.app, {
@@ -1959,7 +1959,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Create family')
+						.setTitle('创建家族')
 						.setIcon('users')
 						.onClick(() => {
 							void import('../ui/family-creation-wizard').then(({ FamilyCreationWizardModal }) => {
@@ -1972,7 +1972,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Import GEDCOM')
+						.setTitle('导入 GEDCOM')
 						.setIcon('upload')
 						.onClick(() => {
 							const modal = new ControlCenterModal(plugin.app, plugin);
@@ -1982,7 +1982,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Export GEDCOM')
+						.setTitle('导出 GEDCOM')
 						.setIcon('download')
 						.onClick(() => {
 							const modal = new ControlCenterModal(plugin.app, plugin);
@@ -1992,7 +1992,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Scan for relationship issues')
+						.setTitle('扫描关系问题')
 						.setIcon('shield-alert')
 						.onClick(() => {
 							new FolderScanModal(plugin.app, file, plugin.personIndex ?? undefined).open();
@@ -2003,7 +2003,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add essential person properties')
+						.setTitle('添加人物基本属性')
 						.setIcon('user')
 						.onClick(async () => {
 							await addEssentialPersonProperties(plugin, getFilesInFolder());
@@ -2012,7 +2012,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add cr_id')
+						.setTitle('添加 cr_id')
 						.setIcon('key')
 						.onClick(async () => {
 							await addCrId(plugin, getFilesInFolder());
@@ -2021,7 +2021,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Insert dynamic blocks')
+						.setTitle('插入动态块')
 						.setIcon('layout-template')
 						.onClick(async () => {
 							await plugin.insertDynamicBlocks(getFilesInFolder());
@@ -2032,7 +2032,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('New people base from template')
+						.setTitle('从模板新建人物 base')
 						.setIcon('table')
 						.onClick(async () => {
 							await plugin.createBaseTemplate(file);
@@ -2041,7 +2041,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Generate all trees')
+						.setTitle('生成所有树')
 						.setIcon('git-fork')
 						.onClick(async () => {
 							await plugin.generateAllTrees();
@@ -2050,7 +2050,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Show folder statistics')
+						.setTitle('显示文件夹统计')
 						.setIcon('bar-chart-2')
 						.onClick(() => {
 							showFolderStatistics(plugin, file);
@@ -2063,7 +2063,7 @@ function buildFolderContextMenu(
 			else if (isPeopleSubfolder) {
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Create person')
+						.setTitle('创建人物')
 						.setIcon('user-plus')
 						.onClick(() => {
 							const modal = new CreatePersonModal(plugin.app, {
@@ -2084,7 +2084,7 @@ function buildFolderContextMenu(
 			else if (isPlacesSubfolder) {
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Create place')
+						.setTitle('创建地点')
 						.setIcon('map-pin-plus')
 						.onClick(() => {
 							new CreatePlaceModal(plugin.app, {
@@ -2102,7 +2102,7 @@ function buildFolderContextMenu(
 			else if (isPlacesFolder) {
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Create place')
+						.setTitle('创建地点')
 						.setIcon('map-pin-plus')
 						.onClick(() => {
 							new CreatePlaceModal(plugin.app, {
@@ -2119,7 +2119,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add essential place properties')
+						.setTitle('添加地点基本属性')
 						.setIcon('map-pin')
 						.onClick(async () => {
 							await addEssentialPlaceProperties(plugin, getFilesInFolder());
@@ -2128,7 +2128,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add cr_id')
+						.setTitle('添加 cr_id')
 						.setIcon('key')
 						.onClick(async () => {
 							await addCrId(plugin, getFilesInFolder());
@@ -2139,7 +2139,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('New places base from template')
+						.setTitle('从模板新建地点 base')
 						.setIcon('table')
 						.onClick(async () => {
 							await plugin.createPlacesBaseTemplate(file);
@@ -2148,7 +2148,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Show folder statistics')
+						.setTitle('显示文件夹统计')
 						.setIcon('bar-chart-2')
 						.onClick(() => {
 							showFolderStatistics(plugin, file);
@@ -2160,7 +2160,7 @@ function buildFolderContextMenu(
 			else if (isUniversesFolder) {
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add essential universe properties')
+						.setTitle('添加宇宙基本属性')
 						.setIcon('globe')
 						.onClick(async () => {
 							await addEssentialUniverseProperties(plugin, getFilesInFolder());
@@ -2169,7 +2169,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add cr_id')
+						.setTitle('添加 cr_id')
 						.setIcon('key')
 						.onClick(async () => {
 							await addCrId(plugin, getFilesInFolder());
@@ -2180,7 +2180,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('New universes base from template')
+						.setTitle('从模板新建宇宙 base')
 						.setIcon('table')
 						.onClick(async () => {
 							await plugin.createUniversesBaseTemplate(file);
@@ -2189,7 +2189,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Show folder statistics')
+						.setTitle('显示文件夹统计')
 						.setIcon('bar-chart-2')
 						.onClick(() => {
 							showFolderStatistics(plugin, file);
@@ -2201,7 +2201,7 @@ function buildFolderContextMenu(
 			else if (isSourcesFolder) {
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Create source')
+						.setTitle('创建来源')
 						.setIcon('file-plus')
 						.onClick(() => {
 							new CreateSourceModal(plugin.app, plugin, {
@@ -2214,7 +2214,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add essential source properties')
+						.setTitle('添加来源基本属性')
 						.setIcon('archive')
 						.onClick(async () => {
 							await addEssentialSourceProperties(plugin, getFilesInFolder());
@@ -2223,7 +2223,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add cr_id')
+						.setTitle('添加 cr_id')
 						.setIcon('key')
 						.onClick(async () => {
 							await addCrId(plugin, getFilesInFolder());
@@ -2234,7 +2234,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('New sources base from template')
+						.setTitle('从模板新建来源 base')
 						.setIcon('table')
 						.onClick(async () => {
 							await plugin.createSourcesBaseTemplate(file);
@@ -2243,7 +2243,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Show folder statistics')
+						.setTitle('显示文件夹统计')
 						.setIcon('bar-chart-2')
 						.onClick(() => {
 							showFolderStatistics(plugin, file);
@@ -2255,7 +2255,7 @@ function buildFolderContextMenu(
 			else if (isEventsFolder) {
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Create event')
+						.setTitle('创建事件')
 						.setIcon('calendar-plus')
 						.onClick(() => {
 							const eventService = plugin.getEventService();
@@ -2271,7 +2271,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add essential event properties')
+						.setTitle('添加事件基本属性')
 						.setIcon('calendar')
 						.onClick(async () => {
 							await addEssentialEventProperties(plugin, getFilesInFolder());
@@ -2280,7 +2280,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add cr_id')
+						.setTitle('添加 cr_id')
 						.setIcon('key')
 						.onClick(async () => {
 							await addCrId(plugin, getFilesInFolder());
@@ -2291,7 +2291,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('New events base from template')
+						.setTitle('从模板新建事件 base')
 						.setIcon('table')
 						.onClick(async () => {
 							await plugin.createEventsBaseTemplate(file);
@@ -2300,7 +2300,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Show folder statistics')
+						.setTitle('显示文件夹统计')
 						.setIcon('bar-chart-2')
 						.onClick(() => {
 							showFolderStatistics(plugin, file);
@@ -2312,7 +2312,7 @@ function buildFolderContextMenu(
 			else if (isOrganizationsFolder) {
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add cr_id')
+						.setTitle('添加 cr_id')
 						.setIcon('key')
 						.onClick(async () => {
 							await addCrId(plugin, getFilesInFolder());
@@ -2323,7 +2323,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('New organizations base from template')
+						.setTitle('从模板新建组织 base')
 						.setIcon('table')
 						.onClick(async () => {
 							await plugin.createOrganizationsBaseTemplate(file);
@@ -2332,7 +2332,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Show folder statistics')
+						.setTitle('显示文件夹统计')
 						.setIcon('bar-chart-2')
 						.onClick(() => {
 							showFolderStatistics(plugin, file);
@@ -2344,7 +2344,7 @@ function buildFolderContextMenu(
 			else if (isNotesFolder) {
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('New Charted Roots note')
+						.setTitle('新建 Charted Roots 笔记')
 						.setIcon('file-plus')
 						.onClick(async () => {
 							const { CreateNoteModal } = await import('../ui/create-note-modal');
@@ -2354,7 +2354,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add cr_id')
+						.setTitle('添加 cr_id')
 						.setIcon('key')
 						.onClick(async () => {
 							await addCrId(plugin, getFilesInFolder());
@@ -2365,7 +2365,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('New notes base from template')
+						.setTitle('从模板新建笔记 base')
 						.setIcon('table')
 						.onClick(async () => {
 							await plugin.createNotesBaseTemplate(file);
@@ -2374,7 +2374,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Show folder statistics')
+						.setTitle('显示文件夹统计')
 						.setIcon('bar-chart-2')
 						.onClick(() => {
 							showFolderStatistics(plugin, file);
@@ -2387,67 +2387,67 @@ function buildFolderContextMenu(
 				// Set as folder type options
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Set as people folder')
+						.setTitle('设置为人物文件夹')
 						.setIcon('users')
 						.onClick(async () => {
 							plugin.settings.peopleFolder = file.path;
 							await plugin.saveSettings();
-							new Notice(`People folder set to: ${file.path}`);
+							new Notice(`人物文件夹已设置为：${file.path}`);
 						});
 				});
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Set as places folder')
+						.setTitle('设置为地点文件夹')
 						.setIcon('map-pin')
 						.onClick(async () => {
 							plugin.settings.placesFolder = file.path;
 							await plugin.saveSettings();
-							new Notice(`Places folder set to: ${file.path}`);
+							new Notice(`地点文件夹已设置为：${file.path}`);
 						});
 				});
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Set as universes folder')
+						.setTitle('设置为宇宙文件夹')
 						.setIcon('globe')
 						.onClick(async () => {
 							plugin.settings.universesFolder = file.path;
 							await plugin.saveSettings();
-							new Notice(`Universes folder set to: ${file.path}`);
+							new Notice(`宇宙文件夹已设置为：${file.path}`);
 						});
 				});
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Set as sources folder')
+						.setTitle('设置为来源文件夹')
 						.setIcon('archive')
 						.onClick(async () => {
 							plugin.settings.sourcesFolder = file.path;
 							await plugin.saveSettings();
-							new Notice(`Sources folder set to: ${file.path}`);
+							new Notice(`来源文件夹已设置为：${file.path}`);
 						});
 				});
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Set as events folder')
+						.setTitle('设置为事件文件夹')
 						.setIcon('calendar')
 						.onClick(async () => {
 							plugin.settings.eventsFolder = file.path;
 							await plugin.saveSettings();
-							new Notice(`Events folder set to: ${file.path}`);
+							new Notice(`事件文件夹已设置为：${file.path}`);
 						});
 				});
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Set as organizations folder')
+						.setTitle('设置为组织文件夹')
 						.setIcon('building')
 						.onClick(async () => {
 							plugin.settings.organizationsFolder = file.path;
 							await plugin.saveSettings();
-							new Notice(`Organizations folder set to: ${file.path}`);
+							new Notice(`组织文件夹已设置为：${file.path}`);
 						});
 				});
 
@@ -2456,13 +2456,13 @@ function buildFolderContextMenu(
 				// Add essential properties submenu
 				submenu.addItem((subItem) => {
 					const propsSubmenu: Menu = subItem
-						.setTitle('Add essential properties')
+						.setTitle('添加基本属性')
 						.setIcon('file-plus')
 						.setSubmenu();
 
 					propsSubmenu.addItem((propItem) => {
 						propItem
-							.setTitle('Person properties')
+							.setTitle('人物属性')
 							.setIcon('user')
 							.onClick(async () => {
 								await addEssentialPersonProperties(plugin, getFilesInFolder());
@@ -2471,7 +2471,7 @@ function buildFolderContextMenu(
 
 					propsSubmenu.addItem((propItem) => {
 						propItem
-							.setTitle('Place properties')
+							.setTitle('地点属性')
 							.setIcon('map-pin')
 							.onClick(async () => {
 								await addEssentialPlaceProperties(plugin, getFilesInFolder());
@@ -2480,7 +2480,7 @@ function buildFolderContextMenu(
 
 					propsSubmenu.addItem((propItem) => {
 						propItem
-							.setTitle('Universe properties')
+							.setTitle('宇宙属性')
 							.setIcon('globe')
 							.onClick(async () => {
 								await addEssentialUniverseProperties(plugin, getFilesInFolder());
@@ -2489,7 +2489,7 @@ function buildFolderContextMenu(
 
 					propsSubmenu.addItem((propItem) => {
 						propItem
-							.setTitle('Source properties')
+							.setTitle('来源属性')
 							.setIcon('archive')
 							.onClick(async () => {
 								await addEssentialSourceProperties(plugin, getFilesInFolder());
@@ -2498,7 +2498,7 @@ function buildFolderContextMenu(
 
 					propsSubmenu.addItem((propItem) => {
 						propItem
-							.setTitle('Event properties')
+							.setTitle('事件属性')
 							.setIcon('calendar')
 							.onClick(async () => {
 								await addEssentialEventProperties(plugin, getFilesInFolder());
@@ -2507,7 +2507,7 @@ function buildFolderContextMenu(
 
 					propsSubmenu.addItem((propItem) => {
 						propItem
-							.setTitle('Map properties')
+							.setTitle('地图属性')
 							.setIcon('map')
 							.onClick(async () => {
 								await addEssentialMapProperties(plugin, getFilesInFolder());
@@ -2517,7 +2517,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Add cr_id')
+						.setTitle('添加 cr_id')
 						.setIcon('key')
 						.onClick(async () => {
 							await addCrId(plugin, getFilesInFolder());
@@ -2529,13 +2529,13 @@ function buildFolderContextMenu(
 				// Bases submenu
 				submenu.addItem((subItem) => {
 					const basesSubmenu: Menu = subItem
-						.setTitle('New base from template')
+						.setTitle('从模板新建 base')
 						.setIcon('table')
 						.setSubmenu();
 
 					basesSubmenu.addItem((baseItem) => {
 						baseItem
-							.setTitle('People base')
+							.setTitle('人物 base')
 							.setIcon('users')
 							.onClick(async () => {
 								await plugin.createBaseTemplate(file);
@@ -2544,7 +2544,7 @@ function buildFolderContextMenu(
 
 					basesSubmenu.addItem((baseItem) => {
 						baseItem
-							.setTitle('Places base')
+							.setTitle('地点 base')
 							.setIcon('map-pin')
 							.onClick(async () => {
 								await plugin.createPlacesBaseTemplate(file);
@@ -2553,7 +2553,7 @@ function buildFolderContextMenu(
 
 					basesSubmenu.addItem((baseItem) => {
 						baseItem
-							.setTitle('Universes base')
+							.setTitle('宇宙 base')
 							.setIcon('globe')
 							.onClick(async () => {
 								await plugin.createUniversesBaseTemplate(file);
@@ -2562,7 +2562,7 @@ function buildFolderContextMenu(
 
 					basesSubmenu.addItem((baseItem) => {
 						baseItem
-							.setTitle('Sources base')
+							.setTitle('来源 base')
 							.setIcon('archive')
 							.onClick(async () => {
 								await plugin.createSourcesBaseTemplate(file);
@@ -2571,7 +2571,7 @@ function buildFolderContextMenu(
 
 					basesSubmenu.addItem((baseItem) => {
 						baseItem
-							.setTitle('Events base')
+							.setTitle('事件 base')
 							.setIcon('calendar')
 							.onClick(async () => {
 								await plugin.createEventsBaseTemplate(file);
@@ -2580,7 +2580,7 @@ function buildFolderContextMenu(
 
 					basesSubmenu.addItem((baseItem) => {
 						baseItem
-							.setTitle('Organizations base')
+							.setTitle('组织 base')
 							.setIcon('building')
 							.onClick(async () => {
 								await plugin.createOrganizationsBaseTemplate(file);
@@ -2590,7 +2590,7 @@ function buildFolderContextMenu(
 
 				submenu.addItem((subItem) => {
 					subItem
-						.setTitle('Show folder statistics')
+						.setTitle('显示文件夹统计')
 						.setIcon('bar-chart-2')
 						.onClick(() => {
 							showFolderStatistics(plugin, file);
@@ -2605,7 +2605,7 @@ function buildFolderContextMenu(
 		if (isPeopleFolder) {
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Create person')
+					.setTitle('Charted Roots：创建人物')
 					.setIcon('user-plus')
 					.onClick(() => {
 						const modal = new CreatePersonModal(plugin.app, {
@@ -2622,7 +2622,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Create family')
+					.setTitle('Charted Roots：创建家族')
 					.setIcon('users')
 					.onClick(() => {
 						void import('../ui/family-creation-wizard').then(({ FamilyCreationWizardModal }) => {
@@ -2633,7 +2633,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Import GEDCOM')
+					.setTitle('Charted Roots：导入 GEDCOM')
 					.setIcon('upload')
 					.onClick(() => {
 						const modal = new ControlCenterModal(plugin.app, plugin);
@@ -2643,7 +2643,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Export GEDCOM')
+					.setTitle('Charted Roots：导出 GEDCOM')
 					.setIcon('download')
 					.onClick(() => {
 						const modal = new ControlCenterModal(plugin.app, plugin);
@@ -2653,7 +2653,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Scan for relationship issues')
+					.setTitle('Charted Roots：扫描关系问题')
 					.setIcon('shield-alert')
 					.onClick(() => {
 						new FolderScanModal(plugin.app, file, plugin.personIndex ?? undefined).open();
@@ -2662,7 +2662,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Add essential person properties')
+					.setTitle('Charted Roots：添加人物基本属性')
 					.setIcon('user')
 					.onClick(async () => {
 						await addEssentialPersonProperties(plugin, getFilesInFolder());
@@ -2671,7 +2671,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Insert dynamic blocks')
+					.setTitle('Charted Roots：插入动态块')
 					.setIcon('layout-template')
 					.onClick(async () => {
 						await plugin.insertDynamicBlocks(getFilesInFolder());
@@ -2680,7 +2680,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Generate all trees')
+					.setTitle('Charted Roots：生成所有树')
 					.setIcon('git-fork')
 					.onClick(async () => {
 						await plugin.generateAllTrees();
@@ -2693,7 +2693,7 @@ function buildFolderContextMenu(
 		else if (isPeopleSubfolder) {
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Create person')
+					.setTitle('Charted Roots：创建人物')
 					.setIcon('user-plus')
 					.onClick(() => {
 						const modal = new CreatePersonModal(plugin.app, {
@@ -2713,7 +2713,7 @@ function buildFolderContextMenu(
 		else if (isPlacesFolder) {
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Add essential place properties')
+					.setTitle('Charted Roots：添加地点基本属性')
 					.setIcon('map-pin')
 					.onClick(async () => {
 						await addEssentialPlaceProperties(plugin, getFilesInFolder());
@@ -2722,7 +2722,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: New places base')
+					.setTitle('Charted Roots：新建地点 base')
 					.setIcon('table')
 					.onClick(async () => {
 						await plugin.createPlacesBaseTemplate(file);
@@ -2734,7 +2734,7 @@ function buildFolderContextMenu(
 		else if (isUniversesFolder) {
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Add essential universe properties')
+					.setTitle('Charted Roots：添加宇宙基本属性')
 					.setIcon('globe')
 					.onClick(async () => {
 						await addEssentialUniverseProperties(plugin, getFilesInFolder());
@@ -2743,7 +2743,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: New universes base')
+					.setTitle('Charted Roots：新建宇宙 base')
 					.setIcon('table')
 					.onClick(async () => {
 						await plugin.createUniversesBaseTemplate(file);
@@ -2755,7 +2755,7 @@ function buildFolderContextMenu(
 		else if (isSourcesFolder) {
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Create source')
+					.setTitle('Charted Roots：创建来源')
 					.setIcon('file-plus')
 					.onClick(() => {
 						new CreateSourceModal(plugin.app, plugin, {
@@ -2766,7 +2766,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Add essential source properties')
+					.setTitle('Charted Roots：添加来源基本属性')
 					.setIcon('archive')
 					.onClick(async () => {
 						await addEssentialSourceProperties(plugin, getFilesInFolder());
@@ -2775,7 +2775,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: New sources base')
+					.setTitle('Charted Roots：新建来源 base')
 					.setIcon('table')
 					.onClick(async () => {
 						await plugin.createSourcesBaseTemplate(file);
@@ -2787,7 +2787,7 @@ function buildFolderContextMenu(
 		else if (isEventsFolder) {
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Create event')
+					.setTitle('Charted Roots：创建事件')
 					.setIcon('calendar-plus')
 					.onClick(() => {
 						const eventService = plugin.getEventService();
@@ -2801,7 +2801,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Add essential event properties')
+					.setTitle('Charted Roots：添加事件基本属性')
 					.setIcon('calendar')
 					.onClick(async () => {
 						await addEssentialEventProperties(plugin, getFilesInFolder());
@@ -2810,7 +2810,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: New events base')
+					.setTitle('Charted Roots：新建事件 base')
 					.setIcon('table')
 					.onClick(async () => {
 						await plugin.createEventsBaseTemplate(file);
@@ -2822,7 +2822,7 @@ function buildFolderContextMenu(
 		else if (isOrganizationsFolder) {
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: New organizations base')
+					.setTitle('Charted Roots：新建组织 base')
 					.setIcon('table')
 					.onClick(async () => {
 						await plugin.createOrganizationsBaseTemplate(file);
@@ -2834,7 +2834,7 @@ function buildFolderContextMenu(
 		else if (isNotesFolder) {
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: New note')
+					.setTitle('Charted Roots：新建笔记')
 					.setIcon('file-plus')
 					.onClick(async () => {
 						const { CreateNoteModal } = await import('../ui/create-note-modal');
@@ -2844,7 +2844,7 @@ function buildFolderContextMenu(
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: New notes base')
+					.setTitle('Charted Roots：新建笔记 base')
 					.setIcon('table')
 					.onClick(async () => {
 						await plugin.createNotesBaseTemplate(file);
@@ -2856,67 +2856,67 @@ function buildFolderContextMenu(
 		else {
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Set as people folder')
+					.setTitle('Charted Roots：设置为人物文件夹')
 					.setIcon('users')
 					.onClick(async () => {
 						plugin.settings.peopleFolder = file.path;
 						await plugin.saveSettings();
-						new Notice(`People folder set to: ${file.path}`);
+						new Notice(`人物文件夹已设置为：${file.path}`);
 					});
 			});
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Set as places folder')
+					.setTitle('Charted Roots：设置为地点文件夹')
 					.setIcon('map-pin')
 					.onClick(async () => {
 						plugin.settings.placesFolder = file.path;
 						await plugin.saveSettings();
-						new Notice(`Places folder set to: ${file.path}`);
+						new Notice(`地点文件夹已设置为：${file.path}`);
 					});
 			});
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Set as universes folder')
+					.setTitle('Charted Roots：设置为宇宙文件夹')
 					.setIcon('globe')
 					.onClick(async () => {
 						plugin.settings.universesFolder = file.path;
 						await plugin.saveSettings();
-						new Notice(`Universes folder set to: ${file.path}`);
+						new Notice(`宇宙文件夹已设置为：${file.path}`);
 					});
 			});
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Set as sources folder')
+					.setTitle('Charted Roots：设置为来源文件夹')
 					.setIcon('archive')
 					.onClick(async () => {
 						plugin.settings.sourcesFolder = file.path;
 						await plugin.saveSettings();
-						new Notice(`Sources folder set to: ${file.path}`);
+						new Notice(`来源文件夹已设置为：${file.path}`);
 					});
 			});
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Set as events folder')
+					.setTitle('Charted Roots：设置为事件文件夹')
 					.setIcon('calendar')
 					.onClick(async () => {
 						plugin.settings.eventsFolder = file.path;
 						await plugin.saveSettings();
-						new Notice(`Events folder set to: ${file.path}`);
+						new Notice(`事件文件夹已设置为：${file.path}`);
 					});
 			});
 
 			menu.addItem((item) => {
 				item
-					.setTitle('Charted Roots: Set as organizations folder')
+					.setTitle('Charted Roots：设置为组织文件夹')
 					.setIcon('building')
 					.onClick(async () => {
 						plugin.settings.organizationsFolder = file.path;
 						await plugin.saveSettings();
-						new Notice(`Organizations folder set to: ${file.path}`);
+						new Notice(`组织文件夹已设置为：${file.path}`);
 					});
 			});
 		}
@@ -2924,7 +2924,7 @@ function buildFolderContextMenu(
 		// Common actions for all folders (mobile)
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add cr_id')
+				.setTitle('Charted Roots：添加 cr_id')
 				.setIcon('key')
 				.onClick(async () => {
 					await addCrId(plugin, getFilesInFolder());
@@ -2933,7 +2933,7 @@ function buildFolderContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Show folder statistics')
+				.setTitle('Charted Roots：显示文件夹统计')
 				.setIcon('bar-chart-2')
 				.onClick(() => {
 					showFolderStatistics(plugin, file);
@@ -2967,7 +2967,7 @@ function buildSchemaContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Edit schema')
+					.setTitle('编辑 Schema')
 					.setIcon('edit')
 					.onClick(() => {
 						const modal = new ControlCenterModal(plugin.app, plugin);
@@ -2977,13 +2977,13 @@ function buildSchemaContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Validate matching notes')
+					.setTitle('验证匹配的笔记')
 					.setIcon('play')
 					.onClick(async () => {
 						const schemaService = new SchemaService(plugin);
 						const validationService = new ValidationService(plugin, schemaService);
 
-						new Notice(`Validating notes against "${schemaName}"...`);
+						new Notice(`正在根据「${schemaName}」验证笔记…`);
 
 						try {
 							const results = await validationService.validateVault();
@@ -2991,20 +2991,20 @@ function buildSchemaContextMenu(
 							const schemaResults = results.filter(r => r.schemaCrId === schemaCrId);
 
 							if (schemaResults.length === 0) {
-								new Notice(`No notes match schema "${schemaName}"`);
+								new Notice(`没有笔记匹配 Schema「${schemaName}」`);
 							} else {
 								const errors = schemaResults.filter(r => !r.isValid).length;
-								new Notice(`Validated ${schemaResults.length} notes: ${schemaResults.length - errors} passed, ${errors} failed`);
+								new Notice(`已验证 ${schemaResults.length} 个笔记：${schemaResults.length - errors} 通过，${errors} 失败`);
 							}
 						} catch (error) {
-							new Notice(`Validation failed: ${getErrorMessage(error)}`);
+							new Notice(`验证失败：${getErrorMessage(error)}`);
 						}
 					});
 			});
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open schemas tab')
+					.setTitle('打开 Schema 标签页')
 					.setIcon('external-link')
 					.onClick(() => {
 						const modal = new ControlCenterModal(plugin.app, plugin);
@@ -3016,7 +3016,7 @@ function buildSchemaContextMenu(
 		// Mobile: flat menu for schema notes
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open schemas tab')
+				.setTitle('Charted Roots：打开 Schema 标签页')
 				.setIcon('clipboard-check')
 				.onClick(() => {
 					const modal = new ControlCenterModal(plugin.app, plugin);
@@ -3051,7 +3051,7 @@ function buildMapContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle(`Open "${mapName}" in map view`)
+					.setTitle(`在地图视图中打开「${mapName}」`)
 					.setIcon('map')
 					.onClick(async () => {
 						await plugin.activateMapView(mapId as string);
@@ -3060,7 +3060,7 @@ function buildMapContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Edit map')
+					.setTitle('编辑地图')
 					.setIcon('edit')
 					.onClick(async () => {
 						const { CreateMapModal } = await import('../ui/create-map-modal');
@@ -3077,7 +3077,7 @@ function buildMapContextMenu(
 				submenu.addItem((subItem) => {
 					const hasRegion = typeof fm?.parent_region_x === 'number';
 					subItem
-						.setTitle(hasRegion ? 'Edit parent region' : 'Draw parent region')
+						.setTitle(hasRegion ? '编辑父区域' : '绘制父区域')
 						.setIcon('square-dashed')
 						.onClick(async () => {
 							await openRegionDrawingForMap(plugin, file, fm);
@@ -3089,7 +3089,7 @@ function buildMapContextMenu(
 
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Add essential map properties')
+					.setTitle('添加地图基本属性')
 					.setIcon('globe')
 					.onClick(async () => {
 						await addEssentialMapProperties(plugin, [file]);
@@ -3099,7 +3099,7 @@ function buildMapContextMenu(
 			// Add cr_id only
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Add cr_id')
+					.setTitle('添加 cr_id')
 					.setIcon('key')
 					.onClick(async () => {
 						await addCrId(plugin, [file]);
@@ -3110,7 +3110,7 @@ function buildMapContextMenu(
 		// Mobile: flat menu for map notes
 		menu.addItem((item) => {
 			item
-				.setTitle(`Charted Roots: Open "${mapName}" in map view`)
+				.setTitle(`Charted Roots：在地图视图中打开「${mapName}」`)
 				.setIcon('map')
 				.onClick(async () => {
 					await plugin.activateMapView(mapId as string);
@@ -3119,7 +3119,7 @@ function buildMapContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Edit map')
+				.setTitle('Charted Roots：编辑地图')
 				.setIcon('edit')
 				.onClick(async () => {
 					const { CreateMapModal } = await import('../ui/create-map-modal');
@@ -3136,7 +3136,7 @@ function buildMapContextMenu(
 			menu.addItem((item) => {
 				const hasRegion = typeof fm?.parent_region_x === 'number';
 				item
-					.setTitle(`Charted Roots: ${hasRegion ? 'Edit parent region' : 'Draw parent region'}`)
+					.setTitle(`Charted Roots：${hasRegion ? '编辑父区域' : '绘制父区域'}`)
 					.setIcon('square-dashed')
 					.onClick(async () => {
 						await openRegionDrawingForMap(plugin, file, fm);
@@ -3146,7 +3146,7 @@ function buildMapContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential map properties')
+				.setTitle('Charted Roots：添加地图基本属性')
 				.setIcon('globe')
 				.onClick(async () => {
 					await addEssentialMapProperties(plugin, [file]);
@@ -3155,7 +3155,7 @@ function buildMapContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add cr_id')
+				.setTitle('Charted Roots：添加 cr_id')
 				.setIcon('key')
 				.onClick(async () => {
 					await addCrId(plugin, [file]);
@@ -3187,7 +3187,7 @@ function buildPlaceContextMenu(
 			// Set collection
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Set collection')
+					.setTitle('设置合集')
 					.setIcon('folder')
 					.onClick(async () => {
 						await promptSetCollection(plugin, file);
@@ -3197,7 +3197,7 @@ function buildPlaceContextMenu(
 			// Open in map view (zoom to place coordinates if available)
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open in map view')
+					.setTitle('在地图视图中打开')
 					.setIcon('map')
 					.onClick(async () => {
 						// Extract coordinates from frontmatter if available
@@ -3225,7 +3225,7 @@ function buildPlaceContextMenu(
 			// Edit place
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Edit place')
+					.setTitle('编辑地点')
 					.setIcon('edit')
 					.onClick(() => {
 						plugin.openEditPlaceModal(file);
@@ -3235,7 +3235,7 @@ function buildPlaceContextMenu(
 			// Geocode place
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Geocode place')
+					.setTitle('地理编码地点')
 					.setIcon('map-pin')
 					.onClick(async () => {
 						await geocodeSinglePlace(plugin, file);
@@ -3245,7 +3245,7 @@ function buildPlaceContextMenu(
 			// Open profile
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open profile')
+					.setTitle('打开档案')
 					.setIcon('id-card')
 					.onClick(async () => {
 						await plugin.activateProfileView(file);
@@ -3255,13 +3255,13 @@ function buildPlaceContextMenu(
 			// Media submenu
 			submenu.addItem((subItem) => {
 				const mediaSubmenu: Menu = subItem
-					.setTitle('Media')
+					.setTitle('媒体')
 					.setIcon('image')
 					.setSubmenu();
 
 				mediaSubmenu.addItem((mediaItem) => {
 					mediaItem
-						.setTitle('Link media...')
+						.setTitle('链接媒体…')
 						.setIcon('image-plus')
 						.onClick(() => {
 							const placeName = typeof fm?.name === 'string' ? fm.name : file.basename;
@@ -3271,7 +3271,7 @@ function buildPlaceContextMenu(
 
 				mediaSubmenu.addItem((mediaItem) => {
 					mediaItem
-						.setTitle('Manage media...')
+						.setTitle('管理媒体…')
 						.setIcon('settings')
 						.onClick(() => {
 							const placeName = typeof fm?.name === 'string' ? fm.name : file.basename;
@@ -3285,13 +3285,13 @@ function buildPlaceContextMenu(
 			// Add essential properties submenu
 			submenu.addItem((subItem) => {
 				const propsSubmenu: Menu = subItem
-					.setTitle('Add essential properties')
+					.setTitle('添加基本属性')
 					.setIcon('file-plus')
 					.setSubmenu();
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential person properties')
+						.setTitle('添加人物基本属性')
 						.setIcon('user')
 						.onClick(async () => {
 							await addEssentialPersonProperties(plugin, [file]);
@@ -3300,7 +3300,7 @@ function buildPlaceContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential place properties')
+						.setTitle('添加地点基本属性')
 						.setIcon('map-pin')
 						.onClick(async () => {
 							await addEssentialPlaceProperties(plugin, [file]);
@@ -3309,7 +3309,7 @@ function buildPlaceContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential source properties')
+						.setTitle('添加来源基本属性')
 						.setIcon('archive')
 						.onClick(async () => {
 							await addEssentialSourceProperties(plugin, [file]);
@@ -3318,7 +3318,7 @@ function buildPlaceContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential universe properties')
+						.setTitle('添加宇宙基本属性')
 						.setIcon('globe')
 						.onClick(async () => {
 							await addEssentialUniverseProperties(plugin, [file]);
@@ -3329,7 +3329,7 @@ function buildPlaceContextMenu(
 			// Add cr_id only
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Add cr_id')
+					.setTitle('添加 cr_id')
 					.setIcon('key')
 					.onClick(async () => {
 						await addCrId(plugin, [file]);
@@ -3340,7 +3340,7 @@ function buildPlaceContextMenu(
 		// Mobile: flat menu for place notes
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Set collection')
+				.setTitle('Charted Roots：设置合集')
 				.setIcon('folder')
 				.onClick(async () => {
 					await promptSetCollection(plugin, file);
@@ -3349,7 +3349,7 @@ function buildPlaceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open in map view')
+				.setTitle('Charted Roots：在地图视图中打开')
 				.setIcon('map')
 				.onClick(async () => {
 					// Extract coordinates from frontmatter if available
@@ -3376,7 +3376,7 @@ function buildPlaceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Edit place')
+				.setTitle('Charted Roots：编辑地点')
 				.setIcon('edit')
 				.onClick(() => {
 					plugin.openEditPlaceModal(file);
@@ -3385,7 +3385,7 @@ function buildPlaceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open profile')
+				.setTitle('Charted Roots：打开档案')
 				.setIcon('id-card')
 				.onClick(async () => {
 					await plugin.activateProfileView(file);
@@ -3394,7 +3394,7 @@ function buildPlaceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Geocode place')
+				.setTitle('Charted Roots：地理编码地点')
 				.setIcon('map-pin')
 				.onClick(async () => {
 					await geocodeSinglePlace(plugin, file);
@@ -3403,7 +3403,7 @@ function buildPlaceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Link media...')
+				.setTitle('Charted Roots：链接媒体…')
 				.setIcon('image-plus')
 				.onClick(() => {
 					const placeName = typeof fm?.name === 'string' ? fm.name : file.basename;
@@ -3413,7 +3413,7 @@ function buildPlaceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Manage media...')
+				.setTitle('Charted Roots：管理媒体…')
 				.setIcon('settings')
 				.onClick(() => {
 					const placeName = typeof fm?.name === 'string' ? fm.name : file.basename;
@@ -3423,7 +3423,7 @@ function buildPlaceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential person properties')
+				.setTitle('Charted Roots：添加人物基本属性')
 				.setIcon('user')
 				.onClick(async () => {
 					await addEssentialPersonProperties(plugin, [file]);
@@ -3432,7 +3432,7 @@ function buildPlaceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential place properties')
+				.setTitle('Charted Roots：添加地点基本属性')
 				.setIcon('map-pin')
 				.onClick(async () => {
 					await addEssentialPlaceProperties(plugin, [file]);
@@ -3441,7 +3441,7 @@ function buildPlaceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential source properties')
+				.setTitle('Charted Roots：添加来源基本属性')
 				.setIcon('archive')
 				.onClick(async () => {
 					await addEssentialSourceProperties(plugin, [file]);
@@ -3450,7 +3450,7 @@ function buildPlaceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add cr_id')
+				.setTitle('Charted Roots：添加 cr_id')
 				.setIcon('key')
 				.onClick(async () => {
 					await addCrId(plugin, [file]);
@@ -3481,7 +3481,7 @@ function buildSourceContextMenu(
 			// Edit source
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Edit source')
+					.setTitle('编辑来源')
 					.setIcon('edit')
 					.onClick(() => {
 						openEditSourceModal(plugin, file);
@@ -3491,7 +3491,7 @@ function buildSourceContextMenu(
 			// Generate citation
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Generate citation')
+					.setTitle('生成引文')
 					.setIcon('quote')
 					.onClick(() => {
 						openCitationGenerator(plugin, file);
@@ -3501,7 +3501,7 @@ function buildSourceContextMenu(
 			// Open in Sources tab
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open sources tab')
+					.setTitle('打开来源标签页')
 					.setIcon('archive')
 					.onClick(() => {
 						const modal = new ControlCenterModal(plugin.app, plugin);
@@ -3512,7 +3512,7 @@ function buildSourceContextMenu(
 			// Open profile
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open profile')
+					.setTitle('打开档案')
 					.setIcon('id-card')
 					.onClick(async () => {
 						await plugin.activateProfileView(file);
@@ -3522,7 +3522,7 @@ function buildSourceContextMenu(
 			// Add source roles block (#219)
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Add source roles block')
+					.setTitle('添加来源角色块')
 					.setIcon('users')
 					.onClick(async () => {
 						await insertSourceRolesBlock(plugin, file);
@@ -3532,7 +3532,7 @@ function buildSourceContextMenu(
 			// Link to existing event
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Link to existing event')
+					.setTitle('链接到现有事件')
 					.setIcon('calendar-search')
 					.onClick(async () => {
 						const { EventPickerModal } = await import('../events/ui/event-picker-modal');
@@ -3550,13 +3550,13 @@ function buildSourceContextMenu(
 			// Add essential properties submenu
 			submenu.addItem((subItem) => {
 				const propsSubmenu: Menu = subItem
-					.setTitle('Add essential properties')
+					.setTitle('添加基本属性')
 					.setIcon('file-plus')
 					.setSubmenu();
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential person properties')
+						.setTitle('添加人物基本属性')
 						.setIcon('user')
 						.onClick(async () => {
 							await addEssentialPersonProperties(plugin, [file]);
@@ -3565,7 +3565,7 @@ function buildSourceContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential place properties')
+						.setTitle('添加地点基本属性')
 						.setIcon('map-pin')
 						.onClick(async () => {
 							await addEssentialPlaceProperties(plugin, [file]);
@@ -3574,7 +3574,7 @@ function buildSourceContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential source properties')
+						.setTitle('添加来源基本属性')
 						.setIcon('archive')
 						.onClick(async () => {
 							await addEssentialSourceProperties(plugin, [file]);
@@ -3583,7 +3583,7 @@ function buildSourceContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential universe properties')
+						.setTitle('添加宇宙基本属性')
 						.setIcon('globe')
 						.onClick(async () => {
 							await addEssentialUniverseProperties(plugin, [file]);
@@ -3594,7 +3594,7 @@ function buildSourceContextMenu(
 			// Add cr_id only
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Add cr_id')
+					.setTitle('添加 cr_id')
 					.setIcon('key')
 					.onClick(async () => {
 						await addCrId(plugin, [file]);
@@ -3605,7 +3605,7 @@ function buildSourceContextMenu(
 		// Mobile: flat menu for source notes
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Edit source')
+				.setTitle('Charted Roots：编辑来源')
 				.setIcon('edit')
 				.onClick(() => {
 					openEditSourceModal(plugin, file);
@@ -3614,7 +3614,7 @@ function buildSourceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Generate citation')
+				.setTitle('Charted Roots：生成引文')
 				.setIcon('quote')
 				.onClick(() => {
 					openCitationGenerator(plugin, file);
@@ -3623,7 +3623,7 @@ function buildSourceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open sources tab')
+				.setTitle('Charted Roots：打开来源标签页')
 				.setIcon('archive')
 				.onClick(() => {
 					const modal = new ControlCenterModal(plugin.app, plugin);
@@ -3633,7 +3633,7 @@ function buildSourceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open profile')
+				.setTitle('Charted Roots：打开档案')
 				.setIcon('id-card')
 				.onClick(async () => {
 					await plugin.activateProfileView(file);
@@ -3642,7 +3642,7 @@ function buildSourceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add source roles block')
+				.setTitle('Charted Roots：添加来源角色块')
 				.setIcon('users')
 				.onClick(async () => {
 					await insertSourceRolesBlock(plugin, file);
@@ -3651,7 +3651,7 @@ function buildSourceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Link to existing event')
+				.setTitle('Charted Roots：链接到现有事件')
 				.setIcon('calendar-search')
 				.onClick(async () => {
 					const { EventPickerModal } = await import('../events/ui/event-picker-modal');
@@ -3666,7 +3666,7 @@ function buildSourceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential person properties')
+				.setTitle('Charted Roots：添加人物基本属性')
 				.setIcon('user')
 				.onClick(async () => {
 					await addEssentialPersonProperties(plugin, [file]);
@@ -3675,7 +3675,7 @@ function buildSourceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential place properties')
+				.setTitle('Charted Roots：添加地点基本属性')
 				.setIcon('map-pin')
 				.onClick(async () => {
 					await addEssentialPlaceProperties(plugin, [file]);
@@ -3684,7 +3684,7 @@ function buildSourceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential source properties')
+				.setTitle('Charted Roots：添加来源基本属性')
 				.setIcon('archive')
 				.onClick(async () => {
 					await addEssentialSourceProperties(plugin, [file]);
@@ -3693,7 +3693,7 @@ function buildSourceContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add cr_id')
+				.setTitle('Charted Roots：添加 cr_id')
 				.setIcon('key')
 				.onClick(async () => {
 					await addCrId(plugin, [file]);
@@ -3725,7 +3725,7 @@ function buildEventContextMenu(
 			// Open event
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open event')
+					.setTitle('打开事件')
 					.setIcon('file')
 					.onClick(() => {
 						void plugin.app.workspace.getLeaf(false).openFile(file);
@@ -3735,7 +3735,7 @@ function buildEventContextMenu(
 			// Open in new tab
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open in new tab')
+					.setTitle('在新标签页中打开')
 					.setIcon('file-plus')
 					.onClick(() => {
 						void plugin.app.workspace.getLeaf('tab').openFile(file);
@@ -3745,7 +3745,7 @@ function buildEventContextMenu(
 			// Edit event
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Edit event')
+					.setTitle('编辑事件')
 					.setIcon('edit')
 					.onClick(() => {
 						plugin.openEditEventModal(file);
@@ -3755,7 +3755,7 @@ function buildEventContextMenu(
 			// Open profile
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open profile')
+					.setTitle('打开档案')
 					.setIcon('id-card')
 					.onClick(async () => {
 						await plugin.activateProfileView(file);
@@ -3765,7 +3765,7 @@ function buildEventContextMenu(
 			// Show on calendar
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Show on calendar')
+					.setTitle('在日历中显示')
 					.setIcon('calendar')
 					.onClick(() => {
 						const eventDate = cache?.frontmatter?.date || cache?.frontmatter?.event_date;
@@ -3801,13 +3801,13 @@ function buildEventContextMenu(
 			// Media submenu
 			submenu.addItem((subItem) => {
 				const mediaSubmenu: Menu = subItem
-					.setTitle('Media')
+					.setTitle('媒体')
 					.setIcon('image')
 					.setSubmenu();
 
 				mediaSubmenu.addItem((mediaItem) => {
 					mediaItem
-						.setTitle('Link media...')
+						.setTitle('链接媒体…')
 						.setIcon('image-plus')
 						.onClick(() => {
 							const eventTitle = cache?.frontmatter?.title || file.basename;
@@ -3817,7 +3817,7 @@ function buildEventContextMenu(
 
 				mediaSubmenu.addItem((mediaItem) => {
 					mediaItem
-						.setTitle('Manage media...')
+						.setTitle('管理媒体…')
 						.setIcon('settings')
 						.onClick(() => {
 							const eventTitle = cache?.frontmatter?.title || file.basename;
@@ -3831,7 +3831,7 @@ function buildEventContextMenu(
 			// Add essential event properties
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Add essential event properties')
+					.setTitle('添加事件基本属性')
 					.setIcon('file-plus')
 					.onClick(async () => {
 						await addEssentialEventProperties(plugin, [file]);
@@ -3841,7 +3841,7 @@ function buildEventContextMenu(
 			// Add cr_id only
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Add cr_id')
+					.setTitle('添加 cr_id')
 					.setIcon('key')
 					.onClick(async () => {
 						await addCrId(plugin, [file]);
@@ -3853,14 +3853,14 @@ function buildEventContextMenu(
 			// Delete event
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Delete event')
+					.setTitle('删除事件')
 					.setIcon('trash')
 					.onClick(async () => {
 						const eventTitle = cache?.frontmatter?.title || file.basename;
 						const confirmed = await confirmDeleteEvent(plugin, eventTitle);
 						if (confirmed) {
 							await plugin.app.fileManager.trashFile(file);
-							new Notice(`Deleted event: ${eventTitle}`);
+							new Notice(`已删除事件：${eventTitle}`);
 						}
 					});
 			});
@@ -3869,7 +3869,7 @@ function buildEventContextMenu(
 		// Mobile: flat menu
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open event')
+				.setTitle('Charted Roots：打开事件')
 				.setIcon('file')
 				.onClick(() => {
 					void plugin.app.workspace.getLeaf(false).openFile(file);
@@ -3878,7 +3878,7 @@ function buildEventContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open in new tab')
+				.setTitle('Charted Roots：在新标签页中打开')
 				.setIcon('file-plus')
 				.onClick(() => {
 					void plugin.app.workspace.getLeaf('tab').openFile(file);
@@ -3887,7 +3887,7 @@ function buildEventContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Edit event')
+				.setTitle('Charted Roots：编辑事件')
 				.setIcon('edit')
 				.onClick(() => {
 					plugin.openEditEventModal(file);
@@ -3896,7 +3896,7 @@ function buildEventContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open profile')
+				.setTitle('Charted Roots：打开档案')
 				.setIcon('id-card')
 				.onClick(async () => {
 					await plugin.activateProfileView(file);
@@ -3905,7 +3905,7 @@ function buildEventContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Link media...')
+				.setTitle('Charted Roots：链接媒体…')
 				.setIcon('image-plus')
 				.onClick(() => {
 					const eventTitle = cache?.frontmatter?.title || file.basename;
@@ -3915,7 +3915,7 @@ function buildEventContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Manage media...')
+				.setTitle('Charted Roots：管理媒体…')
 				.setIcon('settings')
 				.onClick(() => {
 					const eventTitle = cache?.frontmatter?.title || file.basename;
@@ -3925,7 +3925,7 @@ function buildEventContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential event properties')
+				.setTitle('Charted Roots：添加事件基本属性')
 				.setIcon('file-plus')
 				.onClick(async () => {
 					await addEssentialEventProperties(plugin, [file]);
@@ -3934,7 +3934,7 @@ function buildEventContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add cr_id')
+				.setTitle('Charted Roots：添加 cr_id')
 				.setIcon('key')
 				.onClick(async () => {
 					await addCrId(plugin, [file]);
@@ -3943,14 +3943,14 @@ function buildEventContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Delete event')
+				.setTitle('Charted Roots：删除事件')
 				.setIcon('trash')
 				.onClick(async () => {
 					const eventTitle = cache?.frontmatter?.title || file.basename;
 					const confirmed = await confirmDeleteEvent(plugin, eventTitle);
 					if (confirmed) {
 						await plugin.app.fileManager.trashFile(file);
-						new Notice(`Deleted event: ${eventTitle}`);
+						new Notice(`已删除事件：${eventTitle}`);
 					}
 				});
 		});
@@ -3979,7 +3979,7 @@ function buildOrganizationContextMenu(
 			// Edit organization
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Edit organization')
+					.setTitle('编辑组织')
 					.setIcon('edit')
 					.onClick(async () => {
 						const { CreateOrganizationModal } = await import('../organizations/ui/create-organization-modal');
@@ -3993,7 +3993,7 @@ function buildOrganizationContextMenu(
 								editFile: file
 							}).open();
 						} else {
-							new Notice('Could not load organization');
+							new Notice('无法加载组织');
 						}
 					});
 			});
@@ -4001,7 +4001,7 @@ function buildOrganizationContextMenu(
 			// Manage members
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Manage members...')
+					.setTitle('管理成员…')
 					.setIcon('users')
 					.onClick(async () => {
 						const { ManageOrganizationMembersModal } = await import('../organizations/ui/manage-members-modal');
@@ -4017,7 +4017,7 @@ function buildOrganizationContextMenu(
 								membershipService: membershipService
 							}).open();
 						} else {
-							new Notice('Could not load organization');
+							new Notice('无法加载组织');
 						}
 					});
 			});
@@ -4025,7 +4025,7 @@ function buildOrganizationContextMenu(
 			// Insert members block (#268)
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Insert members block')
+					.setTitle('插入成员块')
 					.setIcon('layout-template')
 					.onClick(async () => {
 						await insertMembersBlock(plugin, file);
@@ -4035,7 +4035,7 @@ function buildOrganizationContextMenu(
 			// Open in Organizations tab
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open in Organizations tab')
+					.setTitle('在组织标签页中打开')
 					.setIcon('table')
 					.onClick(() => {
 						const modal = new ControlCenterModal(plugin.app, plugin);
@@ -4046,7 +4046,7 @@ function buildOrganizationContextMenu(
 			// Open profile
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open profile')
+					.setTitle('打开档案')
 					.setIcon('id-card')
 					.onClick(async () => {
 						await plugin.activateProfileView(file);
@@ -4057,7 +4057,7 @@ function buildOrganizationContextMenu(
 		// Mobile: flat menu
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Edit organization')
+				.setTitle('Charted Roots：编辑组织')
 				.setIcon('edit')
 				.onClick(async () => {
 					const { CreateOrganizationModal } = await import('../organizations/ui/create-organization-modal');
@@ -4071,14 +4071,14 @@ function buildOrganizationContextMenu(
 							editFile: file
 						}).open();
 					} else {
-						new Notice('Could not load organization');
+						new Notice('无法加载组织');
 					}
 				});
 		});
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Manage members...')
+				.setTitle('Charted Roots：管理成员…')
 				.setIcon('users')
 				.onClick(async () => {
 					const { ManageOrganizationMembersModal } = await import('../organizations/ui/manage-members-modal');
@@ -4094,14 +4094,14 @@ function buildOrganizationContextMenu(
 							membershipService: membershipService
 						}).open();
 					} else {
-						new Notice('Could not load organization');
+						new Notice('无法加载组织');
 					}
 				});
 		});
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Insert members block')
+				.setTitle('Charted Roots：插入成员块')
 				.setIcon('layout-template')
 				.onClick(async () => {
 					await insertMembersBlock(plugin, file);
@@ -4110,7 +4110,7 @@ function buildOrganizationContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open in Organizations tab')
+				.setTitle('Charted Roots：在组织标签页中打开')
 				.setIcon('table')
 				.onClick(() => {
 					const modal = new ControlCenterModal(plugin.app, plugin);
@@ -4120,7 +4120,7 @@ function buildOrganizationContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open profile')
+				.setTitle('Charted Roots：打开档案')
 				.setIcon('id-card')
 				.onClick(async () => {
 					await plugin.activateProfileView(file);
@@ -4152,13 +4152,13 @@ function buildPlainMarkdownContextMenu(
 			// Add essential properties submenu
 			submenu.addItem((subItem) => {
 				const propsSubmenu: Menu = subItem
-					.setTitle('Add essential properties')
+					.setTitle('添加基本属性')
 					.setIcon('file-plus')
 					.setSubmenu();
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential person properties')
+						.setTitle('添加人物基本属性')
 						.setIcon('user')
 						.onClick(async () => {
 							await addEssentialPersonProperties(plugin, [file]);
@@ -4167,7 +4167,7 @@ function buildPlainMarkdownContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential place properties')
+						.setTitle('添加地点基本属性')
 						.setIcon('map-pin')
 						.onClick(async () => {
 							await addEssentialPlaceProperties(plugin, [file]);
@@ -4176,7 +4176,7 @@ function buildPlainMarkdownContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential source properties')
+						.setTitle('添加来源基本属性')
 						.setIcon('archive')
 						.onClick(async () => {
 							await addEssentialSourceProperties(plugin, [file]);
@@ -4185,7 +4185,7 @@ function buildPlainMarkdownContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential event properties')
+						.setTitle('添加事件基本属性')
 						.setIcon('calendar')
 						.onClick(async () => {
 							await addEssentialEventProperties(plugin, [file]);
@@ -4194,7 +4194,7 @@ function buildPlainMarkdownContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential universe properties')
+						.setTitle('添加宇宙基本属性')
 						.setIcon('globe')
 						.onClick(async () => {
 							await addEssentialUniverseProperties(plugin, [file]);
@@ -4205,7 +4205,7 @@ function buildPlainMarkdownContextMenu(
 			// Add cr_id only
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Add cr_id')
+					.setTitle('添加 cr_id')
 					.setIcon('key')
 					.onClick(async () => {
 						await addCrId(plugin, [file]);
@@ -4216,7 +4216,7 @@ function buildPlainMarkdownContextMenu(
 		// Mobile: flat menu
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential person properties')
+				.setTitle('Charted Roots：添加人物基本属性')
 				.setIcon('user')
 				.onClick(async () => {
 					await addEssentialPersonProperties(plugin, [file]);
@@ -4225,7 +4225,7 @@ function buildPlainMarkdownContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential place properties')
+				.setTitle('Charted Roots：添加地点基本属性')
 				.setIcon('map-pin')
 				.onClick(async () => {
 					await addEssentialPlaceProperties(plugin, [file]);
@@ -4234,7 +4234,7 @@ function buildPlainMarkdownContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential source properties')
+				.setTitle('Charted Roots：添加来源基本属性')
 				.setIcon('archive')
 				.onClick(async () => {
 					await addEssentialSourceProperties(plugin, [file]);
@@ -4243,7 +4243,7 @@ function buildPlainMarkdownContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential event properties')
+				.setTitle('Charted Roots：添加事件基本属性')
 				.setIcon('calendar')
 				.onClick(async () => {
 					await addEssentialEventProperties(plugin, [file]);
@@ -4252,7 +4252,7 @@ function buildPlainMarkdownContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential universe properties')
+				.setTitle('Charted Roots：添加宇宙基本属性')
 				.setIcon('globe')
 				.onClick(async () => {
 					await addEssentialUniverseProperties(plugin, [file]);
@@ -4261,7 +4261,7 @@ function buildPlainMarkdownContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add cr_id')
+				.setTitle('Charted Roots：添加 cr_id')
 				.setIcon('key')
 				.onClick(async () => {
 					await addCrId(plugin, [file]);
@@ -4293,7 +4293,7 @@ function buildUniverseContextMenu(
 			// Open universe note
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open universe')
+					.setTitle('打开宇宙')
 					.setIcon('file')
 					.onClick(() => {
 						void plugin.app.workspace.getLeaf(false).openFile(file);
@@ -4303,7 +4303,7 @@ function buildUniverseContextMenu(
 			// Open universes tab
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Open universes tab')
+					.setTitle('打开宇宙标签页')
 					.setIcon('external-link')
 					.onClick(() => {
 						const modal = new ControlCenterModal(plugin.app, plugin);
@@ -4314,7 +4314,7 @@ function buildUniverseContextMenu(
 			// Edit universe
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Edit universe')
+					.setTitle('编辑宇宙')
 					.setIcon('edit')
 					.onClick(() => {
 						openEditUniverseModal(plugin, file);
@@ -4324,14 +4324,14 @@ function buildUniverseContextMenu(
 			// Delete universe
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Delete universe')
+					.setTitle('删除宇宙')
 					.setIcon('trash')
 					.onClick(async () => {
 						const universeName = cache?.frontmatter?.name || file.basename;
 						const confirmed = await confirmDeleteUniverse(plugin, universeName);
 						if (confirmed) {
 							await plugin.app.fileManager.trashFile(file);
-							new Notice(`Deleted universe: ${universeName}`);
+							new Notice(`已删除宇宙：${universeName}`);
 						}
 					});
 			});
@@ -4341,13 +4341,13 @@ function buildUniverseContextMenu(
 			// Add essential properties submenu
 			submenu.addItem((subItem) => {
 				const propsSubmenu: Menu = subItem
-					.setTitle('Add essential properties')
+					.setTitle('添加基本属性')
 					.setIcon('file-plus')
 					.setSubmenu();
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential universe properties')
+						.setTitle('添加宇宙基本属性')
 						.setIcon('globe')
 						.onClick(async () => {
 							await addEssentialUniverseProperties(plugin, [file]);
@@ -4356,7 +4356,7 @@ function buildUniverseContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential person properties')
+						.setTitle('添加人物基本属性')
 						.setIcon('user')
 						.onClick(async () => {
 							await addEssentialPersonProperties(plugin, [file]);
@@ -4365,7 +4365,7 @@ function buildUniverseContextMenu(
 
 				propsSubmenu.addItem((propItem) => {
 					propItem
-						.setTitle('Add essential place properties')
+						.setTitle('添加地点基本属性')
 						.setIcon('map-pin')
 						.onClick(async () => {
 							await addEssentialPlaceProperties(plugin, [file]);
@@ -4376,7 +4376,7 @@ function buildUniverseContextMenu(
 			// Add cr_id only
 			submenu.addItem((subItem) => {
 				subItem
-					.setTitle('Add cr_id')
+					.setTitle('添加 cr_id')
 					.setIcon('key')
 					.onClick(async () => {
 						await addCrId(plugin, [file]);
@@ -4387,7 +4387,7 @@ function buildUniverseContextMenu(
 		// Mobile: flat menu for universe notes
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Open universes tab')
+				.setTitle('Charted Roots：打开宇宙标签页')
 				.setIcon('globe')
 				.onClick(() => {
 					const modal = new ControlCenterModal(plugin.app, plugin);
@@ -4397,7 +4397,7 @@ function buildUniverseContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Edit universe')
+				.setTitle('Charted Roots：编辑宇宙')
 				.setIcon('edit')
 				.onClick(() => {
 					openEditUniverseModal(plugin, file);
@@ -4406,21 +4406,21 @@ function buildUniverseContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Delete universe')
+				.setTitle('Charted Roots：删除宇宙')
 				.setIcon('trash')
 				.onClick(async () => {
 					const universeName = cache?.frontmatter?.name || file.basename;
 					const confirmed = await confirmDeleteUniverse(plugin, universeName);
 					if (confirmed) {
 						await plugin.app.fileManager.trashFile(file);
-						new Notice(`Deleted universe: ${universeName}`);
+						new Notice(`已删除宇宙：${universeName}`);
 					}
 				});
 		});
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential universe properties')
+				.setTitle('Charted Roots：添加宇宙基本属性')
 				.setIcon('globe')
 				.onClick(async () => {
 					await addEssentialUniverseProperties(plugin, [file]);
@@ -4429,7 +4429,7 @@ function buildUniverseContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential person properties')
+				.setTitle('Charted Roots：添加人物基本属性')
 				.setIcon('user')
 				.onClick(async () => {
 					await addEssentialPersonProperties(plugin, [file]);
@@ -4438,7 +4438,7 @@ function buildUniverseContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add essential place properties')
+				.setTitle('Charted Roots：添加地点基本属性')
 				.setIcon('map-pin')
 				.onClick(async () => {
 					await addEssentialPlaceProperties(plugin, [file]);
@@ -4447,7 +4447,7 @@ function buildUniverseContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Charted Roots: Add cr_id')
+				.setTitle('Charted Roots：添加 cr_id')
 				.setIcon('key')
 				.onClick(async () => {
 					await addCrId(plugin, [file]);

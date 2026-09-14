@@ -227,10 +227,10 @@ export interface NavGroupConfig {
  */
 export const NAV_GROUPS: NavGroupConfig[] = [
 	{ id: 'dashboard', label: null },
-	{ id: 'entities', label: 'Entities' },
-	{ id: 'data-structure', label: 'Data & Structure' },
-	{ id: 'output', label: 'Output' },
-	{ id: 'tools', label: 'Tools' }
+	{ id: 'entities', label: '实体' },
+	{ id: 'data-structure', label: '数据与结构' },
+	{ id: 'output', label: '输出' },
+	{ id: 'tools', label: '工具' }
 	// 'settings' group removed - Preferences consolidated into Plugin Settings (#176)
 ];
 
@@ -262,39 +262,39 @@ export interface ToolConfig {
 export const TOOL_CONFIGS: ToolConfig[] = [
 	{
 		id: 'templates',
-		name: 'Templates',
+		name: '模板',
 		icon: 'file-code',
-		description: 'View and copy template snippets'
+		description: '查看并复制模板片段'
 	},
 	{
 		id: 'media-manager',
-		name: 'Media Manager',
+		name: '媒体管理器',
 		icon: 'layout',
-		description: 'Manage media files and attachments'
+		description: '管理媒体文件与附件'
 	},
 	{
 		id: 'family-chart',
-		name: 'Family Chart',
+		name: '家谱图',
 		icon: 'users',
-		description: 'Open interactive family chart view'
+		description: '打开交互式家谱图视图'
 	},
 	{
 		id: 'import-export',
-		name: 'Import/Export',
+		name: '导入/导出',
 		icon: 'arrow-up-down',
-		description: 'Import and export genealogical data'
+		description: '导入和导出家谱数据'
 	},
 	{
 		id: 'statistics',
-		name: 'Statistics',
+		name: '统计',
 		icon: 'chart-bar-decreasing',
-		description: 'Data analysis and statistics dashboard'
+		description: '数据分析与统计仪表盘'
 	},
 	{
 		id: 'create-family',
-		name: 'Create Family',
+		name: '创建家族',
 		icon: 'users',
-		description: 'Create a family group with wizard'
+		description: '使用向导创建家族分组'
 	}
 ];
 
@@ -306,96 +306,96 @@ export const TAB_CONFIGS: TabConfig[] = [
 	// Dashboard (ungrouped)
 	{
 		id: 'dashboard',
-		name: 'Dashboard',
+		name: '仪表盘',
 		icon: 'home',
-		description: 'Quick actions and vault overview',
+		description: '快速操作与库概览',
 		group: 'dashboard'
 	},
 	// Entities group
 	{
 		id: 'people',
-		name: 'People',
+		name: '人物',
 		icon: 'users',
-		description: 'Person notes, statistics, and data entry',
+		description: '人物笔记、统计与数据录入',
 		group: 'entities'
 	},
 	{
 		id: 'events',
-		name: 'Events',
+		name: '事件',
 		icon: 'calendar',
-		description: 'Date systems and temporal data',
+		description: '日期系统与时间数据',
 		group: 'entities'
 	},
 	{
 		id: 'places',
-		name: 'Places',
+		name: '地点',
 		icon: 'map-pin',
-		description: 'Geographic locations and place statistics',
+		description: '地理位置与地点统计',
 		group: 'entities'
 	},
 	{
 		id: 'sources',
-		name: 'Sources',
+		name: '来源',
 		icon: 'archive',
-		description: 'Evidence and source documentation',
+		description: '证据与来源文档',
 		group: 'entities'
 	},
 	{
 		id: 'organizations',
-		name: 'Organizations',
+		name: '组织',
 		icon: 'building',
-		description: 'Manage organizations and memberships',
+		description: '管理组织与成员身份',
 		group: 'entities'
 	},
 	{
 		id: 'universes',
-		name: 'Universes',
+		name: '宇宙',
 		icon: 'globe',
-		description: 'Manage fictional universes and worlds',
+		description: '管理虚构宇宙与世界',
 		group: 'entities'
 	},
 	{
 		id: 'collections',
-		name: 'Collections',
+		name: '合集',
 		icon: 'folder',
-		description: 'Browse and organize family groups and collections',
+		description: '浏览并整理家族分组与合集',
 		group: 'entities'
 	},
 	// Data & Structure group
 	{
 		id: 'data-quality',
-		name: 'Data quality',
+		name: '数据质量',
 		icon: 'shield-check',
-		description: 'Analyze data quality and find issues',
+		description: '分析数据质量并发现问题',
 		group: 'data-structure'
 	},
 	{
 		id: 'schemas',
-		name: 'Schemas',
+		name: 'Schema',
 		icon: 'clipboard-check',
-		description: 'Validation schemas for data consistency',
+		description: '用于数据一致性的校验 Schema',
 		group: 'data-structure'
 	},
 	{
 		id: 'relationships',
-		name: 'Relationships',
+		name: '关系',
 		icon: 'link-2',
-		description: 'Custom relationship types and connections',
+		description: '自定义关系类型与连接',
 		group: 'data-structure'
 	},
 	// Output group
 	{
 		id: 'tree-generation',
-		name: 'Trees & reports',
+		name: '树与报告',
 		icon: 'git-branch',
-		description: 'Generate visual trees and formatted reports',
+		description: '生成可视化树与格式化报告',
 		group: 'output'
 	},
 	{
 		id: 'maps',
-		name: 'Maps',
+		name: '地图',
 		icon: 'map',
-		description: 'Map visualizations and custom maps',
+		description: '地图可视化与自定义地图',
 		group: 'output'
 	}
 	// Settings group removed - Preferences consolidated into Plugin Settings (#176)

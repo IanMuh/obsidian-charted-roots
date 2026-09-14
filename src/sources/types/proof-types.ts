@@ -139,20 +139,20 @@ export interface SourceConflict {
  */
 export const PROOF_STATUS_LABELS: Record<ProofStatus, { label: string; description: string }> = {
 	draft: {
-		label: 'Draft',
-		description: 'Proof summary is being written'
+		label: '草稿',
+		description: '论证摘要正在撰写中'
 	},
 	complete: {
-		label: 'Complete',
-		description: 'Proof summary is finished and reviewed'
+		label: '完成',
+		description: '论证摘要已完成并经过审阅'
 	},
 	needs_review: {
-		label: 'Needs review',
-		description: 'Proof summary needs to be reviewed or updated'
+		label: '需要复查',
+		description: '论证摘要需要复查或更新'
 	},
 	conflicted: {
-		label: 'Conflicted',
-		description: 'Evidence conflicts have not been resolved'
+		label: '存在冲突',
+		description: '证据冲突尚未解决'
 	}
 };
 
@@ -161,20 +161,20 @@ export const PROOF_STATUS_LABELS: Record<ProofStatus, { label: string; descripti
  */
 export const PROOF_CONFIDENCE_LABELS: Record<ProofConfidence, { label: string; description: string }> = {
 	proven: {
-		label: 'Proven',
-		description: 'Conclusion is supported by preponderance of evidence'
+		label: '已证实',
+		description: '结论得到优势证据的支持'
 	},
 	probable: {
-		label: 'Probable',
-		description: 'Conclusion is likely but not definitively proven'
+		label: '很可能',
+		description: '结论很可能成立，但尚未得到确证'
 	},
 	possible: {
-		label: 'Possible',
-		description: 'Conclusion is plausible but more evidence needed'
+		label: '可能',
+		description: '结论看似合理，但需要更多证据'
 	},
 	disproven: {
-		label: 'Disproven',
-		description: 'Evidence indicates the conclusion is false'
+		label: '已证伪',
+		description: '证据表明结论不成立'
 	}
 };
 
@@ -183,19 +183,19 @@ export const PROOF_CONFIDENCE_LABELS: Record<ProofConfidence, { label: string; d
  */
 export const EVIDENCE_SUPPORT_LABELS: Record<ProofEvidence['supports'], { label: string; color: string }> = {
 	strongly: {
-		label: 'Strongly supports',
+		label: '强烈支持',
 		color: 'var(--color-green)'
 	},
 	moderately: {
-		label: 'Moderately supports',
+		label: '适度支持',
 		color: 'var(--color-cyan)'
 	},
 	weakly: {
-		label: 'Weakly supports',
+		label: '较弱支持',
 		color: 'var(--color-orange)'
 	},
 	conflicts: {
-		label: 'Conflicts with',
+		label: '相冲突',
 		color: 'var(--color-red)'
 	}
 };

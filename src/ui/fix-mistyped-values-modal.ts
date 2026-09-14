@@ -10,7 +10,6 @@
 
 import { App, Modal, Notice, TFile } from 'obsidian';
 import { createLucideIcon } from './lucide-icons';
-import { pluralize } from '../utils/format-utils';
 import { findMistypedTypeFields, coerceTypeValueToText, MistypedTypeField } from './data-quality-type-checks';
 
 interface FileWithMistypedValues {
@@ -48,18 +47,18 @@ export class FixMistypedValuesModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'crc-modal-header' });
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		titleContainer.appendChild(createLucideIcon('wand', 24));
-		titleContainer.appendText('Fix mistyped property values');
+		titleContainer.appendText('修复类型错误的属性值');
 
 		// Description
 		const description = contentEl.createDiv({ cls: 'crc-modal-description' });
 		description.createEl('p', {
-			text: 'Scans for type fields (type, category, etc.) whose value was stored as a number or date instead of text. ' +
-				'A stray value like "event_type: 1850" can break features that match on the type, so this converts it back to text.'
+			text: '扫描值被存储为数字或日期而非文本的类型字段（type、category 等）。' +
+				'像 "event_type: 1850" 这样的异常值会破坏基于类型匹配的功能，因此此处会将其转换回文本。'
 		});
 
 		// Scan button
 		const scanContainer = contentEl.createDiv({ cls: 'cr-fix-mistyped-scan' });
-		this.scanButton = scanContainer.createEl('button', { text: 'Scan for mistyped values', cls: 'mod-cta' });
+		this.scanButton = scanContainer.createEl('button', { text: '扫描类型错误的值', cls: 'mod-cta' });
 		this.scanButton.addEventListener('click', () => this.runScan());
 
 		// Progress (hidden until applying)
@@ -71,14 +70,14 @@ export class FixMistypedValuesModal extends Modal {
 		// Backup warning
 		const warning = contentEl.createDiv({ cls: 'crc-warning-callout' });
 		warning.appendChild(createLucideIcon('alert-triangle', 16));
-		warning.createSpan({ text: ' Back up your vault before proceeding. This operation modifies existing notes.' });
+		warning.createSpan({ text: ' 继续操作前请先备份你的库。此操作会修改现有笔记。' });
 
 		// Footer
 		const footer = contentEl.createDiv({ cls: 'crc-modal-footer' });
-		this.applyButton = footer.createEl('button', { text: 'Fix all', cls: 'mod-cta' });
+		this.applyButton = footer.createEl('button', { text: '全部修复', cls: 'mod-cta' });
 		this.applyButton.disabled = true;
 		this.applyButton.addEventListener('click', () => void this.applyFix());
-		footer.createEl('button', { text: 'Close' }).addEventListener('click', () => this.close());
+		footer.createEl('button', { text: '关闭' }).addEventListener('click', () => this.close());
 	}
 
 	onClose(): void {
@@ -114,7 +113,7 @@ export class FixMistypedValuesModal extends Modal {
 		if (results.length === 0) {
 			container.createEl('p', {
 				cls: 'crc-text-muted',
-				text: 'No mistyped type values found. Your type fields all read as text.'
+				text: '未找到类型错误的值。你的类型字段均以文本形式读取。'
 			});
 			if (this.applyButton) this.applyButton.disabled = true;
 			return;
@@ -122,7 +121,7 @@ export class FixMistypedValuesModal extends Modal {
 
 		const count = results.reduce((sum, r) => sum + r.fields.length, 0);
 		container.createEl('p', {
-			text: `Found ${count} mistyped ${pluralize(count, 'value')} in ${results.length} ${pluralize(results.length, 'note')}:`
+			text: `在 ${results.length} 条笔记中发现 ${count} 个类型错误的值：`
 		});
 
 		const list = container.createEl('ul', { cls: 'cr-fix-mistyped-list' });
@@ -132,7 +131,7 @@ export class FixMistypedValuesModal extends Modal {
 			for (const f of fields) {
 				item.createDiv({
 					cls: 'cr-fix-mistyped-detail',
-					text: `${f.property}: ${f.coerced} (currently a ${typeof f.value === 'object' ? 'date' : typeof f.value})`
+					text: `${f.property}：${f.coerced}（当前为${typeof f.value === 'object' ? '日期' : typeof f.value}）`
 				});
 			}
 		}
@@ -159,7 +158,7 @@ export class FixMistypedValuesModal extends Modal {
 		for (const { file, fields } of this.results) {
 			if (this.progressContainer) {
 				this.progressContainer.empty();
-				this.progressContainer.createEl('p', { text: `Fixing ${modified + 1} of ${total}...` });
+				this.progressContainer.createEl('p', { text: `正在修复第 ${modified + 1} / ${total} 条…` });
 			}
 			try {
 				await this.app.fileManager.processFrontMatter(file, (frontmatter) => {
@@ -179,9 +178,9 @@ export class FixMistypedValuesModal extends Modal {
 		}
 
 		if (errors === 0) {
-			new Notice(`Fixed mistyped values in ${modified} ${pluralize(modified, 'note')}.`);
+			new Notice(`已修复 ${modified} 条笔记中的类型错误的值。`);
 		} else {
-			new Notice(`Fixed ${modified} ${pluralize(modified, 'note')} with ${errors} ${pluralize(errors, 'error')}. Check the console for details.`);
+			new Notice(`已修复 ${modified} 条笔记，出现 ${errors} 个错误。详情请查看控制台。`);
 		}
 
 		this.options.onComplete?.(modified);

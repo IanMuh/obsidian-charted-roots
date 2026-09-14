@@ -97,11 +97,11 @@ export function renderWorldMapPreview(
 	// Add stats badge overlay
 	const statsBadge = mapContainer.createDiv({ cls: 'cr-world-map-stats' });
 	const count = placesWithCoords.length;
-	statsBadge.setText(`${count} place${count !== 1 ? 's' : ''}`);
+	statsBadge.setText(`${count} 个地点`);
 
 	// Add hint text
 	const hint = mapContainer.createDiv({ cls: 'cr-world-map-hint' });
-	hint.setText('Click to open map');
+	hint.setText('点击打开地图');
 
 	// Add click overlay (transparent div to capture clicks)
 	// (CSS on .cr-world-map-click-overlay sets pointer-events: auto to guarantee
@@ -113,7 +113,7 @@ export function renderWorldMapPreview(
 	mapContainer.addEventListener('click', onClick);
 	mapContainer.setAttribute('role', 'button');
 	mapContainer.setAttribute('tabindex', '0');
-	mapContainer.setAttribute('aria-label', `Open map view. ${count} places with coordinates.`);
+	mapContainer.setAttribute('aria-label', `打开地图视图。${count} 个地点带坐标。`);
 
 	// Keyboard accessibility
 	mapContainer.addEventListener('keydown', (e) => {

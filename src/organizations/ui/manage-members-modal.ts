@@ -15,7 +15,6 @@ import type { OrganizationInfo, PersonMembership, MembershipRecord } from '../ty
 import { MembershipService } from '../services/membership-service';
 import { OrganizationService } from '../services/organization-service';
 import { createLucideIcon } from '../../ui/lucide-icons';
-import { pluralize } from '../../utils/format-utils';
 import { getLogger } from '../../core/logging';
 
 const logger = getLogger('ManageOrganizationMembersModal');
@@ -86,7 +85,7 @@ export class ManageOrganizationMembersModal extends Modal {
 
 		const icon = createLucideIcon('users', 24);
 		titleRow.appendChild(icon);
-		titleRow.createEl('h2', { text: `Manage members: ${this.organization.name}` });
+		titleRow.createEl('h2', { text: `管理成员：${this.organization.name}` });
 
 		// Add members button
 		const addBtn = contentEl.createEl('button', {
@@ -94,13 +93,13 @@ export class ManageOrganizationMembersModal extends Modal {
 		});
 		const plusIcon = createLucideIcon('plus', 16);
 		addBtn.appendChild(plusIcon);
-		addBtn.appendText(' Add members');
+		addBtn.appendText(' 添加成员');
 		addBtn.addEventListener('click', () => this.openMultiSelectPicker());
 
 		// Members list
 		const membersSection = contentEl.createDiv({ cls: 'cr-manage-members-section' });
 		membersSection.createEl('h3', {
-			text: `Current members (${this.members.length})`,
+			text: `当前成员（${this.members.length}）`,
 			cls: 'cr-manage-members-section-title'
 		});
 
@@ -111,7 +110,7 @@ export class ManageOrganizationMembersModal extends Modal {
 		const footer = contentEl.createDiv({ cls: 'cr-manage-members-footer' });
 		new Setting(footer)
 			.addButton(btn => btn
-				.setButtonText('Done')
+				.setButtonText('完成')
 				.setCta()
 				.onClick(() => this.close()));
 	}
@@ -127,9 +126,9 @@ export class ManageOrganizationMembersModal extends Modal {
 			const emptyState = this.membersListEl.createDiv({ cls: 'cr-manage-members-empty' });
 			const emptyIcon = createLucideIcon('user-plus', 48);
 			emptyState.appendChild(emptyIcon);
-			emptyState.createEl('p', { text: 'No members yet' });
+			emptyState.createEl('p', { text: '暂无成员' });
 			emptyState.createEl('p', {
-				text: 'Click "Add members" to add people to this organization',
+				text: '点击「添加成员」将人物加入此组织',
 				cls: 'cr-text-muted'
 			});
 			return;
@@ -166,10 +165,10 @@ export class ManageOrganizationMembersModal extends Modal {
 		const detailsRow = infoSection.createDiv({ cls: 'cr-manage-members-card-details' });
 
 		const details: string[] = [];
-		if (member.role) details.push(`Role: ${member.role}`);
-		if (member.from) details.push(`Joined: ${member.from}`);
-		if (member.to) details.push(`Left: ${member.to}`);
-		if (member.isCurrent && !member.to) details.push('Active');
+		if (member.role) details.push(`角色：${member.role}`);
+		if (member.from) details.push(`加入：${member.from}`);
+		if (member.to) details.push(`离开：${member.to}`);
+		if (member.isCurrent && !member.to) details.push('在任');
 
 		if (details.length > 0) {
 			detailsRow.createSpan({ text: details.join('  |  '), cls: 'cr-text-muted' });
@@ -181,7 +180,7 @@ export class ManageOrganizationMembersModal extends Modal {
 		// Edit button
 		const editBtn = actionsSection.createEl('button', {
 			cls: 'cr-btn cr-btn--small cr-btn--ghost',
-			attr: { 'aria-label': 'Edit membership' }
+			attr: { 'aria-label': '编辑成员身份' }
 		});
 		const editIcon = createLucideIcon('pencil', 14);
 		editBtn.appendChild(editIcon);
@@ -193,7 +192,7 @@ export class ManageOrganizationMembersModal extends Modal {
 		// Remove button
 		const removeBtn = actionsSection.createEl('button', {
 			cls: 'cr-btn cr-btn--small cr-btn--ghost cr-btn--danger',
-			attr: { 'aria-label': 'Remove member' }
+			attr: { 'aria-label': '移除成员' }
 		});
 		const removeIcon = createLucideIcon('x', 14);
 		removeBtn.appendChild(removeIcon);
@@ -215,10 +214,10 @@ export class ManageOrganizationMembersModal extends Modal {
 
 		// Role field
 		const roleRow = form.createDiv({ cls: 'cr-manage-members-edit-row' });
-		roleRow.createEl('label', { text: 'Role' });
+		roleRow.createEl('label', { text: '角色' });
 		const roleInput = roleRow.createEl('input', {
 			cls: 'cr-form-input',
-			attr: { type: 'text', placeholder: 'e.g., Lord, Squire, Maester' }
+			attr: { type: 'text', placeholder: '例如：领主、侍从、学士' }
 		});
 		roleInput.value = member.role || '';
 
@@ -241,19 +240,19 @@ export class ManageOrganizationMembersModal extends Modal {
 
 		// Date joined field
 		const fromRow = form.createDiv({ cls: 'cr-manage-members-edit-row' });
-		fromRow.createEl('label', { text: 'Date joined' });
+		fromRow.createEl('label', { text: '加入日期' });
 		const fromInput = fromRow.createEl('input', {
 			cls: 'cr-form-input',
-			attr: { type: 'text', placeholder: 'e.g., 283 AC' }
+			attr: { type: 'text', placeholder: '例如：283 AC' }
 		});
 		fromInput.value = member.from || '';
 
 		// Date left field
 		const toRow = form.createDiv({ cls: 'cr-manage-members-edit-row' });
-		toRow.createEl('label', { text: 'Date left' });
+		toRow.createEl('label', { text: '离开日期' });
 		const toInput = toRow.createEl('input', {
 			cls: 'cr-form-input',
-			attr: { type: 'text', placeholder: 'Leave empty if still active' }
+			attr: { type: 'text', placeholder: '若仍在任则留空' }
 		});
 		toInput.value = member.to || '';
 
@@ -263,7 +262,7 @@ export class ManageOrganizationMembersModal extends Modal {
 		const saveBtn = actions.createEl('button', {
 			cls: 'cr-btn cr-btn--primary cr-btn--small'
 		});
-		saveBtn.textContent = 'Save';
+		saveBtn.textContent = '保存';
 		saveBtn.addEventListener('click', () => {
 			void (async () => {
 				await this.saveMemberEdit(member, {
@@ -279,7 +278,7 @@ export class ManageOrganizationMembersModal extends Modal {
 		const cancelBtn = actions.createEl('button', {
 			cls: 'cr-btn cr-btn--ghost cr-btn--small'
 		});
-		cancelBtn.textContent = 'Cancel';
+		cancelBtn.textContent = '取消';
 		cancelBtn.addEventListener('click', () => {
 			this.editingMemberIndex = null;
 			this.renderMembersList();
@@ -318,10 +317,10 @@ export class ManageOrganizationMembersModal extends Modal {
 			this.loadMembers();
 			this.onMembersChanged?.();
 
-			new Notice(`Updated membership for ${member.personName}`);
+			new Notice(`已更新 ${member.personName} 的成员身份`);
 		} catch (error) {
 			logger.error('saveMemberEdit', `Failed to update membership: ${error}`);
-			new Notice(`Failed to update membership: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`更新成员身份失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -331,16 +330,16 @@ export class ManageOrganizationMembersModal extends Modal {
 	private confirmRemoveMember(member: PersonMembership): void {
 		// Simple confirmation via modal
 		const confirmModal = new Modal(this.app);
-		confirmModal.contentEl.createEl('h3', { text: 'Remove member?' });
+		confirmModal.contentEl.createEl('h3', { text: '移除成员？' });
 		confirmModal.contentEl.createEl('p', {
-			text: `Remove ${member.personName} from ${this.organization.name}?`
+			text: `要将 ${member.personName} 从 ${this.organization.name} 中移除吗？`
 		});
 
 		new Setting(confirmModal.contentEl)
 			.addButton(btn => btn
-				.setButtonText('Cancel')
+				.setButtonText('取消')
 				.onClick(() => confirmModal.close()))
-			.addButton(btn => setButtonDestructive(btn.setButtonText('Remove'))
+			.addButton(btn => setButtonDestructive(btn.setButtonText('移除'))
 				.onClick(async () => {
 					confirmModal.close();
 					await this.removeMember(member);
@@ -367,10 +366,10 @@ export class ManageOrganizationMembersModal extends Modal {
 			this.renderMembersList();
 			this.onMembersChanged?.();
 
-			new Notice(`Removed ${member.personName} from ${this.organization.name}`);
+			new Notice(`已将 ${member.personName} 从 ${this.organization.name} 中移除`);
 		} catch (error) {
 			logger.error('removeMember', `Failed to remove member: ${error}`);
-			new Notice(`Failed to remove member: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`移除成员失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -385,7 +384,7 @@ export class ManageOrganizationMembersModal extends Modal {
 			this.app,
 			this.plugin,
 			{
-				title: 'Select members to add',
+				title: '选择要添加的成员',
 				excludeCrIds: existingMemberIds,
 				onSelect: (selectedPeople) => {
 					void this.addSelectedMembers(selectedPeople);
@@ -418,7 +417,7 @@ export class ManageOrganizationMembersModal extends Modal {
 		}
 
 		if (addedCount > 0) {
-			new Notice(`Added ${addedCount} ${pluralize(addedCount, 'member')} to ${this.organization.name}`);
+			new Notice(`已向 ${this.organization.name} 添加 ${addedCount} 名成员`);
 		}
 
 		// Wait for metadata cache to update for all modified files
@@ -571,13 +570,13 @@ class MultiSelectPersonPickerModal extends Modal {
 		const titleRow = header.createDiv({ cls: 'cr-multi-select-title-row' });
 		const icon = createLucideIcon('users', 20);
 		titleRow.appendChild(icon);
-		titleRow.createSpan({ text: this.options.title || 'Select people' });
+			titleRow.createSpan({ text: this.options.title || '选择人物' });
 
 		// Search input
 		const searchSection = contentEl.createDiv({ cls: 'cr-multi-select-search' });
 		const searchInput = searchSection.createEl('input', {
 			cls: 'cr-form-input',
-			attr: { type: 'text', placeholder: 'Search by name...' }
+			attr: { type: 'text', placeholder: '按名称搜索…' }
 		});
 		searchInput.addEventListener('input', () => {
 			this.searchQuery = searchInput.value.toLowerCase();
@@ -600,11 +599,11 @@ class MultiSelectPersonPickerModal extends Modal {
 		const actions = footer.createDiv({ cls: 'cr-multi-select-actions' });
 
 		const cancelBtn = actions.createEl('button', { cls: 'cr-btn cr-btn--ghost' });
-		cancelBtn.textContent = 'Cancel';
+		cancelBtn.textContent = '取消';
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const addBtn = actions.createEl('button', { cls: 'cr-btn cr-btn--primary' });
-		addBtn.textContent = 'Add selected';
+		addBtn.textContent = '添加所选';
 		addBtn.addEventListener('click', () => {
 			if (this.selectedPeople.size > 0) {
 				this.options.onSelect(Array.from(this.selectedPeople.values()));
@@ -636,7 +635,7 @@ class MultiSelectPersonPickerModal extends Modal {
 
 		if (this.filteredPeople.length === 0) {
 			const emptyState = this.resultsContainer.createDiv({ cls: 'cr-multi-select-empty' });
-			emptyState.createEl('p', { text: 'No people found' });
+			emptyState.createEl('p', { text: '未找到人物' });
 			return;
 		}
 
@@ -674,9 +673,9 @@ class MultiSelectPersonPickerModal extends Modal {
 			if (person.birthDate && person.deathDate) {
 				dates.textContent = `${person.birthDate} – ${person.deathDate}`;
 			} else if (person.birthDate) {
-				dates.textContent = `b. ${person.birthDate}`;
+				dates.textContent = `生于 ${person.birthDate}`;
 			} else if (person.deathDate) {
-				dates.textContent = `d. ${person.deathDate}`;
+				dates.textContent = `卒于 ${person.deathDate}`;
 			}
 		}
 
@@ -717,14 +716,14 @@ class MultiSelectPersonPickerModal extends Modal {
 
 		const count = this.selectedPeople.size;
 		if (count === 0) {
-			this.selectedCountEl.textContent = 'No people selected';
+			this.selectedCountEl.textContent = '未选择人物';
 		} else {
 			const names = Array.from(this.selectedPeople.values())
 				.slice(0, 3)
 				.map(p => p.name)
 				.join(', ');
-			const extra = count > 3 ? ` +${count - 3} more` : '';
-			this.selectedCountEl.textContent = `Selected (${count}): ${names}${extra}`;
+			const extra = count > 3 ? ` 等另外 ${count - 3} 人` : '';
+			this.selectedCountEl.textContent = `已选择（${count}）：${names}${extra}`;
 		}
 	}
 }

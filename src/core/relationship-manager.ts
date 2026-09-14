@@ -88,9 +88,9 @@ export class RelationshipManager {
 		const parentName = this.extractName(parentFile);
 
 		if (!childCrId || !parentCrId) {
-			const missing = !childCrId && !parentCrId ? 'both notes' :
-				!childCrId ? `child (${childFile.basename})` : `parent (${parentFile.basename})`;
-			new Notice(`Error: could not find cr_id in ${missing}`);
+			const missing = !childCrId && !parentCrId ? '两个笔记' :
+				!childCrId ? `子女（${childFile.basename}）` : `父母（${parentFile.basename}）`;
+			new Notice(`错误：在${missing}中找不到 cr_id`);
 			logger.error('relationship-manager', 'Missing cr_id in addParentRelationship', {
 				childFile: childFile.path,
 				childCrId,
@@ -103,9 +103,9 @@ export class RelationshipManager {
 		// Validate parent type matches sex (handle both raw and normalized values)
 		const normalizedParentSex = parentSex?.toLowerCase();
 		if (parentType === 'father' && (normalizedParentSex === 'f' || normalizedParentSex === 'female')) {
-			new Notice('Warning: selected person has sex: F but being added as father');
+			new Notice('警告：所选人物的生理性别为 F，但正被添加为父亲');
 		} else if (parentType === 'mother' && (normalizedParentSex === 'm' || normalizedParentSex === 'male')) {
-			new Notice('Warning: selected person has sex: M but being added as mother');
+			new Notice('警告：所选人物的生理性别为 M，但正被添加为母亲');
 		}
 
 		// Update child's frontmatter (dual storage: wikilink + ID).
@@ -130,7 +130,7 @@ export class RelationshipManager {
 		}
 
 		new Notice(
-			`Added ${parentFile.basename} as ${parentType} of ${childFile.basename}`
+			`已将 ${parentFile.basename} 添加为 ${childFile.basename} 的${parentType === 'father' ? '父亲' : '母亲'}`
 		);
 		return true;
 	}
@@ -156,9 +156,9 @@ export class RelationshipManager {
 		const parentName = this.extractName(parentFile);
 
 		if (!childCrId || !parentCrId) {
-			const missing = !childCrId && !parentCrId ? 'both notes' :
-				!childCrId ? `child (${childFile.basename})` : `parent (${parentFile.basename})`;
-			new Notice(`Error: could not find cr_id in ${missing}`);
+			const missing = !childCrId && !parentCrId ? '两个笔记' :
+				!childCrId ? `子女（${childFile.basename}）` : `父母（${parentFile.basename}）`;
+			new Notice(`错误：在${missing}中找不到 cr_id`);
 			logger.error('relationship-manager', 'Missing cr_id in addInclusiveParentRelationship', {
 				childFile: childFile.path,
 				childCrId,
@@ -185,7 +185,7 @@ export class RelationshipManager {
 		}
 
 		new Notice(
-			`Added ${parentFile.basename} as parent of ${childFile.basename}`
+			`已将 ${parentFile.basename} 添加为 ${childFile.basename} 的父母`
 		);
 	}
 
@@ -201,7 +201,7 @@ export class RelationshipManager {
 		const person2Name = this.extractName(person2File);
 
 		if (!person1CrId || !person2CrId) {
-			new Notice('Error: could not find cr_id in one or both notes');
+			new Notice('错误：在一个或两个笔记中找不到 cr_id');
 			return;
 		}
 
@@ -219,7 +219,7 @@ export class RelationshipManager {
 			);
 		}
 
-		new Notice(`Added spouse relationship between ${person1File.basename} and ${person2File.basename}`);
+		new Notice(`已在 ${person1File.basename} 与 ${person2File.basename} 之间添加配偶关系`);
 	}
 
 	/**
@@ -239,7 +239,7 @@ export class RelationshipManager {
 		const childName = this.extractName(childFile);
 
 		if (!childCrId || !parentCrId) {
-			new Notice('Error: could not find cr_id in one or both notes');
+			new Notice('错误：在一个或两个笔记中找不到 cr_id');
 			return false;
 		}
 
@@ -267,7 +267,7 @@ export class RelationshipManager {
 			);
 		}
 
-		new Notice(`Added ${childFile.basename} as child of ${parentFile.basename}`);
+		new Notice(`已将 ${childFile.basename} 添加为 ${parentFile.basename} 的子女`);
 		return true;
 	}
 

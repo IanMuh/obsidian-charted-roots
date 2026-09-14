@@ -36,7 +36,7 @@ export class SourcesView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Sources';
+		return '来源';
 	}
 
 	getIcon(): string {
@@ -87,13 +87,13 @@ export class SourcesView extends ItemView {
 	private buildHeader(container: HTMLElement): void {
 		const header = container.createDiv({ cls: 'cr-source-view-header' });
 
-		header.createEl('h2', { text: 'Sources', cls: 'cr-source-view-title' });
+		header.createEl('h2', { text: '来源', cls: 'cr-source-view-title' });
 
 		const actions = header.createDiv({ cls: 'cr-source-view-actions' });
 
 		const refreshBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.refresh());

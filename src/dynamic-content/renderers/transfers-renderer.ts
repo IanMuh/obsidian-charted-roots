@@ -14,13 +14,13 @@ import type { EventNote } from '../../events/types/event-types';
  * Labels for transfer types
  */
 const TRANSFER_TYPE_LABELS: Record<string, string> = {
-	inheritance: 'Inherited',
-	purchase: 'Purchased',
-	gift: 'Gift',
-	hire: 'Hired out',
-	seizure: 'Seized',
-	birth: 'Born into',
-	relocation: 'Relocated'
+	inheritance: '继承',
+	purchase: '购买',
+	gift: '赠与',
+	hire: '受雇',
+	seizure: '查抄',
+	birth: '出生于',
+	relocation: '迁移'
 };
 
 /**
@@ -90,7 +90,7 @@ export class TransfersRenderer {
 		if (entries.length === 0) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No transfer events found for this person.'
+				text: '未找到此人的转移事件。'
 			});
 			return;
 		}
@@ -105,7 +105,7 @@ export class TransfersRenderer {
 	private renderHeader(container: HTMLElement, config: DynamicBlockConfig): void {
 		const header = container.createDiv({ cls: 'cr-dynamic-block__header' });
 
-		const title = config.title as string || 'Transfer history';
+		const title = config.title as string || '转移历史';
 		header.createSpan({ cls: 'cr-dynamic-block__title', text: title });
 
 		const toolbar = header.createDiv({ cls: 'cr-dynamic-block__toolbar' });
@@ -113,7 +113,7 @@ export class TransfersRenderer {
 		// Freeze button
 		const freezeBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Freeze to Markdown' }
+			attr: { 'aria-label': '冻结为 Markdown' }
 		});
 		freezeBtn.textContent = '❄️';
 		freezeBtn.addEventListener('click', () => {
@@ -123,7 +123,7 @@ export class TransfersRenderer {
 		// Copy button
 		const copyBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Copy transfer history' }
+			attr: { 'aria-label': '复制转移历史' }
 		});
 		copyBtn.textContent = '📋';
 		copyBtn.addEventListener('click', () => {
@@ -238,7 +238,7 @@ export class TransfersRenderer {
 			// Place (if present)
 			if (entry.place) {
 				li.appendText('\u00A0');
-				li.createSpan({ cls: 'cr-transfers__place', text: `at ${entry.place}` });
+				li.createSpan({ cls: 'cr-transfers__place', text: `于${entry.place}` });
 			}
 
 			// Participants (other than current person)
@@ -249,7 +249,7 @@ export class TransfersRenderer {
 					li.appendText('\u00A0');
 					li.createSpan({
 						cls: 'cr-transfers__participants',
-						text: `(with ${others.join(', ')})`
+						text: `（与 ${others.join('、')}）`
 					});
 				}
 			}
@@ -295,7 +295,7 @@ export class TransfersRenderer {
 	 * Generate markdown representation of the transfer history
 	 */
 	private generateMarkdown(): string {
-		const lines: string[] = ['## Transfer history', ''];
+		const lines: string[] = ['## 转移历史', ''];
 
 		for (const entry of this.currentEntries) {
 			const typeLabel = TRANSFER_TYPE_LABELS[entry.transferType] || entry.transferType;
@@ -310,7 +310,7 @@ export class TransfersRenderer {
 
 			// Add place
 			if (entry.place) {
-				line += ` at ${entry.place}`;
+				line += ` 于${entry.place}`;
 			}
 
 			lines.push(line);

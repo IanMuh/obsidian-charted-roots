@@ -553,7 +553,7 @@ export class PlaceGraphService {
 				orphanPlaces++;
 				issues.push({
 					type: 'orphan_place',
-					message: `Place "${place.name}" has no parent place defined`,
+					message: `地点 "${place.name}" 未定义上级地点`,
 					placeId: place.id,
 					placeName: place.name,
 					filePath: place.filePath
@@ -564,7 +564,7 @@ export class PlaceGraphService {
 			if (supportsRealCoordinates(place.category) && !place.coordinates && place.category === 'real') {
 				issues.push({
 					type: 'real_missing_coords',
-					message: `Real-world place "${place.name}" has no coordinates`,
+					message: `现实地点 "${place.name}" 没有坐标`,
 					placeId: place.id,
 					placeName: place.name,
 					filePath: place.filePath
@@ -574,7 +574,7 @@ export class PlaceGraphService {
 			if (!supportsRealCoordinates(place.category) && place.coordinates) {
 				issues.push({
 					type: 'fictional_with_coords',
-					message: `${place.category} place "${place.name}" has real-world coordinates (possible mistake)`,
+					message: `${place.category} 地点 "${place.name}" 含有现实世界坐标（可能为误设）`,
 					placeId: place.id,
 					placeName: place.name,
 					filePath: place.filePath
@@ -591,7 +591,7 @@ export class PlaceGraphService {
 				if (normalizedExpected !== normalizedActual) {
 					issues.push({
 						type: 'wrong_category_folder',
-						message: `Place "${place.name}" (${place.category}) should be in "${expectedFolder}" but is in "${actualFolder}"`,
+						message: `地点 "${place.name}"（${place.category}）应位于 "${expectedFolder}"，但实际位于 "${actualFolder}"`,
 						placeId: place.id,
 						placeName: place.name,
 						filePath: place.filePath
@@ -614,7 +614,7 @@ export class PlaceGraphService {
 			if (places.length > 1) {
 				issues.push({
 					type: 'duplicate_name',
-					message: `Multiple places named "${places[0].name}" (${places.length} instances)`,
+					message: `存在多个名为 "${places[0].name}" 的地点（${places.length} 个实例）`,
 					placeName: places[0].name
 				});
 			}
@@ -626,7 +626,7 @@ export class PlaceGraphService {
 			if (ancestors.some(a => a.id === place.id)) {
 				issues.push({
 					type: 'circular_hierarchy',
-					message: `Circular hierarchy detected for place "${place.name}"`,
+					message: `检测到地点 "${place.name}" 的层级存在循环`,
 					placeId: place.id,
 					placeName: place.name,
 					filePath: place.filePath
@@ -672,7 +672,7 @@ export class PlaceGraphService {
 			if (!info.linked && !this.placeCache.has(key)) {
 				issues.push({
 					type: 'missing_place_note',
-					message: `Place "${key}" is referenced by ${info.count} person(s) but has no place note`,
+					message: `地点 "${key}" 被 ${info.count} 个人物引用，但没有地点笔记`,
 					placeName: key
 				});
 			}

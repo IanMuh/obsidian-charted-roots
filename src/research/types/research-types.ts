@@ -152,32 +152,32 @@ export interface ResearchEntityTypeInfo {
 export const RESEARCH_ENTITY_INFO: Record<ResearchEntityType, ResearchEntityTypeInfo> = {
 	research_project: {
 		type: 'research_project',
-		displayName: 'Research project',
-		description: 'Hub for complex, multi-phase research cases',
+		displayName: '研究项目',
+		description: '用于复杂的多阶段研究课题的中心',
 		icon: 'folder-search'
 	},
 	research_report: {
 		type: 'research_report',
-		displayName: 'Research report',
-		description: 'Analysis document with findings and evidence',
+		displayName: '研究报告',
+		description: '包含发现与证据的分析文档',
 		icon: 'file-text'
 	},
 	individual_research_note: {
 		type: 'individual_research_note',
-		displayName: 'Individual research note',
-		description: 'Synthesis document for a person across sources',
+		displayName: '个人研究笔记',
+		description: '跨来源汇总某个人物的综合文档',
 		icon: 'user-search'
 	},
 	research_journal: {
 		type: 'research_journal',
-		displayName: 'Research journal',
-		description: 'Daily/session-level research log',
+		displayName: '研究日志',
+		description: '按日/按次记录的研究日志',
 		icon: 'book-open'
 	},
 	research_log_entry: {
 		type: 'research_log_entry',
-		displayName: 'Research log entry',
-		description: 'Individual log entry for queryable tracking',
+		displayName: '研究日志条目',
+		description: '可查询追踪的单条日志记录',
 		icon: 'list-plus'
 	}
 };
@@ -186,31 +186,31 @@ export const RESEARCH_ENTITY_INFO: Record<ResearchEntityType, ResearchEntityType
  * Research project status metadata for display
  */
 export const RESEARCH_PROJECT_STATUSES: Record<ResearchProjectStatus, { displayName: string; color: string }> = {
-	'open': { displayName: 'Open', color: 'var(--text-muted)' },
-	'in-progress': { displayName: 'In progress', color: 'var(--color-blue)' },
-	'on-hold': { displayName: 'On hold', color: 'var(--color-yellow)' },
-	'completed': { displayName: 'Completed', color: 'var(--color-green)' }
+	'open': { displayName: '进行中', color: 'var(--text-muted)' },
+	'in-progress': { displayName: '处理中', color: 'var(--color-blue)' },
+	'on-hold': { displayName: '暂停', color: 'var(--color-yellow)' },
+	'completed': { displayName: '已完成', color: 'var(--color-green)' }
 };
 
 /**
  * Research report status metadata for display
  */
 export const RESEARCH_REPORT_STATUSES: Record<ResearchReportStatus, { displayName: string; color: string }> = {
-	'draft': { displayName: 'Draft', color: 'var(--text-muted)' },
-	'review': { displayName: 'Review', color: 'var(--color-yellow)' },
-	'final': { displayName: 'Final', color: 'var(--color-blue)' },
-	'published': { displayName: 'Published', color: 'var(--color-green)' }
+	'draft': { displayName: '草稿', color: 'var(--text-muted)' },
+	'review': { displayName: '审阅中', color: 'var(--color-yellow)' },
+	'final': { displayName: '定稿', color: 'var(--color-blue)' },
+	'published': { displayName: '已发布', color: 'var(--color-green)' }
 };
 
 /**
  * Report audience metadata for display
  */
 export const REPORT_AUDIENCES: Record<ReportAudience, { displayName: string; description: string }> = {
-	'File': { displayName: 'File', description: 'Personal reference only' },
-	'Family': { displayName: 'Family', description: 'Sharing with family members' },
-	'Client': { displayName: 'Client', description: 'Professional genealogy client' },
-	'Public': { displayName: 'Public', description: 'Public publication' },
-	'Print': { displayName: 'Print', description: 'Printed publication' }
+	'File': { displayName: '存档', description: '仅个人参考' },
+	'Family': { displayName: '家族', description: '与家族成员共享' },
+	'Client': { displayName: '客户', description: '专业谱系学客户' },
+	'Public': { displayName: '公开', description: '公开发布' },
+	'Print': { displayName: '印刷', description: '印刷出版' }
 };
 
 /**

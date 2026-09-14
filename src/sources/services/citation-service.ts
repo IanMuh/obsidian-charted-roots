@@ -333,22 +333,22 @@ export function getCitationFormats(): Array<{ id: CitationFormat; name: string; 
 		{
 			id: 'chicago',
 			name: 'Chicago',
-			description: 'Chicago Manual of Style - widely used in publishing and academia'
+			description: '《芝加哥手册》风格 — 广泛用于出版与学术界'
 		},
 		{
 			id: 'evidence_explained',
 			name: 'Evidence Explained',
-			description: 'Elizabeth Shown Mills style - standard for genealogical research'
+			description: 'Elizabeth Shown Mills 风格 — 家谱研究的标准'
 		},
 		{
 			id: 'mla',
 			name: 'MLA',
-			description: 'Modern Language Association - common in humanities'
+			description: '现代语言协会 — 常见于人文学科'
 		},
 		{
 			id: 'turabian',
 			name: 'Turabian',
-			description: 'Based on Chicago, simplified for students'
+			description: '基于芝加哥格式，为学生简化'
 		}
 	];
 }

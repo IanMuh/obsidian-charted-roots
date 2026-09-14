@@ -152,7 +152,7 @@ describe('Longest-marriage duration cap — fictional dates (#458)', () => {
 		const longest = records.longestMarriages;
 
 		expect(longest.entries.length).toBeGreaterThan(0);
-		expect(longest.entries[0].displayValue).toMatch(/1[45]0 years/);
+		expect(longest.entries[0].displayValue).toMatch(/1[45]0\s*年/);
 	});
 
 	it('still excludes marriages over the real-world cap (120) when fictional dates are off', () => {

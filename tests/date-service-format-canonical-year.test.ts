@@ -88,8 +88,8 @@ describe('DateService.formatCanonicalYear — pre-epoch years (#729)', () => {
 	});
 
 	it('renders a pre-epoch year relative to the earliest era instead of a bare negative', () => {
-		expect(service.formatCanonicalYear(-29, 'Gaean Reach')).toBe('29 before GR');
-		expect(service.formatCanonicalYear(-500, 'Gaean Reach')).toBe('500 before GR');
+		expect(service.formatCanonicalYear(-29, 'Gaean Reach')).toBe('早于 GR 29 年');
+		expect(service.formatCanonicalYear(-500, 'Gaean Reach')).toBe('早于 GR 500 年');
 	});
 
 	it('still labels on-or-after-epoch years normally', () => {

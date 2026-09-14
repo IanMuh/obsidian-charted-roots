@@ -82,7 +82,7 @@ export class MediaManageModal extends Modal {
 		const titleSection = header.createDiv({ cls: 'crc-picker-title' });
 		const icon = titleSection.createSpan();
 		setIcon(icon, 'image');
-		titleSection.appendText('Manage media');
+		titleSection.appendText('管理媒体');
 
 		header.createDiv({
 			cls: 'crc-picker-subtitle',
@@ -92,7 +92,7 @@ export class MediaManageModal extends Modal {
 		// Instructions
 		const instructions = contentEl.createDiv({ cls: 'crc-media-manage-instructions' });
 		instructions.createEl('p', {
-			text: 'Drag items to reorder. The first item is used as the thumbnail.',
+			text: '拖动条目以重新排序。第一项将用作缩略图。',
 			cls: 'crc-text-muted'
 		});
 
@@ -100,7 +100,7 @@ export class MediaManageModal extends Modal {
 		const addBtnContainer = contentEl.createDiv({ cls: 'crc-media-manage-add' });
 		const addBtn = addBtnContainer.createEl('button', {
 			cls: 'mod-cta',
-			text: 'Add media'
+			text: '添加媒体'
 		});
 		const addIcon = addBtn.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(addIcon, 'plus');
@@ -123,14 +123,14 @@ export class MediaManageModal extends Modal {
 		// Footer with save/cancel buttons
 		const footer = contentEl.createDiv({ cls: 'crc-picker-footer' });
 
-		const cancelBtn = footer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = footer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => {
 			this.close();
 		});
 
 		const saveBtn = footer.createEl('button', {
 			cls: 'mod-cta',
-			text: 'Save changes'
+			text: '保存更改'
 		});
 		saveBtn.addEventListener('click', () => {
 			void this.saveChanges();
@@ -144,9 +144,9 @@ export class MediaManageModal extends Modal {
 		const emptyState = this.listContainer.createDiv({ cls: 'crc-picker-empty' });
 		const emptyIcon = emptyState.createSpan();
 		setIcon(emptyIcon, 'image');
-		emptyState.createEl('p', { text: 'No media linked' });
+		emptyState.createEl('p', { text: '尚未链接媒体' });
 		emptyState.createEl('p', {
-			text: 'Click "Add media" to link files to this entity',
+			text: '点击「添加媒体」将文件链接到此实体',
 			cls: 'crc-text-muted'
 		});
 	}
@@ -210,19 +210,19 @@ export class MediaManageModal extends Modal {
 		if (!item.file) {
 			const missingBadge = meta.createSpan({ cls: 'crc-badge crc-badge--warning' });
 			setIcon(missingBadge, 'alert-triangle');
-			missingBadge.appendText(' File not found');
+			missingBadge.appendText(' 文件不存在');
 		}
 
 		// Thumbnail badge for first item
 		if (index === 0) {
 			const thumbBadge = info.createDiv({ cls: 'crc-badge crc-badge--primary' });
-			thumbBadge.setText('Thumbnail');
+			thumbBadge.setText('缩略图');
 		}
 
 		// Remove button
 		const removeBtn = row.createDiv({ cls: 'crc-media-manage-row__remove' });
 		setIcon(removeBtn, 'x');
-		removeBtn.setAttribute('aria-label', 'Remove media');
+		removeBtn.setAttribute('aria-label', '移除媒体');
 
 		removeBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
@@ -349,11 +349,11 @@ export class MediaManageModal extends Modal {
 	private async saveChanges(): Promise<void> {
 		try {
 			await this.onSave(this.mediaRefs);
-			new Notice('Media updated');
+			new Notice('媒体已更新');
 			this.close();
 		} catch (error) {
 			console.error('Error saving media:', error);
-			new Notice('Failed to save media changes');
+			new Notice('保存媒体更改失败');
 		}
 	}
 }

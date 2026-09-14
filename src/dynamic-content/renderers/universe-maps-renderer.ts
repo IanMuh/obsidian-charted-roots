@@ -59,7 +59,7 @@ export class UniverseMapsRenderer {
 		if (context.maps.length === 0) {
 			container.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No custom maps found for this universe.'
+					text: '此宇宙中未找到自定义地图。'
 			});
 			return;
 		}
@@ -67,7 +67,7 @@ export class UniverseMapsRenderer {
 		// Heading
 		container.createEl('h4', {
 			cls: 'cr-universe-entities__heading',
-			text: `Maps (${context.maps.length})`
+			text: `地图（${context.maps.length}）`
 		});
 
 		// Thumbnail grid
@@ -103,7 +103,7 @@ export class UniverseMapsRenderer {
 			// Place count badge
 			if (map.placeCount !== undefined && map.placeCount > 0) {
 				const badge = thumbnail.createDiv({ cls: 'cr-universe-maps__badge' });
-				badge.setText(`${map.placeCount} place${map.placeCount !== 1 ? 's' : ''}`);
+				badge.setText(`${map.placeCount} 个地点`);
 			}
 
 			// Caption overlay

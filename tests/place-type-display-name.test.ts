@@ -15,8 +15,8 @@ describe('getPlaceTypeDisplayName (#728)', () => {
 	];
 
 	it('returns the built-in display name for a built-in id', () => {
-		expect(getPlaceTypeDisplayName('planet')).toBe('Planet');
-		expect(getPlaceTypeDisplayName('city')).toBe('City');
+		expect(getPlaceTypeDisplayName('planet')).toBe('星球');
+		expect(getPlaceTypeDisplayName('city')).toBe('城市');
 	});
 
 	it('returns the custom type display name for a custom id', () => {

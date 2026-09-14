@@ -8,7 +8,6 @@ import { App, ButtonComponent, Modal, Notice, TFile } from 'obsidian';
 import { createLucideIcon, setLucideIcon } from './lucide-icons';
 import { PlaceGraphService } from '../core/place-graph';
 import { PlaceNode, KnownPlaceType } from '../models/place';
-import { capitalize } from '../utils/format-utils';
 
 /**
  * Place types that should be reviewed/standardized
@@ -19,6 +18,15 @@ const NON_STANDARD_TYPES = ['locality', 'municipality', 'hamlet', 'settlement'];
  * Standard place types to convert to
  */
 const STANDARD_SETTLEMENT_TYPES: KnownPlaceType[] = ['city', 'town', 'village'];
+
+/**
+ * Display labels for the standard settlement types (value stays the English type)
+ */
+const PLACE_TYPE_LABELS: Record<string, string> = {
+	city: '城市',
+	town: '镇',
+	village: '村庄'
+};
 
 interface StandardizePlaceTypesOptions {
 	onComplete?: (updated: number) => void;
@@ -80,39 +88,39 @@ export class StandardizePlaceTypesModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('map-pin', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Standardize place types');
+		titleContainer.appendText('标准化地点类型');
 
 		// Description
 		const descriptionEl = contentEl.createDiv({ cls: 'crc-standardize-description' });
 
 		if (this.placesToReview.length === 0) {
 			descriptionEl.createEl('p', {
-				text: 'No places with non-standard types found. All place types are already standardized!',
+				text: '未发现使用非标准类型的地点。所有地点类型都已标准化！',
 				cls: 'crc-text--success'
 			});
 
 			const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 			new ButtonComponent(buttonContainer)
-				.setButtonText('Close')
+				.setButtonText('关闭')
 				.setCta()
 				.onClick(() => this.close());
 			return;
 		}
 
 		descriptionEl.createEl('p', {
-			text: `Found ${this.placesToReview.length} place${this.placesToReview.length !== 1 ? 's' : ''} with generic types like "locality" that could be standardized.`,
+			text: `发现 ${this.placesToReview.length} 个地点使用了"locality"之类可标准化的泛化类型。`,
 			cls: 'crc-text--muted'
 		});
 
 		const explanationEl = descriptionEl.createDiv({ cls: 'crc-standardize-explanation' });
 		explanationEl.createEl('p', {
-			text: 'Generic types like "locality" are often assigned during import when the specific type is unknown. Review each place and select the appropriate type:',
+			text: '导入时若无法确定具体类型，常会赋予"locality"之类的泛化类型。请逐个检查地点并选择适当的类型：',
 			cls: 'crc-text--muted'
 		});
 		const typesList = explanationEl.createEl('ul', { cls: 'crc-field-list' });
-		typesList.createEl('li', { text: 'City — Large urban area, typically >10,000 population' });
-		typesList.createEl('li', { text: 'Town — Medium settlement, typically 1,000–10,000 population' });
-		typesList.createEl('li', { text: 'Village — Small rural settlement, typically <1,000 population' });
+		typesList.createEl('li', { text: '城市 — 大型城区，人口通常超过 1 万' });
+		typesList.createEl('li', { text: '镇 — 中型聚居地，人口通常为 1,000–10,000' });
+		typesList.createEl('li', { text: '村庄 — 小型乡村聚居地，人口通常少于 1,000' });
 
 		// Bulk actions
 		this.renderBulkActions(contentEl);
@@ -129,14 +137,14 @@ export class StandardizePlaceTypesModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Apply all')
+			.setButtonText('全部应用')
 			.setCta()
 			.onClick(() => {
 				void this.applyAll();
 			});
 
 		const closeBtn = buttonContainer.createEl('button', {
-			text: 'Close',
+			text: '关闭',
 			cls: 'crc-btn'
 		});
 		closeBtn.addEventListener('click', () => this.close());
@@ -149,13 +157,13 @@ export class StandardizePlaceTypesModal extends Modal {
 		const bulkActions = container.createDiv({ cls: 'crc-bulk-actions crc-mb-3' });
 
 		bulkActions.createEl('span', {
-			text: 'Set all to: ',
+			text: '全部设为：',
 			cls: 'crc-text--muted'
 		});
 
 		for (const type of STANDARD_SETTLEMENT_TYPES) {
 			const btn = bulkActions.createEl('button', {
-				text: capitalize(type),
+				text: PLACE_TYPE_LABELS[type] ?? type,
 				cls: 'crc-btn crc-btn--small crc-ml-1'
 			});
 			btn.addEventListener('click', () => this.setAllToType(type));
@@ -185,7 +193,7 @@ export class StandardizePlaceTypesModal extends Modal {
 
 		if (pendingPlaces.length === 0) {
 			this.listContainer.createEl('p', {
-				text: 'All places have been updated!',
+				text: '所有地点都已更新！',
 				cls: 'crc-text--success crc-text-center'
 			});
 			return;
@@ -214,7 +222,7 @@ export class StandardizePlaceTypesModal extends Modal {
 
 		// Current type badge
 		nameContainer.createSpan({
-			text: place.placeType || 'unknown',
+			text: place.placeType || '未知',
 			cls: 'crc-stnd-type-badge crc-stnd-type-badge--current'
 		});
 
@@ -223,7 +231,7 @@ export class StandardizePlaceTypesModal extends Modal {
 			const parent = this.placeService.getPlaceByCrId(place.parentId);
 			if (parent) {
 				infoContainer.createEl('span', {
-					text: `in ${parent.name}`,
+					text: `位于 ${parent.name}`,
 					cls: 'crc-text--muted crc-text-small crc-ml-2'
 				});
 			}
@@ -238,7 +246,7 @@ export class StandardizePlaceTypesModal extends Modal {
 
 		for (const type of STANDARD_SETTLEMENT_TYPES) {
 			const option = select.createEl('option', {
-				text: capitalize(type),
+				text: PLACE_TYPE_LABELS[type] ?? type,
 				value: type
 			});
 			if (this.selectedTypes.get(place.id) === type) {
@@ -248,7 +256,7 @@ export class StandardizePlaceTypesModal extends Modal {
 
 		// Also add option to keep current type
 		const keepOption = select.createEl('option', {
-			text: `Keep as ${place.placeType}`,
+			text: `保持为 ${place.placeType}`,
 			value: place.placeType || ''
 		});
 		if (this.selectedTypes.get(place.id) === place.placeType) {
@@ -262,7 +270,7 @@ export class StandardizePlaceTypesModal extends Modal {
 		// Apply button for individual place
 		const applyBtn = selectorContainer.createEl('button', {
 			cls: 'crc-btn crc-btn--small crc-btn--primary crc-ml-2',
-			attr: { 'aria-label': 'Apply' }
+			attr: { 'aria-label': '应用' }
 		});
 		const checkIcon = createLucideIcon('check', 14);
 		applyBtn.appendChild(checkIcon);
@@ -287,7 +295,7 @@ export class StandardizePlaceTypesModal extends Modal {
 		try {
 			const file = this.app.vault.getAbstractFileByPath(place.filePath);
 			if (!(file instanceof TFile)) {
-				new Notice(`Could not find file: ${place.filePath}`);
+				new Notice(`找不到文件：${place.filePath}`);
 				return;
 			}
 
@@ -302,7 +310,7 @@ export class StandardizePlaceTypesModal extends Modal {
 
 		} catch (error) {
 			console.error('Failed to update place type:', error);
-			new Notice(`Failed to update ${place.name}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`更新 ${place.name} 失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -313,7 +321,7 @@ export class StandardizePlaceTypesModal extends Modal {
 		const pendingPlaces = this.placesToReview.filter(p => !this.appliedPlaces.has(p.id));
 
 		if (pendingPlaces.length === 0) {
-			new Notice('No places to update');
+			new Notice('没有需要更新的地点');
 			return;
 		}
 
@@ -357,9 +365,9 @@ export class StandardizePlaceTypesModal extends Modal {
 		this.updateStatus();
 
 		// Show result
-		let message = `Updated ${updated} place${updated !== 1 ? 's' : ''}`;
-		if (skipped > 0) message += `, skipped ${skipped}`;
-		if (failed > 0) message += `, ${failed} failed`;
+		let message = `已更新 ${updated} 个地点`;
+		if (skipped > 0) message += `，跳过 ${skipped} 个`;
+		if (failed > 0) message += `，${failed} 个失败`;
 		new Notice(message);
 	}
 
@@ -372,7 +380,7 @@ export class StandardizePlaceTypesModal extends Modal {
 		const pending = this.placesToReview.length - this.appliedPlaces.size;
 		const applied = this.appliedPlaces.size;
 
-		this.statusEl.textContent = `${pending} pending, ${applied} applied (${this.totalUpdated} updated)`;
+		this.statusEl.textContent = `${pending} 个待处理，${applied} 个已应用（${this.totalUpdated} 个已更新）`;
 	}
 
 	onClose() {

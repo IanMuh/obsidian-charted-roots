@@ -31,9 +31,9 @@ export function renderEventsSection(
 	options: EventsSectionOptions
 ): void {
 	const sectionId = options.sectionId || 'events';
-	const title = options.title || 'Events';
+	const title = options.title || '事件';
 	const count = events.length;
-	const summary = `${count} event${count !== 1 ? 's' : ''}`;
+	const summary = `${count} 个事件`;
 
 	const content = renderProfileSection(parent, {
 		sectionId,
@@ -46,7 +46,7 @@ export function renderEventsSection(
 	if (!content) return;
 
 	if (count === 0) {
-		content.createDiv({ cls: 'cr-profile__section-empty', text: 'No events recorded' });
+		content.createDiv({ cls: 'cr-profile__section-empty', text: '未记录事件' });
 		return;
 	}
 
@@ -90,7 +90,7 @@ export function renderEventsSection(
 				options.onEntityLinkClick(event.crId, event.title || event.file.basename, 'event', event.file.path);
 			});
 		} else {
-			titleEl.textContent = event.title || 'Untitled event';
+			titleEl.textContent = event.title || '未命名事件';
 		}
 
 		if (event.eventType) {

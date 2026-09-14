@@ -24,11 +24,11 @@ export function renderSourcesSection(
 ): void {
 	const sectionId = options.sectionId || 'sources';
 	const count = sourceLinks.length;
-	const summary = `${count} source${count !== 1 ? 's' : ''}`;
+	const summary = `${count} 个来源`;
 
 	const content = renderProfileSection(parent, {
 		sectionId,
-		title: 'Sources',
+		title: '来源',
 		summary,
 		expanded: options.sectionStates[sectionId] ?? false,
 		onToggle: options.onToggle,
@@ -37,7 +37,7 @@ export function renderSourcesSection(
 	if (!content) return;
 
 	if (count === 0) {
-		content.createDiv({ cls: 'cr-profile__section-empty', text: 'No sources attached' });
+		content.createDiv({ cls: 'cr-profile__section-empty', text: '未附加来源' });
 		return;
 	}
 

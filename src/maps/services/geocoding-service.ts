@@ -96,7 +96,7 @@ export class GeocodingService {
 		if (!placeName.trim()) {
 			return {
 				success: false,
-				error: 'Place name is empty',
+				error: '地点名称为空',
 				placeName
 			};
 		}
@@ -130,7 +130,7 @@ export class GeocodingService {
 				logger.debug('geocode-not-found', `No results for: ${searchQuery}`);
 				return {
 					success: false,
-					error: 'No location found',
+					error: '未找到位置',
 					placeName
 				};
 			}
@@ -149,7 +149,7 @@ export class GeocodingService {
 			};
 
 		} catch (error) {
-			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+			const errorMessage = error instanceof Error ? error.message : '未知错误';
 			logger.warn('geocode-error', `Failed to geocode "${searchQuery}": ${errorMessage}`);
 
 			return {
@@ -193,7 +193,7 @@ export class GeocodingService {
 				const result: GeocodingResult = {
 					success: true,
 					placeName: place.name,
-					error: 'Already has coordinates'
+					error: '已有坐标'
 				};
 				results.push(result);
 				progressCallback?.onProgress(i + 1, places.length, result);
@@ -283,7 +283,7 @@ export class GeocodingService {
 		if (!placeName.trim()) {
 			return {
 				success: false,
-				error: 'Place name is empty',
+				error: '地点名称为空',
 				placeName
 			};
 		}
@@ -318,7 +318,7 @@ export class GeocodingService {
 				logger.debug('geocode-not-found', `No results for: ${searchQuery}`);
 				return {
 					success: false,
-					error: 'No location found',
+					error: '未找到位置',
 					placeName
 				};
 			}
@@ -344,7 +344,7 @@ export class GeocodingService {
 			};
 
 		} catch (error) {
-			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+			const errorMessage = error instanceof Error ? error.message : '未知错误';
 			logger.warn('geocode-error', `Failed to geocode "${searchQuery}": ${errorMessage}`);
 
 			return {

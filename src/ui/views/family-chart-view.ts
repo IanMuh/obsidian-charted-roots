@@ -42,7 +42,6 @@ import {
 
 import { getSpouseLabel } from '../../utils/terminology';
 import { arePersonsSpouses } from './family-chart-kinship';
-import { pluralize } from '../../utils/format-utils';
 import { unwrapWikilinkDisplay } from '../../utils/wikilink-resolver';
 import { ensureVisibleLineColor } from '../../utils/color-contrast';
 
@@ -253,7 +252,7 @@ export class FamilyChartView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Family Chart';
+		return '家谱';
 	}
 
 	getIcon(): string {
@@ -331,7 +330,7 @@ export class FamilyChartView extends ItemView {
 		// Zoom out button
 		const zoomOutBtn = zoomGroup.createEl('button', {
 			cls: 'cr-fcv-btn cr-fcv-zoom-btn clickable-icon',
-			attr: { 'aria-label': 'Zoom out' }
+			attr: { 'aria-label': '缩小' }
 		});
 		setIcon(zoomOutBtn, 'zoom-out');
 		zoomOutBtn.addEventListener('click', () => this.zoomOut());
@@ -342,7 +341,7 @@ export class FamilyChartView extends ItemView {
 		// Zoom in button
 		const zoomInBtn = zoomGroup.createEl('button', {
 			cls: 'cr-fcv-btn cr-fcv-zoom-btn clickable-icon',
-			attr: { 'aria-label': 'Zoom in' }
+			attr: { 'aria-label': '放大' }
 		});
 		setIcon(zoomInBtn, 'zoom-in');
 		zoomInBtn.addEventListener('click', () => this.zoomIn());
@@ -353,7 +352,7 @@ export class FamilyChartView extends ItemView {
 		// Search button
 		const searchBtn = rightControls.createEl('button', {
 			cls: 'cr-fcv-btn clickable-icon',
-			attr: { 'aria-label': 'Search for person' }
+			attr: { 'aria-label': '搜索人物' }
 		});
 		setIcon(searchBtn, 'search');
 		searchBtn.addEventListener('click', () => { void this.openPersonSearch(); });
@@ -363,7 +362,7 @@ export class FamilyChartView extends ItemView {
 		// Fit to view button
 		const fitBtn = rightControls.createEl('button', {
 			cls: 'cr-fcv-btn clickable-icon',
-			attr: { 'aria-label': 'Fit to view' }
+			attr: { 'aria-label': '适应视图' }
 		});
 		setIcon(fitBtn, 'maximize-2');
 		fitBtn.addEventListener('click', () => this.fitToView());
@@ -372,7 +371,7 @@ export class FamilyChartView extends ItemView {
 		if (this.isInSidebar()) {
 			const popOutBtn = rightControls.createEl('button', {
 				cls: 'cr-fcv-btn clickable-icon',
-				attr: { 'aria-label': 'Open in main workspace' }
+				attr: { 'aria-label': '在主工作区中打开' }
 			});
 			setIcon(popOutBtn, 'external-link');
 			popOutBtn.addEventListener('click', () => this.popOutToMainWorkspace());
@@ -381,7 +380,7 @@ export class FamilyChartView extends ItemView {
 		// Layout settings button (orientation, spacing)
 		const layoutBtn = rightControls.createEl('button', {
 			cls: 'cr-fcv-btn clickable-icon',
-			attr: { 'aria-label': 'Layout settings' }
+			attr: { 'aria-label': '布局设置' }
 		});
 		setIcon(layoutBtn, 'sliders');
 		layoutBtn.addEventListener('click', (e) => this.showLayoutMenu(e));
@@ -389,7 +388,7 @@ export class FamilyChartView extends ItemView {
 		// Display settings button (card display, visibility options)
 		const displayBtn = rightControls.createEl('button', {
 			cls: 'cr-fcv-btn clickable-icon',
-			attr: { 'aria-label': 'Display settings' }
+			attr: { 'aria-label': '显示设置' }
 		});
 		setIcon(displayBtn, 'eye');
 		displayBtn.addEventListener('click', (e) => this.showDisplayMenu(e));
@@ -397,7 +396,7 @@ export class FamilyChartView extends ItemView {
 		// Card style button (rectangle, circle, compact, mini)
 		const cardStyleBtn = rightControls.createEl('button', {
 			cls: 'cr-fcv-btn clickable-icon',
-			attr: { 'aria-label': 'Card style' }
+			attr: { 'aria-label': '卡片样式' }
 		});
 		setIcon(cardStyleBtn, 'layout-template');
 		cardStyleBtn.addEventListener('click', (e) => this.showCardStyleMenu(e));
@@ -405,7 +404,7 @@ export class FamilyChartView extends ItemView {
 		// Style settings button (colors, themes)
 		const styleBtn = rightControls.createEl('button', {
 			cls: 'cr-fcv-btn clickable-icon',
-			attr: { 'aria-label': 'Chart colors' }
+			attr: { 'aria-label': '图表颜色' }
 		});
 		setIcon(styleBtn, 'palette');
 		styleBtn.addEventListener('click', (e) => this.showStyleMenu(e));
@@ -413,7 +412,7 @@ export class FamilyChartView extends ItemView {
 		// Depth settings button (ancestry/progeny limits)
 		const depthBtn = rightControls.createEl('button', {
 			cls: 'cr-fcv-btn clickable-icon',
-			attr: { 'aria-label': 'Tree depth' }
+			attr: { 'aria-label': '家谱深度' }
 		});
 		setIcon(depthBtn, 'git-branch');
 		depthBtn.addEventListener('click', (e) => this.showDepthMenu(e));
@@ -424,7 +423,7 @@ export class FamilyChartView extends ItemView {
 			cls: 'cr-fcv-as-of-date',
 			attr: {
 				type: 'date',
-				'aria-label': 'As-of date (show family as it existed on this date)',
+				'aria-label': '截止日期（显示该日期时的家族状态）',
 			},
 		});
 		if (this.asOfDate) asOfInput.value = this.asOfDate;
@@ -433,7 +432,7 @@ export class FamilyChartView extends ItemView {
 		});
 		const asOfClearBtn = timeGroup.createEl('button', {
 			cls: 'cr-fcv-btn cr-fcv-as-of-clear clickable-icon',
-			attr: { 'aria-label': 'Clear as-of date' },
+			attr: { 'aria-label': '清除截止日期' },
 		});
 		setIcon(asOfClearBtn, 'x');
 		asOfClearBtn.addEventListener('click', () => {
@@ -444,7 +443,7 @@ export class FamilyChartView extends ItemView {
 		// Export button
 		const exportBtn = rightControls.createEl('button', {
 			cls: 'cr-fcv-btn clickable-icon',
-			attr: { 'aria-label': 'Export chart' }
+			attr: { 'aria-label': '导出图表' }
 		});
 		setIcon(exportBtn, 'download');
 		exportBtn.addEventListener('click', () => this.openExportWizard());
@@ -452,7 +451,7 @@ export class FamilyChartView extends ItemView {
 		// Refresh button
 		const refreshBtn = rightControls.createEl('button', {
 			cls: 'cr-fcv-btn clickable-icon',
-			attr: { 'aria-label': 'Refresh chart' }
+			attr: { 'aria-label': '刷新图表' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => { void this.refreshChart(); });
@@ -468,11 +467,12 @@ export class FamilyChartView extends ItemView {
 
 		// Header
 		const header = this.infoPanelEl.createDiv({ cls: 'cr-fcv-info-panel-header' });
-		const headerTitle = header.createEl('h3', { text: 'Person details', cls: 'cr-fcv-info-panel-title' });
+		const headerTitle = header.createEl('h3', { text: '人物详情', cls: 'cr-fcv-info-panel-title' });
+		// data-view-title / data-edit-title 为 DOM 数据属性，按术语表规则保留原文
 		headerTitle.setAttribute('data-view-title', 'Person details');
 		headerTitle.setAttribute('data-edit-title', 'Edit person');
 
-		const closeBtn = header.createEl('button', { cls: 'cr-fcv-info-panel-close', attr: { 'aria-label': 'Close panel' } });
+		const closeBtn = header.createEl('button', { cls: 'cr-fcv-info-panel-close', attr: { 'aria-label': '关闭面板' } });
 		setIcon(closeBtn, 'x');
 		closeBtn.addEventListener('click', () => this.closeInfoPanel());
 
@@ -527,14 +527,14 @@ export class FamilyChartView extends ItemView {
 		const personData = this.chartData.find(p => p.id === this.selectedPersonId);
 		if (!personData) {
 			this.infoPanelContentEl.empty();
-			this.infoPanelContentEl.createEl('p', { text: 'Person not found', cls: 'cr-fcv-info-panel-error' });
+			this.infoPanelContentEl.createEl('p', { text: '未找到人物', cls: 'cr-fcv-info-panel-error' });
 			return;
 		}
 
 		// Update header title
 		const headerTitle = this.infoPanelEl?.querySelector('.cr-fcv-info-panel-header h3');
 		if (headerTitle) {
-			headerTitle.textContent = this.infoPanelEditMode ? 'Edit person' : 'Person details';
+			headerTitle.textContent = this.infoPanelEditMode ? '编辑人物' : '人物详情';
 		}
 
 		this.infoPanelContentEl.empty();
@@ -557,59 +557,59 @@ export class FamilyChartView extends ItemView {
 		const fieldsSection = this.infoPanelContentEl.createDiv({ cls: 'cr-fcv-info-panel-fields' });
 
 		// First name
-		this.createInfoField(fieldsSection, 'First name', personData.data['first name'] || '');
+		this.createInfoField(fieldsSection, '名', personData.data['first name'] || '');
 
 		// Last name
-		this.createInfoField(fieldsSection, 'Last name', personData.data['last name'] || '');
+		this.createInfoField(fieldsSection, '姓', personData.data['last name'] || '');
 
 		// Alt name (#346)
 		if (personData.data['alt name']) {
-			this.createInfoField(fieldsSection, 'Alt name', personData.data['alt name'] as string);
+			this.createInfoField(fieldsSection, '别名', personData.data['alt name'] as string);
 		}
 
 		// Pronouns (#351)
 		if (personData.data['pronouns']) {
-			this.createInfoField(fieldsSection, 'Pronouns', personData.data['pronouns'] as string);
+			this.createInfoField(fieldsSection, '代词', personData.data['pronouns'] as string);
 		}
 
 		// Occupation (#351)
 		if (personData.data['occupation']) {
-			this.createInfoField(fieldsSection, 'Occupation', personData.data['occupation'] as string);
+			this.createInfoField(fieldsSection, '职业', personData.data['occupation'] as string);
 		}
 
 		// Birth date
-		this.createInfoField(fieldsSection, 'Birth date', personData.data.birthday || '');
+		this.createInfoField(fieldsSection, '出生日期', personData.data.birthday || '');
 
 		// Death date
-		this.createInfoField(fieldsSection, 'Death date', personData.data.deathday || '');
+		this.createInfoField(fieldsSection, '去世日期', personData.data.deathday || '');
 
 		// Birth place (#351)
 		if (personData.data['birth place']) {
-			this.createInfoField(fieldsSection, 'Birth place', unwrapWikilinkDisplay(personData.data['birth place'] as string));
+			this.createInfoField(fieldsSection, '出生地点', unwrapWikilinkDisplay(personData.data['birth place'] as string));
 		}
 
 		// Death place (#351)
 		if (personData.data['death place']) {
-			this.createInfoField(fieldsSection, 'Death place', unwrapWikilinkDisplay(personData.data['death place'] as string));
+			this.createInfoField(fieldsSection, '去世地点', unwrapWikilinkDisplay(personData.data['death place'] as string));
 		}
 
 		// Sex
-		const sexDisplay = personData.data.gender === 'M' ? 'Male' : personData.data.gender === 'F' ? 'Female' : personData.data.gender === 'X' ? 'Non-binary' : personData.data.gender === 'U' ? 'Unknown' : '';
-		this.createInfoField(fieldsSection, 'Sex', sexDisplay);
+		const sexDisplay = personData.data.gender === 'M' ? '男性' : personData.data.gender === 'F' ? '女性' : personData.data.gender === 'X' ? '非二元' : personData.data.gender === 'U' ? '未知' : '';
+		this.createInfoField(fieldsSection, '性别', sexDisplay);
 
 		// Research level (#351)
 		const researchLevelRaw = personData.data['research level'];
 		const researchLevel: string | number = typeof researchLevelRaw === 'number' || typeof researchLevelRaw === 'string' ? researchLevelRaw : '';
 		if (researchLevel !== '') {
-			const levelNames = ['Unresearched', 'Initial', 'Moderate', 'Thorough', 'Comprehensive', 'Exhaustive', 'Published'];
+			const levelNames = ['未研究', '初步', '中等', '详尽', '全面', '穷尽', '已发表'];
 			const levelNum = typeof researchLevel === 'number' ? researchLevel : parseInt(researchLevel);
 			const levelDisplay = !isNaN(levelNum) && levelNum >= 0 && levelNum <= 6 ? `${levelNum} — ${levelNames[levelNum]}` : String(researchLevel);
-			this.createInfoField(fieldsSection, 'Research level', levelDisplay);
+			this.createInfoField(fieldsSection, '研究级别', levelDisplay);
 		}
 
 		// Collection (#351)
 		if (personData.data['collection']) {
-			this.createInfoField(fieldsSection, 'Collection', personData.data['collection'] as string);
+			this.createInfoField(fieldsSection, '合集', personData.data['collection'] as string);
 		}
 
 		// Relationships section
@@ -622,7 +622,7 @@ export class FamilyChartView extends ItemView {
 		// Description (left side)
 		this.infoPanelActionsEl.createDiv({
 			cls: 'cr-fcv-info-panel-actions-description',
-			text: 'View or edit this person'
+			text: '查看或编辑此人物'
 		});
 
 		// Buttons container (right side)
@@ -632,7 +632,7 @@ export class FamilyChartView extends ItemView {
 
 		// Open note button
 		const openNoteBtn = buttonsContainer.createEl('button', {
-			text: 'Open'
+			text: '打开'
 		});
 		openNoteBtn.addEventListener('click', () => {
 			if (this.selectedPersonId) {
@@ -642,7 +642,7 @@ export class FamilyChartView extends ItemView {
 
 		// Edit button (primary action)
 		const editBtn = buttonsContainer.createEl('button', {
-			text: 'Edit',
+			text: '编辑',
 			cls: 'mod-cta'
 		});
 		editBtn.addEventListener('click', () => this.enterInfoPanelEditMode(personData));
@@ -676,59 +676,59 @@ export class FamilyChartView extends ItemView {
 		const fieldsSection = this.infoPanelContentEl.createDiv({ cls: 'cr-fcv-info-panel-fields' });
 
 		// First name input
-		this.createInfoFieldInput(fieldsSection, 'First name', this.infoPanelEditData.firstName, (value) => {
+		this.createInfoFieldInput(fieldsSection, '名', this.infoPanelEditData.firstName, (value) => {
 			if (this.infoPanelEditData) this.infoPanelEditData.firstName = value;
 		});
 
 		// Last name input
-		this.createInfoFieldInput(fieldsSection, 'Last name', this.infoPanelEditData.lastName, (value) => {
+		this.createInfoFieldInput(fieldsSection, '姓', this.infoPanelEditData.lastName, (value) => {
 			if (this.infoPanelEditData) this.infoPanelEditData.lastName = value;
 		});
 
 		// Alt name input (#351)
-		this.createInfoFieldInput(fieldsSection, 'Alt name', this.infoPanelEditData.altName, (value) => {
+		this.createInfoFieldInput(fieldsSection, '别名', this.infoPanelEditData.altName, (value) => {
 			if (this.infoPanelEditData) this.infoPanelEditData.altName = value;
-		}, 'e.g., 张三');
+		}, '例如：张三');
 
 		// Pronouns input (#351)
-		this.createInfoFieldInput(fieldsSection, 'Pronouns', this.infoPanelEditData.pronouns, (value) => {
+		this.createInfoFieldInput(fieldsSection, '代词', this.infoPanelEditData.pronouns, (value) => {
 			if (this.infoPanelEditData) this.infoPanelEditData.pronouns = value;
-		}, 'e.g., she/her');
+		}, '例如：她/她');
 
 		// Occupation input (#351)
-		this.createInfoFieldInput(fieldsSection, 'Occupation', this.infoPanelEditData.occupation, (value) => {
+		this.createInfoFieldInput(fieldsSection, '职业', this.infoPanelEditData.occupation, (value) => {
 			if (this.infoPanelEditData) this.infoPanelEditData.occupation = value;
-		}, 'e.g., Farmer');
+		}, '例如：农民');
 
 		// Birth place picker (#351)
-		this.createPlacePickerField(fieldsSection, 'Birth place', this.infoPanelEditData.birthPlace, (value) => {
+		this.createPlacePickerField(fieldsSection, '出生地点', this.infoPanelEditData.birthPlace, (value) => {
 			if (this.infoPanelEditData) this.infoPanelEditData.birthPlace = value;
 		});
 
 		// Death place picker (#351)
-		this.createPlacePickerField(fieldsSection, 'Death place', this.infoPanelEditData.deathPlace, (value) => {
+		this.createPlacePickerField(fieldsSection, '去世地点', this.infoPanelEditData.deathPlace, (value) => {
 			if (this.infoPanelEditData) this.infoPanelEditData.deathPlace = value;
 		});
 
 		// Birth date input
-		this.createInfoFieldInput(fieldsSection, 'Birth date', this.infoPanelEditData.birthDate, (value) => {
+		this.createInfoFieldInput(fieldsSection, '出生日期', this.infoPanelEditData.birthDate, (value) => {
 			if (this.infoPanelEditData) this.infoPanelEditData.birthDate = value;
-		}, 'Not recorded');
+		}, '未记录');
 
 		// Death date input
-		this.createInfoFieldInput(fieldsSection, 'Death date', this.infoPanelEditData.deathDate, (value) => {
+		this.createInfoFieldInput(fieldsSection, '去世日期', this.infoPanelEditData.deathDate, (value) => {
 			if (this.infoPanelEditData) this.infoPanelEditData.deathDate = value;
-		}, 'Not recorded');
+		}, '未记录');
 
 		// Sex dropdown
 		const sexField = fieldsSection.createDiv({ cls: 'cr-fcv-info-field' });
-		sexField.createDiv({ cls: 'cr-fcv-info-field-label', text: 'Sex' });
+		sexField.createDiv({ cls: 'cr-fcv-info-field-label', text: '性别' });
 		const sexSelect = sexField.createEl('select', { cls: 'cr-fcv-info-field-select dropdown' });
 		const options = [
-			{ value: 'U', label: 'Unknown' },
-			{ value: 'M', label: 'Male' },
-			{ value: 'F', label: 'Female' },
-			{ value: 'X', label: 'Non-binary' }
+			{ value: 'U', label: '未知' },
+			{ value: 'M', label: '男性' },
+			{ value: 'F', label: '女性' },
+			{ value: 'X', label: '非二元' }
 		];
 		for (const opt of options) {
 			const optionEl = sexSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -744,17 +744,17 @@ export class FamilyChartView extends ItemView {
 
 		// Research level dropdown (#351)
 		const rlField = fieldsSection.createDiv({ cls: 'cr-fcv-info-field' });
-		rlField.createDiv({ cls: 'cr-fcv-info-field-label', text: 'Research level' });
+		rlField.createDiv({ cls: 'cr-fcv-info-field-label', text: '研究级别' });
 		const rlSelect = rlField.createEl('select', { cls: 'cr-fcv-info-field-select dropdown' });
 		const rlOptions = [
-			{ value: '', label: 'Not set' },
-			{ value: '0', label: '0 — Unresearched' },
-			{ value: '1', label: '1 — Initial' },
-			{ value: '2', label: '2 — Moderate' },
-			{ value: '3', label: '3 — Thorough' },
-			{ value: '4', label: '4 — Comprehensive' },
-			{ value: '5', label: '5 — Exhaustive' },
-			{ value: '6', label: '6 — Published' }
+			{ value: '', label: '未设置' },
+			{ value: '0', label: '0 — 未研究' },
+			{ value: '1', label: '1 — 初步' },
+			{ value: '2', label: '2 — 中等' },
+			{ value: '3', label: '3 — 详尽' },
+			{ value: '4', label: '4 — 全面' },
+			{ value: '5', label: '5 — 穷尽' },
+			{ value: '6', label: '6 — 已发表' }
 		];
 		for (const opt of rlOptions) {
 			const optionEl = rlSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -769,15 +769,15 @@ export class FamilyChartView extends ItemView {
 		});
 
 		// Collection input (#351)
-		this.createInfoFieldInput(fieldsSection, 'Collection', this.infoPanelEditData.collection, (value) => {
+		this.createInfoFieldInput(fieldsSection, '合集', this.infoPanelEditData.collection, (value) => {
 			if (this.infoPanelEditData) this.infoPanelEditData.collection = value;
-		}, 'e.g., Smith Family');
+		}, '例如：Smith 家族');
 
 		// Link source button (#351)
 		const sourceField = fieldsSection.createDiv({ cls: 'cr-fcv-info-field' });
-		sourceField.createDiv({ cls: 'cr-fcv-info-field-label', text: 'Sources' });
+		sourceField.createDiv({ cls: 'cr-fcv-info-field-label', text: '来源' });
 		const linkSourceBtn = sourceField.createEl('button', {
-			text: '+ Link source',
+			text: '+ 关联来源',
 			cls: 'cr-fcv-info-field-picker-btn'
 		});
 		linkSourceBtn.addEventListener('click', () => {
@@ -798,13 +798,13 @@ export class FamilyChartView extends ItemView {
 
 		// Cancel button (secondary)
 		const cancelBtn = buttonsContainer.createEl('button', {
-			text: 'Cancel'
+			text: '取消'
 		});
 		cancelBtn.addEventListener('click', () => this.cancelInfoPanelEdit());
 
 		// Save button (primary)
 		const saveBtn = buttonsContainer.createEl('button', {
-			text: 'Save',
+			text: '保存',
 			cls: 'mod-cta'
 		});
 		saveBtn.addEventListener('click', () => void this.saveInfoPanelChanges());
@@ -820,7 +820,7 @@ export class FamilyChartView extends ItemView {
 		if (value) {
 			valueEl.textContent = value;
 		} else {
-			valueEl.textContent = 'Not recorded';
+			valueEl.textContent = '未记录';
 			valueEl.addClass('empty');
 		}
 	}
@@ -852,12 +852,12 @@ export class FamilyChartView extends ItemView {
 		const displayName = value ? value.replace(/^\[\[|\]\]$/g, '').split('|').pop() || '' : '';
 		const displayEl = row.createSpan({
 			cls: 'cr-fcv-info-field-picker-value',
-			text: displayName || 'Not set'
+			text: displayName || '未设置'
 		});
 		if (!displayName) displayEl.addClass('empty');
 
 		const pickBtn = row.createEl('button', {
-			text: 'Pick',
+			text: '选择',
 			cls: 'cr-fcv-info-field-picker-btn'
 		});
 		pickBtn.addEventListener('click', () => {
@@ -878,11 +878,11 @@ export class FamilyChartView extends ItemView {
 			const clearBtn = row.createEl('button', {
 				text: '×',
 				cls: 'cr-fcv-info-field-picker-clear',
-				attr: { 'aria-label': 'Clear' }
+				attr: { 'aria-label': '清除' }
 			});
 			clearBtn.addEventListener('click', () => {
 				onChange('');
-				displayEl.textContent = 'Not set';
+				displayEl.textContent = '未设置';
 				displayEl.addClass('empty');
 				clearBtn.remove();
 			});
@@ -898,12 +898,12 @@ export class FamilyChartView extends ItemView {
 		const relSection = this.infoPanelContentEl.createDiv({ cls: 'cr-fcv-info-panel-relationships' });
 
 		const headerRow = relSection.createDiv({ cls: 'cr-fcv-relationship-header' });
-		headerRow.createEl('h4', { text: 'Relationships' });
+		headerRow.createEl('h4', { text: '关系' });
 
 		// Add relationship button in edit mode (#351)
 		if (this.infoPanelEditMode && this.selectedPersonId) {
 			const addBtn = headerRow.createEl('button', {
-				text: '+ Add',
+				text: '+ 添加',
 				cls: 'cr-fcv-relationship-add-btn'
 			});
 			addBtn.addEventListener('click', () => {
@@ -913,7 +913,7 @@ export class FamilyChartView extends ItemView {
 
 		// Parents
 		if (personData.rels.parents.length > 0) {
-			this.renderRelationshipGroup(relSection, 'Parents', personData.rels.parents);
+			this.renderRelationshipGroup(relSection, '父母', personData.rels.parents);
 		}
 
 		// Spouses
@@ -923,12 +923,12 @@ export class FamilyChartView extends ItemView {
 
 		// Children
 		if (personData.rels.children.length > 0) {
-			this.renderRelationshipGroup(relSection, 'Children', personData.rels.children);
+			this.renderRelationshipGroup(relSection, '子女', personData.rels.children);
 		}
 
 		// If no relationships
 		if (personData.rels.parents.length === 0 && personData.rels.spouses.length === 0 && personData.rels.children.length === 0) {
-			relSection.createEl('p', { text: 'No relationships recorded', cls: 'cr-fcv-info-panel-no-rels' });
+			relSection.createEl('p', { text: '未记录关系', cls: 'cr-fcv-info-panel-no-rels' });
 		}
 	}
 
@@ -949,7 +949,7 @@ export class FamilyChartView extends ItemView {
 		}
 
 		if (!targetFile) {
-			new Notice('Could not find person note');
+			new Notice('未找到人物笔记');
 			return;
 		}
 
@@ -974,7 +974,7 @@ export class FamilyChartView extends ItemView {
 		}
 
 		if (!targetFile) {
-			new Notice('Could not find person note');
+			new Notice('未找到人物笔记');
 			return;
 		}
 
@@ -998,8 +998,8 @@ export class FamilyChartView extends ItemView {
 		for (const personId of personIds) {
 			const relPerson = this.chartData.find(p => p.id === personId);
 			const name = relPerson
-				? `${relPerson.data['first name'] || ''} ${relPerson.data['last name'] || ''}`.trim() || 'Unknown'
-				: 'Unknown';
+				? `${relPerson.data['first name'] || ''} ${relPerson.data['last name'] || ''}`.trim() || '未知'
+				: '未知';
 
 			const link = group.createEl('a', {
 				cls: 'cr-fcv-relationship-link',
@@ -1125,7 +1125,7 @@ export class FamilyChartView extends ItemView {
 		// Re-render the panel in view mode
 		this.renderInfoPanelContent();
 
-		new Notice('Changes saved');
+		new Notice('更改已保存');
 	}
 
 	/**
@@ -1137,17 +1137,17 @@ export class FamilyChartView extends ItemView {
 		this.chartContainerEl.empty();
 		const emptyState = this.chartContainerEl.createDiv({ cls: 'cr-fcv-empty-state' });
 
-		emptyState.createEl('h3', { text: 'No person selected' });
+		emptyState.createEl('h3', { text: '未选择人物' });
 
 		const instructions = emptyState.createDiv({ cls: 'cr-fcv-empty-state__instructions' });
-		instructions.createEl('p', { text: 'To view a Family Chart:' });
+		instructions.createEl('p', { text: '查看家谱的方法：' });
 
 		const list = instructions.createEl('ul');
-		list.createEl('li', { text: 'Choose a person from the list below, or' });
-		list.createEl('li', { text: 'Open a person note (with cr_id property) and run "Open Family Chart"' });
+		list.createEl('li', { text: '从下方列表中选择一个人物，或' });
+		list.createEl('li', { text: '打开人物笔记（含有 cr_id 属性）并运行"打开家谱"' });
 
 		const selectBtn = emptyState.createEl('button', {
-			text: 'Choose from list',
+			text: '从列表中选择',
 			cls: 'mod-cta'
 		});
 		selectBtn.addEventListener('click', () => { void this.promptSelectPerson(); });
@@ -1155,7 +1155,7 @@ export class FamilyChartView extends ItemView {
 		// Add hint about cr_id requirement
 		const hint = emptyState.createDiv({ cls: 'cr-fcv-empty-state__hint' });
 		hint.createEl('small', {
-			text: 'Tip: Person notes need a cr_id property to appear in the chart.',
+			text: '提示：人物笔记需要 cr_id 属性才会出现在图表中。',
 			cls: 'mod-muted'
 		});
 	}
@@ -1209,8 +1209,8 @@ export class FamilyChartView extends ItemView {
 					chartDataCount: this.chartData.length
 				});
 				new Notice(
-					'The requested person is not included in the current folder filter. ' +
-					'Check your Charted Roots folder settings.',
+					'所请求的人物不在当前文件夹筛选范围内。' +
+					'请检查 Charted Roots 文件夹设置。',
 					8000
 				);
 				// Clear the invalid root so the chart shows the default view
@@ -1254,7 +1254,7 @@ export class FamilyChartView extends ItemView {
 		// Show loading overlay during initial positioning (positioned absolutely over the container)
 		const loadingOverlay = this.chartContainerEl.createDiv({ cls: 'cr-family-chart-loading' });
 		loadingOverlay.createSpan({ cls: 'cr-family-chart-loading__spinner' });
-		loadingOverlay.createSpan({ cls: 'cr-family-chart-loading__text', text: 'Loading chart...' });
+		loadingOverlay.createSpan({ cls: 'cr-family-chart-loading__text', text: '正在加载图表…' });
 
 		try {
 			// Measure names and wrap any that overflow before sizing (#671): the
@@ -1308,7 +1308,7 @@ export class FamilyChartView extends ItemView {
 
 			// Apply display options
 			this.f3Chart.setShowSiblingsOfMain(this.showSiblingsOfMain);
-			this.f3Chart.setSingleParentEmptyCard(this.showSingleParentEmptyCard, { label: 'Unknown' });
+			this.f3Chart.setSingleParentEmptyCard(this.showSingleParentEmptyCard, { label: '未知' });
 
 			// Apply sort children by birth date. Matches the universe-aware
 			// canonical-year compare used by the other four sibling-sort
@@ -1481,8 +1481,8 @@ export class FamilyChartView extends ItemView {
 
 			// Show error state with more detail
 			const errorContainer = this.chartContainerEl.createDiv({ cls: 'cr-family-chart-error' });
-			errorContainer.createEl('h3', { text: 'Chart Error' });
-			errorContainer.createEl('p', { text: errorMessage || 'Failed to render family chart. Check the console for details.' });
+			errorContainer.createEl('h3', { text: '图表错误' });
+			errorContainer.createEl('p', { text: errorMessage || '渲染家谱失败。请检查控制台以获取详情。' });
 			return;
 		}
 
@@ -2445,17 +2445,17 @@ export class FamilyChartView extends ItemView {
 
 		// Tree orientation
 		menu.addItem((item) => {
-			item.setTitle('Tree orientation')
+			item.setTitle('树的方向')
 				.setIcon('layout')
 				.setDisabled(true);
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${!this.isHorizontal ? '✓ ' : ''}Vertical (top to bottom)`)
+			item.setTitle(`${!this.isHorizontal ? '✓ ' : ''}纵向（从上到下）`)
 				.onClick(() => this.setOrientation(false));
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.isHorizontal ? '✓ ' : ''}Horizontal (left to right)`)
+			item.setTitle(`${this.isHorizontal ? '✓ ' : ''}横向（从左到右）`)
 				.onClick(() => this.setOrientation(true));
 		});
 
@@ -2463,25 +2463,25 @@ export class FamilyChartView extends ItemView {
 
 		// Node spacing (horizontal)
 		menu.addItem((item) => {
-			item.setTitle(`Node spacing: ${this.nodeSpacing}px`)
+			item.setTitle(`节点间距：${this.nodeSpacing}px`)
 				.setIcon('arrow-left-right')
 				.setDisabled(true);
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.nodeSpacing === 140 ? '✓ ' : ''}Tight (140px)`)
+			item.setTitle(`${this.nodeSpacing === 140 ? '✓ ' : ''}紧凑（140px）`)
 				.onClick(() => this.setNodeSpacing(140));
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.nodeSpacing === 200 ? '✓ ' : ''}Compact (200px)`)
+			item.setTitle(`${this.nodeSpacing === 200 ? '✓ ' : ''}较紧凑（200px）`)
 				.onClick(() => this.setNodeSpacing(200));
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.nodeSpacing === 250 ? '✓ ' : ''}Normal (250px)`)
+			item.setTitle(`${this.nodeSpacing === 250 ? '✓ ' : ''}标准（250px）`)
 				.onClick(() => this.setNodeSpacing(250));
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.nodeSpacing === 350 ? '✓ ' : ''}Spacious (350px)`)
+			item.setTitle(`${this.nodeSpacing === 350 ? '✓ ' : ''}宽松（350px）`)
 				.onClick(() => this.setNodeSpacing(350));
 		});
 
@@ -2489,21 +2489,21 @@ export class FamilyChartView extends ItemView {
 
 		// Level spacing (vertical)
 		menu.addItem((item) => {
-			item.setTitle(`Level spacing: ${this.levelSpacing}px`)
+			item.setTitle(`层级间距：${this.levelSpacing}px`)
 				.setIcon('arrow-up-down')
 				.setDisabled(true);
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.levelSpacing === 100 ? '✓ ' : ''}Compact (100px)`)
+			item.setTitle(`${this.levelSpacing === 100 ? '✓ ' : ''}紧凑（100px）`)
 				.onClick(() => this.setLevelSpacing(100));
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.levelSpacing === 150 ? '✓ ' : ''}Normal (150px)`)
+			item.setTitle(`${this.levelSpacing === 150 ? '✓ ' : ''}标准（150px）`)
 				.onClick(() => this.setLevelSpacing(150));
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.levelSpacing === 200 ? '✓ ' : ''}Spacious (200px)`)
+			item.setTitle(`${this.levelSpacing === 200 ? '✓ ' : ''}宽松（200px）`)
 				.onClick(() => this.setLevelSpacing(200));
 		});
 
@@ -2518,56 +2518,56 @@ export class FamilyChartView extends ItemView {
 
 		// Card display options
 		menu.addItem((item) => {
-			item.setTitle('Card display')
+			item.setTitle('卡片显示')
 				.setIcon('credit-card')
 				.setDisabled(true);
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.showBirthDates ? '✓ ' : ''}Show birth dates`)
+			item.setTitle(`${this.showBirthDates ? '✓ ' : ''}显示出生日期`)
 				.onClick(() => this.toggleBirthDates());
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.showDeathDates ? '✓ ' : ''}Show death dates`)
+			item.setTitle(`${this.showDeathDates ? '✓ ' : ''}显示去世日期`)
 				.onClick(() => this.toggleDeathDates());
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.nameDisplayMode === 'split' ? '✓ ' : ''}Split given/surname`)
+			item.setTitle(`${this.nameDisplayMode === 'split' ? '✓ ' : ''}名/姓分行显示`)
 				.onClick(() => this.toggleNameDisplayMode());
 		});
 
 		// Built-in descriptive field toggles (#374)
 		menu.addItem((item) => {
-			item.setTitle(`${this.showNickname ? '✓ ' : ''}Show nickname`)
+			item.setTitle(`${this.showNickname ? '✓ ' : ''}显示昵称`)
 				.onClick(() => this.toggleNickname());
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.showTitle ? '✓ ' : ''}Show title`)
+			item.setTitle(`${this.showTitle ? '✓ ' : ''}显示头衔`)
 				.onClick(() => this.toggleTitle());
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.showPronouns ? '✓ ' : ''}Show pronouns`)
+			item.setTitle(`${this.showPronouns ? '✓ ' : ''}显示代词`)
 				.onClick(() => this.togglePronouns());
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.showOccupation ? '✓ ' : ''}Show occupation`)
+			item.setTitle(`${this.showOccupation ? '✓ ' : ''}显示职业`)
 				.onClick(() => this.toggleOccupation());
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.showReligion ? '✓ ' : ''}Show religion`)
+			item.setTitle(`${this.showReligion ? '✓ ' : ''}显示宗教`)
 				.onClick(() => this.toggleReligion());
 		});
 		menu.addItem((item) => {
-			item.setTitle(`${this.showCaste ? '✓ ' : ''}Show caste`)
+			item.setTitle(`${this.showCaste ? '✓ ' : ''}显示种姓`)
 				.onClick(() => this.toggleCaste());
 		});
 
 		// Show avatars belongs with the other card-content toggles above, not
 		// with the overlay toggles that follow.
 		menu.addItem((item) => {
-			item.setTitle(`${this.showAvatars ? '✓ ' : ''}Show avatars`)
+			item.setTitle(`${this.showAvatars ? '✓ ' : ''}显示头像`)
 				.setIcon('image')
 				.onClick(() => this.toggleAvatars());
 		});
@@ -2576,13 +2576,13 @@ export class FamilyChartView extends ItemView {
 
 		// Overlays / annotations drawn on top of cards and links
 		menu.addItem((item) => {
-			item.setTitle(`${this.showKinshipLabels ? '✓ ' : ''}Show kinship labels`)
+			item.setTitle(`${this.showKinshipLabels ? '✓ ' : ''}显示亲属称谓`)
 				.setIcon('tag')
 				.onClick(() => this.toggleKinshipLabels());
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.showCustomRelationships ? '✓ ' : ''}Show custom relationships`)
+			item.setTitle(`${this.showCustomRelationships ? '✓ ' : ''}显示自定义关系`)
 				.setIcon('waypoints')
 				.onClick(() => this.toggleCustomRelationships());
 		});
@@ -2612,7 +2612,7 @@ export class FamilyChartView extends ItemView {
 		// Highlighting — changes which cards are emphasized (its own block)
 		menu.addItem((item) => {
 			const active = this.hasActiveHighlights();
-			item.setTitle(`${active ? '✓ ' : ''}Highlight groups...`)
+			item.setTitle(`${active ? '✓ ' : ''}高亮分组…`)
 				.setIcon('highlighter')
 				.onClick(() => this.openHighlightGroupsModal());
 		});
@@ -2621,33 +2621,33 @@ export class FamilyChartView extends ItemView {
 
 		// Visibility options
 		menu.addItem((item) => {
-			item.setTitle('Visibility')
+			item.setTitle('可见性')
 				.setIcon('eye')
 				.setDisabled(true);
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.showSiblingsOfMain ? '✓ ' : ''}Show siblings of root person`)
+			item.setTitle(`${this.showSiblingsOfMain ? '✓ ' : ''}显示根人物的兄弟姐妹`)
 				.onClick(() => this.toggleShowSiblingsOfMain());
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.showSingleParentEmptyCard ? '✓ ' : ''}Show unknown parent placeholders`)
+			item.setTitle(`${this.showSingleParentEmptyCard ? '✓ ' : ''}显示未知父母占位卡片`)
 				.onClick(() => this.toggleSingleParentEmptyCard());
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.sortChildrenByBirthDate ? '✓ ' : ''}Sort children by birth date`)
+			item.setTitle(`${this.sortChildrenByBirthDate ? '✓ ' : ''}按出生日期排序子女`)
 				.onClick(() => this.toggleSortChildrenByBirthDate());
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.sortSpousesByMarriageDate ? '✓ ' : ''}Sort spouses by marriage date`)
+			item.setTitle(`${this.sortSpousesByMarriageDate ? '✓ ' : ''}按结婚日期排序配偶`)
 				.onClick(() => this.toggleSortSpousesByMarriageDate());
 		});
 
 		menu.addItem((item) => {
-			item.setTitle(`${this.hidePrivateLiving ? '✓ ' : ''}Hide living persons`)
+			item.setTitle(`${this.hidePrivateLiving ? '✓ ' : ''}隐藏在世人物`)
 				.onClick(() => this.toggleHidePrivateLiving());
 		});
 
@@ -2661,16 +2661,16 @@ export class FamilyChartView extends ItemView {
 		const menu = new Menu();
 
 		// Tree depth limits - Ancestry
-		const ancestryLabel = this.ancestryDepth === null ? 'Unlimited' : `${this.ancestryDepth} gen`;
+		const ancestryLabel = this.ancestryDepth === null ? '不限' : `${this.ancestryDepth}代`;
 		menu.addItem((item) => {
-			item.setTitle(`Ancestors: ${ancestryLabel}`)
+			item.setTitle(`祖先：${ancestryLabel}`)
 				.setIcon('arrow-up')
 				.setDisabled(true);
 		});
 
 		const ancestryOptions: (number | null)[] = [null, 1, 2, 3, 5];
 		for (const depth of ancestryOptions) {
-			const label = depth === null ? 'Unlimited' : `${depth} ${pluralize(depth, 'generation')}`;
+			const label = depth === null ? '不限' : `${depth}代`;
 			const isSelected = this.ancestryDepth === depth;
 			menu.addItem((item) => {
 				item.setTitle(`${isSelected ? '✓ ' : '  '}${label}`)
@@ -2681,16 +2681,16 @@ export class FamilyChartView extends ItemView {
 		menu.addSeparator();
 
 		// Tree depth limits - Descendants
-		const progenyLabel = this.progenyDepth === null ? 'Unlimited' : `${this.progenyDepth} gen`;
+		const progenyLabel = this.progenyDepth === null ? '不限' : `${this.progenyDepth}代`;
 		menu.addItem((item) => {
-			item.setTitle(`Descendants: ${progenyLabel}`)
+			item.setTitle(`后代：${progenyLabel}`)
 				.setIcon('arrow-down')
 				.setDisabled(true);
 		});
 
 		const progenyOptions: (number | null)[] = [null, 1, 2, 3, 5];
 		for (const depth of progenyOptions) {
-			const label = depth === null ? 'Unlimited' : `${depth} ${pluralize(depth, 'generation')}`;
+			const label = depth === null ? '不限' : `${depth}代`;
 			const isSelected = this.progenyDepth === depth;
 			menu.addItem((item) => {
 				item.setTitle(`${isSelected ? '✓ ' : '  '}${label}`)
@@ -2706,7 +2706,7 @@ export class FamilyChartView extends ItemView {
 	 */
 	static readonly THEME_PRESETS: Record<string, { name: string; colors: FamilyChartColors }> = {
 		classic: {
-			name: 'Classic',
+			name: '经典',
 			colors: {
 				femaleColor: 'rgb(196, 138, 146)',
 				maleColor: 'rgb(120, 159, 172)',
@@ -2718,7 +2718,7 @@ export class FamilyChartView extends ItemView {
 			}
 		},
 		pastel: {
-			name: 'Pastel',
+			name: '柔和',
 			colors: {
 				femaleColor: '#f4c2c2',
 				maleColor: '#a7c7e7',
@@ -2733,7 +2733,7 @@ export class FamilyChartView extends ItemView {
 			}
 		},
 		earth: {
-			name: 'Earth Tones',
+			name: '大地色',
 			colors: {
 				femaleColor: '#cc7a6f',
 				maleColor: '#8fbc8f',
@@ -2745,7 +2745,7 @@ export class FamilyChartView extends ItemView {
 			}
 		},
 		contrast: {
-			name: 'High Contrast',
+			name: '高对比度',
 			colors: {
 				femaleColor: '#ff00ff',
 				maleColor: '#00ffff',
@@ -2757,7 +2757,7 @@ export class FamilyChartView extends ItemView {
 			}
 		},
 		mono: {
-			name: 'Monochrome',
+			name: '单色',
 			colors: {
 				femaleColor: '#666666',
 				maleColor: '#888888',
@@ -2778,7 +2778,7 @@ export class FamilyChartView extends ItemView {
 
 		// Header
 		menu.addItem((item) => {
-			item.setTitle('Card style')
+			item.setTitle('卡片样式')
 				.setIcon('layout-template')
 				.setDisabled(true);
 		});
@@ -2787,25 +2787,25 @@ export class FamilyChartView extends ItemView {
 
 		// Rectangle (default)
 		menu.addItem((item) => {
-			item.setTitle(`${this.cardStyle === 'rectangle' ? '✓ ' : '  '}Rectangle`)
+			item.setTitle(`${this.cardStyle === 'rectangle' ? '✓ ' : '  '}矩形`)
 				.onClick(() => this.setCardStyle('rectangle'));
 		});
 
 		// Circle (HTML with circular avatars)
 		menu.addItem((item) => {
-			item.setTitle(`${this.cardStyle === 'circle' ? '✓ ' : '  '}Circle`)
+			item.setTitle(`${this.cardStyle === 'circle' ? '✓ ' : '  '}圆形`)
 				.onClick(() => this.setCardStyle('circle'));
 		});
 
 		// Compact (text-only, no avatars)
 		menu.addItem((item) => {
-			item.setTitle(`${this.cardStyle === 'compact' ? '✓ ' : '  '}Compact`)
+			item.setTitle(`${this.cardStyle === 'compact' ? '✓ ' : '  '}紧凑`)
 				.onClick(() => this.setCardStyle('compact'));
 		});
 
 		// Mini (smaller cards)
 		menu.addItem((item) => {
-			item.setTitle(`${this.cardStyle === 'mini' ? '✓ ' : '  '}Mini`)
+			item.setTitle(`${this.cardStyle === 'mini' ? '✓ ' : '  '}迷你`)
 				.onClick(() => this.setCardStyle('mini'));
 		});
 
@@ -2856,7 +2856,7 @@ export class FamilyChartView extends ItemView {
 
 		// Header
 		menu.addItem((item) => {
-			item.setTitle('Theme')
+			item.setTitle('主题')
 				.setIcon('palette')
 				.setDisabled(true);
 		});
@@ -2876,14 +2876,14 @@ export class FamilyChartView extends ItemView {
 
 		// Customize option
 		menu.addItem((item) => {
-			item.setTitle('Customize...')
+			item.setTitle('自定义…')
 				.setIcon('settings')
 				.onClick(() => this.showCustomizeModal());
 		});
 
 		// Reset option
 		menu.addItem((item) => {
-			item.setTitle('Reset to defaults')
+			item.setTitle('重置为默认值')
 				.setIcon('rotate-ccw')
 				.onClick(() => this.resetToDefaultColors());
 		});
@@ -2923,7 +2923,7 @@ export class FamilyChartView extends ItemView {
 		// Apply to chart
 		this.applyCustomColors();
 
-		new Notice(`Applied "${preset.name}" theme`);
+		new Notice(`已应用"${preset.name}"主题`);
 	}
 
 	/**
@@ -2936,7 +2936,7 @@ export class FamilyChartView extends ItemView {
 		// Clear inline styles
 		this.clearCustomColors();
 
-		new Notice('Colors reset to defaults');
+		new Notice('颜色已重置为默认值');
 	}
 
 	/**
@@ -3024,7 +3024,7 @@ export class FamilyChartView extends ItemView {
 	private toggleBirthDates(): void {
 		this.showBirthDates = !this.showBirthDates;
 		this.updateCardDisplay();
-		new Notice(`Birth dates ${this.showBirthDates ? 'shown' : 'hidden'}`);
+		new Notice(`出生日期已${this.showBirthDates ? '显示' : '隐藏'}`);
 	}
 
 	/**
@@ -3033,7 +3033,7 @@ export class FamilyChartView extends ItemView {
 	private toggleDeathDates(): void {
 		this.showDeathDates = !this.showDeathDates;
 		this.updateCardDisplay();
-		new Notice(`Death dates ${this.showDeathDates ? 'shown' : 'hidden'}`);
+		new Notice(`去世日期已${this.showDeathDates ? '显示' : '隐藏'}`);
 	}
 
 	/**
@@ -3042,42 +3042,42 @@ export class FamilyChartView extends ItemView {
 	private toggleTitle(): void {
 		this.showTitle = !this.showTitle;
 		this.updateCardDisplay();
-		new Notice(`Title ${this.showTitle ? 'shown' : 'hidden'}`);
+		new Notice(`头衔已${this.showTitle ? '显示' : '隐藏'}`);
 		this.app.workspace.requestSaveLayout();
 	}
 
 	private toggleOccupation(): void {
 		this.showOccupation = !this.showOccupation;
 		this.updateCardDisplay();
-		new Notice(`Occupation ${this.showOccupation ? 'shown' : 'hidden'}`);
+		new Notice(`职业已${this.showOccupation ? '显示' : '隐藏'}`);
 		this.app.workspace.requestSaveLayout();
 	}
 
 	private toggleNickname(): void {
 		this.showNickname = !this.showNickname;
 		this.updateCardDisplay();
-		new Notice(`Nickname ${this.showNickname ? 'shown' : 'hidden'}`);
+		new Notice(`昵称已${this.showNickname ? '显示' : '隐藏'}`);
 		this.app.workspace.requestSaveLayout();
 	}
 
 	private toggleReligion(): void {
 		this.showReligion = !this.showReligion;
 		this.updateCardDisplay();
-		new Notice(`Religion ${this.showReligion ? 'shown' : 'hidden'}`);
+		new Notice(`宗教已${this.showReligion ? '显示' : '隐藏'}`);
 		this.app.workspace.requestSaveLayout();
 	}
 
 	private toggleCaste(): void {
 		this.showCaste = !this.showCaste;
 		this.updateCardDisplay();
-		new Notice(`Caste ${this.showCaste ? 'shown' : 'hidden'}`);
+		new Notice(`种姓已${this.showCaste ? '显示' : '隐藏'}`);
 		this.app.workspace.requestSaveLayout();
 	}
 
 	private togglePronouns(): void {
 		this.showPronouns = !this.showPronouns;
 		this.updateCardDisplay();
-		new Notice(`Pronouns ${this.showPronouns ? 'shown' : 'hidden'}`);
+		new Notice(`代词已${this.showPronouns ? '显示' : '隐藏'}`);
 		this.app.workspace.requestSaveLayout();
 	}
 
@@ -3090,7 +3090,7 @@ export class FamilyChartView extends ItemView {
 		if (this.f3Chart && this.rootPersonId) {
 			void this.initializeChart();
 		}
-		new Notice(`Name display: ${this.nameDisplayMode === 'split' ? 'given/surname on separate lines' : 'full name on single line'}`);
+		new Notice(`姓名显示：${this.nameDisplayMode === 'split' ? '名/姓分行显示' : '全名单行显示'}`);
 		// Trigger Obsidian to save view state
 		this.app.workspace.requestSaveLayout();
 	}
@@ -3151,7 +3151,7 @@ export class FamilyChartView extends ItemView {
 	private toggleKinshipLabels(): void {
 		this.showKinshipLabels = !this.showKinshipLabels;
 		this.renderKinshipLabels();
-		new Notice(`Kinship labels ${this.showKinshipLabels ? 'shown' : 'hidden'}`);
+		new Notice(`亲属称谓已${this.showKinshipLabels ? '显示' : '隐藏'}`);
 	}
 
 	/**
@@ -3163,7 +3163,7 @@ export class FamilyChartView extends ItemView {
 		if (this.f3Chart && this.rootPersonId) {
 			void this.initializeChart();
 		}
-		new Notice(`Avatars ${this.showAvatars ? 'shown' : 'hidden'}`);
+		new Notice(`头像已${this.showAvatars ? '显示' : '隐藏'}`);
 	}
 
 	/**
@@ -3179,7 +3179,7 @@ export class FamilyChartView extends ItemView {
 			void this.initializeChart();
 		}
 
-		new Notice(`Tree orientation: ${horizontal ? 'horizontal' : 'vertical'}`);
+		new Notice(`树的方向：${horizontal ? '横向' : '纵向'}`);
 	}
 
 	/**
@@ -3195,8 +3195,8 @@ export class FamilyChartView extends ItemView {
 			void this.initializeChart();
 		}
 
-		const label = depth === null ? 'unlimited' : `${depth} ${pluralize(depth, 'generation')}`;
-		new Notice(`Ancestry depth: ${label}`);
+		const label = depth === null ? '不限' : `${depth}代`;
+		new Notice(`祖先深度：${label}`);
 	}
 
 	/**
@@ -3212,8 +3212,8 @@ export class FamilyChartView extends ItemView {
 			void this.initializeChart();
 		}
 
-		const label = depth === null ? 'unlimited' : `${depth} ${pluralize(depth, 'generation')}`;
-		new Notice(`Descendant depth: ${label}`);
+		const label = depth === null ? '不限' : `${depth}代`;
+		new Notice(`后代深度：${label}`);
 	}
 
 	/**
@@ -3227,7 +3227,7 @@ export class FamilyChartView extends ItemView {
 			void this.initializeChart();
 		}
 
-		new Notice(`Siblings of root person ${this.showSiblingsOfMain ? 'shown' : 'hidden'}`);
+		new Notice(`根人物的兄弟姐妹已${this.showSiblingsOfMain ? '显示' : '隐藏'}`);
 	}
 
 	/**
@@ -3241,7 +3241,7 @@ export class FamilyChartView extends ItemView {
 			void this.initializeChart();
 		}
 
-		new Notice(`Unknown parent placeholders ${this.showSingleParentEmptyCard ? 'shown' : 'hidden'}`);
+		new Notice(`未知父母占位卡片已${this.showSingleParentEmptyCard ? '显示' : '隐藏'}`);
 	}
 
 	/**
@@ -3255,7 +3255,7 @@ export class FamilyChartView extends ItemView {
 			void this.initializeChart();
 		}
 
-		new Notice(`Sort children by birth date ${this.sortChildrenByBirthDate ? 'enabled' : 'disabled'}`);
+		new Notice(`按出生日期排序子女已${this.sortChildrenByBirthDate ? '启用' : '禁用'}`);
 	}
 
 	/**
@@ -3271,7 +3271,7 @@ export class FamilyChartView extends ItemView {
 			void this.initializeChart();
 		}
 
-		new Notice(`Sort spouses by marriage date ${this.sortSpousesByMarriageDate ? 'enabled' : 'disabled'}`);
+		new Notice(`按结婚日期排序配偶已${this.sortSpousesByMarriageDate ? '启用' : '禁用'}`);
 		this.app.workspace.requestSaveLayout();
 	}
 
@@ -3303,7 +3303,7 @@ export class FamilyChartView extends ItemView {
 		if (this.f3Chart && this.rootPersonId) {
 			void this.initializeChart();
 		}
-		new Notice(normalized ? `As-of date: ${normalized}` : 'As-of date cleared');
+		new Notice(normalized ? `截止日期：${normalized}` : '截止日期已清除');
 		this.app.workspace.requestSaveLayout();
 	}
 
@@ -3373,7 +3373,7 @@ export class FamilyChartView extends ItemView {
 			void this.initializeChart();
 		}
 
-		new Notice(`Living persons ${this.hidePrivateLiving ? 'hidden' : 'shown'}`);
+		new Notice(`在世人物已${this.hidePrivateLiving ? '隐藏' : '显示'}`);
 	}
 
 	/**
@@ -3572,7 +3572,7 @@ export class FamilyChartView extends ItemView {
 			} else {
 				// Parent-child link - label based on direction
 				// Links go from child to parent in family-chart
-				label.textContent = 'Parent';
+				label.textContent = '父母';
 				label.classList.add('cr-kinship-label--parent');
 			}
 
@@ -4152,7 +4152,7 @@ export class FamilyChartView extends ItemView {
 		} else {
 			this.clearRelationshipOverlayForUpdate();
 		}
-		new Notice(`Custom relationships ${this.showCustomRelationships ? 'shown' : 'hidden'}`);
+		new Notice(`自定义关系已${this.showCustomRelationships ? '显示' : '隐藏'}`);
 	}
 
 	/**
@@ -4911,9 +4911,9 @@ export class FamilyChartView extends ItemView {
 			this.f3Chart.setCardXSpacing(effective);
 			this.f3Chart.updateTree({});
 			if (effective !== spacing) {
-				new Notice(`Showing ${effective}px — ${this.cardStyle} cards need at least that to avoid overlap at the current size. Your ${spacing}px choice is kept and applies when cards are smaller.`);
+				new Notice(`当前显示${effective}px — 在当前尺寸下，${this.cardStyle}卡片至少需要该间距以避免重叠。你选择的${spacing}px将被保留，并在卡片变小时生效。`);
 			} else {
-				new Notice(`Node spacing set to ${spacing}px`);
+				new Notice(`节点间距已设为${spacing}px`);
 			}
 		}
 		// Trigger Obsidian to save view state
@@ -4938,9 +4938,9 @@ export class FamilyChartView extends ItemView {
 			this.f3Chart.setCardYSpacing(effective);
 			this.f3Chart.updateTree({});
 			if (effective !== spacing) {
-				new Notice(`Showing ${effective}px — fits the current card height. Your ${spacing}px choice is kept and applies when cards are shorter.`);
+				new Notice(`当前显示${effective}px — 适应当前卡片高度。你选择的${spacing}px将被保留，并在卡片变矮时生效。`);
 			} else {
-				new Notice(`Level spacing set to ${spacing}px`);
+				new Notice(`层级间距已设为${spacing}px`);
 			}
 		}
 		// Trigger Obsidian to save view state
@@ -4990,10 +4990,10 @@ export class FamilyChartView extends ItemView {
 		this.f3EditTree = this.f3Chart.editTree()
 			// Configure editable fields (still needed for data export structure)
 			.setFields([
-				{ type: 'text', label: 'First name', id: 'first name' },
-				{ type: 'text', label: 'Last name', id: 'last name' },
-				{ type: 'text', label: 'Birth date', id: 'birthday' },
-				{ type: 'text', label: 'Death date', id: 'deathday' }
+				{ type: 'text', label: '名', id: 'first name' },
+				{ type: 'text', label: '姓', id: 'last name' },
+				{ type: 'text', label: '出生日期', id: 'birthday' },
+				{ type: 'text', label: '去世日期', id: 'deathday' }
 			])
 			// Handle data changes for bidirectional sync
 			.setOnChange(() => this.handleChartDataChange())
@@ -5685,13 +5685,13 @@ export class FamilyChartView extends ItemView {
 
 	onPaneMenu(menu: Menu, source: string): void {
 		menu.addItem((item) => {
-			item.setTitle('Refresh chart')
+			item.setTitle('刷新图表')
 				.setIcon('refresh-cw')
 				.onClick(() => void this.refreshChart());
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Select person')
+			item.setTitle('选择人物')
 				.setIcon('user')
 				.onClick(() => void this.promptSelectPerson());
 		});
@@ -5699,7 +5699,7 @@ export class FamilyChartView extends ItemView {
 		menu.addSeparator();
 
 		menu.addItem((item) => {
-			item.setTitle('Duplicate in new tab')
+			item.setTitle('在新标签页中复制')
 				.setIcon('copy')
 				.onClick(() => void this.duplicateView());
 		});

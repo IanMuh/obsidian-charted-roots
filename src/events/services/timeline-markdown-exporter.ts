@@ -366,7 +366,7 @@ export class TimelineMarkdownExporter {
 			}
 
 			if (filteredEvents.length === 0) {
-				return { success: false, error: 'No events to export after filtering' };
+				return { success: false, error: '筛选后没有可导出的事件' };
 			}
 
 			// Sort events chronologically
@@ -597,7 +597,7 @@ export class TimelineMarkdownExporter {
 			const filteredEvents = this.filterEvents(events, { filterPerson, filterEventType, filterGroup });
 
 			if (filteredEvents.length === 0) {
-				return { success: false, error: 'No events to export after filtering' };
+				return { success: false, error: '筛选后没有可导出的事件' };
 			}
 
 			// Sort events chronologically
@@ -710,7 +710,7 @@ export class TimelineMarkdownExporter {
 			const filteredEvents = this.filterEvents(events, { filterPerson, filterEventType, filterGroup });
 
 			if (filteredEvents.length === 0) {
-				return { success: false, error: 'No events to export after filtering' };
+				return { success: false, error: '筛选后没有可导出的事件' };
 			}
 
 			// Sort events chronologically

@@ -67,7 +67,7 @@ export class NegativeFindingsRenderer {
 		if (sorted.length === 0) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No negative findings found.'
+				text: '未找到阴性结果。'
 			});
 			return;
 		}
@@ -87,7 +87,7 @@ export class NegativeFindingsRenderer {
 	private renderHeader(container: HTMLElement, count: number, config: DynamicBlockConfig): void {
 		const header = container.createDiv({ cls: 'cr-dynamic-block__header' });
 
-		const titleText = (config.title as string) || 'Negative findings';
+		const titleText = (config.title as string) || '阴性结果';
 		const titleWithCount = count > 0 ? `${titleText} (${count})` : titleText;
 
 		const titleEl = header.createSpan({ cls: 'cr-dynamic-block__title' });
@@ -98,7 +98,7 @@ export class NegativeFindingsRenderer {
 		const toolbar = header.createDiv({ cls: 'cr-dynamic-block__toolbar' });
 		const freezeBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Freeze to Markdown' }
+			attr: { 'aria-label': '冻结为 Markdown' }
 		});
 		freezeBtn.textContent = '\u2744\uFE0F';
 		freezeBtn.addEventListener('click', () => {
@@ -143,16 +143,16 @@ export class NegativeFindingsRenderer {
 			let key: string;
 			switch (groupMode) {
 				case 'person':
-					key = f.person || 'Unknown';
+					key = f.person || '未知';
 					break;
 				case 'project':
-					key = f.project || 'Unknown';
+					key = f.project || '未知';
 					break;
 				case 'source':
-					key = f.source || 'Unknown';
+					key = f.source || '未知';
 					break;
 				default:
-					key = 'All';
+					key = '全部';
 			}
 
 			if (!groups.has(key)) groups.set(key, []);
@@ -193,11 +193,11 @@ export class NegativeFindingsRenderer {
 
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Date' });
-		headerRow.createEl('th', { text: 'Source' });
-		headerRow.createEl('th', { text: 'Searched for' });
-		headerRow.createEl('th', { text: 'Project' });
-		headerRow.createEl('th', { text: 'Person' });
+		headerRow.createEl('th', { text: '日期' });
+		headerRow.createEl('th', { text: '来源' });
+		headerRow.createEl('th', { text: '检索目标' });
+		headerRow.createEl('th', { text: '项目' });
+		headerRow.createEl('th', { text: '人物' });
 
 		const tbody = table.createEl('tbody');
 
@@ -278,15 +278,15 @@ export class NegativeFindingsRenderer {
 	private generateMarkdown(): string {
 		if (!this.currentFindings || !this.currentConfig) return '';
 
-		const title = (this.currentConfig.title as string) || 'Negative findings';
+		const title = (this.currentConfig.title as string) || '阴性结果';
 		const lines: string[] = [`## ${title}`, ''];
 
 		if (this.currentFindings.length === 0) {
-			lines.push('*No negative findings found.*');
+			lines.push('*未找到阴性结果。*');
 			return lines.join('\n');
 		}
 
-		lines.push('| Date | Source | Searched for | Project | Person |');
+		lines.push('| 日期 | 来源 | 检索目标 | 项目 | 人物 |');
 		lines.push('|------|--------|--------------|---------|--------|');
 
 		for (const f of this.currentFindings) {

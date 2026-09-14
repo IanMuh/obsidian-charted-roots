@@ -81,7 +81,7 @@ export class RelationshipValidator {
 		if (!crId) {
 			issues.push({
 				type: 'broken-father-ref',
-				message: 'Missing cr_id field',
+				message: '缺少 cr_id 字段',
 				field: 'cr_id'
 			});
 			return {
@@ -100,7 +100,7 @@ export class RelationshipValidator {
 		if (fatherId && !allPersonCrIds.has(fatherId)) {
 			issues.push({
 				type: 'broken-father-ref',
-				message: `Father reference points to non-existent person`,
+				message: `父亲引用指向不存在的人物`,
 				field: 'father_id',
 				referencedCrId: fatherId
 			});
@@ -110,7 +110,7 @@ export class RelationshipValidator {
 		if (motherId && !allPersonCrIds.has(motherId)) {
 			issues.push({
 				type: 'broken-mother-ref',
-				message: `Mother reference points to non-existent person`,
+				message: `母亲引用指向不存在的人物`,
 				field: 'mother_id',
 				referencedCrId: motherId
 			});
@@ -121,7 +121,7 @@ export class RelationshipValidator {
 			if (!allPersonCrIds.has(parentId)) {
 				issues.push({
 					type: 'broken-parent-ref',
-					message: `Parent reference points to non-existent person`,
+					message: `父母引用指向不存在的人物`,
 					field: 'parents_id',
 					referencedCrId: parentId
 				});
@@ -133,7 +133,7 @@ export class RelationshipValidator {
 			if (!allPersonCrIds.has(spouseId)) {
 				issues.push({
 					type: 'broken-spouse-ref',
-					message: `Spouse reference points to non-existent person`,
+					message: `配偶引用指向不存在的人物`,
 					field: 'spouse_id',
 					referencedCrId: spouseId
 				});
@@ -145,7 +145,7 @@ export class RelationshipValidator {
 					if (!hasBackReference) {
 						issues.push({
 							type: 'missing-bidirectional-spouse',
-							message: `Spouse doesn't list this person as spouse`,
+							message: `配偶未将此人列为配偶`,
 							field: 'spouse_id',
 							referencedCrId: spouseId
 						});
@@ -159,7 +159,7 @@ export class RelationshipValidator {
 			if (!allPersonCrIds.has(childId)) {
 				issues.push({
 					type: 'broken-child-ref',
-					message: `Child reference points to non-existent person`,
+					message: `子女引用指向不存在的人物`,
 					field: 'children_id',
 					referencedCrId: childId
 				});
@@ -171,7 +171,7 @@ export class RelationshipValidator {
 					if (!hasBackReference) {
 						issues.push({
 							type: 'missing-bidirectional-child',
-							message: `Child doesn't list this person as parent`,
+							message: `子女未将此人列为父母`,
 							field: 'children_id',
 							referencedCrId: childId
 						});
@@ -188,7 +188,7 @@ export class RelationshipValidator {
 				if (!fatherListsChild) {
 					issues.push({
 						type: 'missing-bidirectional-parent',
-						message: `Father doesn't list this person as child`,
+						message: `父亲未将此人列为子女`,
 						field: 'father_id',
 						referencedCrId: fatherId
 					});
@@ -203,7 +203,7 @@ export class RelationshipValidator {
 				if (!motherListsChild) {
 					issues.push({
 						type: 'missing-bidirectional-parent',
-						message: `Mother doesn't list this person as child`,
+						message: `母亲未将此人列为子女`,
 						field: 'mother_id',
 						referencedCrId: motherId
 					});
@@ -220,7 +220,7 @@ export class RelationshipValidator {
 					if (!parentListsChild) {
 						issues.push({
 							type: 'missing-bidirectional-parent',
-							message: `Parent doesn't list this person as child`,
+							message: `父母未将此人列为子女`,
 							field: 'parents_id',
 							referencedCrId: parentId
 						});

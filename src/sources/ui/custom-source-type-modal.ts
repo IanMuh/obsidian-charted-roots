@@ -15,13 +15,13 @@ import { DEFAULT_SOURCE_TEMPLATE } from '../types/source-templates';
  * Category options for source types
  */
 const CATEGORY_OPTIONS: Array<{ value: SourceTypeDefinition['category']; label: string }> = [
-	{ value: 'vital', label: 'Vital records' },
-	{ value: 'census', label: 'Census' },
-	{ value: 'church', label: 'Church records' },
-	{ value: 'legal', label: 'Legal & property' },
-	{ value: 'military', label: 'Military' },
-	{ value: 'media', label: 'Media & correspondence' },
-	{ value: 'other', label: 'Other' }
+	{ value: 'vital', label: '重要记录' },
+	{ value: 'census', label: '人口普查' },
+	{ value: 'church', label: '教会记录' },
+	{ value: 'legal', label: '法律与财产' },
+	{ value: 'military', label: '军事' },
+	{ value: 'media', label: '媒体与通信' },
+	{ value: 'other', label: '其他' }
 ];
 
 /**
@@ -104,15 +104,15 @@ export class CustomSourceTypeModal extends Modal {
 		contentEl.addClass('cr-custom-source-type-modal');
 
 		contentEl.createEl('h2', {
-			text: this.editMode ? 'Edit source type' : 'Create source type'
+			text: this.editMode ? '编辑来源类型' : '创建来源类型'
 		});
 
 		// Name (required)
 		new Setting(contentEl)
-			.setName('Name')
-			.setDesc('Display name for this source type')
+			.setName('名称')
+			.setDesc('该来源类型的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., Family Bible')
+				.setPlaceholder('例如：家族圣经')
 				.setValue(this.name)
 				.onChange(value => {
 					this.name = value;
@@ -125,7 +125,7 @@ export class CustomSourceTypeModal extends Modal {
 		// ID (auto-generated or editable for new types)
 		new Setting(contentEl)
 			.setName('ID')
-			.setDesc('Unique identifier (used in frontmatter)')
+			.setDesc('唯一标识符（用于 frontmatter）')
 			.addText(text => text
 				.setPlaceholder('family_bible')
 				.setValue(this.id)
@@ -134,17 +134,17 @@ export class CustomSourceTypeModal extends Modal {
 
 		// Description
 		new Setting(contentEl)
-			.setName('Description')
-			.setDesc('Brief description of this source type')
+			.setName('描述')
+			.setDesc('该来源类型的简要描述')
 			.addText(text => text
-				.setPlaceholder('e.g., Family records in Bibles')
+				.setPlaceholder('例如：圣经中的家族记录')
 				.setValue(this.description)
 				.onChange(value => this.description = value));
 
 		// Category
 		new Setting(contentEl)
-			.setName('Category')
-			.setDesc('Group this type with similar sources')
+			.setName('分类')
+			.setDesc('将该类型与相似的来源归为一组')
 			.addDropdown(dropdown => {
 				CATEGORY_OPTIONS.forEach(opt => {
 					dropdown.addOption(opt.value, opt.label);
@@ -157,8 +157,8 @@ export class CustomSourceTypeModal extends Modal {
 
 		// Color picker
 		const colorSetting = new Setting(contentEl)
-			.setName('Color')
-			.setDesc('Badge color for this source type');
+			.setName('颜色')
+			.setDesc('该来源类型的徽章颜色');
 
 		const colorContainer = colorSetting.controlEl.createDiv({ cls: 'cr-color-picker' });
 
@@ -191,14 +191,14 @@ export class CustomSourceTypeModal extends Modal {
 		const updateColorPreview = () => {
 			colorPreview.style.setProperty('background-color', this.color);
 			colorPreview.style.setProperty('color', this.getContrastColor(this.color));
-			colorPreview.textContent = this.name || 'Preview';
+			colorPreview.textContent = this.name || '预览';
 		};
 		updateColorPreview();
 
 		// Icon picker
 		const iconSetting = new Setting(contentEl)
-			.setName('Icon')
-			.setDesc('Icon to display with this source type');
+			.setName('图标')
+			.setDesc('与该来源类型一起显示的图标');
 
 		const iconContainer = iconSetting.controlEl.createDiv({ cls: 'cr-icon-picker' });
 
@@ -231,8 +231,8 @@ export class CustomSourceTypeModal extends Modal {
 
 		// Template editor
 		new Setting(contentEl)
-			.setName('Note template')
-			.setDesc('Markdown template for new source notes. Use {{title}} for the source title.');
+			.setName('笔记模板')
+			.setDesc('用于新建来源笔记的 Markdown 模板。使用 {{title}} 表示来源标题。');
 
 		const templateContainer = contentEl.createDiv({ cls: 'cr-template-editor' });
 		let templateArea: TextAreaComponent;
@@ -249,7 +249,7 @@ export class CustomSourceTypeModal extends Modal {
 
 		// Reset template button
 		const resetBtn = templateContainer.createEl('button', {
-			text: 'Reset to default',
+			text: '重置为默认',
 			cls: 'cr-reset-template-btn'
 		});
 		resetBtn.addEventListener('click', (e) => {
@@ -261,11 +261,11 @@ export class CustomSourceTypeModal extends Modal {
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-modal-buttons' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const saveBtn = buttonContainer.createEl('button', {
-			text: this.editMode ? 'Save changes' : 'Create type',
+			text: this.editMode ? '保存更改' : '创建类型',
 			cls: 'mod-cta'
 		});
 		saveBtn.addEventListener('click', () => void this.saveType());
@@ -279,12 +279,12 @@ export class CustomSourceTypeModal extends Modal {
 	private async saveType(): Promise<void> {
 		// Validation
 		if (!this.name.trim()) {
-			new Notice('Please enter a name');
+			new Notice('请输入名称');
 			return;
 		}
 
 		if (!this.id.trim()) {
-			new Notice('Please enter an ID');
+			new Notice('请输入 ID');
 			return;
 		}
 
@@ -294,7 +294,7 @@ export class CustomSourceTypeModal extends Modal {
 			t.id === this.id && t.id !== this.originalId
 		);
 		if (conflictingType) {
-			new Notice('A source type with this ID already exists');
+			new Notice('已存在使用该 ID 的来源类型');
 			return;
 		}
 
@@ -323,11 +323,11 @@ export class CustomSourceTypeModal extends Modal {
 			}
 
 			await this.plugin.saveSettings();
-			new Notice(this.editMode ? 'Source type updated' : 'Source type created');
+			new Notice(this.editMode ? '来源类型已更新' : '来源类型已创建');
 			this.close();
 			this.onSave();
 		} catch (error) {
-			new Notice(`Failed to save source type: ${error}`);
+			new Notice(`保存来源类型失败：${error}`);
 		}
 	}
 

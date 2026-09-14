@@ -10,11 +10,11 @@ import type { OrganizationType, OrganizationTypeDefinition, OrganizationCategory
  * Built-in organization type categories
  */
 export const BUILT_IN_ORGANIZATION_CATEGORIES: OrganizationCategoryDefinition[] = [
-	{ id: 'governance', name: 'Governance & nobility', sortOrder: 0 },
-	{ id: 'economic', name: 'Economic & trade', sortOrder: 1 },
-	{ id: 'military_religious', name: 'Military & religious', sortOrder: 2 },
-	{ id: 'social', name: 'Social & educational', sortOrder: 3 },
-	{ id: 'other', name: 'Other', sortOrder: 4 }
+	{ id: 'governance', name: '治理与贵族', sortOrder: 0 },
+	{ id: 'economic', name: '经济与贸易', sortOrder: 1 },
+	{ id: 'military_religious', name: '军事与宗教', sortOrder: 2 },
+	{ id: 'social', name: '社会与教育', sortOrder: 3 },
+	{ id: 'other', name: '其他', sortOrder: 4 }
 ];
 
 /**
@@ -24,8 +24,8 @@ export const BUILT_IN_ORGANIZATION_TYPES: OrganizationTypeDefinition[] = [
 	// Governance & Nobility
 	{
 		id: 'noble_house',
-		name: 'Noble house',
-		description: 'Feudal houses, dynasties, aristocratic families',
+		name: '贵族家族',
+		description: '封建家族、王朝、贵族世家',
 		color: '#9b59b6',
 		icon: 'crown',
 		category: 'governance',
@@ -33,8 +33,8 @@ export const BUILT_IN_ORGANIZATION_TYPES: OrganizationTypeDefinition[] = [
 	},
 	{
 		id: 'political',
-		name: 'Political entity',
-		description: 'Kingdoms, republics, political parties',
+		name: '政治实体',
+		description: '王国、共和国、政党',
 		color: '#27ae60',
 		icon: 'landmark',
 		category: 'governance',
@@ -44,8 +44,8 @@ export const BUILT_IN_ORGANIZATION_TYPES: OrganizationTypeDefinition[] = [
 	// Economic & Trade
 	{
 		id: 'guild',
-		name: 'Guild',
-		description: 'Trade guilds, craftsmen organizations',
+		name: '行会',
+		description: '商业行会、工匠组织',
 		color: '#e67e22',
 		icon: 'hammer',
 		category: 'economic',
@@ -53,8 +53,8 @@ export const BUILT_IN_ORGANIZATION_TYPES: OrganizationTypeDefinition[] = [
 	},
 	{
 		id: 'corporation',
-		name: 'Corporation',
-		description: 'Modern companies, businesses',
+		name: '公司',
+		description: '现代公司、企业',
 		color: '#3498db',
 		icon: 'building-2',
 		category: 'economic',
@@ -64,8 +64,8 @@ export const BUILT_IN_ORGANIZATION_TYPES: OrganizationTypeDefinition[] = [
 	// Military & Religious
 	{
 		id: 'military',
-		name: 'Military unit',
-		description: 'Armies, regiments, navies, military orders',
+		name: '军事单位',
+		description: '军队、军团、海军、军事修会',
 		color: '#e74c3c',
 		icon: 'shield',
 		category: 'military_religious',
@@ -73,8 +73,8 @@ export const BUILT_IN_ORGANIZATION_TYPES: OrganizationTypeDefinition[] = [
 	},
 	{
 		id: 'religious',
-		name: 'Religious order',
-		description: 'Churches, monasteries, religious orders',
+		name: '宗教修会',
+		description: '教堂、修道院、宗教修会',
 		color: '#f1c40f',
 		icon: 'church',
 		category: 'military_religious',
@@ -84,8 +84,8 @@ export const BUILT_IN_ORGANIZATION_TYPES: OrganizationTypeDefinition[] = [
 	// Social & Educational
 	{
 		id: 'educational',
-		name: 'Educational',
-		description: 'Schools, universities, academies',
+		name: '教育机构',
+		description: '学校、大学、学院',
 		color: '#1abc9c',
 		icon: 'graduation-cap',
 		category: 'social',
@@ -95,8 +95,8 @@ export const BUILT_IN_ORGANIZATION_TYPES: OrganizationTypeDefinition[] = [
 	// Other
 	{
 		id: 'custom',
-		name: 'Other',
-		description: 'User-defined organization type',
+		name: '其他',
+		description: '用户自定义的组织类型',
 		color: '#95a5a6',
 		icon: 'folder',
 		category: 'other',
