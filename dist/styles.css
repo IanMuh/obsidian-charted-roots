@@ -8,7 +8,7 @@
  * GitHub: https://github.com/banisterious/obsidian-charted-roots
  *
  * BUILD INFORMATION:
- * - Generated: 2026-06-26 00:32:53 UTC
+ * - Generated: 2026-09-14 13:33:11 UTC
  * - Components: 50 files
  * - Build System: Node.js CSS Build Script v1.0.0
  *
@@ -55,9 +55,9 @@
   --cr-border-radius: 6px;
 
   /* Border radius scale */
-  --cr-radius-xs: 4px;  /* Small buttons, tight items */
-  --cr-radius-sm: 6px;  /* Default - matches --cr-border-radius */
-  --cr-radius-md: 8px;  /* Medium panels, cards */
+  --cr-radius-xs: 4px; /* Small buttons, tight items */
+  --cr-radius-sm: 6px; /* Default - matches --cr-border-radius */
+  --cr-radius-md: 8px; /* Medium panels, cards */
   --cr-radius-lg: 12px; /* Large containers */
 
   /* Family Chart View - customizable via Style Settings plugin */
@@ -3930,7 +3930,6 @@ settings:
   font-weight: var(--font-semibold);
 }
 
-
 /* ==========================================================================
    IMAGE PICKER MODAL
    ========================================================================== */
@@ -6420,13 +6419,14 @@ settings:
   cursor: default;
 }
 
+
 /* End of control-center.css */
 
 /* ==========================================================================
    COMPONENT: ENTITY-CREATE-MODALS.CSS
    ========================================================================== */
 
-/* Component Size: 1242 lines, 25.67 KB */
+/* Component Size: 1239 lines, 25.66 KB */
 
 /* ==========================================================================
    PERSON PICKER MODAL
@@ -7429,11 +7429,7 @@ settings:
   bottom: 0;
   margin-top: var(--size-4-4);
   padding: var(--size-4-3) 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    var(--modal-background) 20%
-  );
+  background: linear-gradient(to bottom, transparent 0%, var(--modal-background) 20%);
   z-index: 10;
 }
 
@@ -7671,13 +7667,14 @@ settings:
   height: 14px;
 }
 
+
 /* End of entity-create-modals.css */
 
 /* ==========================================================================
    COMPONENT: PLACE-MODALS.CSS
    ========================================================================== */
 
-/* Component Size: 1276 lines, 25.89 KB */
+/* Component Size: 1275 lines, 25.89 KB */
 
 /* ==========================================================================
    CREATE PLACE MODAL
@@ -8379,7 +8376,6 @@ settings:
   display: inline-block;
 }
 
-
 /* ==========================================================================
    PLACE NETWORK MODAL
    ========================================================================== */
@@ -8962,7 +8958,7 @@ settings:
    COMPONENT: MEDIA-MODALS.CSS
    ========================================================================== */
 
-/* Component Size: 1995 lines, 38.67 KB */
+/* Component Size: 1996 lines, 38.67 KB */
 
 /* ==========================================================================
    Media Picker Modal
@@ -10960,13 +10956,14 @@ settings:
   margin-top: var(--size-4-3);
 }
 
+
 /* End of media-modals.css */
 
 /* ==========================================================================
    COMPONENT: IMPORT-EXPORT-WIZARD.CSS
    ========================================================================== */
 
-/* Component Size: 2092 lines, 39.9 KB */
+/* Component Size: 2093 lines, 39.9 KB */
 
 /* ==========================================================================
    IMPORT/EXPORT WIZARD MODALS
@@ -13061,13 +13058,14 @@ settings:
   text-decoration: underline;
 }
 
+
 /* End of import-export-wizard.css */
 
 /* ==========================================================================
    COMPONENT: STAGING-MANAGER.CSS
    ========================================================================== */
 
-/* Component Size: 553 lines, 11.33 KB */
+/* Component Size: 554 lines, 11.33 KB */
 
 /* =============================================================================
    Staging Manager Modal
@@ -13623,13 +13621,14 @@ settings:
   }
 }
 
+
 /* End of staging-manager.css */
 
 /* ==========================================================================
    COMPONENT: CLEANUP-WIZARD.CSS
    ========================================================================== */
 
-/* Component Size: 2175 lines, 40.71 KB */
+/* Component Size: 2176 lines, 40.71 KB */
 
 /* ==========================================================================
    CLEANUP WIZARD MODAL
@@ -15807,6 +15806,7 @@ settings:
   max-width: 100%;
 }
 
+
 /* End of cleanup-wizard.css */
 
 /* ==========================================================================
@@ -16321,7 +16321,7 @@ settings:
    COMPONENT: VALIDATION.CSS
    ========================================================================== */
 
-/* Component Size: 78 lines, 1.42 KB */
+/* Component Size: 77 lines, 1.41 KB */
 
 /* Validation Results Modal */
 .cr-validation-results-modal {
@@ -16399,7 +16399,6 @@ settings:
   font-weight: 500;
   margin-top: 0.25em;
 }
-
 
 
 /* End of validation.css */
@@ -20352,7 +20351,7 @@ settings:
    COMPONENT: BOOK-BUILDER.CSS
    ========================================================================== */
 
-/* Component Size: 368 lines, 7.25 KB */
+/* Component Size: 373 lines, 7.45 KB */
 
 /* ========================================================================
  * Book Builder Modal
@@ -20360,30 +20359,30 @@ settings:
 
 /* Modal sizing */
 .cr-book-builder-sized {
-	max-width: 520px;
-	width: 520px;
+  max-width: 520px;
+  width: 520px;
 }
 
 .cr-book-builder-sized .modal-content {
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-	max-height: 80vh;
-	overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  overflow: hidden;
 }
 
 .cr-book-builder-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 8px 16px;
-	border-bottom: 1px solid var(--background-modifier-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
 }
 
 .cr-book-builder-content {
-	flex: 1;
-	overflow-y: auto;
-	padding: 12px 16px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
 }
 
 /* ========================================================================
@@ -20391,39 +20390,41 @@ settings:
  * ======================================================================== */
 
 .cr-book-template-grid {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: 8px;
-	margin-top: 8px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .cr-book-template-card {
-	padding: 12px;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-s);
-	cursor: pointer;
-	transition: background-color 0.15s ease, border-color 0.15s ease;
+  padding: 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .cr-book-template-card:hover {
-	background: var(--background-modifier-hover);
-	border-color: var(--interactive-accent);
+  background: var(--background-modifier-hover);
+  border-color: var(--interactive-accent);
 }
 
 .cr-book-template-icon {
-	margin-bottom: 6px;
-	color: var(--interactive-accent);
+  margin-bottom: 6px;
+  color: var(--interactive-accent);
 }
 
 .cr-book-template-label {
-	font-weight: var(--font-semibold);
-	margin-bottom: 4px;
+  font-weight: var(--font-semibold);
+  margin-bottom: 4px;
 }
 
 .cr-book-template-desc {
-	font-size: var(--font-smallest);
-	color: var(--text-muted);
-	line-height: 1.4;
+  font-size: var(--font-smallest);
+  color: var(--text-muted);
+  line-height: 1.4;
 }
 
 /* ========================================================================
@@ -20431,136 +20432,138 @@ settings:
  * ======================================================================== */
 
 .cr-book-chapters-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .cr-book-chapters-header .cr-report-section-title {
-	margin: 0;
+  margin: 0;
 }
 
 .cr-book-chapter-list {
-	min-height: 120px;
-	max-height: 45vh;
-	overflow-y: auto;
-	margin-top: 8px;
+  min-height: 120px;
+  max-height: 45vh;
+  overflow-y: auto;
+  margin-top: 8px;
 }
 
 .cr-book-chapter-row {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	padding: 8px;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-s);
-	margin-bottom: 4px;
-	background: var(--background-secondary);
-	cursor: grab;
-	transition: background-color 0.15s ease, opacity 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  margin-bottom: 4px;
+  background: var(--background-secondary);
+  cursor: grab;
+  transition:
+    background-color 0.15s ease,
+    opacity 0.15s ease;
 }
 
 .cr-book-chapter-row:hover {
-	background: var(--background-modifier-hover);
+  background: var(--background-modifier-hover);
 }
 
 .cr-book-chapter-row--dragging {
-	opacity: 50%;
-	background: var(--background-modifier-active-hover);
+  opacity: 50%;
+  background: var(--background-modifier-active-hover);
 }
 
 .cr-book-chapter-row--drag-over {
-	background: var(--background-modifier-active-hover);
-	border-top: 2px solid var(--interactive-accent);
+  background: var(--background-modifier-active-hover);
+  border-top: 2px solid var(--interactive-accent);
 }
 
 .cr-book-chapter-row__handle {
-	flex-shrink: 0;
-	color: var(--text-muted);
-	cursor: grab;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  cursor: grab;
 }
 
 .cr-book-chapter-row__handle:active {
-	cursor: grabbing;
+  cursor: grabbing;
 }
 
 .cr-book-chapter-row__number {
-	flex-shrink: 0;
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-	background: var(--background-modifier-border);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: var(--font-smallest);
-	font-weight: var(--font-semibold);
-	color: var(--text-muted);
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--background-modifier-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-smallest);
+  font-weight: var(--font-semibold);
+  color: var(--text-muted);
 }
 
 .cr-book-chapter-row__type-icon {
-	flex-shrink: 0;
-	color: var(--text-muted);
+  flex-shrink: 0;
+  color: var(--text-muted);
 }
 
 .cr-book-chapter-row__info {
-	flex: 1;
-	min-width: 0;
-	overflow: hidden;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .cr-book-chapter-row__title {
-	font-weight: var(--font-medium);
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+  font-weight: var(--font-medium);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cr-book-chapter-row__subtitle {
-	font-size: var(--font-smallest);
-	color: var(--text-muted);
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+  font-size: var(--font-smallest);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cr-book-chapter-row__actions {
-	display: flex;
-	gap: 4px;
-	flex-shrink: 0;
-	opacity: 0%;
-	transition: opacity 0.15s ease;
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  opacity: 0%;
+  transition: opacity 0.15s ease;
 }
 
 .cr-book-chapter-row:hover .cr-book-chapter-row__actions {
-	opacity: 100%;
+  opacity: 100%;
 }
 
 .cr-book-chapter-row__action {
-	cursor: pointer;
-	color: var(--text-muted);
-	padding: 2px;
-	border-radius: var(--radius-s);
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 2px;
+  border-radius: var(--radius-s);
 }
 
 .cr-book-chapter-row__action:hover {
-	color: var(--text-normal);
-	background: var(--background-modifier-hover);
+  color: var(--text-normal);
+  background: var(--background-modifier-hover);
 }
 
 /* Empty state */
 .cr-book-empty-state {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: 24px;
-	color: var(--text-muted);
-	text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: var(--text-muted);
+  text-align: center;
 }
 
 .cr-book-empty-state p {
-	margin: 4px 0;
+  margin: 4px 0;
 }
 
 /* ========================================================================
@@ -20568,28 +20571,28 @@ settings:
  * ======================================================================== */
 
 .cr-book-add-menu {
-	position: absolute;
-	z-index: var(--layer-menu);
-	background: var(--background-primary);
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-s);
-	box-shadow: var(--shadow-s);
-	padding: 4px;
-	min-width: 180px;
+  position: absolute;
+  z-index: var(--layer-menu);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  box-shadow: var(--shadow-s);
+  padding: 4px;
+  min-width: 180px;
 }
 
 .cr-book-add-menu__item {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	padding: 6px 10px;
-	border-radius: var(--radius-s);
-	cursor: pointer;
-	font-size: var(--font-small);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  font-size: var(--font-small);
 }
 
 .cr-book-add-menu__item:hover {
-	background: var(--background-modifier-hover);
+  background: var(--background-modifier-hover);
 }
 
 /* ========================================================================
@@ -20597,131 +20600,132 @@ settings:
  * ======================================================================== */
 
 .cr-book-generate-summary {
-	padding: 8px 12px;
-	background: var(--background-secondary);
-	border-radius: var(--radius-s);
-	font-size: var(--font-small);
-	line-height: 1.6;
+  padding: 8px 12px;
+  background: var(--background-secondary);
+  border-radius: var(--radius-s);
+  font-size: var(--font-small);
+  line-height: 1.6;
 }
 
 .cr-book-chapter-breakdown {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 12px;
-	margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .cr-book-breakdown-item {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-	font-size: var(--font-smallest);
-	color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-smallest);
+  color: var(--text-muted);
 }
 
 /* Progress bar */
 .cr-book-progress-bar {
-	width: 100%;
-	height: 6px;
-	background: var(--background-modifier-border);
-	border-radius: 3px;
-	overflow: hidden;
-	margin-top: 8px;
+  width: 100%;
+  height: 6px;
+  background: var(--background-modifier-border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
 }
 
 .cr-book-progress-fill {
-	height: 100%;
-	background: var(--interactive-accent);
-	border-radius: 3px;
-	width: 0;
-	transition: width 0.3s ease;
+  height: 100%;
+  background: var(--interactive-accent);
+  border-radius: 3px;
+  width: 0;
+  transition: width 0.3s ease;
 }
 
 .cr-book-progress-text {
-	font-size: var(--font-smallest);
-	color: var(--text-muted);
-	margin-top: 6px;
+  font-size: var(--font-smallest);
+  color: var(--text-muted);
+  margin-top: 6px;
 }
 
 /* Save row */
 .cr-book-save-row {
-	margin-top: 8px;
+  margin-top: 8px;
 }
 
 /* ========================================================================
  * Chapter Config Modal
  * ======================================================================== */
 .cr-chapter-config-modal-sized {
-	max-width: 440px;
-	width: 440px;
+  max-width: 440px;
+  width: 440px;
 }
 
 .cr-chapter-config-modal-sized .modal-content {
-	padding: 0;
+  padding: 0;
 }
 
 .cr-chapter-config-body {
-	padding: 12px 16px;
+  padding: 12px 16px;
 }
 
 /* ========================================================================
  * File Picker Modal
  * ======================================================================== */
 .cr-file-picker-modal-sized {
-	max-width: 480px;
-	width: 480px;
+  max-width: 480px;
+  width: 480px;
 }
 
 .cr-file-picker-modal-sized .modal-content {
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-	max-height: 70vh;
-	overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
+  overflow: hidden;
 }
 
 .cr-file-picker-search {
-	padding: 8px 16px;
+  padding: 8px 16px;
 }
 
 .cr-file-picker-results {
-	flex: 1;
-	overflow-y: auto;
-	padding: 0 8px 8px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px 8px;
 }
 
 .cr-file-picker-item {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	padding: 6px 8px;
-	border-radius: var(--radius-s);
-	cursor: pointer;
-	font-size: var(--font-small);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  font-size: var(--font-small);
 }
 
 .cr-file-picker-item:hover {
-	background: var(--background-modifier-hover);
+  background: var(--background-modifier-hover);
 }
 
 .cr-file-picker-item__icon {
-	flex-shrink: 0;
-	color: var(--text-muted);
+  flex-shrink: 0;
+  color: var(--text-muted);
 }
 
 .cr-file-picker-item__path {
-	flex: 1;
-	min-width: 0;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cr-file-picker-empty {
-	padding: 24px;
-	text-align: center;
-	color: var(--text-muted);
+  padding: 24px;
+  text-align: center;
+  color: var(--text-muted);
 }
+
 
 /* End of book-builder.css */
 
@@ -22180,7 +22184,7 @@ settings:
    COMPONENT: RELATIONSHIPS.CSS
    ========================================================================== */
 
-/* Component Size: 583 lines, 11.2 KB */
+/* Component Size: 582 lines, 11.2 KB */
 
 /**
  * Relationships Tab Styles
@@ -22563,7 +22567,6 @@ settings:
   border-radius: var(--radius-s);
   min-width: 150px;
 }
-
 
 /* Relationship Types Table */
 .crc-relationship-types-table-container {
@@ -23455,7 +23458,7 @@ settings:
    COMPONENT: MAP-VIEW.CSS
    ========================================================================== */
 
-/* Component Size: 2274 lines, 50.77 KB */
+/* Component Size: 2278 lines, 50.79 KB */
 
 /* ==========================================================================
    Map View Styles
@@ -24600,8 +24603,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
   position: absolute;
   inset: 0;
   background-color: currentColor;
-  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M8 3H5a2 2 0 0 0-2 2v3'/><path d='M21 8V5a2 2 0 0 0-2-2h-3'/><path d='M3 16v3a2 2 0 0 0 2 2h3'/><path d='M16 21h3a2 2 0 0 0 2-2v-3'/></svg>") center / 16px no-repeat;
-  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M8 3H5a2 2 0 0 0-2 2v3'/><path d='M21 8V5a2 2 0 0 0-2-2h-3'/><path d='M3 16v3a2 2 0 0 0 2 2h3'/><path d='M16 21h3a2 2 0 0 0 2-2v-3'/></svg>") center / 16px no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M8 3H5a2 2 0 0 0-2 2v3'/><path d='M21 8V5a2 2 0 0 0-2-2h-3'/><path d='M3 16v3a2 2 0 0 0 2 2h3'/><path d='M16 21h3a2 2 0 0 0 2-2v-3'/></svg>")
+    center / 16px no-repeat;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M8 3H5a2 2 0 0 0-2 2v3'/><path d='M21 8V5a2 2 0 0 0-2-2h-3'/><path d='M3 16v3a2 2 0 0 0 2 2h3'/><path d='M16 21h3a2 2 0 0 0 2-2v-3'/></svg>")
+    center / 16px no-repeat;
 }
 
 .cr-map-view .leaflet-fullscreen-on .leaflet-control-fullscreen a::before {
@@ -25577,7 +25582,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
   color: #d4a017;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .cr-child-map-marker:hover {
@@ -28386,7 +28393,7 @@ body.wide-timeline .view-content {
    COMPONENT: ORGANIZATIONS.CSS
    ========================================================================== */
 
-/* Component Size: 615 lines, 11.55 KB */
+/* Component Size: 614 lines, 11.55 KB */
 
 /**
  * Organizations Styles
@@ -28624,7 +28631,6 @@ body.wide-timeline .view-content {
 .cr-create-org-details[open] summary {
   margin-bottom: 12px;
 }
-
 
 /* ==========================================================================
    Manage Members Modal
@@ -41335,11 +41341,11 @@ body.cr-media-linker-active .suggestion-container {
    ========================================================================== */
 
 /*
- * Build completed: 2026-06-26 00:32:54 UTC
+ * Build completed: 2026-09-14 13:33:11 UTC
  * Components processed: 50
- * Total lines: 40866
- * Total size: 839.96 KB
- * Build duration: 1.28 seconds
+ * Total lines: 40872
+ * Total size: 840.15 KB
+ * Build duration: 0.03 seconds
  *
  * Component breakdown:
  * - variables.css: 80 lines, 2.48 KB
@@ -41348,32 +41354,32 @@ body.cr-media-linker-active .suggestion-container {
  * - layout.css: 22 lines, 0.25 KB
  * - settings.css: 148 lines, 4.03 KB
  * - control-center.css: 5710 lines, 107.14 KB
- * - entity-create-modals.css: 1242 lines, 25.67 KB
- * - place-modals.css: 1276 lines, 25.89 KB
- * - media-modals.css: 1995 lines, 38.67 KB
- * - import-export-wizard.css: 2092 lines, 39.9 KB
- * - staging-manager.css: 553 lines, 11.33 KB
- * - cleanup-wizard.css: 2175 lines, 40.71 KB
+ * - entity-create-modals.css: 1239 lines, 25.66 KB
+ * - place-modals.css: 1275 lines, 25.89 KB
+ * - media-modals.css: 1996 lines, 38.67 KB
+ * - import-export-wizard.css: 2093 lines, 39.9 KB
+ * - staging-manager.css: 554 lines, 11.33 KB
+ * - cleanup-wizard.css: 2176 lines, 40.71 KB
  * - duplicate-detection.css: 163 lines, 3.02 KB
  * - merge-wizard.css: 277 lines, 6.55 KB
  * - tree-statistics.css: 41 lines, 0.62 KB
- * - validation.css: 78 lines, 1.42 KB
+ * - validation.css: 77 lines, 1.41 KB
  * - find-on-canvas.css: 275 lines, 5.13 KB
  * - folder-scan.css: 155 lines, 2.6 KB
  * - relationship-calculator.css: 302 lines, 5.27 KB
  * - family-chart-view.css: 1551 lines, 40.94 KB
  * - family-chart-export.css: 699 lines, 14.78 KB
  * - report-wizard.css: 908 lines, 19.89 KB
- * - book-builder.css: 368 lines, 7.25 KB
+ * - book-builder.css: 373 lines, 7.45 KB
  * - data-quality.css: 1442 lines, 28.84 KB
- * - relationships.css: 583 lines, 11.2 KB
+ * - relationships.css: 582 lines, 11.2 KB
  * - canvas-navigation.css: 674 lines, 14.43 KB
- * - map-view.css: 2274 lines, 50.77 KB
+ * - map-view.css: 2278 lines, 50.79 KB
  * - leaflet-distortable.css: 372 lines, 8.84 KB
  * - date-systems.css: 278 lines, 5.16 KB
  * - events.css: 1644 lines, 34.1 KB
  * - timeline-callouts.css: 322 lines, 11.08 KB
- * - organizations.css: 615 lines, 11.55 KB
+ * - organizations.css: 614 lines, 11.55 KB
  * - sources.css: 2809 lines, 56.97 KB
  * - statistics.css: 1829 lines, 36.77 KB
  * - command-menu.css: 73 lines, 1.6 KB

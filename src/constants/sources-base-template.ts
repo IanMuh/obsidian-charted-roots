@@ -58,23 +58,17 @@ views:
       - note.confidence
   - name: By Type
     type: table
-    groupBy:
-      property: note.source_type
-      direction: ASC
+    groupBy: note.source_type
     order:
       - note.title
   - name: By Repository
     type: table
-    groupBy:
-      property: note.source_repository
-      direction: ASC
+    groupBy: note.source_repository
     order:
       - note.title
   - name: By Confidence
     type: table
-    groupBy:
-      property: note.confidence
-      direction: ASC
+    groupBy: note.confidence
     order:
       - note.title
   - name: Vital Records
@@ -172,9 +166,7 @@ views:
     filters:
       and:
         - '!collection.isEmpty()'
-    groupBy:
-      property: note.collection
-      direction: ASC
+    groupBy: note.collection
     order:
       - note.title
   - name: By Location
@@ -182,9 +174,7 @@ views:
     filters:
       and:
         - '!location.isEmpty()'
-    groupBy:
-      property: note.location
-      direction: ASC
+    groupBy: note.location
     order:
       - note.title
   - name: Media Gallery

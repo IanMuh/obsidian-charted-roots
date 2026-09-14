@@ -58,9 +58,7 @@ views:
       - note.description
   - name: By Status
     type: table
-    groupBy:
-      property: note.status
-      direction: ASC
+    groupBy: note.status
     order:
       - note.name
   - name: Active Universes
@@ -89,9 +87,7 @@ views:
     filters:
       and:
         - '!genre.isEmpty()'
-    groupBy:
-      property: note.genre
-      direction: ASC
+    groupBy: note.genre
     order:
       - note.name
   - name: By Author
@@ -99,9 +95,7 @@ views:
     filters:
       and:
         - '!author.isEmpty()'
-    groupBy:
-      property: note.author
-      direction: ASC
+    groupBy: note.author
     order:
       - note.name
   - name: With Calendars

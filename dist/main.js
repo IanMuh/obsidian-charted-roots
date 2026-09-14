@@ -2956,9 +2956,7 @@ views:
       and:
         - '!${i}.isEmpty()'
         - '!collection.isEmpty()'
-    groupBy:
-      property: note.collection
-      direction: ASC
+    groupBy: note.collection
     order:
       - collection
       - file.name
@@ -2972,9 +2970,7 @@ views:
       and:
         - '!${i}.isEmpty()'
         - '!group_name.isEmpty()'
-    groupBy:
-      property: note.group_name
-      direction: ASC
+    groupBy: note.group_name
     order:
       - group_name
       - file.name
@@ -3024,9 +3020,7 @@ views:
       and:
         - '!${i}.isEmpty()'
         - '!${g}.isEmpty()'
-    groupBy:
-      property: note.${g}
-      direction: ASC
+    groupBy: note.${g}
     order:
       - ${g}
       - ${d}
@@ -3059,9 +3053,7 @@ views:
       and:
         - '!${i}.isEmpty()'
         - '!lineage.isEmpty()'
-    groupBy:
-      property: note.lineage
-      direction: ASC
+    groupBy: note.lineage
     order:
       - lineage
       - generation
@@ -3074,9 +3066,7 @@ views:
       and:
         - '!${i}.isEmpty()'
         - '!generation.isEmpty()'
-    groupBy:
-      property: note.generation
-      direction: ASC
+    groupBy: note.generation
     order:
       - generation
       - ${c}
@@ -3088,9 +3078,7 @@ views:
       and:
         - '!${i}.isEmpty()'
         - '!${f}.isEmpty()'
-    groupBy:
-      property: note.${f}
-      direction: ASC
+    groupBy: note.${f}
     order:
       - ${f}
       - ${r}
@@ -3220,17 +3208,13 @@ views:
       - note.${r}
   - name: By Type
     type: table
-    groupBy:
-      property: note.${e}
-      direction: ASC
+    groupBy: note.${e}
     order:
       - file.name
       - note.${A}
   - name: By Category
     type: table
-    groupBy:
-      property: note.${t}
-      direction: ASC
+    groupBy: note.${t}
     order:
       - note.${A}
   - name: Countries
@@ -3284,9 +3268,7 @@ views:
     filters:
       and:
         - '!${s}.isEmpty()'
-    groupBy:
-      property: note.${s}
-      direction: ASC
+    groupBy: note.${s}
     order:
       - note.${A}
   - name: With Coordinates
@@ -3317,9 +3299,7 @@ views:
     filters:
       and:
         - '!${o}.isEmpty()'
-    groupBy:
-      property: note.${o}
-      direction: ASC
+    groupBy: note.${o}
     order:
       - note.${A}
 `}var oSe=sU();var CO=`visibleProperties:
@@ -3385,9 +3365,7 @@ views:
       - note.members
   - name: By Type
     type: table
-    groupBy:
-      property: note.org_type
-      direction: ASC
+    groupBy: note.org_type
     order:
       - note.name
   - name: Noble Houses
@@ -3458,9 +3436,7 @@ views:
     filters:
       and:
         - '!universe.isEmpty()'
-    groupBy:
-      property: note.universe
-      direction: ASC
+    groupBy: note.universe
     order:
       - note.name
   - name: Top-Level Organizations
@@ -3475,9 +3451,7 @@ views:
     filters:
       and:
         - '!parent_org.isEmpty()'
-    groupBy:
-      property: note.parent_org
-      direction: ASC
+    groupBy: note.parent_org
     order:
       - note.name
   - name: By Collection
@@ -3485,9 +3459,7 @@ views:
     filters:
       and:
         - '!collection.isEmpty()'
-    groupBy:
-      property: note.collection
-      direction: ASC
+    groupBy: note.collection
     order:
       - note.name
   - name: With Seat
@@ -3561,23 +3533,17 @@ views:
       - note.confidence
   - name: By Type
     type: table
-    groupBy:
-      property: note.source_type
-      direction: ASC
+    groupBy: note.source_type
     order:
       - note.title
   - name: By Repository
     type: table
-    groupBy:
-      property: note.source_repository
-      direction: ASC
+    groupBy: note.source_repository
     order:
       - note.title
   - name: By Confidence
     type: table
-    groupBy:
-      property: note.confidence
-      direction: ASC
+    groupBy: note.confidence
     order:
       - note.title
   - name: Vital Records
@@ -3675,9 +3641,7 @@ views:
     filters:
       and:
         - '!collection.isEmpty()'
-    groupBy:
-      property: note.collection
-      direction: ASC
+    groupBy: note.collection
     order:
       - note.title
   - name: By Location
@@ -3685,9 +3649,7 @@ views:
     filters:
       and:
         - '!location.isEmpty()'
-    groupBy:
-      property: note.location
-      direction: ASC
+    groupBy: note.location
     order:
       - note.title
   - name: Media Gallery
@@ -3758,9 +3720,7 @@ views:
       - note.description
   - name: By Status
     type: table
-    groupBy:
-      property: note.status
-      direction: ASC
+    groupBy: note.status
     order:
       - note.name
   - name: Active Universes
@@ -3789,9 +3749,7 @@ views:
     filters:
       and:
         - '!genre.isEmpty()'
-    groupBy:
-      property: note.genre
-      direction: ASC
+    groupBy: note.genre
     order:
       - note.name
   - name: By Author
@@ -3799,9 +3757,7 @@ views:
     filters:
       and:
         - '!author.isEmpty()'
-    groupBy:
-      property: note.author
-      direction: ASC
+    groupBy: note.author
     order:
       - note.name
   - name: With Calendars
@@ -3881,9 +3837,7 @@ views:
       - note.linked_entities
   - name: By Type
     type: table
-    groupBy:
-      property: note.cr_note_type
-      direction: ASC
+    groupBy: note.cr_note_type
     order:
       - formula.display_name
   - name: Research Notes
@@ -4066,9 +4020,7 @@ views:
       - note.result
   - name: By Status
     type: table
-    groupBy:
-      property: note.status
-      direction: ASC
+    groupBy: note.status
     order:
       - formula.display_name
       - formula.entity_type
@@ -4077,9 +4029,7 @@ views:
     filters:
       and:
         - 'cr_type == "research_log_entry"'
-    groupBy:
-      property: note.project
-      direction: ASC
+    groupBy: note.project
     order:
       - note.date
       - note.source
@@ -4201,9 +4151,7 @@ views:
       - note.${o}
   - name: By Type
     type: table
-    groupBy:
-      property: note.${e}
-      direction: ASC
+    groupBy: note.${e}
     order:
       - file.name
       - note.${t}
@@ -4213,9 +4161,7 @@ views:
       or:
         - '!${s}.isEmpty()'
         - '!${i}.isEmpty()'
-    groupBy:
-      property: note.${s}
-      direction: ASC
+    groupBy: note.${s}
     order:
       - note.${t}
   - name: By Place
@@ -4223,17 +4169,13 @@ views:
     filters:
       and:
         - '!${o}.isEmpty()'
-    groupBy:
-      property: note.${o}
-      direction: ASC
+    groupBy: note.${o}
     order:
       - file.name
       - note.${t}
   - name: By Confidence
     type: table
-    groupBy:
-      property: note.${l}
-      direction: ASC
+    groupBy: note.${l}
     order:
       - note.${t}
   - name: Vital Events
@@ -4332,9 +4274,7 @@ views:
     filters:
       and:
         - '!${B}.isEmpty()'
-    groupBy:
-      property: note.${B}
-      direction: ASC
+    groupBy: note.${B}
     order:
       - note.${t}
   - name: By Universe
@@ -4342,9 +4282,7 @@ views:
     filters:
       and:
         - '!${w}.isEmpty()'
-    groupBy:
-      property: note.${w}
-      direction: ASC
+    groupBy: note.${w}
     order:
       - note.${t}
   - name: By Group
@@ -4352,9 +4290,7 @@ views:
     filters:
       and:
         - '!${f}.isEmpty()'
-    groupBy:
-      property: note.${f}
-      direction: ASC
+    groupBy: note.${f}
     order:
       - note.${t}
   - name: By Sort Order

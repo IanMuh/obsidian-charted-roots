@@ -115,9 +115,7 @@ views:
       - note.result
   - name: By Status
     type: table
-    groupBy:
-      property: note.status
-      direction: ASC
+    groupBy: note.status
     order:
       - formula.display_name
       - formula.entity_type
@@ -126,9 +124,7 @@ views:
     filters:
       and:
         - 'cr_type == "research_log_entry"'
-    groupBy:
-      property: note.project
-      direction: ASC
+    groupBy: note.project
     order:
       - note.date
       - note.source

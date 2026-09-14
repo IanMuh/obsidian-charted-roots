@@ -40,9 +40,7 @@ views:
       - note.linked_entities
   - name: By Type
     type: table
-    groupBy:
-      property: note.cr_note_type
-      direction: ASC
+    groupBy: note.cr_note_type
     order:
       - formula.display_name
   - name: Research Notes

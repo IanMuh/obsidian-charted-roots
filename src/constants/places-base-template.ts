@@ -103,17 +103,13 @@ views:
       - note.${parent_place}
   - name: By Type
     type: table
-    groupBy:
-      property: note.${place_type}
-      direction: ASC
+    groupBy: note.${place_type}
     order:
       - file.name
       - note.${name}
   - name: By Category
     type: table
-    groupBy:
-      property: note.${place_category}
-      direction: ASC
+    groupBy: note.${place_category}
     order:
       - note.${name}
   - name: Countries
@@ -167,9 +163,7 @@ views:
     filters:
       and:
         - '!${universe}.isEmpty()'
-    groupBy:
-      property: note.${universe}
-      direction: ASC
+    groupBy: note.${universe}
     order:
       - note.${name}
   - name: With Coordinates
@@ -200,9 +194,7 @@ views:
     filters:
       and:
         - '!${collection}.isEmpty()'
-    groupBy:
-      property: note.${collection}
-      direction: ASC
+    groupBy: note.${collection}
     order:
       - note.${name}
 `;

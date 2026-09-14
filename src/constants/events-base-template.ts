@@ -127,9 +127,7 @@ views:
       - note.${place}
   - name: By Type
     type: table
-    groupBy:
-      property: note.${event_type}
-      direction: ASC
+    groupBy: note.${event_type}
     order:
       - file.name
       - note.${date}
@@ -139,9 +137,7 @@ views:
       or:
         - '!${persons}.isEmpty()'
         - '!${person}.isEmpty()'
-    groupBy:
-      property: note.${persons}
-      direction: ASC
+    groupBy: note.${persons}
     order:
       - note.${date}
   - name: By Place
@@ -149,17 +145,13 @@ views:
     filters:
       and:
         - '!${place}.isEmpty()'
-    groupBy:
-      property: note.${place}
-      direction: ASC
+    groupBy: note.${place}
     order:
       - file.name
       - note.${date}
   - name: By Confidence
     type: table
-    groupBy:
-      property: note.${confidence}
-      direction: ASC
+    groupBy: note.${confidence}
     order:
       - note.${date}
   - name: Vital Events
@@ -258,9 +250,7 @@ views:
     filters:
       and:
         - '!${timeline}.isEmpty()'
-    groupBy:
-      property: note.${timeline}
-      direction: ASC
+    groupBy: note.${timeline}
     order:
       - note.${date}
   - name: By Universe
@@ -268,9 +258,7 @@ views:
     filters:
       and:
         - '!${universe}.isEmpty()'
-    groupBy:
-      property: note.${universe}
-      direction: ASC
+    groupBy: note.${universe}
     order:
       - note.${date}
   - name: By Group
@@ -278,9 +266,7 @@ views:
     filters:
       and:
         - '!${groups}.isEmpty()'
-    groupBy:
-      property: note.${groups}
-      direction: ASC
+    groupBy: note.${groups}
     order:
       - note.${date}
   - name: By Sort Order

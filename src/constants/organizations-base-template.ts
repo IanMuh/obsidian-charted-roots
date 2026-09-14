@@ -64,9 +64,7 @@ views:
       - note.members
   - name: By Type
     type: table
-    groupBy:
-      property: note.org_type
-      direction: ASC
+    groupBy: note.org_type
     order:
       - note.name
   - name: Noble Houses
@@ -137,9 +135,7 @@ views:
     filters:
       and:
         - '!universe.isEmpty()'
-    groupBy:
-      property: note.universe
-      direction: ASC
+    groupBy: note.universe
     order:
       - note.name
   - name: Top-Level Organizations
@@ -154,9 +150,7 @@ views:
     filters:
       and:
         - '!parent_org.isEmpty()'
-    groupBy:
-      property: note.parent_org
-      direction: ASC
+    groupBy: note.parent_org
     order:
       - note.name
   - name: By Collection
@@ -164,9 +158,7 @@ views:
     filters:
       and:
         - '!collection.isEmpty()'
-    groupBy:
-      property: note.collection
-      direction: ASC
+    groupBy: note.collection
     order:
       - note.name
   - name: With Seat

@@ -233,9 +233,7 @@ views:
       and:
         - '!${cr_id}.isEmpty()'
         - '!collection.isEmpty()'
-    groupBy:
-      property: note.collection
-      direction: ASC
+    groupBy: note.collection
     order:
       - collection
       - file.name
@@ -249,9 +247,7 @@ views:
       and:
         - '!${cr_id}.isEmpty()'
         - '!group_name.isEmpty()'
-    groupBy:
-      property: note.group_name
-      direction: ASC
+    groupBy: note.group_name
     order:
       - group_name
       - file.name
@@ -301,9 +297,7 @@ views:
       and:
         - '!${cr_id}.isEmpty()'
         - '!${father}.isEmpty()'
-    groupBy:
-      property: note.${father}
-      direction: ASC
+    groupBy: note.${father}
     order:
       - ${father}
       - ${mother}
@@ -336,9 +330,7 @@ views:
       and:
         - '!${cr_id}.isEmpty()'
         - '!lineage.isEmpty()'
-    groupBy:
-      property: note.lineage
-      direction: ASC
+    groupBy: note.lineage
     order:
       - lineage
       - generation
@@ -351,9 +343,7 @@ views:
       and:
         - '!${cr_id}.isEmpty()'
         - '!generation.isEmpty()'
-    groupBy:
-      property: note.generation
-      direction: ASC
+    groupBy: note.generation
     order:
       - generation
       - ${born}
@@ -365,9 +355,7 @@ views:
       and:
         - '!${cr_id}.isEmpty()'
         - '!${research_level}.isEmpty()'
-    groupBy:
-      property: note.${research_level}
-      direction: ASC
+    groupBy: note.${research_level}
     order:
       - ${research_level}
       - ${name}
