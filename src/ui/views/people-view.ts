@@ -35,7 +35,7 @@ export class PeopleView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'People';
+		return '人物';
 	}
 
 	getIcon(): string {
@@ -86,13 +86,13 @@ export class PeopleView extends ItemView {
 	private buildHeader(container: HTMLElement): void {
 		const header = container.createDiv({ cls: 'cr-pv-header' });
 
-		header.createEl('h2', { text: 'People', cls: 'cr-pv-title' });
+		header.createEl('h2', { text: '人物', cls: 'cr-pv-title' });
 
 		const actions = header.createDiv({ cls: 'cr-pv-actions' });
 
 		const refreshBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.refresh());

@@ -466,7 +466,7 @@ export class TimelineRenderer {
 		if (entries.length === 0) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No events found for this person.'
+				text: '未找到此人物的事件。'
 			});
 			return;
 		}
@@ -489,7 +489,7 @@ export class TimelineRenderer {
 	private renderHeader(container: HTMLElement, config: DynamicBlockConfig): void {
 		const header = container.createDiv({ cls: 'cr-dynamic-block__header' });
 
-		const title = config.title as string || 'Timeline';
+		const title = config.title as string || '时间轴';
 		header.createSpan({ cls: 'cr-dynamic-block__title', text: title });
 
 		const toolbar = header.createDiv({ cls: 'cr-dynamic-block__toolbar' });
@@ -497,7 +497,7 @@ export class TimelineRenderer {
 		// Freeze button
 		const freezeBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Freeze to Markdown' }
+			attr: { 'aria-label': '冻结为 Markdown' }
 		});
 		freezeBtn.textContent = '❄️';
 		freezeBtn.addEventListener('click', () => {
@@ -507,7 +507,7 @@ export class TimelineRenderer {
 		// Copy button
 		const copyBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Copy timeline' }
+			attr: { 'aria-label': '复制时间轴' }
 		});
 		copyBtn.textContent = '📋';
 		copyBtn.addEventListener('click', () => {
@@ -667,15 +667,15 @@ export class TimelineRenderer {
 			// Add section markers
 			const result: TimelineEntry[] = [];
 			if (personal.length > 0) {
-				result.push({ date: '', year: '', type: 'section_divider', title: 'Life events', isSectionDivider: true });
+				result.push({ date: '', year: '', type: 'section_divider', title: '生平事件', isSectionDivider: true });
 				result.push(...personal);
 			}
 			if (family.length > 0) {
-				result.push({ date: '', year: '', type: 'section_divider', title: 'Family events', isSectionDivider: true });
+				result.push({ date: '', year: '', type: 'section_divider', title: '家族事件', isSectionDivider: true });
 				result.push(...family);
 			}
 			if (context.length > 0) {
-				result.push({ date: '', year: '', type: 'section_divider', title: 'Historical context', isSectionDivider: true });
+				result.push({ date: '', year: '', type: 'section_divider', title: '历史背景', isSectionDivider: true });
 				result.push(...context);
 			}
 			return result;
@@ -837,7 +837,7 @@ export class TimelineRenderer {
 			type: capitalize(entry.type),
 			title: entry.title,
 			place: entry.place || '',
-			age: entry.age !== undefined ? `age ${entry.age}` : ''
+			age: entry.age !== undefined ? `${entry.age}岁` : ''
 		};
 
 		// Parse format string into segments
@@ -939,7 +939,7 @@ export class TimelineRenderer {
 		if (!(templateFile instanceof TFile)) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: `Template note not found: ${templatePath}`
+				text: `未找到模板笔记：${templatePath}`
 			});
 			return;
 		}
@@ -950,14 +950,14 @@ export class TimelineRenderer {
 		if (sections.length === 0) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No sections found in template note. Use ## headings to define sections.'
+				text: '模板笔记中未找到分节。请使用 ## 标题定义分节。'
 			});
 			return;
 		}
 
 		// Category mapping for include filters
 		const categoryMap: Record<string, (e: TimelineEntry) => boolean> = {
-			'children_births': e => e.isFamilyEvent === true && e.type === 'family_birth' && e.title.startsWith(this.service.getSettings().timelineChildBirthLabel?.split('{')[0] || 'Birth of'),
+			'children_births': e => e.isFamilyEvent === true && e.type === 'family_birth' && e.title.startsWith(this.service.getSettings().timelineChildBirthLabel?.split('{')[0] ?? ''),
 			'spouse_deaths': e => e.isFamilyEvent === true && e.type === 'family_death',
 			'parent_deaths': e => e.isFamilyEvent === true && e.type === 'family_death',
 			'sibling_births': e => e.isFamilyEvent === true && e.type === 'family_birth',
@@ -1015,7 +1015,7 @@ export class TimelineRenderer {
 					const displayYear = this.service.formatYearForDisplay(entry.date, context.person?.universe);
 					li.createSpan({ cls: 'cr-timeline__year', text: displayYear || entry.year || '?' });
 					if (entry.age !== undefined) {
-						li.createSpan({ cls: 'cr-timeline__age', text: `age ${entry.age}` });
+						li.createSpan({ cls: 'cr-timeline__age', text: `${entry.age}岁` });
 					}
 					li.createSpan({ cls: 'cr-timeline__separator', text: ' — ' });
 					const titleSpan = li.createSpan({ cls: 'cr-timeline__title' });
@@ -1032,14 +1032,14 @@ export class TimelineRenderer {
 					}
 					if (entry.place) {
 						li.appendText('\u00A0');
-						li.createSpan({ cls: 'cr-timeline__place', text: `in ${entry.place}` });
+						li.createSpan({ cls: 'cr-timeline__place', text: `于${entry.place}` });
 					}
 				}
 			}
 
 			if (sectionEntries.length === 0) {
 				const emptyLi = list.createEl('li', { cls: 'cr-timeline__item' });
-				emptyLi.createSpan({ cls: 'cr-timeline__title', text: 'No events' });
+					emptyLi.createSpan({ cls: 'cr-timeline__title', text: '无事件' });
 			}
 		}
 	}
@@ -1077,7 +1077,7 @@ export class TimelineRenderer {
 						date: this.service.formatDate(child.birthDate),
 						year,
 						type: 'family_birth',
-						title: this.applyLabel(settings.timelineChildBirthLabel || 'Birth of {name}', child.name),
+						title: this.applyLabel(settings.timelineChildBirthLabel || '{name}的出生', child.name),
 						eventFile: child.file?.basename,
 						isFamilyEvent: true,
 						rawDate: child.birthDate
@@ -1102,7 +1102,7 @@ export class TimelineRenderer {
 						date: this.service.formatDate(spouse.deathDate),
 						year,
 						type: 'family_death',
-						title: this.applyLabel(settings.timelineSpouseDeathLabel || 'Death of {name}', spouse.name),
+						title: this.applyLabel(settings.timelineSpouseDeathLabel || '{name}的去世', spouse.name),
 						eventFile: spouse.file?.basename,
 						isFamilyEvent: true,
 						rawDate: spouse.deathDate
@@ -1131,7 +1131,7 @@ export class TimelineRenderer {
 						date: this.service.formatDate(parent.deathDate),
 						year,
 						type: 'family_death',
-						title: this.applyLabel(settings.timelineParentDeathLabel || 'Death of {name}', parent.name),
+						title: this.applyLabel(settings.timelineParentDeathLabel || '{name}的去世', parent.name),
 						eventFile: parent.file?.basename,
 						isFamilyEvent: true,
 						rawDate: parent.deathDate
@@ -1158,8 +1158,8 @@ export class TimelineRenderer {
 					if (this.isEventBeforeFocalBirth(birthDate, sibling.birthDate, universe)) continue;
 					const year = this.service.extractYear(sibling.birthDate);
 					const label = kind === 'adopted'
-						? (settings.timelineAdoptedSiblingBirthLabel || 'Birth of adopted sibling {name}')
-						: (settings.timelineSiblingBirthLabel || 'Birth of {name}');
+						? (settings.timelineAdoptedSiblingBirthLabel || '被收养的兄弟姐妹{name}的出生')
+						: (settings.timelineSiblingBirthLabel || '{name}的出生');
 					const entry: TimelineEntry = {
 						date: this.service.formatDate(sibling.birthDate),
 						year,
@@ -1192,7 +1192,7 @@ export class TimelineRenderer {
 				date: this.service.formatDate(sibling.adoptionDate),
 				year,
 				type: 'adoption',
-				title: this.applyLabel(settings.timelineAdoptedSiblingAdoptionLabel || 'Adoption of {name}', sibling.name),
+				title: this.applyLabel(settings.timelineAdoptedSiblingAdoptionLabel || '收养{name}', sibling.name),
 				eventFile: sibling.file?.basename,
 				isFamilyEvent: true,
 				rawDate: sibling.adoptionDate
@@ -1217,7 +1217,7 @@ export class TimelineRenderer {
 						date: this.service.formatDate(sibling.deathDate),
 						year,
 						type: 'family_death',
-						title: this.applyLabel(settings.timelineSiblingDeathLabel || 'Death of {name}', sibling.name),
+						title: this.applyLabel(settings.timelineSiblingDeathLabel || '{name}的去世', sibling.name),
 						eventFile: sibling.file?.basename,
 						isFamilyEvent: true,
 						rawDate: sibling.deathDate
@@ -1247,7 +1247,7 @@ export class TimelineRenderer {
 						date: this.service.formatDate(child.deathDate),
 						year,
 						type: 'family_death',
-						title: this.applyLabel(settings.timelineChildDeathLabel || 'Death of {name}', child.name),
+						title: this.applyLabel(settings.timelineChildDeathLabel || '{name}的去世', child.name),
 						eventFile: child.file?.basename,
 						isFamilyEvent: true,
 						rawDate: child.deathDate
@@ -1275,7 +1275,7 @@ export class TimelineRenderer {
 						date: this.service.formatDate(stepparent.deathDate),
 						year,
 						type: 'family_death',
-						title: this.applyLabel(settings.timelineStepparentDeathLabel || 'Death of {name}', stepparent.name),
+						title: this.applyLabel(settings.timelineStepparentDeathLabel || '{name}的去世', stepparent.name),
 						eventFile: stepparent.file?.basename,
 						isFamilyEvent: true,
 						rawDate: stepparent.deathDate
@@ -1324,8 +1324,8 @@ export class TimelineRenderer {
 					if (this.isEventAfterFocalDeath(person.deathDate, grandchild.birthDate, universe)) continue;
 					const year = this.service.extractYear(grandchild.birthDate);
 					const label = kind === 'adopted'
-						? (settings.timelineAdoptedGrandchildBirthLabel || 'Birth of adopted grandchild {name}')
-						: (settings.timelineGrandchildBirthLabel || 'Birth of {name}');
+						? (settings.timelineAdoptedGrandchildBirthLabel || '被收养的孙辈{name}的出生')
+						: (settings.timelineGrandchildBirthLabel || '{name}的出生');
 					const entry: TimelineEntry = {
 						date: this.service.formatDate(grandchild.birthDate),
 						year,
@@ -1369,7 +1369,7 @@ export class TimelineRenderer {
 				date: this.service.formatDate(grandchild.adoptionDate),
 				year,
 				type: 'adoption',
-				title: this.applyLabel(settings.timelineAdoptedGrandchildAdoptionLabel || 'Adoption of {name}', grandchild.name),
+				title: this.applyLabel(settings.timelineAdoptedGrandchildAdoptionLabel || '收养{name}', grandchild.name),
 				eventFile: grandchild.file?.basename,
 				isFamilyEvent: true,
 				rawDate: grandchild.adoptionDate
@@ -1433,7 +1433,7 @@ export class TimelineRenderer {
 						year,
 						type: 'family_parent_marriage',
 						title: withMarriageType(this.applyLabel(
-							settings.timelineParentMarriageLabel || 'Marriage of {name} to {spouse}',
+							settings.timelineParentMarriageLabel || '{name}与{spouse}的婚姻',
 							parent.name,
 							{ spouse: spouseName }
 						), spouse.marriageType, settings.showMarriageType),
@@ -1474,7 +1474,7 @@ export class TimelineRenderer {
 						year,
 						type: 'family_sibling_marriage',
 						title: withMarriageType(this.applyLabel(
-							settings.timelineSiblingMarriageLabel || 'Marriage of {name} to {spouse}',
+							settings.timelineSiblingMarriageLabel || '{name}与{spouse}的婚姻',
 							sibling.name,
 							{ spouse: spouseName }
 						), spouse.marriageType, settings.showMarriageType),
@@ -1515,7 +1515,7 @@ export class TimelineRenderer {
 						year,
 						type: 'family_child_marriage',
 						title: withMarriageType(this.applyLabel(
-							settings.timelineChildMarriageLabel || 'Marriage of {name} to {spouse}',
+							settings.timelineChildMarriageLabel || '{name}与{spouse}的婚姻',
 							child.name,
 							{ spouse: spouseName }
 						), spouse.marriageType, settings.showMarriageType),
@@ -1549,7 +1549,7 @@ export class TimelineRenderer {
 					date: this.service.formatDate(adoptedChild.adoptionDate),
 					year,
 					type: 'adoption',
-					title: this.applyLabel('Adopted {name}', adoptedChild.name),
+					title: this.applyLabel('收养{name}', adoptedChild.name),
 					eventFile: adoptedChild.file?.basename,
 					isFamilyEvent: true,
 					rawDate: adoptedChild.adoptionDate
@@ -1565,7 +1565,7 @@ export class TimelineRenderer {
 					date: this.service.formatDate(adoptedChild.birthDate),
 					year,
 					type: 'family_birth',
-					title: this.applyLabel(settings.timelineChildBirthLabel || 'Birth of {name}', adoptedChild.name),
+					title: this.applyLabel(settings.timelineChildBirthLabel || '{name}的出生', adoptedChild.name),
 					eventFile: adoptedChild.file?.basename,
 					isFamilyEvent: true,
 					rawDate: adoptedChild.birthDate
@@ -1686,7 +1686,7 @@ export class TimelineRenderer {
 				date: this.service.formatDate(person.birthDate),
 				year: this.service.extractYear(person.birthDate),
 				type: 'birth',
-				title: settings.timelineBirthLabel || 'Born',
+				title: settings.timelineBirthLabel || '出生',
 				place: person.birthPlace ? this.service.stripWikilink(person.birthPlace) : undefined,
 				rawDate: person.birthDate
 			});
@@ -1720,7 +1720,7 @@ export class TimelineRenderer {
 				date: this.service.formatDate(person.adoptionDate),
 				year: this.service.extractYear(person.adoptionDate),
 				type: 'adoption',
-				title: 'Adopted',
+				title: '被收养',
 				rawDate: person.adoptionDate
 			});
 		}
@@ -1740,7 +1740,7 @@ export class TimelineRenderer {
 						date: this.service.formatDate(spouse.marriageDate),
 						year: this.service.extractYear(spouse.marriageDate),
 						type: 'marriage',
-						title: withMarriageType(`Marriage to ${spouseName}`, spouse.marriageType, settings.showMarriageType),
+							title: withMarriageType(`与${spouseName}的婚姻`, spouse.marriageType, settings.showMarriageType),
 						place: spouse.marriageLocation ? this.service.stripWikilink(spouse.marriageLocation) : undefined,
 						eventFile: spouseNode?.file?.basename,
 						rawDate: spouse.marriageDate
@@ -1755,7 +1755,7 @@ export class TimelineRenderer {
 						date: this.service.formatDate(spouse.divorceDate),
 						year: this.service.extractYear(spouse.divorceDate),
 						type: 'divorce',
-						title: `Divorce from ${spouseName}`,
+						title: `与${spouseName}离婚`,
 						eventFile: spouseNode?.file?.basename,
 						rawDate: spouse.divorceDate
 					};
@@ -1772,7 +1772,7 @@ export class TimelineRenderer {
 				date: this.service.formatDate(person.deathDate),
 				year: this.service.extractYear(person.deathDate),
 				type: 'death',
-				title: settings.timelineDeathLabel || 'Died',
+				title: settings.timelineDeathLabel || '去世',
 				place: person.deathPlace ? this.service.stripWikilink(person.deathPlace) : undefined,
 				rawDate: person.deathDate
 			});
@@ -1789,7 +1789,7 @@ export class TimelineRenderer {
 				date: this.service.formatDate(person.burialDate),
 				year: this.service.extractYear(person.burialDate),
 				type: 'burial',
-				title: 'Buried',
+				title: '安葬',
 				place: person.burialPlace ? this.service.stripWikilink(person.burialPlace) : undefined,
 				rawDate: person.burialDate
 			});
@@ -1976,7 +1976,7 @@ export class TimelineRenderer {
 				// Add non-breaking space before "in" to prevent whitespace collapse
 				// when MarkdownRenderer creates block-level elements for wikilinks
 				li.appendText('\u00A0');
-				li.createSpan({ cls: 'cr-timeline__place', text: `in ${entry.place}` });
+				li.createSpan({ cls: 'cr-timeline__place', text: `于${entry.place}` });
 			}
 		}
 	}

@@ -43,7 +43,7 @@ export class EventsView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Events';
+		return '事件';
 	}
 
 	getIcon(): string {
@@ -108,13 +108,13 @@ export class EventsView extends ItemView {
 	private buildHeader(container: HTMLElement): void {
 		const header = container.createDiv({ cls: 'cr-ev-header' });
 
-		header.createEl('h2', { text: 'Events', cls: 'cr-ev-title' });
+		header.createEl('h2', { text: '事件', cls: 'cr-ev-title' });
 
 		const actions = header.createDiv({ cls: 'cr-ev-actions' });
 
 		const refreshBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.refresh());

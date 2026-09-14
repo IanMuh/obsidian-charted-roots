@@ -70,9 +70,9 @@ describe('Oldest people includes living people (#749)', () => {
 		const dead = makePerson({ crId: 'b', name: 'Dead Dan', birthDate: '1900', deathDate: '1962' });
 		const entries = oldestEntries(makeService([living, dead]));
 
-		expect(byName(entries, 'Alive Alice')?.displayValue).toBe('50 years (living)');
+		expect(byName(entries, 'Alive Alice')?.displayValue).toBe('50 岁（在世）');
 		// Age-at-death is unchanged and not flagged as living.
-		expect(byName(entries, 'Dead Dan')?.displayValue).toBe('62 years');
+		expect(byName(entries, 'Dead Dan')?.displayValue).toBe('62 岁');
 	});
 
 	it('caps a real-world living age so a missing death date is not implausibly old', () => {
@@ -89,7 +89,7 @@ describe('Oldest people includes living people (#749)', () => {
 			cr_living: true,
 		});
 		const entries = oldestEntries(makeService([flagged]));
-		expect(byName(entries, 'Methuselah')?.displayValue).toBe('200 years (living)');
+		expect(byName(entries, 'Methuselah')?.displayValue).toBe('200 岁（在世）');
 	});
 
 	it('ages a fictional-universe living person to its current_date, uncapped', () => {
@@ -100,7 +100,7 @@ describe('Oldest people includes living people (#749)', () => {
 		// Age 500 exceeds the real-world cap, but a fictional universe is uncapped.
 		const elf = makePerson({ crId: 'e', name: 'Old Elf', birthDate: '500', universe: 'Eldoria' });
 		const entries = oldestEntries(makeService([elf], mockUniverses));
-		expect(byName(entries, 'Old Elf')?.displayValue).toBe('500 years (living)');
+		expect(byName(entries, 'Old Elf')?.displayValue).toBe('500 岁（在世）');
 	});
 
 	it('excludes a fictional-universe living person when the universe has no current date', () => {

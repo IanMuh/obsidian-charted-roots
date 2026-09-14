@@ -33,12 +33,23 @@ interface StepConfig {
 }
 
 const WIZARD_STEPS: StepConfig[] = [
-	{ id: 'universe', title: 'Create universe', subtitle: 'Basic information', skippable: false },
-	{ id: 'calendar', title: 'Custom calendar', subtitle: 'Optional', skippable: true },
-	{ id: 'map', title: 'Custom map', subtitle: 'Optional', skippable: true },
-	{ id: 'schema', title: 'Validation rules', subtitle: 'Optional', skippable: true },
-	{ id: 'summary', title: 'Summary', subtitle: 'Review and create', skippable: false }
+	{ id: 'universe', title: '创建宇宙', subtitle: '基本信息', skippable: false },
+	{ id: 'calendar', title: '自定义历法', subtitle: '可选', skippable: true },
+	{ id: 'map', title: '自定义地图', subtitle: '可选', skippable: true },
+	{ id: 'schema', title: '验证规则', subtitle: '可选', skippable: true },
+	{ id: 'summary', title: '摘要', subtitle: '审阅并创建', skippable: false }
 ];
+
+/** Human-readable genre labels for the wizard's genre slug values (display only). */
+const GENRE_LABELS: Record<string, string> = {
+	fantasy: '奇幻',
+	'sci-fi': '科幻',
+	historical: '历史小说',
+	horror: '恐怖',
+	mystery: '悬疑',
+	romance: '爱情',
+	other: '其他'
+};
 
 /**
  * Form data for universe creation
@@ -187,7 +198,7 @@ export class UniverseWizardModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'cr-wizard-title' });
 		const icon = createLucideIcon('globe', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Universe setup wizard');
+		titleContainer.appendText('宇宙设置向导');
 
 		// Progress indicator
 		this.progressContainer = contentEl.createDiv({ cls: 'cr-wizard-progress' });
@@ -248,7 +259,7 @@ export class UniverseWizardModal extends Modal {
 		// Step header
 		const stepHeader = this.contentContainer.createDiv({ cls: 'cr-wizard-step-header' });
 		stepHeader.createEl('h3', { text: step.title, cls: 'cr-wizard-step-heading' });
-		stepHeader.createEl('p', { text: `Step ${this.currentStep + 1} of ${WIZARD_STEPS.length}`, cls: 'cr-wizard-step-counter' });
+		stepHeader.createEl('p', { text: `第 ${this.currentStep + 1} 步，共 ${WIZARD_STEPS.length} 步`, cls: 'cr-wizard-step-counter' });
 
 		// Step content
 		const stepContent = this.contentContainer.createDiv({ cls: 'cr-wizard-step-content' });
@@ -280,7 +291,7 @@ export class UniverseWizardModal extends Modal {
 	 */
 	private renderUniverseStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: 'Enter basic information about your fictional universe.',
+			text: '输入虚构宇宙的基本信息。',
 			cls: 'cr-wizard-step-desc'
 		});
 
@@ -288,31 +299,31 @@ export class UniverseWizardModal extends Modal {
 
 		// Name (required)
 		new Setting(form)
-			.setName('Universe name')
-			.setDesc('The name of your fictional world')
+			.setName('宇宙名称')
+			.setDesc('你的虚构世界的名称')
 			.addText(text => text
-				.setPlaceholder('e.g., Middle-earth, Westeros')
+				.setPlaceholder('例如：中土世界、维斯特洛')
 				.setValue(this.universeData.name)
 				.onChange(value => {
 					this.universeData.name = value;
 					// Auto-fill related names if empty
 					if (!this.calendarData.name) {
-						this.calendarData.name = `${value} Calendar`;
+						this.calendarData.name = `${value}历法`;
 					}
 					if (!this.mapData.name) {
-						this.mapData.name = `${value} Map`;
+						this.mapData.name = `${value}地图`;
 					}
 					if (!this.schemaData.name) {
-						this.schemaData.name = `${value} Schema`;
+						this.schemaData.name = `${value}架构`;
 					}
 				}));
 
 		// Description
 		new Setting(form)
-			.setName('Description')
-			.setDesc('Brief description of the universe')
+			.setName('描述')
+			.setDesc('宇宙的简要描述')
 			.addTextArea(text => {
-				text.setPlaceholder('A fantasy world where...')
+				text.setPlaceholder('一个奇幻世界，在那里…')
 					.setValue(this.universeData.description)
 					.onChange(value => {
 						this.universeData.description = value;
@@ -329,7 +340,7 @@ export class UniverseWizardModal extends Modal {
 		});
 		const toggleIcon = createLucideIcon('chevron-right', 16);
 		detailsToggle.appendChild(toggleIcon);
-		detailsToggle.createSpan({ text: 'Additional details (optional)' });
+		detailsToggle.createSpan({ text: '附加详情（可选）' });
 
 		const detailsContent = detailsContainer.createDiv({ cls: 'cr-wizard-details-content cr-hidden' });
 
@@ -343,10 +354,10 @@ export class UniverseWizardModal extends Modal {
 
 		// Author
 		new Setting(detailsContent)
-			.setName('Author')
-			.setDesc('Creator of the fictional world')
+			.setName('作者')
+			.setDesc('虚构世界的创作者')
 			.addText(text => text
-				.setPlaceholder('e.g., J.R.R. Tolkien')
+				.setPlaceholder('例如：J.R.R. 托尔金')
 				.setValue(this.universeData.author)
 				.onChange(value => {
 					this.universeData.author = value;
@@ -354,17 +365,17 @@ export class UniverseWizardModal extends Modal {
 
 		// Genre
 		new Setting(detailsContent)
-			.setName('Genre')
-			.setDesc('Genre or category')
+			.setName('题材')
+			.setDesc('题材或分类')
 			.addDropdown(dropdown => dropdown
-				.addOption('', 'Select genre...')
-				.addOption('fantasy', 'Fantasy')
-				.addOption('sci-fi', 'Science Fiction')
-				.addOption('historical', 'Historical Fiction')
-				.addOption('horror', 'Horror')
-				.addOption('mystery', 'Mystery')
-				.addOption('romance', 'Romance')
-				.addOption('other', 'Other')
+				.addOption('', '选择题材…')
+				.addOption('fantasy', '奇幻')
+				.addOption('sci-fi', '科幻')
+				.addOption('historical', '历史小说')
+				.addOption('horror', '恐怖')
+				.addOption('mystery', '悬疑')
+				.addOption('romance', '爱情')
+				.addOption('other', '其他')
 				.setValue(this.universeData.genre)
 				.onChange(value => {
 					this.universeData.genre = value;
@@ -372,12 +383,12 @@ export class UniverseWizardModal extends Modal {
 
 		// Status
 		new Setting(detailsContent)
-			.setName('Status')
-			.setDesc('Universe status')
+			.setName('状态')
+			.setDesc('宇宙状态')
 			.addDropdown(dropdown => dropdown
-				.addOption('active', 'Active')
-				.addOption('draft', 'Draft')
-				.addOption('archived', 'Archived')
+				.addOption('active', '活跃')
+				.addOption('draft', '草稿')
+				.addOption('archived', '已归档')
 				.setValue(this.universeData.status)
 				.onChange(value => {
 					this.universeData.status = value as UniverseStatus;
@@ -387,8 +398,8 @@ export class UniverseWizardModal extends Modal {
 		// characters for record superlatives (#749). Optional — can be set later
 		// from the Edit Universe dialog once a calendar and history exist.
 		new Setting(detailsContent)
-			.setName('Current date')
-			.setDesc("The universe's present, in its own calendar (e.g. \"342 AE\"). Used to age living characters in statistics. Optional.")
+			.setName('当前日期')
+			.setDesc('宇宙自身的"现在"，采用其自身历法（例如 "342 AE"）。用于在统计中计算在世人物的年龄。可选。')
 			.addText(text => text
 				.setPlaceholder('e.g. 342 AE')
 				.setValue(this.universeData.currentDate)
@@ -405,12 +416,12 @@ export class UniverseWizardModal extends Modal {
 	 */
 	private renderCalendarStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: `Link a calendar to ${this.universeData.name || 'this universe'}?`,
+			text: `是否要为 ${this.universeData.name || '此宇宙'}关联一个历法？`,
 			cls: 'cr-wizard-step-desc'
 		});
 
 		container.createEl('p', {
-			text: 'Calendars let you use fictional dates like "22 BBY" or "Third Age 3019" alongside real-world dates.',
+			text: '历法让你可以使用"22 BBY"或"第三纪元 3019"这样的虚构日期，与现实世界日期并用。',
 			cls: 'cr-wizard-step-hint'
 		});
 
@@ -430,12 +441,12 @@ export class UniverseWizardModal extends Modal {
 
 		// Mode picker — three radio options
 		new Setting(form)
-			.setName('Calendar')
-			.setDesc('Choose how this universe handles dates')
+			.setName('历法')
+			.setDesc('选择此宇宙处理日期的方式')
 			.addDropdown(dropdown => dropdown
-				.addOption('none', 'None — no calendar link')
-				.addOption('builtin', 'Built-in calendar')
-				.addOption('custom', 'Custom calendar')
+				.addOption('none', '无——不关联历法')
+				.addOption('builtin', '内置历法')
+				.addOption('custom', '自定义历法')
 				.setValue(this.calendarData.mode)
 				.onChange(value => {
 					this.calendarData.mode = value as CalendarMode;
@@ -453,19 +464,19 @@ export class UniverseWizardModal extends Modal {
 
 		// Calendar name
 		new Setting(form)
-			.setName('Calendar name')
-			.setDesc('Display name for the calendar system')
+			.setName('历法名称')
+			.setDesc('历法系统的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., Shire Reckoning')
+				.setPlaceholder('例如：夏尔历法')
 				.setValue(this.calendarData.name)
 				.onChange(value => {
 					this.calendarData.name = value;
 				}));
 
 		// Eras section
-		form.createEl('h4', { text: 'Eras', cls: 'cr-wizard-subsection' });
+		form.createEl('h4', { text: '纪元', cls: 'cr-wizard-subsection' });
 		form.createEl('p', {
-			text: 'Define the time periods (eras) used in your calendar.',
+			text: '定义你的历法中使用的时期（纪元）。',
 			cls: 'cr-wizard-hint'
 		});
 
@@ -473,7 +484,7 @@ export class UniverseWizardModal extends Modal {
 		this.renderEras(erasContainer);
 
 		const addEraBtn = form.createEl('button', {
-			text: 'Add era',
+			text: '添加纪元',
 			cls: 'cr-btn cr-btn--secondary cr-btn--small'
 		});
 		addEraBtn.prepend(createLucideIcon('plus', 14));
@@ -496,12 +507,12 @@ export class UniverseWizardModal extends Modal {
 	 */
 	private renderBuiltinCalendarPicker(form: HTMLElement): void {
 		const dropdown = new Setting(form)
-			.setName('Built-in calendar')
-			.setDesc('Pick a built-in calendar system for this universe');
+			.setName('内置历法')
+			.setDesc('为此宇宙选择一个内置历法系统');
 
 		dropdown.addDropdown(dd => {
 			if (!this.calendarData.builtinId) {
-				dd.addOption('', 'Select a calendar...');
+				dd.addOption('', '选择历法…');
 			}
 			for (const sys of DEFAULT_DATE_SYSTEMS) {
 				dd.addOption(sys.id, sys.name);
@@ -520,7 +531,7 @@ export class UniverseWizardModal extends Modal {
 				.map(e => e.abbrev ? `${e.name} (${e.abbrev})` : e.name)
 				.join(', ');
 			form.createEl('p', {
-				text: `Eras: ${eraSummary}`,
+				text: `纪元：${eraSummary}`,
 				cls: 'cr-wizard-hint'
 			});
 		}
@@ -534,7 +545,7 @@ export class UniverseWizardModal extends Modal {
 
 		if (this.calendarData.eras.length === 0) {
 			container.createEl('p', {
-				text: 'No eras defined. Add at least one era for the calendar.',
+				text: '未定义纪元。请至少为该历法添加一个纪元。',
 				cls: 'cr-wizard-empty'
 			});
 			return;
@@ -543,9 +554,9 @@ export class UniverseWizardModal extends Modal {
 		const table = container.createEl('table', { cls: 'cr-wizard-era-table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name' });
-		headerRow.createEl('th', { text: 'Abbreviation' });
-		headerRow.createEl('th', { text: 'Epoch' });
+		headerRow.createEl('th', { text: '名称' });
+		headerRow.createEl('th', { text: '缩写' });
+		headerRow.createEl('th', { text: '纪元起点' });
 		headerRow.createEl('th', { text: '' });
 
 		const tbody = table.createEl('tbody');
@@ -560,7 +571,7 @@ export class UniverseWizardModal extends Modal {
 				type: 'text',
 				cls: 'cr-wizard-input',
 				value: era.name,
-				attr: { placeholder: 'e.g., Third Age' }
+				attr: { placeholder: '例如：第三纪元' }
 			});
 			nameInput.addEventListener('input', () => {
 				era.name = nameInput.value;
@@ -595,7 +606,7 @@ export class UniverseWizardModal extends Modal {
 			const actionsCell = row.createEl('td');
 			const removeBtn = actionsCell.createEl('button', {
 				cls: 'cr-btn cr-btn--icon cr-btn--danger',
-				attr: { 'aria-label': 'Remove era' }
+				attr: { 'aria-label': '移除纪元' }
 			});
 			setLucideIcon(removeBtn, 'x', 14);
 			removeBtn.addEventListener('click', () => {
@@ -610,12 +621,12 @@ export class UniverseWizardModal extends Modal {
 	 */
 	private renderMapStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: `Would you like a custom map for ${this.universeData.name || 'this universe'}?`,
+			text: `是否要为 ${this.universeData.name || '此宇宙'}创建自定义地图？`,
 			cls: 'cr-wizard-step-desc'
 		});
 
 		container.createEl('p', {
-			text: 'Custom maps let you visualize places on a fictional world map.',
+			text: '自定义地图让你可以在虚构世界地图上可视化地点。',
 			cls: 'cr-wizard-step-hint'
 		});
 
@@ -623,8 +634,8 @@ export class UniverseWizardModal extends Modal {
 
 		// Enable toggle
 		new Setting(form)
-			.setName('Create custom map')
-			.setDesc('Set up a fictional world map for this universe')
+			.setName('创建自定义地图')
+			.setDesc('为此宇宙设置虚构世界地图')
 			.addToggle(toggle => toggle
 				.setValue(this.mapData.enabled)
 				.onChange(value => {
@@ -638,10 +649,10 @@ export class UniverseWizardModal extends Modal {
 
 		// Map name
 		new Setting(form)
-			.setName('Map name')
-			.setDesc('Display name for the map')
+			.setName('地图名称')
+			.setDesc('地图的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., Middle-earth Map')
+				.setPlaceholder('例如：中土世界地图')
 				.setValue(this.mapData.name)
 				.onChange(value => {
 					this.mapData.name = value;
@@ -649,11 +660,11 @@ export class UniverseWizardModal extends Modal {
 
 		// Image path
 		const imagePathSetting = new Setting(form)
-			.setName('Image path')
-			.setDesc('Path to the map image file in your vault');
+			.setName('图片路径')
+			.setDesc('库中地图图像文件的路径');
 
 		imagePathSetting.addText(text => text
-			.setPlaceholder('e.g., assets/maps/world-map.jpg')
+			.setPlaceholder('例如：assets/maps/world-map.jpg')
 			.setValue(this.mapData.imagePath)
 			.onChange(value => {
 				this.mapData.imagePath = value;
@@ -661,7 +672,7 @@ export class UniverseWizardModal extends Modal {
 			}));
 
 		imagePathSetting.addButton(btn => {
-			btn.setButtonText('Browse')
+			btn.setButtonText('浏览')
 				.onClick(() => {
 					this.browseForImage();
 				});
@@ -669,7 +680,7 @@ export class UniverseWizardModal extends Modal {
 
 		// Note about configuring bounds later
 		form.createEl('p', {
-			text: 'You can configure map bounds and coordinates after creation by editing the map note.',
+			text: '创建后你可以通过编辑地图笔记来配置地图边界和坐标。',
 			cls: 'cr-wizard-hint'
 		});
 	}
@@ -685,7 +696,7 @@ export class UniverseWizardModal extends Modal {
 		);
 
 		if (imageFiles.length === 0) {
-			new Notice('No image files found in vault');
+			new Notice('库中未找到图像文件');
 			return;
 		}
 
@@ -729,12 +740,12 @@ export class UniverseWizardModal extends Modal {
 	 */
 	private renderSchemaStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: `Would you like validation rules for ${this.universeData.name || 'this universe'}?`,
+			text: `是否要为 ${this.universeData.name || '此宇宙'}设置验证规则？`,
 			cls: 'cr-wizard-step-desc'
 		});
 
 		container.createEl('p', {
-			text: 'Schemas validate that entity notes have required properties and correct data types.',
+			text: '架构用于验证实体笔记是否具有必需的属性以及正确的数据类型。',
 			cls: 'cr-wizard-step-hint'
 		});
 
@@ -742,8 +753,8 @@ export class UniverseWizardModal extends Modal {
 
 		// Enable toggle
 		new Setting(form)
-			.setName('Create validation schema')
-			.setDesc('Set up validation rules for entities in this universe')
+			.setName('创建验证架构')
+			.setDesc('为此宇宙中的实体设置验证规则')
 			.addToggle(toggle => toggle
 				.setValue(this.schemaData.enabled)
 				.onChange(value => {
@@ -757,19 +768,19 @@ export class UniverseWizardModal extends Modal {
 
 		// Schema name
 		new Setting(form)
-			.setName('Schema name')
-			.setDesc('Display name for the schema')
+			.setName('架构名称')
+			.setDesc('架构的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., Middle-earth Schema')
+				.setPlaceholder('例如：中土世界架构')
 				.setValue(this.schemaData.name)
 				.onChange(value => {
 					this.schemaData.name = value;
 				}));
 
 		// Required properties
-		form.createEl('h4', { text: 'Required properties', cls: 'cr-wizard-subsection' });
+		form.createEl('h4', { text: '必需属性', cls: 'cr-wizard-subsection' });
 		form.createEl('p', {
-			text: 'Properties that must be present on all people in this universe.',
+			text: '此宇宙中所有人物都必须具有的属性。',
 			cls: 'cr-wizard-hint'
 		});
 
@@ -777,7 +788,7 @@ export class UniverseWizardModal extends Modal {
 		this.renderRequiredProps(propsContainer);
 
 		const addPropBtn = form.createEl('button', {
-			text: 'Add property',
+			text: '添加属性',
 			cls: 'cr-btn cr-btn--secondary cr-btn--small'
 		});
 		addPropBtn.prepend(createLucideIcon('plus', 14));
@@ -788,7 +799,7 @@ export class UniverseWizardModal extends Modal {
 
 		// Note about advanced configuration
 		form.createEl('p', {
-			text: 'You can add more complex validation rules by editing the schema note after creation.',
+			text: '创建后你可以通过编辑架构笔记来添加更复杂的验证规则。',
 			cls: 'cr-wizard-hint cr-mt-2'
 		});
 	}
@@ -801,7 +812,7 @@ export class UniverseWizardModal extends Modal {
 
 		if (this.schemaData.requiredProperties.length === 0) {
 			container.createEl('p', {
-				text: 'No required properties. Add properties that all entities must have.',
+				text: '没有必需属性。请添加所有实体都必须具有的属性。',
 				cls: 'cr-wizard-empty'
 			});
 			return;
@@ -814,7 +825,7 @@ export class UniverseWizardModal extends Modal {
 				type: 'text',
 				cls: 'cr-wizard-input',
 				value: this.schemaData.requiredProperties[i],
-				attr: { placeholder: 'e.g., allegiance, house' }
+				attr: { placeholder: '例如：allegiance、house' }
 			});
 			input.addEventListener('input', () => {
 				this.schemaData.requiredProperties[i] = input.value;
@@ -822,7 +833,7 @@ export class UniverseWizardModal extends Modal {
 
 			const removeBtn = propRow.createEl('button', {
 				cls: 'cr-btn cr-btn--icon cr-btn--danger',
-				attr: { 'aria-label': 'Remove' }
+				attr: { 'aria-label': '移除' }
 			});
 			setLucideIcon(removeBtn, 'x', 14);
 			removeBtn.addEventListener('click', () => {
@@ -837,7 +848,7 @@ export class UniverseWizardModal extends Modal {
 	 */
 	private renderSummaryStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: 'Review your universe configuration before creating.',
+			text: '创建前请审阅你的宇宙配置。',
 			cls: 'cr-wizard-step-desc'
 		});
 
@@ -847,66 +858,66 @@ export class UniverseWizardModal extends Modal {
 		const universeCard = summary.createDiv({ cls: 'cr-wizard-summary-card' });
 		const universeHeader = universeCard.createDiv({ cls: 'cr-wizard-summary-header' });
 		universeHeader.appendChild(createLucideIcon('globe', 18));
-		universeHeader.createSpan({ text: 'Universe' });
-		universeCard.createDiv({ cls: 'cr-wizard-summary-item', text: `Name: ${this.universeData.name}` });
+		universeHeader.createSpan({ text: '宇宙' });
+		universeCard.createDiv({ cls: 'cr-wizard-summary-item', text: `名称：${this.universeData.name}` });
 		if (this.universeData.description) {
 			universeCard.createDiv({ cls: 'cr-wizard-summary-item cr-wizard-summary-item--desc', text: this.universeData.description });
 		}
 		if (this.universeData.author) {
-			universeCard.createDiv({ cls: 'cr-wizard-summary-item', text: `Author: ${this.universeData.author}` });
+			universeCard.createDiv({ cls: 'cr-wizard-summary-item', text: `作者：${this.universeData.author}` });
 		}
 		if (this.universeData.genre) {
-			universeCard.createDiv({ cls: 'cr-wizard-summary-item', text: `Genre: ${this.universeData.genre}` });
+			universeCard.createDiv({ cls: 'cr-wizard-summary-item', text: `题材：${GENRE_LABELS[this.universeData.genre] ?? this.universeData.genre}` });
 		}
 
 		// Calendar
 		const calendarCard = summary.createDiv({ cls: 'cr-wizard-summary-card' });
 		const calendarHeader = calendarCard.createDiv({ cls: 'cr-wizard-summary-header' });
 		calendarHeader.appendChild(createLucideIcon('calendar', 18));
-		calendarHeader.createSpan({ text: 'Calendar' });
+		calendarHeader.createSpan({ text: '历法' });
 		if (this.calendarData.mode === 'builtin') {
 			const sys = DEFAULT_DATE_SYSTEMS.find(s => s.id === this.calendarData.builtinId);
 			calendarCard.createDiv({
 				cls: 'cr-wizard-summary-item',
-				text: `Built-in: ${sys?.name ?? this.calendarData.builtinId}`
+				text: `内置：${sys?.name ?? this.calendarData.builtinId}`
 			});
 		} else if (this.calendarData.mode === 'custom') {
-			calendarCard.createDiv({ cls: 'cr-wizard-summary-item', text: `Custom: ${this.calendarData.name}` });
-			const erasText = this.calendarData.eras.map(e => e.abbrev || e.name).filter(Boolean).join(', ');
+			calendarCard.createDiv({ cls: 'cr-wizard-summary-item', text: `自定义：${this.calendarData.name}` });
+			const erasText = this.calendarData.eras.map(e => e.abbrev || e.name).filter(Boolean).join('，');
 			if (erasText) {
-				calendarCard.createDiv({ cls: 'cr-wizard-summary-item', text: `Eras: ${erasText}` });
+				calendarCard.createDiv({ cls: 'cr-wizard-summary-item', text: `纪元：${erasText}` });
 			}
 		} else {
-			calendarCard.createDiv({ cls: 'cr-wizard-summary-item cr-wizard-summary-item--skipped', text: 'No calendar' });
+			calendarCard.createDiv({ cls: 'cr-wizard-summary-item cr-wizard-summary-item--skipped', text: '无历法' });
 		}
 
 		// Map
 		const mapCard = summary.createDiv({ cls: 'cr-wizard-summary-card' });
 		const mapHeader = mapCard.createDiv({ cls: 'cr-wizard-summary-header' });
 		mapHeader.appendChild(createLucideIcon('map', 18));
-		mapHeader.createSpan({ text: 'Map' });
+		mapHeader.createSpan({ text: '地图' });
 		if (this.mapData.enabled) {
-			mapCard.createDiv({ cls: 'cr-wizard-summary-item', text: `Name: ${this.mapData.name}` });
+			mapCard.createDiv({ cls: 'cr-wizard-summary-item', text: `名称：${this.mapData.name}` });
 			if (this.mapData.imagePath) {
-				mapCard.createDiv({ cls: 'cr-wizard-summary-item', text: `Image: ${this.mapData.imagePath}` });
+				mapCard.createDiv({ cls: 'cr-wizard-summary-item', text: `图片：${this.mapData.imagePath}` });
 			}
 		} else {
-			mapCard.createDiv({ cls: 'cr-wizard-summary-item cr-wizard-summary-item--skipped', text: 'Skipped' });
+			mapCard.createDiv({ cls: 'cr-wizard-summary-item cr-wizard-summary-item--skipped', text: '已跳过' });
 		}
 
 		// Schema
 		const schemaCard = summary.createDiv({ cls: 'cr-wizard-summary-card' });
 		const schemaHeader = schemaCard.createDiv({ cls: 'cr-wizard-summary-header' });
 		schemaHeader.appendChild(createLucideIcon('clipboard-check', 18));
-		schemaHeader.createSpan({ text: 'Schema' });
+		schemaHeader.createSpan({ text: '架构' });
 		if (this.schemaData.enabled) {
-			schemaCard.createDiv({ cls: 'cr-wizard-summary-item', text: `Name: ${this.schemaData.name}` });
+			schemaCard.createDiv({ cls: 'cr-wizard-summary-item', text: `名称：${this.schemaData.name}` });
 			const validProps = this.schemaData.requiredProperties.filter(p => p.trim());
 			if (validProps.length > 0) {
-				schemaCard.createDiv({ cls: 'cr-wizard-summary-item', text: `Required: ${validProps.join(', ')}` });
+				schemaCard.createDiv({ cls: 'cr-wizard-summary-item', text: `必需：${validProps.join('，')}` });
 			}
 		} else {
-			schemaCard.createDiv({ cls: 'cr-wizard-summary-item cr-wizard-summary-item--skipped', text: 'Skipped' });
+			schemaCard.createDiv({ cls: 'cr-wizard-summary-item cr-wizard-summary-item--skipped', text: '已跳过' });
 		}
 	}
 
@@ -922,13 +933,13 @@ export class UniverseWizardModal extends Modal {
 		// Cancel/Back button
 		if (this.currentStep === 0) {
 			const cancelBtn = nav.createEl('button', {
-				text: 'Cancel',
+				text: '取消',
 				cls: 'cr-btn'
 			});
 			cancelBtn.addEventListener('click', () => this.close());
 		} else {
 			const backBtn = nav.createEl('button', {
-				text: 'Back',
+				text: '上一步',
 				cls: 'cr-btn'
 			});
 			backBtn.prepend(createLucideIcon('chevron-left', 16));
@@ -941,7 +952,7 @@ export class UniverseWizardModal extends Modal {
 		// Skip button (for skippable steps)
 		if (step.skippable && this.currentStep < WIZARD_STEPS.length - 1) {
 			const skipBtn = rightBtns.createEl('button', {
-				text: 'Skip',
+				text: '跳过',
 				cls: 'cr-btn cr-btn--secondary'
 			});
 			skipBtn.addEventListener('click', () => this.goNext(true));
@@ -950,14 +961,14 @@ export class UniverseWizardModal extends Modal {
 		// Next/Create button
 		if (this.currentStep < WIZARD_STEPS.length - 1) {
 			const nextBtn = rightBtns.createEl('button', {
-				text: 'Next',
+				text: '下一步',
 				cls: 'cr-btn cr-btn--primary'
 			});
 			nextBtn.appendChild(createLucideIcon('arrow-right', 16));
 			nextBtn.addEventListener('click', () => this.goNext(false));
 		} else {
 			const createBtn = rightBtns.createEl('button', {
-				text: 'Create universe',
+				text: '创建宇宙',
 				cls: 'cr-btn cr-btn--primary'
 			});
 			createBtn.prepend(createLucideIcon('check', 16));
@@ -1018,13 +1029,13 @@ export class UniverseWizardModal extends Modal {
 		switch (step.id) {
 			case 'universe': {
 				if (!this.universeData.name.trim()) {
-					new Notice('Please enter a universe name');
+					new Notice('请输入宇宙名称');
 					return false;
 				}
 				// Check for duplicate name
 				const existing = this.universeService.getUniverseByName(this.universeData.name);
 				if (existing) {
-					new Notice(`A universe named "${this.universeData.name}" already exists`);
+					new Notice(`名为"${this.universeData.name}"的宇宙已存在`);
 					return false;
 				}
 				return true;
@@ -1033,17 +1044,17 @@ export class UniverseWizardModal extends Modal {
 			case 'calendar':
 				if (this.calendarData.mode === 'builtin') {
 					if (!this.calendarData.builtinId) {
-						new Notice('Please select a built-in calendar');
+						new Notice('请选择内置历法');
 						return false;
 					}
 				} else if (this.calendarData.mode === 'custom') {
 					if (!this.calendarData.name.trim()) {
-						new Notice('Please enter a calendar name');
+						new Notice('请输入历法名称');
 						return false;
 					}
 					const validEras = this.calendarData.eras.filter(e => e.name && e.abbrev);
 					if (validEras.length === 0) {
-						new Notice('Please add at least one era with name and abbreviation');
+						new Notice('请至少添加一个包含名称和缩写的纪元');
 						return false;
 					}
 				}
@@ -1052,7 +1063,7 @@ export class UniverseWizardModal extends Modal {
 			case 'map':
 				if (this.mapData.enabled) {
 					if (!this.mapData.name.trim()) {
-						new Notice('Please enter a map name');
+						new Notice('请输入地图名称');
 						return false;
 					}
 				}
@@ -1061,7 +1072,7 @@ export class UniverseWizardModal extends Modal {
 			case 'schema':
 				if (this.schemaData.enabled) {
 					if (!this.schemaData.name.trim()) {
-						new Notice('Please enter a schema name');
+						new Notice('请输入架构名称');
 						return false;
 					}
 				}
@@ -1136,7 +1147,7 @@ export class UniverseWizardModal extends Modal {
 
 		} catch (error) {
 			console.error('Failed to create universe:', error);
-			new Notice(`Failed to create universe: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建宇宙失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -1160,7 +1171,7 @@ export class UniverseWizardModal extends Modal {
 		await this.plugin.saveSettings();
 
 		this.created.calendar = true;
-		new Notice(`Created calendar: ${this.calendarData.name}`);
+		new Notice(`已创建历法：${this.calendarData.name}`);
 	}
 
 	/**
@@ -1219,7 +1230,7 @@ export class UniverseWizardModal extends Modal {
 		const file = await this.app.vault.create(filepath, content);
 
 		this.created.map = file;
-		new Notice(`Created map: ${this.mapData.name}`);
+		new Notice(`已创建地图：${this.mapData.name}`);
 	}
 
 	/**
@@ -1274,7 +1285,7 @@ export class UniverseWizardModal extends Modal {
 		const file = await this.app.vault.create(filepath, content);
 
 		this.created.schema = file;
-		new Notice(`Created schema: ${this.schemaData.name}`);
+		new Notice(`已创建架构：${this.schemaData.name}`);
 	}
 
 	/**
@@ -1289,46 +1300,46 @@ export class UniverseWizardModal extends Modal {
 		const icon = success.createDiv({ cls: 'cr-wizard-success-icon' });
 		setLucideIcon(icon, 'check-circle', 48);
 
-		success.createEl('h3', { text: 'Universe created successfully!' });
+		success.createEl('h3', { text: '宇宙创建成功！' });
 		success.createEl('p', { text: this.universeData.name, cls: 'cr-wizard-success-name' });
 
 		// Created entities list
 		const entitiesList = success.createDiv({ cls: 'cr-wizard-success-entities' });
-		entitiesList.createEl('p', { text: 'Created entities:', cls: 'cr-wizard-success-label' });
+		entitiesList.createEl('p', { text: '已创建的实体：', cls: 'cr-wizard-success-label' });
 
 		const list = entitiesList.createEl('ul');
-		list.createEl('li', { text: `✓ Universe note: ${universeFile.basename}` });
+		list.createEl('li', { text: `✓ 宇宙笔记：${universeFile.basename}` });
 
 		if (this.created.calendar) {
-			list.createEl('li', { text: `✓ Date system: ${this.calendarData.name}` });
+			list.createEl('li', { text: `✓ 日期系统：${this.calendarData.name}` });
 		} else {
-			list.createEl('li', { text: '○ Calendar: skipped', cls: 'cr-wizard-skipped' });
+			list.createEl('li', { text: '○ 历法：已跳过', cls: 'cr-wizard-skipped' });
 		}
 
 		if (this.created.map) {
-			list.createEl('li', { text: `✓ Map note: ${this.created.map.basename}` });
+			list.createEl('li', { text: `✓ 地图笔记：${this.created.map.basename}` });
 		} else {
-			list.createEl('li', { text: '○ Map: skipped', cls: 'cr-wizard-skipped' });
+			list.createEl('li', { text: '○ 地图：已跳过', cls: 'cr-wizard-skipped' });
 		}
 
 		if (this.created.schema) {
-			list.createEl('li', { text: `✓ Schema note: ${this.created.schema.basename}` });
+			list.createEl('li', { text: `✓ 架构笔记：${this.created.schema.basename}` });
 		} else {
-			list.createEl('li', { text: '○ Schema: skipped', cls: 'cr-wizard-skipped' });
+			list.createEl('li', { text: '○ 架构：已跳过', cls: 'cr-wizard-skipped' });
 		}
 
 		// What's next
 		const nextSteps = success.createDiv({ cls: 'cr-wizard-next-steps' });
-		nextSteps.createEl('p', { text: "What's next?", cls: 'cr-wizard-success-label' });
+		nextSteps.createEl('p', { text: '接下来做什么？', cls: 'cr-wizard-success-label' });
 		const stepsList = nextSteps.createEl('ul');
-		stepsList.createEl('li', { text: 'Add people, places, and events to your universe' });
-		stepsList.createEl('li', { text: 'Open the universe note to add your own documentation' });
+		stepsList.createEl('li', { text: '向你的宇宙添加人物、地点和事件' });
+		stepsList.createEl('li', { text: '打开宇宙笔记以添加你自己的文档' });
 
 		// Buttons
 		const buttons = success.createDiv({ cls: 'cr-wizard-success-buttons' });
 
 		const openBtn = buttons.createEl('button', {
-			text: 'Open universe note',
+			text: '打开宇宙笔记',
 			cls: 'cr-btn cr-btn--primary'
 		});
 		openBtn.addEventListener('click', () => {
@@ -1337,7 +1348,7 @@ export class UniverseWizardModal extends Modal {
 		});
 
 		const doneBtn = buttons.createEl('button', {
-			text: 'Done',
+			text: '完成',
 			cls: 'cr-btn'
 		});
 		doneBtn.addEventListener('click', () => {
@@ -1369,12 +1380,12 @@ class ImagePickerModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass('cr-image-picker-modal');
 
-		contentEl.createEl('h3', { text: 'Select map image' });
+		contentEl.createEl('h3', { text: '选择地图图像' });
 
 		const searchContainer = contentEl.createDiv({ cls: 'cr-search-container' });
 		this.searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search images...',
+			placeholder: '搜索图像…',
 			cls: 'cr-search-input'
 		});
 		this.searchInput.addEventListener('input', () => this.filterFiles());
@@ -1404,7 +1415,7 @@ class ImagePickerModal extends Modal {
 
 		if (files.length === 0) {
 			this.listContainer.createEl('p', {
-				text: 'No matching images found',
+				text: '未找到匹配的图像',
 				cls: 'cr-no-results'
 			});
 			return;
@@ -1423,7 +1434,7 @@ class ImagePickerModal extends Modal {
 
 		if (files.length > 50) {
 			this.listContainer.createEl('p', {
-				text: `Showing 50 of ${files.length} results. Refine your search.`,
+				text: `显示 ${files.length} 个结果中的前 50 个。请细化搜索条件。`,
 				cls: 'cr-more-results'
 			});
 		}

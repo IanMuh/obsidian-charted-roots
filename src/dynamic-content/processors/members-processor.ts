@@ -52,7 +52,7 @@ export class MembersProcessor {
 			const context = this.resolveOrgContext(ctx);
 
 			if (!context) {
-				renderBlockError(el, 'This block must be placed in an organization note with a cr_id.');
+				renderBlockError(el, '此块必须放置在带有 cr_id 的组织笔记中。');
 				return;
 			}
 
@@ -95,7 +95,7 @@ export class MembersProcessor {
 
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			renderBlockError(el, `Error rendering members: ${message}`);
+			renderBlockError(el, `渲染成员失败：${message}`);
 		}
 	}
 

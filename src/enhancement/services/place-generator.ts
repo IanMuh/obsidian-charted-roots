@@ -262,7 +262,7 @@ export class PlaceGeneratorService {
 						} catch (error) {
 							result.errors.push({
 								place: place.placeString,
-								error: `Failed to update ${file.path}: ${error instanceof Error ? error.message : String(error)}`
+								error: `更新 ${file.path} 失败：${error instanceof Error ? error.message : String(error)}`
 							});
 						}
 					}

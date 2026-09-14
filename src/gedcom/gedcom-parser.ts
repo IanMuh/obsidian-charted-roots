@@ -151,7 +151,7 @@ export class GedcomParser {
 
 		if (!content || content.trim().length === 0) {
 			result.valid = false;
-			result.errors.push({ message: 'GEDCOM file is empty' });
+			result.errors.push({ message: 'GEDCOM 文件为空' });
 			return result;
 		}
 
@@ -161,14 +161,14 @@ export class GedcomParser {
 			// Check for required header
 			const hasHeader = lines.some(l => l.level === 0 && l.tag === 'HEAD');
 			if (!hasHeader) {
-				result.errors.push({ message: 'Missing required GEDCOM header (0 HEAD)' });
+				result.errors.push({ message: '缺少必需的 GEDCOM 文件头（0 HEAD）' });
 				result.valid = false;
 			}
 
 			// Check for trailer
 			const hasTrailer = lines.some(l => l.level === 0 && l.tag === 'TRLR');
 			if (!hasTrailer) {
-				result.warnings.push({ message: 'Missing GEDCOM trailer (0 TRLR)' });
+				result.warnings.push({ message: '缺少 GEDCOM 文件尾（0 TRLR）' });
 			}
 
 			// Count records and check version
@@ -192,7 +192,7 @@ export class GedcomParser {
 					if (line.value && !line.value.startsWith('5.5')) {
 						result.warnings.push({
 							line: line.lineNumber,
-							message: `GEDCOM version ${line.value} may not be fully supported. Recommended: 5.5 or 5.5.1`
+							message: `GEDCOM 版本 ${line.value} 可能不被完全支持。建议使用 5.5 或 5.5.1`
 						});
 					}
 				}
@@ -200,14 +200,14 @@ export class GedcomParser {
 
 			// Warn if no individuals
 			if (result.stats.individualCount === 0) {
-				result.warnings.push({ message: 'No individual records found in GEDCOM file' });
+				result.warnings.push({ message: 'GEDCOM 文件中未找到个人记录' });
 			}
 
 		} catch (error: unknown) {
 			result.valid = false;
 			// Include line number if available from GedcomParseError
-			const lineInfo = error instanceof GedcomParseError && error.line ? ` at line ${error.line}` : '';
-			result.errors.push({ message: `Parse error: ${getErrorMessage(error)}${lineInfo}` });
+			const lineInfo = error instanceof GedcomParseError && error.line ? `（第 ${error.line} 行）` : '';
+			result.errors.push({ message: `解析错误：${getErrorMessage(error)}${lineInfo}` });
 		}
 
 		return result;

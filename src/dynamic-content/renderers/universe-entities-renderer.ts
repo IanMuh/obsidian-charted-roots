@@ -81,7 +81,7 @@ export class UniverseEntitiesRenderer {
 		if (totalCount === 0) {
 			container.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No entities found for this universe.'
+				text: '此宇宙中未找到实体。'
 			});
 			return;
 		}
@@ -124,16 +124,16 @@ export class UniverseEntitiesRenderer {
 	): Promise<void> {
 		const section = container.createDiv({ cls: 'cr-universe-entities__section' });
 		{
-			section.createEl('h4', { cls: 'cr-universe-entities__heading', text: `People (${context.entities.people.length})` });
+			section.createEl('h4', { cls: 'cr-universe-entities__heading', text: `人物（${context.entities.people.length}）` });
 		}
 
 		const table = section.createEl('table', { cls: 'cr-universe-entities__table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name' });
-		headerRow.createEl('th', { text: 'Born' });
-		headerRow.createEl('th', { text: 'Died' });
-		headerRow.createEl('th', { text: 'Occupation' });
+		headerRow.createEl('th', { text: '名称' });
+		headerRow.createEl('th', { text: '出生' });
+		headerRow.createEl('th', { text: '去世' });
+		headerRow.createEl('th', { text: '职业' });
 
 		const tbody = table.createEl('tbody');
 
@@ -166,14 +166,14 @@ export class UniverseEntitiesRenderer {
 	): Promise<void> {
 		const section = container.createDiv({ cls: 'cr-universe-entities__section' });
 		{
-			section.createEl('h4', { cls: 'cr-universe-entities__heading', text: `Places (${context.entities.places.length})` });
+			section.createEl('h4', { cls: 'cr-universe-entities__heading', text: `地点（${context.entities.places.length}）` });
 		}
 
 		const table = section.createEl('table', { cls: 'cr-universe-entities__table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name' });
-		headerRow.createEl('th', { text: 'Type' });
+		headerRow.createEl('th', { text: '名称' });
+		headerRow.createEl('th', { text: '类型' });
 
 		const tbody = table.createEl('tbody');
 
@@ -202,16 +202,16 @@ export class UniverseEntitiesRenderer {
 	): Promise<void> {
 		const section = container.createDiv({ cls: 'cr-universe-entities__section' });
 		{
-			section.createEl('h4', { cls: 'cr-universe-entities__heading', text: `Events (${context.entities.events.length})` });
+			section.createEl('h4', { cls: 'cr-universe-entities__heading', text: `事件（${context.entities.events.length}）` });
 		}
 
 		const table = section.createEl('table', { cls: 'cr-universe-entities__table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Event' });
-		headerRow.createEl('th', { text: 'Date' });
-		headerRow.createEl('th', { text: 'Type' });
-		headerRow.createEl('th', { text: 'Place' });
+		headerRow.createEl('th', { text: '事件' });
+		headerRow.createEl('th', { text: '日期' });
+		headerRow.createEl('th', { text: '类型' });
+		headerRow.createEl('th', { text: '地点' });
 
 		const tbody = table.createEl('tbody');
 
@@ -250,14 +250,14 @@ export class UniverseEntitiesRenderer {
 	): Promise<void> {
 		const section = container.createDiv({ cls: 'cr-universe-entities__section' });
 		{
-			section.createEl('h4', { cls: 'cr-universe-entities__heading', text: `Organizations (${context.entities.organizations.length})` });
+			section.createEl('h4', { cls: 'cr-universe-entities__heading', text: `组织（${context.entities.organizations.length}）` });
 		}
 
 		const table = section.createEl('table', { cls: 'cr-universe-entities__table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name' });
-		headerRow.createEl('th', { text: 'Type' });
+		headerRow.createEl('th', { text: '名称' });
+		headerRow.createEl('th', { text: '类型' });
 
 		const tbody = table.createEl('tbody');
 

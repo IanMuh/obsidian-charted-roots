@@ -69,7 +69,7 @@ export class ResearchTimelineProcessor {
 
 			const file = this.plugin.app.vault.getAbstractFileByPath(ctx.sourcePath);
 			if (!(file instanceof TFile)) {
-				renderBlockError(el, `Could not find file: ${ctx.sourcePath}`);
+				renderBlockError(el, `找不到文件：${ctx.sourcePath}`);
 				return;
 			}
 
@@ -86,7 +86,7 @@ export class ResearchTimelineProcessor {
 
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			renderBlockError(el, `Error rendering research timeline: ${message}`);
+			renderBlockError(el, `渲染研究时间轴失败：${message}`);
 		}
 	}
 

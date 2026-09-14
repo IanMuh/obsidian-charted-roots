@@ -7,7 +7,7 @@
 
 import { ItemView, WorkspaceLeaf, setIcon, TFile, Menu } from 'obsidian';
 import type CanvasRootsPlugin from '../../../main';
-import { capitalize, pluralize } from '../../utils/format-utils';
+import { capitalize } from '../../utils/format-utils';
 import { StatisticsService } from '../services/statistics-service';
 import { summarizeCoreIssues } from '../services/core-issues-summary';
 import { formatDateRangeLine } from '../../core/collection-date-range';
@@ -59,7 +59,7 @@ export class StatisticsView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Statistics dashboard';
+		return '统计仪表盘';
 	}
 
 	getIcon(): string {
@@ -113,11 +113,11 @@ export class StatisticsView extends ItemView {
 		const header = container.createDiv({ cls: 'cr-sv-header' });
 
 		const titleSection = header.createDiv({ cls: 'cr-sv-title-section' });
-		titleSection.createEl('h1', { text: 'Statistics Dashboard', cls: 'cr-sv-title' });
+		titleSection.createEl('h1', { text: '统计仪表盘', cls: 'cr-sv-title' });
 		if (this.stats) {
 			titleSection.createEl('span', {
 				cls: 'cr-sv-updated crc-text-muted',
-				text: `Last updated: ${this.stats.lastUpdated.toLocaleString()}`
+				text: `上次更新：${this.stats.lastUpdated.toLocaleString()}`
 			});
 		}
 
@@ -126,7 +126,7 @@ export class StatisticsView extends ItemView {
 		// Refresh button
 		const refreshBtn = actions.createEl('button', {
 			cls: 'cr-sv-btn clickable-icon',
-			attr: { 'aria-label': 'Refresh statistics' }
+			attr: { 'aria-label': '刷新统计' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.refresh());
@@ -134,7 +134,7 @@ export class StatisticsView extends ItemView {
 		// Expand all button
 		const expandBtn = actions.createEl('button', {
 			cls: 'cr-sv-btn clickable-icon',
-			attr: { 'aria-label': 'Expand all sections' }
+			attr: { 'aria-label': '展开所有区块' }
 		});
 		setIcon(expandBtn, 'chevron-down');
 		expandBtn.addEventListener('click', () => this.expandAllSections());
@@ -142,7 +142,7 @@ export class StatisticsView extends ItemView {
 		// Collapse all button
 		const collapseBtn = actions.createEl('button', {
 			cls: 'cr-sv-btn clickable-icon',
-			attr: { 'aria-label': 'Collapse all sections' }
+			attr: { 'aria-label': '折叠所有区块' }
 		});
 		setIcon(collapseBtn, 'chevron-up');
 		collapseBtn.addEventListener('click', () => this.collapseAllSections());
@@ -175,20 +175,20 @@ export class StatisticsView extends ItemView {
 
 		const { entityCounts, completeness, quality } = this.stats;
 
-		createSummaryCard('People', formatNumber(entityCounts.people), 'users');
-		createSummaryCard('Events', formatNumber(entityCounts.events), 'calendar');
-		createSummaryCard('Sources', formatNumber(entityCounts.sources), 'archive');
-		createSummaryCard('Places', formatNumber(entityCounts.places), 'map-pin');
+		createSummaryCard('人物', formatNumber(entityCounts.people), 'users');
+		createSummaryCard('事件', formatNumber(entityCounts.events), 'calendar');
+		createSummaryCard('来源', formatNumber(entityCounts.sources), 'archive');
+		createSummaryCard('地点', formatNumber(entityCounts.places), 'map-pin');
 
 		// Completeness summary
 		const avgCompleteness = Math.round(
 			(completeness.withBirthDate + completeness.withDeathDate + completeness.withSources) / 3
 		);
 		createSummaryCard(
-			'Completeness',
+			'完整度',
 			`${avgCompleteness}%`,
 			'check-circle',
-			'Average across key fields',
+			'关键字段的平均值',
 			avgCompleteness >= 80 ? 'cr-sv-card-good' : avgCompleteness >= 50 ? 'cr-sv-card-moderate' : 'cr-sv-card-low'
 		);
 
@@ -201,7 +201,7 @@ export class StatisticsView extends ItemView {
 			unsourcedEvents: quality.unsourcedEvents,
 		});
 		createSummaryCard(
-			'Issues',
+			'问题',
 			formatNumber(coreIssues.count),
 			'alert-triangle',
 			coreIssues.subtitle,
@@ -218,47 +218,47 @@ export class StatisticsView extends ItemView {
 		const sectionsContainer = container.createDiv({ cls: 'cr-sv-sections' });
 
 		// Entity Overview section
-		this.buildSection(sectionsContainer, SECTION_IDS.OVERVIEW, 'Entity overview', 'layers', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.OVERVIEW, '实体概览', 'layers', () => {
 			return this.buildEntityOverviewContent();
 		});
 
 		// Data Completeness section
-		this.buildSection(sectionsContainer, SECTION_IDS.COMPLETENESS, 'Data completeness', 'check-circle', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.COMPLETENESS, '数据完整度', 'check-circle', () => {
 			return this.buildCompletenessContent();
 		});
 
 		// Data Quality section
-		this.buildSection(sectionsContainer, SECTION_IDS.QUALITY, 'Data quality', 'shield-check', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.QUALITY, '数据质量', 'shield-check', () => {
 			return this.buildQualityContent();
 		});
 
 		// Gender Distribution section
-		this.buildSection(sectionsContainer, SECTION_IDS.GENDER_DISTRIBUTION, 'Sex & gender distribution', 'users', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.GENDER_DISTRIBUTION, '性别分布', 'users', () => {
 			return this.buildGenderContent();
 		});
 
 		// Top Surnames section
-		this.buildSection(sectionsContainer, SECTION_IDS.TOP_SURNAMES, 'Top surnames', 'users', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.TOP_SURNAMES, '常见姓氏', 'users', () => {
 			return this.buildTopListContent(this.stats!.topSurnames, 'surname');
 		});
 
 		// Top Locations section
-		this.buildSection(sectionsContainer, SECTION_IDS.TOP_LOCATIONS, 'Top locations', 'map-pin', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.TOP_LOCATIONS, '常见地点', 'map-pin', () => {
 			return this.buildTopListContent(this.stats!.topLocations, 'location');
 		});
 
 		// Top Occupations section
-		this.buildSection(sectionsContainer, SECTION_IDS.TOP_OCCUPATIONS, 'Top occupations', 'briefcase', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.TOP_OCCUPATIONS, '常见职业', 'briefcase', () => {
 			return this.buildTopListContent(this.stats!.topOccupations, 'occupation');
 		});
 
 		// Top Sources section
-		this.buildSection(sectionsContainer, SECTION_IDS.TOP_SOURCES, 'Top sources', 'archive', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.TOP_SOURCES, '常见来源', 'archive', () => {
 			return this.buildTopListContent(this.stats!.topSources, 'source');
 		});
 
 		// Events by Type section
-		this.buildSection(sectionsContainer, SECTION_IDS.EVENTS_BY_TYPE, 'Events by type', 'calendar', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.EVENTS_BY_TYPE, '按类型统计事件', 'calendar', () => {
 			const items = Object.entries(this.stats!.eventsByType)
 				.map(([id, count]) => ({
 					name: getEventType(
@@ -274,7 +274,7 @@ export class StatisticsView extends ItemView {
 		});
 
 		// Sources by Type section
-		this.buildSection(sectionsContainer, SECTION_IDS.SOURCES_BY_TYPE, 'Sources by type', 'file-type', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.SOURCES_BY_TYPE, '按类型统计来源', 'file-type', () => {
 			const items = Object.entries(this.stats!.sourcesByType)
 				.map(([id, count]) => ({
 					name: getSourceType(id, this.plugin.settings.customSourceTypes)?.name ?? capitalize(id),
@@ -285,12 +285,12 @@ export class StatisticsView extends ItemView {
 		});
 
 		// Sources by Confidence section
-		this.buildSection(sectionsContainer, SECTION_IDS.SOURCES_BY_CONFIDENCE, 'Sources by confidence', 'shield', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.SOURCES_BY_CONFIDENCE, '按置信度统计来源', 'shield', () => {
 			return this.buildConfidenceContent();
 		});
 
 		// Places by Category section
-		this.buildSection(sectionsContainer, SECTION_IDS.PLACES_BY_CATEGORY, 'Places by category', 'map-pin', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.PLACES_BY_CATEGORY, '按分类统计地点', 'map-pin', () => {
 			const items = Object.entries(this.stats!.placesByCategory)
 				.map(([id, count]) => ({
 					name: PLACE_CATEGORY_LABELS[id as CanonicalPlaceCategory] ?? capitalize(id),
@@ -301,54 +301,54 @@ export class StatisticsView extends ItemView {
 		});
 
 		// Universes section
-		this.buildSection(sectionsContainer, SECTION_IDS.UNIVERSES, 'Universes', 'globe', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.UNIVERSES, '宇宙', 'globe', () => {
 			return this.buildUniversesContent();
 		});
 
 		// Research workflow section
-		this.buildSection(sectionsContainer, SECTION_IDS.RESEARCH, 'Research entities', 'folder-search', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.RESEARCH, '研究实体', 'folder-search', () => {
 			return this.buildResearchContent();
 		});
 
 		// Record Superlatives section
-		this.buildSection(sectionsContainer, SECTION_IDS.RECORDS, 'Record superlatives', 'trophy', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.RECORDS, '纪录之最', 'trophy', () => {
 			return this.buildRecordsContent();
 		});
 
 		// Citation statistics section
-		this.buildSection(sectionsContainer, SECTION_IDS.CITATIONS, 'Citation statistics', 'quote', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.CITATIONS, '引文统计', 'quote', () => {
 			return this.buildCitationStatsContent();
 		});
 
 		// === Extended Statistics (Phase 3) ===
 
 		// Longevity Analysis section
-		this.buildSection(sectionsContainer, SECTION_IDS.LONGEVITY, 'Longevity analysis', 'heart-pulse', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.LONGEVITY, '寿命分析', 'heart-pulse', () => {
 			return this.buildLongevityContent();
 		});
 
 		// Family Size Patterns section
-		this.buildSection(sectionsContainer, SECTION_IDS.FAMILY_SIZE, 'Family size patterns', 'users', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.FAMILY_SIZE, '家庭规模模式', 'users', () => {
 			return this.buildFamilySizeContent();
 		});
 
 		// Marriage Patterns section
-		this.buildSection(sectionsContainer, SECTION_IDS.MARRIAGE_PATTERNS, 'Marriage patterns', 'heart', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.MARRIAGE_PATTERNS, '婚姻模式', 'heart', () => {
 			return this.buildMarriagePatternsContent();
 		});
 
 		// Migration Flows section
-		this.buildSection(sectionsContainer, SECTION_IDS.MIGRATION, 'Migration flows', 'plane', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.MIGRATION, '迁移流向', 'plane', () => {
 			return this.buildMigrationContent();
 		});
 
 		// Source Coverage by Generation section
-		this.buildSection(sectionsContainer, SECTION_IDS.SOURCE_COVERAGE_GEN, 'Source coverage by generation', 'archive', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.SOURCE_COVERAGE_GEN, '按世代统计来源覆盖', 'archive', () => {
 			return this.buildSourceCoverageContent();
 		});
 
 		// Timeline Density section
-		this.buildSection(sectionsContainer, SECTION_IDS.TIMELINE_DENSITY, 'Timeline density', 'bar-chart-2', () => {
+		this.buildSection(sectionsContainer, SECTION_IDS.TIMELINE_DENSITY, '时间轴密度', 'bar-chart-2', () => {
 			return this.buildTimelineDensityContent();
 		});
 	}
@@ -421,19 +421,19 @@ export class StatisticsView extends ItemView {
 			row.createSpan({ cls: 'cr-sv-entity-count', text: formatNumber(count) });
 		};
 
-		createEntityRow('People', this.stats.entityCounts.people, 'users');
-		createEntityRow('Events', this.stats.entityCounts.events, 'calendar');
-		createEntityRow('Places', this.stats.entityCounts.places, 'map-pin');
-		createEntityRow('Sources', this.stats.entityCounts.sources, 'archive');
-		createEntityRow('Organizations', this.stats.entityCounts.organizations, 'building');
-		createEntityRow('Universes', this.stats.entityCounts.universes, 'globe');
-		createEntityRow('Canvases', this.stats.entityCounts.canvases, 'file');
+		createEntityRow('人物', this.stats.entityCounts.people, 'users');
+		createEntityRow('事件', this.stats.entityCounts.events, 'calendar');
+		createEntityRow('地点', this.stats.entityCounts.places, 'map-pin');
+		createEntityRow('来源', this.stats.entityCounts.sources, 'archive');
+		createEntityRow('组织', this.stats.entityCounts.organizations, 'building');
+		createEntityRow('宇宙', this.stats.entityCounts.universes, 'globe');
+		createEntityRow('画布', this.stats.entityCounts.canvases, 'file');
 
 		// Date range — per-universe and era-aware (#719)
 		const ranges = this.stats.dateRange.byUniverse;
 		if (ranges.length > 0) {
 			const dateRange = content.createDiv({ cls: 'cr-sv-date-range' });
-			dateRange.createSpan({ text: 'Date range: ', cls: 'cr-sv-date-range-label' });
+			dateRange.createSpan({ text: '日期范围：', cls: 'cr-sv-date-range-label' });
 			if (ranges.length === 1) {
 				dateRange.createSpan({ text: formatDateRangeLine(ranges[0], false), cls: 'cr-sv-date-range-value' });
 			} else {
@@ -472,12 +472,12 @@ export class StatisticsView extends ItemView {
 			progressBar.style.width = `${percent}%`;
 		};
 
-		createProgressRow('With birth date', completeness.withBirthDate);
-		createProgressRow('With death date', completeness.withDeathDate);
-		createProgressRow('With sources', completeness.withSources);
-		createProgressRow('With father', completeness.withFather);
-		createProgressRow('With mother', completeness.withMother);
-		createProgressRow('With spouse', completeness.withSpouse);
+		createProgressRow('有出生日期', completeness.withBirthDate);
+		createProgressRow('有去世日期', completeness.withDeathDate);
+		createProgressRow('有来源', completeness.withSources);
+		createProgressRow('有父亲', completeness.withFather);
+		createProgressRow('有母亲', completeness.withMother);
+		createProgressRow('有配偶', completeness.withSpouse);
 
 		// Parent type breakdown subsection (if data exists)
 		if (completeness.parentTypeBreakdown) {
@@ -490,7 +490,7 @@ export class StatisticsView extends ItemView {
 			if (hasStepOrAdoptive) {
 				const breakdownSection = content.createDiv({ cls: 'cr-sv-parent-breakdown' });
 				breakdownSection.createEl('h5', {
-					text: 'Parent type breakdown',
+					text: '父母类型细分',
 					cls: 'cr-sv-subsection-title'
 				});
 
@@ -505,19 +505,19 @@ export class StatisticsView extends ItemView {
 				};
 
 				// Biological (always shown)
-				createCountRow('Biological father', breakdown.biologicalFather);
-				createCountRow('Biological mother', breakdown.biologicalMother);
+				createCountRow('生物学父亲', breakdown.biologicalFather);
+				createCountRow('生物学母亲', breakdown.biologicalMother);
 
 				// Step-parents (only if any)
 				if (breakdown.stepFather > 0 || breakdown.stepMother > 0) {
-					createCountRow('Step-father', breakdown.stepFather, 'cr-sv-parent-step');
-					createCountRow('Step-mother', breakdown.stepMother, 'cr-sv-parent-step');
+					createCountRow('继父', breakdown.stepFather, 'cr-sv-parent-step');
+					createCountRow('继母', breakdown.stepMother, 'cr-sv-parent-step');
 				}
 
 				// Adoptive parents (only if any)
 				if (breakdown.adoptiveFather > 0 || breakdown.adoptiveMother > 0) {
-					createCountRow('Adoptive father', breakdown.adoptiveFather, 'cr-sv-parent-adoptive');
-					createCountRow('Adoptive mother', breakdown.adoptiveMother, 'cr-sv-parent-adoptive');
+					createCountRow('养父', breakdown.adoptiveFather, 'cr-sv-parent-adoptive');
+					createCountRow('养母', breakdown.adoptiveMother, 'cr-sv-parent-adoptive');
 				}
 			}
 		}
@@ -548,7 +548,7 @@ export class StatisticsView extends ItemView {
 			const success = content.createDiv({ cls: 'cr-sv-quality-success' });
 			const iconEl = success.createSpan({ cls: 'cr-sv-quality-success-icon' });
 			setIcon(iconEl, 'check-circle');
-			success.createSpan({ text: 'No data quality issues detected' });
+			success.createSpan({ text: '未检测到数据质量问题' });
 			return content;
 		}
 
@@ -595,11 +595,11 @@ export class StatisticsView extends ItemView {
 		if (hasErrors) {
 			const errorSection = content.createDiv({ cls: 'cr-sv-quality-section' });
 			const errorHeader = errorSection.createDiv({ cls: 'cr-sv-quality-section-header cr-sv-quality-section-error' });
-			errorHeader.createSpan({ text: 'Errors', cls: 'cr-sv-quality-section-title' });
-			errorHeader.createSpan({ text: 'Data problems that should be fixed', cls: 'cr-sv-quality-section-desc crc-text-muted' });
+			errorHeader.createSpan({ text: '错误', cls: 'cr-sv-quality-section-title' });
+			errorHeader.createSpan({ text: '应当修复的数据问题', cls: 'cr-sv-quality-section-desc crc-text-muted' });
 
 			const errorAlerts = errorSection.createDiv({ cls: 'cr-sv-quality-alerts' });
-			createExpandableAlert(errorAlerts, 'alert-triangle', 'Date inconsistencies', quality.dateInconsistencies, 'error', 'dateInconsistencies');
+			createExpandableAlert(errorAlerts, 'alert-triangle', '日期不一致', quality.dateInconsistencies, 'error', 'dateInconsistencies');
 		}
 
 		// Group 2: Data Gaps - Missing data that could be improved (but may be unfixable for historical records)
@@ -608,15 +608,15 @@ export class StatisticsView extends ItemView {
 		if (hasGaps) {
 			const gapSection = content.createDiv({ cls: 'cr-sv-quality-section' });
 			const gapHeader = gapSection.createDiv({ cls: 'cr-sv-quality-section-header cr-sv-quality-section-warning' });
-			gapHeader.createSpan({ text: 'Data Gaps', cls: 'cr-sv-quality-section-title' });
-			gapHeader.createSpan({ text: 'Missing data (may be unavailable for historical records)', cls: 'cr-sv-quality-section-desc crc-text-muted' });
+			gapHeader.createSpan({ text: '数据缺口', cls: 'cr-sv-quality-section-title' });
+			gapHeader.createSpan({ text: '缺失的数据（历史记录中可能无法获取）', cls: 'cr-sv-quality-section-desc crc-text-muted' });
 
 			const gapAlerts = gapSection.createDiv({ cls: 'cr-sv-quality-alerts' });
-			createExpandableAlert(gapAlerts, 'alert-circle', 'Missing birth dates', quality.missingBirthDate, 'warning', 'missingBirthDate');
-			createExpandableAlert(gapAlerts, 'calendar-x', 'Missing death dates', quality.missingDeathDate, 'warning', 'missingDeathDate');
-			createExpandableAlert(gapAlerts, 'link', 'Orphaned people (no relationships)', quality.orphanedPeople, 'warning', 'orphanedPeople');
-			createExpandableAlert(gapAlerts, 'users', 'Incomplete parents (one parent only)', quality.incompleteParents, 'warning', 'incompleteParents');
-			createExpandableAlert(gapAlerts, 'archive', 'Unsourced events', quality.unsourcedEvents, 'warning', 'unsourcedEvents');
+			createExpandableAlert(gapAlerts, 'alert-circle', '缺少出生日期', quality.missingBirthDate, 'warning', 'missingBirthDate');
+			createExpandableAlert(gapAlerts, 'calendar-x', '缺少去世日期', quality.missingDeathDate, 'warning', 'missingDeathDate');
+			createExpandableAlert(gapAlerts, 'link', '孤立人物（无任何关系）', quality.orphanedPeople, 'warning', 'orphanedPeople');
+			createExpandableAlert(gapAlerts, 'users', '父母不完整（仅有一位父母）', quality.incompleteParents, 'warning', 'incompleteParents');
+			createExpandableAlert(gapAlerts, 'archive', '无来源事件', quality.unsourcedEvents, 'warning', 'unsourcedEvents');
 		}
 
 		// Group 3: Informational - Nice to have, not an issue
@@ -624,17 +624,17 @@ export class StatisticsView extends ItemView {
 		if (hasInfo) {
 			const infoSection = content.createDiv({ cls: 'cr-sv-quality-section' });
 			const infoHeader = infoSection.createDiv({ cls: 'cr-sv-quality-section-header cr-sv-quality-section-info' });
-			infoHeader.createSpan({ text: 'Informational', cls: 'cr-sv-quality-section-title' });
-			infoHeader.createSpan({ text: 'Neutral metrics', cls: 'cr-sv-quality-section-desc crc-text-muted' });
+			infoHeader.createSpan({ text: '参考信息', cls: 'cr-sv-quality-section-title' });
+			infoHeader.createSpan({ text: '中性指标', cls: 'cr-sv-quality-section-desc crc-text-muted' });
 
 			const infoAlerts = infoSection.createDiv({ cls: 'cr-sv-quality-alerts' });
-			createExpandableAlert(infoAlerts, 'map-pin', 'Places without geographic or pixel coordinates', quality.placesWithoutCoordinates, 'info', 'placesWithoutCoordinates');
+			createExpandableAlert(infoAlerts, 'map-pin', '缺少地理坐标或像素坐标的地点', quality.placesWithoutCoordinates, 'info', 'placesWithoutCoordinates');
 		}
 
 		// Living people count (informational, not an issue)
 		if (quality.livingPeople > 0) {
 			const info = content.createDiv({ cls: 'cr-sv-quality-info crc-text-muted' });
-			info.createSpan({ text: `${formatNumber(quality.livingPeople)} people marked as living` });
+			info.createSpan({ text: `${formatNumber(quality.livingPeople)} 人被标记为在世` });
 		}
 
 		// Blended family insights (informational)
@@ -643,7 +643,7 @@ export class StatisticsView extends ItemView {
 			const iconEl = info.createSpan({ cls: 'cr-sv-quality-info-icon' });
 			setIcon(iconEl, 'heart');
 			info.createSpan({
-				text: `${formatNumber(quality.biologicallyOrphaned)} people with non-biological parents only (adoption/step)`
+				text: `${formatNumber(quality.biologicallyOrphaned)} 人仅有非生物学父母（收养/继亲）`
 			});
 		}
 
@@ -652,7 +652,7 @@ export class StatisticsView extends ItemView {
 			const iconEl = info.createSpan({ cls: 'cr-sv-quality-info-icon' });
 			setIcon(iconEl, 'users');
 			info.createSpan({
-				text: `${formatNumber(quality.blendedFamilyCount)} people in blended families (bio + step/adoptive parents)`
+				text: `${formatNumber(quality.blendedFamilyCount)} 人处于混合家庭（生物学父母 + 继亲/养父母）`
 			});
 		}
 
@@ -755,7 +755,7 @@ export class StatisticsView extends ItemView {
 			if (personRefs.length > maxToShow) {
 				list.createDiv({
 					cls: 'cr-sv-drilldown-more crc-text-muted',
-					text: `...and ${formatNumber(personRefs.length - maxToShow)} more`
+					text: `…另有 ${formatNumber(personRefs.length - maxToShow)} 项`
 				});
 			}
 		}
@@ -788,7 +788,7 @@ export class StatisticsView extends ItemView {
 			if (fileRefs.length > maxToShow) {
 				list.createDiv({
 					cls: 'cr-sv-drilldown-more crc-text-muted',
-					text: `...and ${formatNumber(fileRefs.length - maxToShow)} more`
+					text: `…另有 ${formatNumber(fileRefs.length - maxToShow)} 项`
 				});
 			}
 		}
@@ -797,7 +797,7 @@ export class StatisticsView extends ItemView {
 		if (personRefs.length === 0 && fileRefs.length === 0) {
 			drilldown.createDiv({
 				cls: 'cr-sv-drilldown-empty crc-text-muted',
-				text: 'No items found'
+				text: '未找到项目'
 			});
 		}
 	}
@@ -815,7 +815,7 @@ export class StatisticsView extends ItemView {
 		const total = male + female + other + unknown;
 
 		if (total === 0) {
-			content.createSpan({ cls: 'crc-text-muted', text: 'No data available' });
+			content.createSpan({ cls: 'crc-text-muted', text: '暂无数据' });
 			return content;
 		}
 
@@ -829,10 +829,10 @@ export class StatisticsView extends ItemView {
 			item.createDiv({ cls: 'cr-sv-gender-percent', text: `${percent}%` });
 		};
 
-		createGenderItem('Male', male, 'cr-sv-gender-male');
-		createGenderItem('Female', female, 'cr-sv-gender-female');
-		if (other > 0) createGenderItem('Other', other, 'cr-sv-gender-other');
-		if (unknown > 0) createGenderItem('Unknown', unknown, 'cr-sv-gender-unknown');
+		createGenderItem('男性', male, 'cr-sv-gender-male');
+		createGenderItem('女性', female, 'cr-sv-gender-female');
+		if (other > 0) createGenderItem('其他', other, 'cr-sv-gender-other');
+		if (unknown > 0) createGenderItem('未知', unknown, 'cr-sv-gender-unknown');
 
 		// Visual bar
 		const bar = content.createDiv({ cls: 'cr-sv-gender-bar' });
@@ -865,11 +865,11 @@ export class StatisticsView extends ItemView {
 		const listsSection = content.createDiv({ cls: 'cr-sv-gender-lists' });
 
 		const categories: Array<{ label: string; people: Array<{ name: string; file: TFile; value?: string }> }> = [];
-		if (data.male.length > 0) categories.push({ label: `Male (${data.male.length})`, people: data.male });
-		if (data.female.length > 0) categories.push({ label: `Female (${data.female.length})`, people: data.female });
-		if (data.other.length > 0) categories.push({ label: `Other (${data.other.length})`, people: data.other });
-		if (data.explicitUnknown.length > 0) categories.push({ label: `Unknown — explicitly stated (${data.explicitUnknown.length})`, people: data.explicitUnknown });
-		if (data.notStated.length > 0) categories.push({ label: `Not stated — missing (${data.notStated.length})`, people: data.notStated });
+		if (data.male.length > 0) categories.push({ label: `男性（${data.male.length}）`, people: data.male });
+		if (data.female.length > 0) categories.push({ label: `女性（${data.female.length}）`, people: data.female });
+		if (data.other.length > 0) categories.push({ label: `其他（${data.other.length}）`, people: data.other });
+		if (data.explicitUnknown.length > 0) categories.push({ label: `未知——明确标注（${data.explicitUnknown.length}）`, people: data.explicitUnknown });
+		if (data.notStated.length > 0) categories.push({ label: `未标注——缺失（${data.notStated.length}）`, people: data.notStated });
 
 		for (const cat of categories) {
 			const section = listsSection.createDiv({ cls: 'cr-sv-missing-sex' });
@@ -878,9 +878,9 @@ export class StatisticsView extends ItemView {
 
 			const toggleBtn = header.createEl('button', {
 				cls: 'clickable-icon cr-sv-missing-sex__toggle',
-				attr: { 'aria-label': 'Toggle list' }
+				attr: { 'aria-label': '切换列表' }
 			});
-			toggleBtn.textContent = 'Show';
+			toggleBtn.textContent = '显示';
 
 			const listEl = section.createDiv({ cls: 'cr-sv-missing-sex__list cr-hidden' });
 
@@ -904,7 +904,7 @@ export class StatisticsView extends ItemView {
 			toggleBtn.addEventListener('click', () => {
 				const isHidden = listEl.hasClass('cr-hidden');
 				listEl.toggleClass('cr-hidden', !isHidden);
-				toggleBtn.textContent = isHidden ? 'Hide' : 'Show';
+				toggleBtn.textContent = isHidden ? '隐藏' : '显示';
 			});
 		}
 
@@ -924,7 +924,7 @@ export class StatisticsView extends ItemView {
 		const total = high + medium + low + unknown;
 
 		if (total === 0) {
-			content.createSpan({ cls: 'crc-text-muted', text: 'No sources available' });
+			content.createSpan({ cls: 'crc-text-muted', text: '暂无来源' });
 			return content;
 		}
 
@@ -938,10 +938,10 @@ export class StatisticsView extends ItemView {
 			item.createDiv({ cls: 'cr-sv-confidence-percent crc-text-muted', text: `${percent}%` });
 		};
 
-		createConfidenceItem('High', high, 'cr-sv-confidence-high');
-		createConfidenceItem('Medium', medium, 'cr-sv-confidence-medium');
-		createConfidenceItem('Low', low, 'cr-sv-confidence-low');
-		if (unknown > 0) createConfidenceItem('Unknown', unknown, 'cr-sv-confidence-unknown');
+		createConfidenceItem('高', high, 'cr-sv-confidence-high');
+		createConfidenceItem('中', medium, 'cr-sv-confidence-medium');
+		createConfidenceItem('低', low, 'cr-sv-confidence-low');
+		if (unknown > 0) createConfidenceItem('未知', unknown, 'cr-sv-confidence-unknown');
 
 		// Visual bar
 		const bar = content.createDiv({ cls: 'cr-sv-confidence-bar' });
@@ -973,14 +973,14 @@ export class StatisticsView extends ItemView {
 		content.addClass('cr-sv-universes');
 
 		if (!this.service) {
-			content.createSpan({ cls: 'crc-text-muted', text: 'Service not available' });
+			content.createSpan({ cls: 'crc-text-muted', text: '服务不可用' });
 			return content;
 		}
 
 		const universes: UniverseWithEntityCounts[] = this.service.getUniversesWithCounts();
 
 		if (universes.length === 0) {
-			content.createSpan({ cls: 'crc-text-muted', text: 'No universes found' });
+			content.createSpan({ cls: 'crc-text-muted', text: '未找到宇宙' });
 			return content;
 		}
 
@@ -1048,17 +1048,17 @@ export class StatisticsView extends ItemView {
 					}
 				};
 
-				addCountItem('People', counts.people, 'users');
-				addCountItem('Events', counts.events, 'calendar');
-				addCountItem('Places', counts.places, 'map-pin');
-				addCountItem('Organizations', counts.organizations, 'building');
-				addCountItem('Maps', counts.maps, 'map');
-				addCountItem('Calendars', counts.calendars, 'calendar-days');
-				addCountItem('Schemas', counts.schemas, 'clipboard-check');
+				addCountItem('人物', counts.people, 'users');
+				addCountItem('事件', counts.events, 'calendar');
+				addCountItem('地点', counts.places, 'map-pin');
+				addCountItem('组织', counts.organizations, 'building');
+				addCountItem('地图', counts.maps, 'map');
+				addCountItem('历法', counts.calendars, 'calendar-days');
+				addCountItem('架构', counts.schemas, 'clipboard-check');
 			} else {
 				card.createDiv({
 					cls: 'cr-sv-universe-empty crc-text-muted',
-					text: 'No entities yet'
+					text: '暂无实体'
 				});
 			}
 		}
@@ -1074,7 +1074,7 @@ export class StatisticsView extends ItemView {
 		content.addClass('cr-sv-research');
 
 		if (!this.service) {
-			content.createSpan({ cls: 'crc-text-muted', text: 'Service not available' });
+			content.createSpan({ cls: 'crc-text-muted', text: '服务不可用' });
 			return content;
 		}
 
@@ -1083,7 +1083,7 @@ export class StatisticsView extends ItemView {
 			research.irnCount + research.journalCount + research.logEntryCount;
 
 		if (totalResearch === 0) {
-			content.createSpan({ cls: 'crc-text-muted', text: 'No research entities found' });
+			content.createSpan({ cls: 'crc-text-muted', text: '未找到研究实体' });
 			return content;
 		}
 
@@ -1096,22 +1096,22 @@ export class StatisticsView extends ItemView {
 			const projectHeader = projectCard.createDiv({ cls: 'cr-sv-research-header' });
 			const projectIcon = projectHeader.createSpan({ cls: 'cr-sv-research-icon' });
 			setIcon(projectIcon, 'folder-search');
-			projectHeader.createSpan({ cls: 'cr-sv-research-title', text: 'Projects' });
+			projectHeader.createSpan({ cls: 'cr-sv-research-title', text: '研究项目' });
 			projectHeader.createSpan({ cls: 'cr-sv-research-count', text: research.projectCount.toString() });
 
 			const projectDetails = projectCard.createDiv({ cls: 'cr-sv-research-details' });
 			const statuses = research.projectsByStatus;
 			if (statuses['in-progress'] > 0) {
-				projectDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--in-progress', text: `${statuses['in-progress']} in progress` });
+				projectDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--in-progress', text: `${statuses['in-progress']} 进行中` });
 			}
 			if (statuses['open'] > 0) {
-				projectDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--open', text: `${statuses['open']} open` });
+				projectDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--open', text: `${statuses['open']} 待处理` });
 			}
 			if (statuses['on-hold'] > 0) {
-				projectDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--on-hold', text: `${statuses['on-hold']} on hold` });
+				projectDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--on-hold', text: `${statuses['on-hold']} 已暂停` });
 			}
 			if (statuses['completed'] > 0) {
-				projectDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--completed', text: `${statuses['completed']} completed` });
+				projectDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--completed', text: `${statuses['completed']} 已完成` });
 			}
 		}
 
@@ -1121,22 +1121,22 @@ export class StatisticsView extends ItemView {
 			const reportHeader = reportCard.createDiv({ cls: 'cr-sv-research-header' });
 			const reportIcon = reportHeader.createSpan({ cls: 'cr-sv-research-icon' });
 			setIcon(reportIcon, 'file-text');
-			reportHeader.createSpan({ cls: 'cr-sv-research-title', text: 'Reports' });
+			reportHeader.createSpan({ cls: 'cr-sv-research-title', text: '研究报告' });
 			reportHeader.createSpan({ cls: 'cr-sv-research-count', text: research.reportCount.toString() });
 
 			const reportDetails = reportCard.createDiv({ cls: 'cr-sv-research-details' });
 			const statuses = research.reportsByStatus;
 			if (statuses['draft'] > 0) {
-				reportDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--draft', text: `${statuses['draft']} draft` });
+				reportDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--draft', text: `${statuses['draft']} 草稿` });
 			}
 			if (statuses['review'] > 0) {
-				reportDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--review', text: `${statuses['review']} in review` });
+				reportDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--review', text: `${statuses['review']} 审核中` });
 			}
 			if (statuses['final'] > 0) {
-				reportDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--final', text: `${statuses['final']} final` });
+				reportDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--final', text: `${statuses['final']} 定稿` });
 			}
 			if (statuses['published'] > 0) {
-				reportDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--published', text: `${statuses['published']} published` });
+				reportDetails.createSpan({ cls: 'cr-sv-research-status cr-sv-research-status--published', text: `${statuses['published']} 已发布` });
 			}
 		}
 
@@ -1146,7 +1146,7 @@ export class StatisticsView extends ItemView {
 			const irnHeader = irnCard.createDiv({ cls: 'cr-sv-research-header' });
 			const irnIcon = irnHeader.createSpan({ cls: 'cr-sv-research-icon' });
 			setIcon(irnIcon, 'user-search');
-			irnHeader.createSpan({ cls: 'cr-sv-research-title', text: 'Individual research notes' });
+			irnHeader.createSpan({ cls: 'cr-sv-research-title', text: '个人研究笔记' });
 			irnHeader.createSpan({ cls: 'cr-sv-research-count', text: research.irnCount.toString() });
 		}
 
@@ -1156,7 +1156,7 @@ export class StatisticsView extends ItemView {
 			const journalHeader = journalCard.createDiv({ cls: 'cr-sv-research-header' });
 			const journalIcon = journalHeader.createSpan({ cls: 'cr-sv-research-icon' });
 			setIcon(journalIcon, 'book-open');
-			journalHeader.createSpan({ cls: 'cr-sv-research-title', text: 'Journals' });
+			journalHeader.createSpan({ cls: 'cr-sv-research-title', text: '研究日志' });
 			journalHeader.createSpan({ cls: 'cr-sv-research-count', text: research.journalCount.toString() });
 		}
 
@@ -1166,7 +1166,7 @@ export class StatisticsView extends ItemView {
 			const logHeader = logCard.createDiv({ cls: 'cr-sv-research-header' });
 			const logIcon = logHeader.createSpan({ cls: 'cr-sv-research-icon' });
 			setIcon(logIcon, 'list-plus');
-			logHeader.createSpan({ cls: 'cr-sv-research-title', text: 'Log entries' });
+			logHeader.createSpan({ cls: 'cr-sv-research-title', text: '日志条目' });
 			logHeader.createSpan({ cls: 'cr-sv-research-count', text: research.logEntryCount.toString() });
 		}
 
@@ -1177,7 +1177,7 @@ export class StatisticsView extends ItemView {
 			setIcon(privateIcon, 'lock');
 			privateNote.createSpan({
 				cls: 'crc-text-muted',
-				text: `${research.privateCount} private research ${pluralize(research.privateCount, 'entity', 'entities')} (excluded from exports)`
+				text: `${research.privateCount} 个私有研究实体（已从导出中排除）`
 			});
 		}
 
@@ -1192,7 +1192,7 @@ export class StatisticsView extends ItemView {
 		content.addClass('cr-sv-top-list');
 
 		if (items.length === 0) {
-			content.createSpan({ cls: 'crc-text-muted', text: 'No data available' });
+			content.createSpan({ cls: 'crc-text-muted', text: '暂无数据' });
 			return content;
 		}
 
@@ -1384,7 +1384,7 @@ export class StatisticsView extends ItemView {
 		if (stats.totalCitations === 0) {
 			container.createDiv({
 				cls: 'cr-sv-empty-state',
-				text: 'No citation notes found. Import a GEDCOM with PAGE/QUAY data or use the "Add citation" command.'
+				text: '未找到引文笔记。请导入包含 PAGE/QUAY 数据的 GEDCOM，或使用「添加引文」命令。'
 			});
 			return container;
 		}
@@ -1394,19 +1394,19 @@ export class StatisticsView extends ItemView {
 
 		// Total citations card
 		const totalCard = summaryGrid.createDiv({ cls: 'cr-sv-record-card' });
-		totalCard.createDiv({ cls: 'cr-sv-record-card__header', text: 'Total citations' });
+		totalCard.createDiv({ cls: 'cr-sv-record-card__header', text: '引文总数' });
 		totalCard.createDiv({ cls: 'cr-sv-record-value', text: String(stats.totalCitations) });
 
 		// Coverage card
 		const coverageCard = summaryGrid.createDiv({ cls: 'cr-sv-record-card' });
-		coverageCard.createDiv({ cls: 'cr-sv-record-card__header', text: 'Citation coverage' });
+		coverageCard.createDiv({ cls: 'cr-sv-record-card__header', text: '引文覆盖率' });
 		coverageCard.createDiv({ cls: 'cr-sv-record-value', text: `${stats.citationCoverage}%` });
-		coverageCard.createDiv({ cls: 'cr-sv-record-card__desc', text: 'Sourced facts with citation-level detail' });
+		coverageCard.createDiv({ cls: 'cr-sv-record-card__desc', text: '带有引文级细节的已溯源事实' });
 
 		// Quality distribution card
 		const qualityCard = summaryGrid.createDiv({ cls: 'cr-sv-record-card' });
-		qualityCard.createDiv({ cls: 'cr-sv-record-card__header', text: 'Quality distribution' });
-		const qualityLabels = ['Unreliable', 'Questionable', 'Secondary', 'Primary'];
+		qualityCard.createDiv({ cls: 'cr-sv-record-card__header', text: '质量分布' });
+		const qualityLabels = ['不可靠', '存疑', '二手', '一手'];
 		const qualityList = qualityCard.createDiv({ cls: 'cr-sv-stat-list' });
 		for (let q = 3; q >= 0; q--) {
 			const count = stats.qualityDistribution[q] || 0;
@@ -1420,12 +1420,12 @@ export class StatisticsView extends ItemView {
 		// Most cited sources card
 		if (stats.mostCitedSources.length > 0) {
 			const citedCard = summaryGrid.createDiv({ cls: 'cr-sv-record-card' });
-			citedCard.createDiv({ cls: 'cr-sv-record-card__header', text: 'Most cited sources' });
+			citedCard.createDiv({ cls: 'cr-sv-record-card__header', text: '被引用最多的来源' });
 			const citedList = citedCard.createDiv({ cls: 'cr-sv-stat-list' });
 			for (const source of stats.mostCitedSources.slice(0, 5)) {
 				const row = citedList.createDiv({ cls: 'cr-sv-stat-row' });
 				row.createSpan({ text: source.name, cls: 'cr-sv-stat-label' });
-				row.createSpan({ text: `${source.count} citations`, cls: 'cr-sv-stat-value' });
+				row.createSpan({ text: `${source.count} 条引文`, cls: 'cr-sv-stat-value' });
 			}
 		}
 
@@ -1456,7 +1456,7 @@ export class StatisticsView extends ItemView {
 		if (!hasAnyRecords) {
 			content.createSpan({
 				cls: 'crc-text-muted',
-				text: 'No data available (requires people with dates and relationships)'
+				text: '暂无数据（需要同时具有日期和关系的人物）'
 			});
 			return content;
 		}
@@ -1541,28 +1541,28 @@ export class StatisticsView extends ItemView {
 		if (analysis.overall.count === 0) {
 			content.createSpan({
 				cls: 'crc-text-muted',
-				text: 'No data available (requires people with both birth and death dates)'
+				text: '暂无数据（需要同时具有出生和去世日期的人物）'
 			});
 			return content;
 		}
 
 		// Overall statistics grid
 		const overallLabel = content.createDiv({ cls: 'cr-sv-section-label' });
-		overallLabel.setText('Overall');
+		overallLabel.setText('总体');
 
 		const statsGrid = content.createDiv({ cls: 'cr-sv-stats-grid' });
-		this.createStatCell(statsGrid, 'Average', `${analysis.overall.averageAge.toFixed(1)} yrs`);
-		this.createStatCell(statsGrid, 'Median', `${analysis.overall.medianAge} yrs`);
-		this.createStatCell(statsGrid, 'Min', `${analysis.overall.minAge} yrs`);
-		this.createStatCell(statsGrid, 'Max', `${analysis.overall.maxAge} yrs`);
+		this.createStatCell(statsGrid, '平均', `${analysis.overall.averageAge.toFixed(1)} 岁`);
+		this.createStatCell(statsGrid, '中位数', `${analysis.overall.medianAge} 岁`);
+		this.createStatCell(statsGrid, '最小', `${analysis.overall.minAge} 岁`);
+		this.createStatCell(statsGrid, '最大', `${analysis.overall.maxAge} 岁`);
 
 		const countInfo = content.createDiv({ cls: 'cr-sv-count-info crc-text-muted' });
-		countInfo.setText(`Based on ${formatNumber(analysis.overall.count)} people with calculable lifespans`);
+		countInfo.setText(`基于 ${formatNumber(analysis.overall.count)} 位可计算寿命的人物`);
 
 		// By birth decade
 		if (analysis.byBirthDecade.length > 0) {
 			const decadeLabel = content.createDiv({ cls: 'cr-sv-section-label cr-sv-section-label-spaced' });
-			decadeLabel.setText('By birth decade');
+			decadeLabel.setText('按出生年代');
 
 			const maxAge = Math.max(...analysis.byBirthDecade.map(d => d.stats.averageAge));
 			const barsContainer = content.createDiv({ cls: 'cr-sv-decade-bars' });
@@ -1577,7 +1577,7 @@ export class StatisticsView extends ItemView {
 
 				row.createSpan({
 					cls: 'cr-sv-decade-value',
-					text: `${decade.stats.averageAge.toFixed(1)} yrs (${decade.stats.count})`
+					text: `${decade.stats.averageAge.toFixed(1)} 岁（${decade.stats.count}）`
 				});
 			}
 		}
@@ -1585,7 +1585,7 @@ export class StatisticsView extends ItemView {
 		// By birth location (top 5)
 		if (analysis.byBirthLocation.length > 0) {
 			const locationLabel = content.createDiv({ cls: 'cr-sv-section-label cr-sv-section-label-spaced' });
-			locationLabel.setText('By birth location');
+			locationLabel.setText('按出生地点');
 
 			const locTable = content.createEl('table', { cls: 'cr-sv-location-table' });
 			const locBody = locTable.createEl('tbody');
@@ -1594,11 +1594,11 @@ export class StatisticsView extends ItemView {
 				const row = locBody.createEl('tr');
 				row.createEl('td', { text: loc.location, cls: 'cr-sv-loc-name' });
 				row.createEl('td', {
-					text: `${loc.stats.averageAge.toFixed(1)} yrs avg`,
+					text: `${loc.stats.averageAge.toFixed(1)} 岁均值`,
 					cls: 'cr-sv-loc-value'
 				});
 				row.createEl('td', {
-					text: `(${loc.stats.count} people)`,
+					text: `（${loc.stats.count} 人）`,
 					cls: 'cr-sv-loc-count crc-text-muted'
 				});
 			}
@@ -1621,7 +1621,7 @@ export class StatisticsView extends ItemView {
 		if (analysis.overall.count === 0) {
 			content.createSpan({
 				cls: 'crc-text-muted',
-				text: 'No data available (requires people with children)'
+				text: '暂无数据（需要有子女的人物）'
 			});
 			return content;
 		}
@@ -1629,15 +1629,15 @@ export class StatisticsView extends ItemView {
 		// Overall summary
 		const summary = content.createDiv({ cls: 'cr-sv-summary-text' });
 		summary.createSpan({ text: `${analysis.overall.averageChildren.toFixed(1)}`, cls: 'cr-sv-highlight-value' });
-		summary.createSpan({ text: ' children per family on average' });
+		summary.createSpan({ text: ' 个子女/家庭（平均）' });
 
 		const countInfo = content.createDiv({ cls: 'cr-sv-count-info crc-text-muted' });
-		countInfo.setText(`${formatNumber(analysis.overall.count)} families analyzed, ${formatNumber(analysis.overall.totalChildren)} total children`);
+		countInfo.setText(`分析了 ${formatNumber(analysis.overall.count)} 个家庭，共 ${formatNumber(analysis.overall.totalChildren)} 个子女`);
 
 		// Distribution buckets
 		if (analysis.sizeDistribution.length > 0) {
 			const distLabel = content.createDiv({ cls: 'cr-sv-section-label cr-sv-section-label-spaced' });
-			distLabel.setText('Distribution');
+			distLabel.setText('分布');
 
 			const barsContainer = content.createDiv({ cls: 'cr-sv-distribution-bars' });
 
@@ -1656,7 +1656,7 @@ export class StatisticsView extends ItemView {
 		// By birth decade
 		if (analysis.byBirthDecade.length > 0) {
 			const decadeLabel = content.createDiv({ cls: 'cr-sv-section-label cr-sv-section-label-spaced' });
-			decadeLabel.setText('By birth decade of parent');
+			decadeLabel.setText('按父母的出生年代');
 
 			const decadeTable = content.createEl('table', { cls: 'cr-sv-decade-table' });
 			const decadeBody = decadeTable.createEl('tbody');
@@ -1664,9 +1664,9 @@ export class StatisticsView extends ItemView {
 			for (const decade of analysis.byBirthDecade) {
 				const row = decadeBody.createEl('tr');
 				row.createEl('td', { text: decade.label, cls: 'cr-sv-decade-name' });
-				row.createEl('td', { text: `${decade.stats.averageChildren.toFixed(1)} children` });
+				row.createEl('td', { text: `${decade.stats.averageChildren.toFixed(1)} 个子女` });
 				row.createEl('td', {
-					text: `(${decade.stats.count} families)`,
+					text: `（${decade.stats.count} 个家庭）`,
 					cls: 'crc-text-muted'
 				});
 			}
@@ -1689,57 +1689,57 @@ export class StatisticsView extends ItemView {
 		if (analysis.overall.count === 0) {
 			content.createSpan({
 				cls: 'crc-text-muted',
-				text: 'No data available (requires people with birth and marriage dates)'
+				text: '暂无数据（需要同时具有出生和婚姻日期的人物）'
 			});
 			return content;
 		}
 
 		// Age at first marriage comparison
 		const ageLabel = content.createDiv({ cls: 'cr-sv-section-label' });
-		ageLabel.setText('Age at first marriage');
+		ageLabel.setText('初婚年龄');
 
 		const comparisonGrid = content.createDiv({ cls: 'cr-sv-comparison-grid' });
 
 		// Male column
 		if (analysis.bySex.male.count > 0) {
 			const maleCol = comparisonGrid.createDiv({ cls: 'cr-sv-comparison-col' });
-			maleCol.createDiv({ cls: 'cr-sv-comparison-header', text: 'Men' });
+			maleCol.createDiv({ cls: 'cr-sv-comparison-header', text: '男性' });
 			maleCol.createDiv({
 				cls: 'cr-sv-comparison-value',
-				text: `Avg: ${analysis.bySex.male.averageAge.toFixed(1)} yrs`
+				text: `平均：${analysis.bySex.male.averageAge.toFixed(1)} 岁`
 			});
 			maleCol.createDiv({
 				cls: 'cr-sv-comparison-subvalue crc-text-muted',
-				text: `Med: ${analysis.bySex.male.medianAge} yrs`
+				text: `中位：${analysis.bySex.male.medianAge} 岁`
 			});
 			maleCol.createDiv({
 				cls: 'cr-sv-comparison-count crc-text-muted',
-				text: `(${analysis.bySex.male.count} people)`
+				text: `（${analysis.bySex.male.count} 人）`
 			});
 		}
 
 		// Female column
 		if (analysis.bySex.female.count > 0) {
 			const femaleCol = comparisonGrid.createDiv({ cls: 'cr-sv-comparison-col' });
-			femaleCol.createDiv({ cls: 'cr-sv-comparison-header', text: 'Women' });
+			femaleCol.createDiv({ cls: 'cr-sv-comparison-header', text: '女性' });
 			femaleCol.createDiv({
 				cls: 'cr-sv-comparison-value',
-				text: `Avg: ${analysis.bySex.female.averageAge.toFixed(1)} yrs`
+				text: `平均：${analysis.bySex.female.averageAge.toFixed(1)} 岁`
 			});
 			femaleCol.createDiv({
 				cls: 'cr-sv-comparison-subvalue crc-text-muted',
-				text: `Med: ${analysis.bySex.female.medianAge} yrs`
+				text: `中位：${analysis.bySex.female.medianAge} 岁`
 			});
 			femaleCol.createDiv({
 				cls: 'cr-sv-comparison-count crc-text-muted',
-				text: `(${analysis.bySex.female.count} people)`
+				text: `（${analysis.bySex.female.count} 人）`
 			});
 		}
 
 		// Remarriage statistics
 		if (analysis.remarriage.totalMarried > 0) {
 			const remarriageLabel = content.createDiv({ cls: 'cr-sv-section-label cr-sv-section-label-spaced' });
-			remarriageLabel.setText('Remarriage');
+			remarriageLabel.setText('再婚');
 
 			const remarriageInfo = content.createDiv({ cls: 'cr-sv-remarriage-info' });
 			remarriageInfo.createSpan({
@@ -1747,13 +1747,13 @@ export class StatisticsView extends ItemView {
 				text: `${analysis.remarriage.remarriageRate.toFixed(1)}%`
 			});
 			remarriageInfo.createSpan({
-				text: ` remarried (${analysis.remarriage.remarriedCount} of ${analysis.remarriage.totalMarried} married people)`
+				text: ` 再婚（${analysis.remarriage.remarriedCount} / ${analysis.remarriage.totalMarried} 位已婚者）`
 			});
 
 			if (analysis.remarriage.remarriedCount > 0) {
 				const avgMarriages = content.createDiv({ cls: 'cr-sv-count-info crc-text-muted' });
 				avgMarriages.setText(
-					`Average ${analysis.remarriage.averageMarriagesForRemarried.toFixed(1)} marriages for those who remarried`
+					`再婚者平均 ${analysis.remarriage.averageMarriagesForRemarried.toFixed(1)} 段婚姻`
 				);
 			}
 		}
@@ -1775,7 +1775,7 @@ export class StatisticsView extends ItemView {
 		if (analysis.analyzedCount === 0) {
 			content.createSpan({
 				cls: 'crc-text-muted',
-				text: 'No data available (requires people with movement events, or both birth and death places)'
+				text: '暂无数据（需要有迁移事件，或同时具有出生和去世地点的人物）'
 			});
 			return content;
 		}
@@ -1784,7 +1784,7 @@ export class StatisticsView extends ItemView {
 		const rateInfo = content.createDiv({ cls: 'cr-sv-summary-text' });
 		rateInfo.createSpan({ cls: 'cr-sv-highlight-value', text: `${analysis.migrationRate.toFixed(0)}%` });
 		rateInfo.createSpan({
-			text: ` migration rate (${analysis.movedCount} of ${analysis.analyzedCount} moved)`
+			text: ` 迁移率（${analysis.movedCount} / ${analysis.analyzedCount} 人迁移）`
 		});
 
 		// Be explicit about what the figure is derived from (#643): movement
@@ -1793,19 +1793,18 @@ export class StatisticsView extends ItemView {
 		const { analyzedFromEvents, analyzedFromBirthDeath } = analysis;
 		let basis: string;
 		if (analyzedFromEvents > 0 && analyzedFromBirthDeath > 0) {
-			const eventsLabel = pluralize(analyzedFromEvents, 'person', 'people');
-			basis = `Derived from movement events for ${analyzedFromEvents} ${eventsLabel} and birth and death locations for ${analyzedFromBirthDeath}.`;
+			basis = `数据来源：${analyzedFromEvents} 人的迁移事件，以及 ${analyzedFromBirthDeath} 人的出生与去世地点。`;
 		} else if (analyzedFromEvents > 0) {
-			basis = 'Derived from movement events (Residence, Immigration).';
+			basis = '数据来源：迁移事件（居住、移民）。';
 		} else {
-			basis = 'Derived from birth and death locations. Add Residence or Immigration events to include living migrants.';
+			basis = '数据来源：出生与去世地点。添加居住或移民事件可纳入在世迁移者。';
 		}
 		content.createDiv({ cls: 'crc-text-muted cr-sv-migration-basis', text: basis });
 
 		// Top migration routes
 		if (analysis.topRoutes.length > 0) {
 			const routesLabel = content.createDiv({ cls: 'cr-sv-section-label cr-sv-section-label-spaced' });
-			routesLabel.setText('Top migration routes');
+			routesLabel.setText('主要迁移路线');
 
 			const routesTable = content.createEl('table', { cls: 'cr-sv-routes-table' });
 			const routesBody = routesTable.createEl('tbody');
@@ -1817,7 +1816,7 @@ export class StatisticsView extends ItemView {
 				setIcon(arrowCell, 'arrow-right');
 				row.createEl('td', { text: route.to, cls: 'cr-sv-route-to' });
 				row.createEl('td', {
-					text: `${route.count} ${pluralize(route.count, 'person', 'people')}`,
+					text: `${route.count} 人`,
 					cls: 'cr-sv-route-count crc-text-muted'
 				});
 			}
@@ -1826,7 +1825,7 @@ export class StatisticsView extends ItemView {
 		// Top destinations
 		if (analysis.topDestinations.length > 0) {
 			const destLabel = content.createDiv({ cls: 'cr-sv-section-label cr-sv-section-label-spaced' });
-			destLabel.setText('Top destinations');
+			destLabel.setText('主要目的地');
 
 			const destList = content.createDiv({ cls: 'cr-sv-inline-list' });
 			for (const dest of analysis.topDestinations.slice(0, 5)) {
@@ -1851,7 +1850,7 @@ export class StatisticsView extends ItemView {
 		const analysis: SourceCoverageAnalysis = this.service.getSourceCoverageAnalysis();
 
 		if (analysis.overall.peopleCount === 0) {
-			content.createSpan({ cls: 'crc-text-muted', text: 'No data available' });
+			content.createSpan({ cls: 'crc-text-muted', text: '暂无数据' });
 			return content;
 		}
 
@@ -1861,25 +1860,25 @@ export class StatisticsView extends ItemView {
 			cls: 'cr-sv-highlight-value',
 			text: `${analysis.overall.coveragePercent.toFixed(0)}%`
 		});
-		overallInfo.createSpan({ text: ' overall source coverage' });
+		overallInfo.createSpan({ text: ' 总体来源覆盖率' });
 
 		const avgInfo = content.createDiv({ cls: 'cr-sv-count-info crc-text-muted' });
 		avgInfo.setText(
-			`${analysis.overall.averageSourcesPerPerson.toFixed(1)} sources per person on average (${analysis.overall.withSources} of ${analysis.overall.peopleCount} have sources)`
+			`平均每人 ${analysis.overall.averageSourcesPerPerson.toFixed(1)} 个来源（${analysis.overall.peopleCount} 人中有 ${analysis.overall.withSources} 人有来源）`
 		);
 
 		// By generation table
 		if (analysis.byGeneration.length > 0) {
 			const genLabel = content.createDiv({ cls: 'cr-sv-section-label cr-sv-section-label-spaced' });
-			genLabel.setText('By generation');
+			genLabel.setText('按世代');
 
 			const genTable = content.createEl('table', { cls: 'cr-sv-generation-table' });
 			const genHead = genTable.createEl('thead');
 			const headerRow = genHead.createEl('tr');
-			headerRow.createEl('th', { text: 'Generation' });
-			headerRow.createEl('th', { text: 'People' });
-			headerRow.createEl('th', { text: 'Coverage' });
-			headerRow.createEl('th', { text: 'Avg sources' });
+			headerRow.createEl('th', { text: '世代' });
+			headerRow.createEl('th', { text: '人物' });
+			headerRow.createEl('th', { text: '覆盖率' });
+			headerRow.createEl('th', { text: '平均来源数' });
 
 			const genBody = genTable.createEl('tbody');
 
@@ -1903,7 +1902,7 @@ export class StatisticsView extends ItemView {
 			}
 		} else {
 			const hint = content.createDiv({ cls: 'cr-sv-count-info crc-text-muted cr-sv-section-label-spaced' });
-			hint.setText('Generation breakdown requires a root person (available in ancestry reports).');
+			hint.setText('世代细分需要指定根人物（在祖先报告中可用）。');
 		}
 
 		return content;
@@ -1921,18 +1920,18 @@ export class StatisticsView extends ItemView {
 		const analysis: TimelineDensityAnalysis = this.service.getTimelineDensityAnalysis();
 
 		if (analysis.totalEvents === 0) {
-			content.createSpan({ cls: 'crc-text-muted', text: 'No dated events available' });
+			content.createSpan({ cls: 'crc-text-muted', text: '暂无带日期的事件' });
 			return content;
 		}
 
 		// Total events info
 		const totalInfo = content.createDiv({ cls: 'cr-sv-count-info crc-text-muted' });
-		totalInfo.setText(`${formatNumber(analysis.totalEvents)} dated events analyzed`);
+		totalInfo.setText(`分析了 ${formatNumber(analysis.totalEvents)} 个带日期的事件`);
 
 		// Events by decade chart
 		if (analysis.byDecade.length > 0) {
 			const decadeLabel = content.createDiv({ cls: 'cr-sv-section-label cr-sv-section-label-spaced' });
-			decadeLabel.setText('Events by decade');
+			decadeLabel.setText('按年代统计事件');
 
 			const maxCount = Math.max(...analysis.byDecade.map(d => d.count));
 			const barsContainer = content.createDiv({ cls: 'cr-sv-timeline-bars' });
@@ -1954,7 +1953,7 @@ export class StatisticsView extends ItemView {
 			const gapsLabel = content.createDiv({ cls: 'cr-sv-section-label cr-sv-section-label-spaced' });
 			const gapsIcon = gapsLabel.createSpan({ cls: 'cr-sv-warning-icon' });
 			setIcon(gapsIcon, 'alert-triangle');
-			gapsLabel.createSpan({ text: ' Gaps detected' });
+			gapsLabel.createSpan({ text: ' 检测到断层' });
 
 			const gapsList = content.createDiv({ cls: 'cr-sv-gaps-list' });
 			for (const gap of analysis.gaps) {
@@ -1965,7 +1964,7 @@ export class StatisticsView extends ItemView {
 				});
 				gapItem.createSpan({
 					cls: 'cr-sv-gap-info crc-text-muted',
-					text: `: ${gap.eventCount} events (expected ~${gap.expectedCount})`
+					text: `：${gap.eventCount} 个事件（预期约 ${gap.expectedCount} 个）`
 				});
 			}
 		}
@@ -1989,7 +1988,7 @@ export class StatisticsView extends ItemView {
 		const menu = new Menu();
 
 		menu.addItem((item) => {
-			item.setTitle('Open in new tab')
+			item.setTitle('在新标签页中打开')
 				.setIcon('file-plus')
 				.onClick(() => {
 					void this.app.workspace.getLeaf('tab').openFile(file);
@@ -1997,7 +1996,7 @@ export class StatisticsView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Open to the right')
+			item.setTitle('在右侧打开')
 				.setIcon('separator-vertical')
 				.onClick(() => {
 					void this.app.workspace.getLeaf('split').openFile(file);
@@ -2007,7 +2006,7 @@ export class StatisticsView extends ItemView {
 		menu.addSeparator();
 
 		menu.addItem((item) => {
-			item.setTitle('Open in new window')
+			item.setTitle('在新窗口中打开')
 				.setIcon('picture-in-picture-2')
 				.onClick(() => {
 					void this.app.workspace.getLeaf('window').openFile(file);
@@ -2065,10 +2064,10 @@ export class StatisticsView extends ItemView {
 		const emptyState = container.createDiv({ cls: 'cr-sv-empty-state' });
 		const iconEl = emptyState.createDiv({ cls: 'cr-sv-empty-icon' });
 		setIcon(iconEl, 'bar-chart-2');
-		emptyState.createEl('h3', { text: 'No statistics available' });
+		emptyState.createEl('h3', { text: '暂无统计数据' });
 		emptyState.createEl('p', {
 			cls: 'crc-text-muted',
-			text: 'Add person notes with cr_id property to see statistics.'
+			text: '添加带 cr_id 属性的人物笔记即可查看统计。'
 		});
 	}
 

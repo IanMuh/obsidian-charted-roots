@@ -13,6 +13,7 @@ import { UniverseService, createUniverseService } from '../services/universe-ser
 import { UniverseWizardModal } from './universe-wizard';
 import { EditUniverseModal } from './edit-universe-modal';
 import type { UniverseInfo, UniverseEntityCounts } from '../types';
+import { UNIVERSE_STATUS_LABELS } from '../types';
 import { DEFAULT_DATE_SYSTEMS } from '../../dates/constants/default-date-systems';
 
 /**
@@ -84,9 +85,9 @@ export function renderUniversesTab(
 
 	// Quick Actions Card
 	const actionsCard = createCard({
-		title: 'Quick Actions',
+		title: '快捷操作',
 		icon: 'zap',
-		subtitle: 'Create universes and explore related features'
+		subtitle: '创建宇宙并探索相关功能'
 	});
 	const actionsContent = actionsCard.querySelector('.crc-card__content') as HTMLElement;
 
@@ -95,10 +96,10 @@ export function renderUniversesTab(
 	// Tile 1: Create Universe
 	const createTile = tileGrid.createDiv({ cls: 'crc-dashboard-tile' });
 	createTile.setAttribute('data-tile-id', 'create-universe');
-	createTile.setAttribute('title', 'Create a new fictional world with optional calendar, map, and schema');
+	createTile.setAttribute('title', '创建带有可选历法、地图和架构的新虚构世界');
 	const createIcon = createTile.createDiv({ cls: 'crc-dashboard-tile-icon' });
 	setLucideIcon(createIcon, 'globe', 24);
-	createTile.createDiv({ cls: 'crc-dashboard-tile-label', text: 'Create Universe' });
+	createTile.createDiv({ cls: 'crc-dashboard-tile-label', text: '创建宇宙' });
 	createTile.setAttribute('tabindex', '0');
 	createTile.setAttribute('role', 'button');
 	createTile.addEventListener('click', () => {
@@ -118,10 +119,10 @@ export function renderUniversesTab(
 	// Tile 2: Fictional Date Systems
 	const calendarTile = tileGrid.createDiv({ cls: 'crc-dashboard-tile' });
 	calendarTile.setAttribute('data-tile-id', 'fictional-calendars');
-	calendarTile.setAttribute('title', 'Learn about custom calendars for fictional worlds');
+	calendarTile.setAttribute('title', '了解用于虚构世界的自定义历法');
 	const calendarIcon = calendarTile.createDiv({ cls: 'crc-dashboard-tile-icon' });
 	setLucideIcon(calendarIcon, 'calendar-plus', 24);
-	calendarTile.createDiv({ cls: 'crc-dashboard-tile-label', text: 'Date Systems' });
+	calendarTile.createDiv({ cls: 'crc-dashboard-tile-label', text: '日期系统' });
 	calendarTile.setAttribute('tabindex', '0');
 	calendarTile.setAttribute('role', 'button');
 	calendarTile.addEventListener('click', () => {
@@ -137,10 +138,10 @@ export function renderUniversesTab(
 	// Tile 3: Custom Maps
 	const mapTile = tileGrid.createDiv({ cls: 'crc-dashboard-tile' });
 	mapTile.setAttribute('data-tile-id', 'custom-maps');
-	mapTile.setAttribute('title', 'Learn about custom maps for fictional geography');
+	mapTile.setAttribute('title', '了解用于虚构地理的自定义地图');
 	const mapIcon = mapTile.createDiv({ cls: 'crc-dashboard-tile-icon' });
 	setLucideIcon(mapIcon, 'map', 24);
-	mapTile.createDiv({ cls: 'crc-dashboard-tile-label', text: 'Custom Maps' });
+	mapTile.createDiv({ cls: 'crc-dashboard-tile-label', text: '自定义地图' });
 	mapTile.setAttribute('tabindex', '0');
 	mapTile.setAttribute('role', 'button');
 	mapTile.addEventListener('click', () => {
@@ -157,9 +158,9 @@ export function renderUniversesTab(
 
 	// Universe List Card
 	const listCard = createCard({
-		title: 'Your Universes',
+		title: '你的宇宙',
 		icon: 'globe',
-		subtitle: 'All universe notes in your vault'
+		subtitle: '库中的所有宇宙笔记'
 	});
 	addUniversesDockButton(listCard, plugin);
 	const listContent = listCard.querySelector('.crc-card__content') as HTMLElement;
@@ -168,7 +169,7 @@ export function renderUniversesTab(
 		// Empty state message
 		const emptyState = listContent.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No universe notes found. Click "Create Universe" above to get started.',
+			text: '未找到宇宙笔记。点击上方的"创建宇宙"开始。',
 			cls: 'crc-text--muted'
 		});
 	} else {
@@ -178,12 +179,12 @@ export function renderUniversesTab(
 		// Filter dropdown
 		const filterSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 		const filterOptions = [
-			{ value: 'all', label: 'All universes' },
-			{ value: 'active', label: 'Active' },
-			{ value: 'draft', label: 'Draft' },
-			{ value: 'archived', label: 'Archived' },
-			{ value: 'has-entities', label: 'Has entities' },
-			{ value: 'empty', label: 'Empty' }
+			{ value: 'all', label: '全部宇宙' },
+			{ value: 'active', label: '活跃' },
+			{ value: 'draft', label: '草稿' },
+			{ value: 'archived', label: '已归档' },
+			{ value: 'has-entities', label: '有实体' },
+			{ value: 'empty', label: '空' }
 		];
 		filterOptions.forEach(opt => {
 			const option = filterSelect.createEl('option', { text: opt.label, value: opt.value });
@@ -193,12 +194,12 @@ export function renderUniversesTab(
 		// Sort dropdown
 		const sortSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 		const sortOptions = [
-			{ value: 'name-asc', label: 'Name (A\u2013Z)' },
-			{ value: 'name-desc', label: 'Name (Z\u2013A)' },
-			{ value: 'created-asc', label: 'Created (oldest)' },
-			{ value: 'created-desc', label: 'Created (newest)' },
-			{ value: 'entities-asc', label: 'Entities (fewest)' },
-			{ value: 'entities-desc', label: 'Entities (most)' }
+			{ value: 'name-asc', label: '名称（A\u2013Z）' },
+			{ value: 'name-desc', label: '名称（Z\u2013A）' },
+			{ value: 'created-asc', label: '创建时间（最早）' },
+			{ value: 'created-desc', label: '创建时间（最新）' },
+			{ value: 'entities-asc', label: '实体数（最少）' },
+			{ value: 'entities-desc', label: '实体数（最多）' }
 		];
 		sortOptions.forEach(opt => {
 			const option = sortSelect.createEl('option', { text: opt.label, value: opt.value });
@@ -210,7 +211,7 @@ export function renderUniversesTab(
 			cls: 'crc-filter-input',
 			attr: {
 				type: 'text',
-				placeholder: `Search ${universeItems.length} universes...`
+				placeholder: `搜索 ${universeItems.length} 个宇宙…`
 			}
 		});
 
@@ -218,11 +219,11 @@ export function renderUniversesTab(
 		const hint = listContent.createEl('p', {
 			cls: 'crc-text-muted crc-text-small crc-mb-2'
 		});
-		hint.appendText('Click a row to edit. ');
+		hint.appendText('点击行以编辑。');
 		const fileIconHint = createLucideIcon('file-text', 12);
 		fileIconHint.addClass('crc-icon-inline');
 		hint.appendChild(fileIconHint);
-		hint.appendText(' opens the note.');
+		hint.appendText(' 打开笔记。');
 
 		// List container
 		const listContainer = listContent.createDiv({ cls: 'crc-person-list' });
@@ -297,7 +298,7 @@ export function renderUniversesTab(
 
 		// View full statistics link
 		const statsLink = listContent.createDiv({ cls: 'cr-stats-link' });
-		const link = statsLink.createEl('a', { text: 'View full statistics \u2192', cls: 'crc-text-muted' });
+		const link = statsLink.createEl('a', { text: '查看完整统计 \u2192', cls: 'crc-text-muted' });
 		link.addEventListener('click', (e) => {
 			e.preventDefault();
 			closeModal();
@@ -310,23 +311,23 @@ export function renderUniversesTab(
 	// Orphan universes section
 	if (orphans.length > 0) {
 		const orphanCard = createCard({
-			title: 'Orphan universe values',
+			title: '孤立的宇宙值',
 			icon: 'alert-triangle',
-			subtitle: 'Universe references without matching notes'
+			subtitle: '没有对应笔记的宇宙引用'
 		});
 		const orphanContent = orphanCard.querySelector('.crc-card__content') as HTMLElement;
 
 		orphanContent.createEl('p', {
-			text: 'These universe values are used by entities but don\'t have corresponding universe notes. Create notes to enable full universe management.',
+			text: '这些宇宙值被实体使用，但没有对应的宇宙笔记。创建笔记以启用完整的宇宙管理。',
 			cls: 'crc-text-muted crc-mb-3'
 		});
 
 		orphans.forEach(orphan => {
 			const row = orphanContent.createDiv({ cls: 'crc-flex crc-justify-between crc-items-center crc-mb-2' });
 			row.createSpan({ text: `"${orphan.value}"`, cls: 'crc-code' });
-			row.createSpan({ text: `${orphan.entityCount} entities`, cls: 'crc-text-muted' });
+			row.createSpan({ text: `${orphan.entityCount} 个实体`, cls: 'crc-text-muted' });
 			const createNoteBtn = row.createEl('button', {
-				text: 'Create note',
+				text: '创建笔记',
 				cls: 'crc-btn crc-btn--small'
 			});
 			createNoteBtn.addEventListener('click', () => {
@@ -338,11 +339,11 @@ export function renderUniversesTab(
 							name: orphan.value.charAt(0).toUpperCase() + orphan.value.slice(1).replace(/-/g, ' '),
 							crId: orphan.value
 						});
-						new Notice(`Created universe: ${orphan.value}`);
+						new Notice(`已创建宇宙：${orphan.value}`);
 						// Refresh the tab
 						refresh();
 					} catch (err) {
-						new Notice(`Failed to create universe: ${getErrorMessage(err)}`);
+						new Notice(`创建宇宙失败：${getErrorMessage(err)}`);
 					}
 				})();
 			});
@@ -351,7 +352,7 @@ export function renderUniversesTab(
 		// Create all button
 		if (orphans.length > 1) {
 			const createAllBtn = orphanContent.createEl('button', {
-				text: 'Create all',
+				text: '全部创建',
 				cls: 'crc-btn crc-btn--secondary crc-mt-3'
 			});
 			createAllBtn.addEventListener('click', () => {
@@ -366,7 +367,7 @@ export function renderUniversesTab(
 							logger.error('createOrphanUniverse', `Failed: ${orphan.value}`, err);
 						}
 					}
-					new Notice(`Created ${orphans.length} universe notes`);
+					new Notice(`已创建 ${orphans.length} 个宇宙笔记`);
 					refresh();
 				})();
 			});
@@ -391,7 +392,7 @@ function renderUniverseListItems(
 
 	if (universes.length === 0) {
 		container.createEl('p', {
-			text: 'No matching universes found.',
+			text: '未找到匹配的宇宙。',
 			cls: 'crc-text--muted'
 		});
 		return;
@@ -401,9 +402,9 @@ function renderUniverseListItems(
 	const table = container.createEl('table', { cls: 'crc-person-table' });
 	const thead = table.createEl('thead');
 	const headerRow = thead.createEl('tr');
-	headerRow.createEl('th', { text: 'Name', cls: 'crc-person-table__th' });
-	headerRow.createEl('th', { text: 'Status', cls: 'crc-person-table__th' });
-	headerRow.createEl('th', { text: 'Entities', cls: 'crc-person-table__th' });
+	headerRow.createEl('th', { text: '名称', cls: 'crc-person-table__th' });
+	headerRow.createEl('th', { text: '状态', cls: 'crc-person-table__th' });
+	headerRow.createEl('th', { text: '实体', cls: 'crc-person-table__th' });
 	headerRow.createEl('th', { text: '', cls: 'crc-person-table__th crc-person-table__th--icon' });
 
 	const tbody = table.createEl('tbody');
@@ -440,7 +441,7 @@ function renderUniverseTableRow(
 	// Status cell
 	const statusCell = row.createEl('td', { cls: 'crc-person-table__td' });
 	statusCell.createSpan({
-		text: universe.status || 'active',
+		text: UNIVERSE_STATUS_LABELS[universe.status || 'active'],
 		cls: `crc-badge crc-badge--${universe.status || 'active'}`
 	});
 
@@ -448,13 +449,13 @@ function renderUniverseTableRow(
 	const entitiesCell = row.createEl('td', { cls: 'crc-person-table__td crc-person-table__td--date' });
 	if (universe.totalEntities > 0) {
 		const countParts: string[] = [];
-		if (universe.counts.people > 0) countParts.push(`${universe.counts.people} people`);
-		if (universe.counts.places > 0) countParts.push(`${universe.counts.places} places`);
-		if (universe.counts.events > 0) countParts.push(`${universe.counts.events} events`);
-		if (universe.counts.organizations > 0) countParts.push(`${universe.counts.organizations} orgs`);
-		if (universe.counts.maps > 0) countParts.push(`${universe.counts.maps} maps`);
-		if (universe.counts.calendars > 0) countParts.push(`${universe.counts.calendars} calendars`);
-		entitiesCell.setText(countParts.join(', '));
+		if (universe.counts.people > 0) countParts.push(`${universe.counts.people} 位人物`);
+		if (universe.counts.places > 0) countParts.push(`${universe.counts.places} 个地点`);
+		if (universe.counts.events > 0) countParts.push(`${universe.counts.events} 个事件`);
+		if (universe.counts.organizations > 0) countParts.push(`${universe.counts.organizations} 个组织`);
+		if (universe.counts.maps > 0) countParts.push(`${universe.counts.maps} 张地图`);
+		if (universe.counts.calendars > 0) countParts.push(`${universe.counts.calendars} 种历法`);
+		entitiesCell.setText(countParts.join('，'));
 	} else {
 		entitiesCell.setText('\u2014');
 	}
@@ -463,7 +464,7 @@ function renderUniverseTableRow(
 	if (universe.defaultCalendar) {
 		entitiesCell.createEl('br');
 		entitiesCell.createSpan({
-			text: `Default: ${resolveCalendarName(plugin, universe.defaultCalendar)}`,
+			text: `默认：${resolveCalendarName(plugin, universe.defaultCalendar)}`,
 			cls: 'crc-text--muted crc-text--small'
 		});
 	}
@@ -474,7 +475,7 @@ function renderUniverseTableRow(
 	// Open note button
 	const openBtn = actionsCell.createEl('button', {
 		cls: 'crc-person-table__open-btn clickable-icon',
-		attr: { 'aria-label': 'Open note' }
+		attr: { 'aria-label': '打开笔记' }
 	});
 	const fileIcon = createLucideIcon('file-text', 14);
 	openBtn.appendChild(fileIcon);
@@ -512,14 +513,14 @@ function showUniverseContextMenu(
 	const menu = new Menu();
 
 	menu.addItem(item => item
-		.setTitle('Open note')
+		.setTitle('打开笔记')
 		.setIcon('file-text')
 		.onClick(() => {
 			void app.workspace.getLeaf(false).openFile(universe.file);
 		}));
 
 	menu.addItem(item => item
-		.setTitle('Edit universe')
+		.setTitle('编辑宇宙')
 		.setIcon('pencil')
 		.onClick(() => {
 			new EditUniverseModal(app, plugin, {
@@ -532,13 +533,13 @@ function showUniverseContextMenu(
 	menu.addSeparator();
 
 	menu.addItem(item => item
-		.setTitle('Delete universe')
+		.setTitle('删除宇宙')
 		.setIcon('trash-2')
 		.onClick(async () => {
 			const confirmed = await confirmDeleteUniverse(plugin, universe.name);
 			if (confirmed) {
 				await app.fileManager.trashFile(universe.file);
-				new Notice(`Deleted universe: ${universe.name}`);
+				new Notice(`已删除宇宙：${universe.name}`);
 				refresh();
 			}
 		}));
@@ -552,7 +553,7 @@ function addUniversesDockButton(card: HTMLElement, plugin: CanvasRootsPlugin): v
 
 	const dockBtn = activeDocument.createElement('button');
 	dockBtn.className = 'crc-card__dock-btn clickable-icon';
-	dockBtn.setAttribute('aria-label', 'Open in sidebar');
+	dockBtn.setAttribute('aria-label', '在侧边栏中打开');
 	setIcon(dockBtn, 'panel-right');
 	dockBtn.addEventListener('click', (e) => {
 		e.stopPropagation();
@@ -604,7 +605,7 @@ export function renderUniversesList(options: UniversesListOptions): void {
 	if (universeItems.length === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No universe notes found.',
+			text: '未找到宇宙笔记。',
 			cls: 'crc-text--muted'
 		});
 		return;
@@ -616,12 +617,12 @@ export function renderUniversesList(options: UniversesListOptions): void {
 	// Filter dropdown
 	const filterSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 	const filterOptions: { value: UnivFilter; label: string }[] = [
-		{ value: 'all', label: 'All universes' },
-		{ value: 'active', label: 'Active' },
-		{ value: 'draft', label: 'Draft' },
-		{ value: 'archived', label: 'Archived' },
-		{ value: 'has-entities', label: 'Has entities' },
-		{ value: 'empty', label: 'Empty' }
+		{ value: 'all', label: '全部宇宙' },
+		{ value: 'active', label: '活跃' },
+		{ value: 'draft', label: '草稿' },
+		{ value: 'archived', label: '已归档' },
+		{ value: 'has-entities', label: '有实体' },
+		{ value: 'empty', label: '空' }
 	];
 	filterOptions.forEach(opt => {
 		const option = filterSelect.createEl('option', { text: opt.label, value: opt.value });
@@ -631,12 +632,12 @@ export function renderUniversesList(options: UniversesListOptions): void {
 	// Sort dropdown
 	const sortSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 	const sortOptions: { value: UnivSort; label: string }[] = [
-		{ value: 'name-asc', label: 'Name (A\u2013Z)' },
-		{ value: 'name-desc', label: 'Name (Z\u2013A)' },
-		{ value: 'created-asc', label: 'Created (oldest)' },
-		{ value: 'created-desc', label: 'Created (newest)' },
-		{ value: 'entities-asc', label: 'Entities (fewest)' },
-		{ value: 'entities-desc', label: 'Entities (most)' }
+		{ value: 'name-asc', label: '名称（A\u2013Z）' },
+		{ value: 'name-desc', label: '名称（Z\u2013A）' },
+		{ value: 'created-asc', label: '创建时间（最早）' },
+		{ value: 'created-desc', label: '创建时间（最新）' },
+		{ value: 'entities-asc', label: '实体数（最少）' },
+		{ value: 'entities-desc', label: '实体数（最多）' }
 	];
 	sortOptions.forEach(opt => {
 		const option = sortSelect.createEl('option', { text: opt.label, value: opt.value });
@@ -648,7 +649,7 @@ export function renderUniversesList(options: UniversesListOptions): void {
 		cls: 'crc-filter-input',
 		attr: {
 			type: 'text',
-			placeholder: `Search ${universeItems.length} universes...`
+			placeholder: `搜索 ${universeItems.length} 个宇宙…`
 		}
 	});
 	if (currentSearch) searchInput.value = currentSearch;
@@ -711,7 +712,7 @@ export function renderUniversesList(options: UniversesListOptions): void {
 
 		if (filtered.length === 0) {
 			listContainer.createEl('p', {
-				text: 'No matching universes found.',
+				text: '未找到匹配的宇宙。',
 				cls: 'crc-text--muted'
 			});
 			return;
@@ -720,9 +721,9 @@ export function renderUniversesList(options: UniversesListOptions): void {
 		const table = listContainer.createEl('table', { cls: 'crc-person-table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name', cls: 'crc-person-table__th' });
-		headerRow.createEl('th', { text: 'Status', cls: 'crc-person-table__th' });
-		headerRow.createEl('th', { text: 'Entities', cls: 'crc-person-table__th' });
+		headerRow.createEl('th', { text: '名称', cls: 'crc-person-table__th' });
+		headerRow.createEl('th', { text: '状态', cls: 'crc-person-table__th' });
+		headerRow.createEl('th', { text: '实体', cls: 'crc-person-table__th' });
 		headerRow.createEl('th', { text: '', cls: 'crc-person-table__th crc-person-table__th--icon' });
 
 		const tbody = table.createEl('tbody');
@@ -736,7 +737,7 @@ export function renderUniversesList(options: UniversesListOptions): void {
 		if (filtered.length > displayLimit) {
 			const remaining = filtered.length - displayLimit;
 			const loadMore = listContainer.createEl('button', {
-				text: `Load more (${remaining} remaining)`,
+				text: `加载更多（剩余 ${remaining} 个）`,
 				cls: 'crc-btn crc-btn--secondary crc-btn--full-width crc-mt-3'
 			});
 			loadMore.addEventListener('click', () => {
@@ -796,7 +797,7 @@ function renderBrowseUniverseRow(
 	// Status cell
 	const statusCell = row.createEl('td', { cls: 'crc-person-table__td' });
 	statusCell.createSpan({
-		text: universe.status || 'active',
+		text: UNIVERSE_STATUS_LABELS[universe.status || 'active'],
 		cls: `crc-badge crc-badge--${universe.status || 'active'}`
 	});
 
@@ -804,13 +805,13 @@ function renderBrowseUniverseRow(
 	const entitiesCell = row.createEl('td', { cls: 'crc-person-table__td crc-person-table__td--date' });
 	if (universe.totalEntities > 0) {
 		const countParts: string[] = [];
-		if (universe.counts.people > 0) countParts.push(`${universe.counts.people} people`);
-		if (universe.counts.places > 0) countParts.push(`${universe.counts.places} places`);
-		if (universe.counts.events > 0) countParts.push(`${universe.counts.events} events`);
-		if (universe.counts.organizations > 0) countParts.push(`${universe.counts.organizations} orgs`);
-		if (universe.counts.maps > 0) countParts.push(`${universe.counts.maps} maps`);
-		if (universe.counts.calendars > 0) countParts.push(`${universe.counts.calendars} calendars`);
-		entitiesCell.setText(countParts.join(', '));
+		if (universe.counts.people > 0) countParts.push(`${universe.counts.people} 位人物`);
+		if (universe.counts.places > 0) countParts.push(`${universe.counts.places} 个地点`);
+		if (universe.counts.events > 0) countParts.push(`${universe.counts.events} 个事件`);
+		if (universe.counts.organizations > 0) countParts.push(`${universe.counts.organizations} 个组织`);
+		if (universe.counts.maps > 0) countParts.push(`${universe.counts.maps} 张地图`);
+		if (universe.counts.calendars > 0) countParts.push(`${universe.counts.calendars} 种历法`);
+		entitiesCell.setText(countParts.join('，'));
 	} else {
 		entitiesCell.setText('\u2014');
 	}
@@ -819,7 +820,7 @@ function renderBrowseUniverseRow(
 	if (universe.defaultCalendar) {
 		entitiesCell.createEl('br');
 		entitiesCell.createSpan({
-			text: `Default: ${resolveCalendarName(plugin, universe.defaultCalendar)}`,
+			text: `默认：${resolveCalendarName(plugin, universe.defaultCalendar)}`,
 			cls: 'crc-text--muted crc-text--small'
 		});
 	}
@@ -828,7 +829,7 @@ function renderBrowseUniverseRow(
 	const actionsCell = row.createEl('td', { cls: 'crc-person-table__td crc-person-table__td--actions' });
 	const openBtn = actionsCell.createEl('button', {
 		cls: 'crc-person-table__open-btn clickable-icon',
-		attr: { 'aria-label': 'Open note' }
+		attr: { 'aria-label': '打开笔记' }
 	});
 	setIcon(openBtn, 'file-text');
 	openBtn.addEventListener('click', (e) => {
@@ -842,14 +843,14 @@ function renderBrowseUniverseRow(
 		const menu = new Menu();
 
 		menu.addItem(item => item
-			.setTitle('Open note')
+			.setTitle('打开笔记')
 			.setIcon('file-text')
 			.onClick(() => {
 				void app.workspace.getLeaf(false).openFile(universe.file);
 			}));
 
 		menu.addItem(item => item
-			.setTitle('Open in new tab')
+			.setTitle('在新标签页中打开')
 			.setIcon('file-plus')
 			.onClick(() => {
 				void app.workspace.getLeaf('tab').openFile(universe.file);

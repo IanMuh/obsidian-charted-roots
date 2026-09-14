@@ -36,7 +36,7 @@ export class CitationGeneratorModal extends Modal {
 		contentEl.addClass('cr-citation-modal');
 
 		// Header
-		contentEl.createEl('h2', { text: 'Generate citation' });
+		contentEl.createEl('h2', { text: '生成引文' });
 
 		// Source info
 		const sourceInfo = contentEl.createDiv({ cls: 'cr-citation-source-info' });
@@ -47,7 +47,7 @@ export class CitationGeneratorModal extends Modal {
 
 		// Format selector
 		const formatSection = contentEl.createDiv({ cls: 'cr-citation-format-section' });
-		formatSection.createEl('label', { text: 'Citation format', cls: 'cr-citation-label' });
+		formatSection.createEl('label', { text: '引文格式', cls: 'cr-citation-label' });
 
 		const formatGrid = formatSection.createDiv({ cls: 'cr-citation-format-grid' });
 		const formats = getCitationFormats();
@@ -73,7 +73,7 @@ export class CitationGeneratorModal extends Modal {
 
 		// Citation output
 		const citationSection = contentEl.createDiv({ cls: 'cr-citation-output-section' });
-		citationSection.createEl('label', { text: 'Generated citation', cls: 'cr-citation-label' });
+		citationSection.createEl('label', { text: '生成的引文', cls: 'cr-citation-label' });
 
 		this.citationContainer = citationSection.createDiv({ cls: 'cr-citation-output' });
 		this.renderCitation();
@@ -84,16 +84,16 @@ export class CitationGeneratorModal extends Modal {
 		const copyBtn = actions.createEl('button', { cls: 'mod-cta' });
 		const copyIcon = copyBtn.createSpan({ cls: 'crc-button-icon' });
 		setIcon(copyIcon, 'copy');
-		copyBtn.createSpan({ text: 'Copy to clipboard' });
+		copyBtn.createSpan({ text: '复制到剪贴板' });
 		copyBtn.addEventListener('click', () => void this.copyCurrentCitation());
 
 		const copyAllBtn = actions.createEl('button');
 		const copyAllIcon = copyAllBtn.createSpan({ cls: 'crc-button-icon' });
 		setIcon(copyAllIcon, 'files');
-		copyAllBtn.createSpan({ text: 'Copy all formats' });
+		copyAllBtn.createSpan({ text: '复制全部格式' });
 		copyAllBtn.addEventListener('click', () => void this.copyAllCitations());
 
-		const closeBtn = actions.createEl('button', { text: 'Close' });
+		const closeBtn = actions.createEl('button', { text: '关闭' });
 		closeBtn.addEventListener('click', () => this.close());
 	}
 
@@ -114,7 +114,7 @@ export class CitationGeneratorModal extends Modal {
 			const warningIcon = warning.createSpan({ cls: 'cr-citation-warning-icon' });
 			setIcon(warningIcon, 'alert-triangle');
 			warning.createSpan({
-				text: `Missing fields: ${citation.missingFields.join(', ')}`,
+				text: `缺失字段：${citation.missingFields.join(', ')}`,
 				cls: 'cr-citation-warning-text'
 			});
 		}
@@ -123,7 +123,7 @@ export class CitationGeneratorModal extends Modal {
 	private async copyCurrentCitation(): Promise<void> {
 		const citation = generateCitation(this.source, this.selectedFormat);
 		await copyCitationToClipboard(citation);
-		new Notice(`Copied ${this.selectedFormat.replace('_', ' ')} citation to clipboard`);
+		new Notice(`已复制 ${this.selectedFormat.replace('_', ' ')} 格式引文到剪贴板`);
 	}
 
 	private async copyAllCitations(): Promise<void> {
@@ -135,7 +135,7 @@ export class CitationGeneratorModal extends Modal {
 			.join('\n\n');
 
 		await navigator.clipboard.writeText(text);
-		new Notice('Copied all citation formats to clipboard');
+		new Notice('已复制全部引文格式到剪贴板');
 	}
 
 	onClose(): void {
@@ -160,28 +160,28 @@ export function renderCitationWidget(
 	const formats = getCitationFormats();
 
 	const header = widget.createDiv({ cls: 'cr-citation-widget-header' });
-	header.createSpan({ text: 'Quick copy citation:', cls: 'cr-citation-widget-label' });
+	header.createSpan({ text: '快速复制引文：', cls: 'cr-citation-widget-label' });
 
 	const buttons = widget.createDiv({ cls: 'cr-citation-widget-buttons' });
 
 	for (const format of formats) {
 		const btn = buttons.createEl('button', {
 			cls: 'cr-citation-widget-btn',
-			attr: { 'aria-label': `Copy ${format.name} citation` }
+			attr: { 'aria-label': `复制 ${format.name} 格式引文` }
 		});
 		btn.createSpan({ text: format.name });
 
 		btn.addEventListener('click', () => {
 			const citation = generateCitation(source, format.id);
 			void copyCitationToClipboard(citation);
-			new Notice(`Copied ${format.name} citation`);
+			new Notice(`已复制 ${format.name} 格式引文`);
 		});
 	}
 
 	// Full generator button
 	const moreBtn = buttons.createEl('button', {
 		cls: 'cr-citation-widget-btn cr-citation-widget-btn--more',
-		attr: { 'aria-label': 'Open citation generator' }
+		attr: { 'aria-label': '打开引文生成器' }
 	});
 	setIcon(moreBtn, 'external-link');
 

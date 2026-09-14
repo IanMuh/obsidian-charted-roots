@@ -34,9 +34,9 @@ type SortMode = 'chronological' | 'reverse';
 
 /** Result display metadata */
 const RESULT_INFO: Record<string, { label: string; cls: string; icon: string }> = {
-	positive: { label: 'Positive', cls: 'cr-research-timeline__result--positive', icon: 'check-circle' },
-	negative: { label: 'Negative', cls: 'cr-research-timeline__result--negative', icon: 'x-circle' },
-	inconclusive: { label: 'Inconclusive', cls: 'cr-research-timeline__result--inconclusive', icon: 'help-circle' }
+	positive: { label: '阳性', cls: 'cr-research-timeline__result--positive', icon: 'check-circle' },
+	negative: { label: '阴性', cls: 'cr-research-timeline__result--negative', icon: 'x-circle' },
+	inconclusive: { label: '无结论', cls: 'cr-research-timeline__result--inconclusive', icon: 'help-circle' }
 };
 
 /**
@@ -81,7 +81,7 @@ export class ResearchTimelineRenderer {
 		if (sorted.length === 0) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No research activity found.'
+				text: '未找到研究活动。'
 			});
 			return;
 		}
@@ -113,7 +113,7 @@ export class ResearchTimelineRenderer {
 	private renderHeader(container: HTMLElement, count: number, config: DynamicBlockConfig): void {
 		const header = container.createDiv({ cls: 'cr-dynamic-block__header' });
 
-		const titleText = (config.title as string) || 'Research timeline';
+		const titleText = (config.title as string) || '研究时间轴';
 		const titleWithCount = count > 0 ? `${titleText} (${count})` : titleText;
 
 		const titleEl = header.createSpan({ cls: 'cr-dynamic-block__title' });
@@ -124,7 +124,7 @@ export class ResearchTimelineRenderer {
 		const toolbar = header.createDiv({ cls: 'cr-dynamic-block__toolbar' });
 		const freezeBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Freeze to Markdown' }
+			attr: { 'aria-label': '冻结为 Markdown' }
 		});
 		freezeBtn.textContent = '\u2744\uFE0F';
 		freezeBtn.addEventListener('click', () => {
@@ -170,16 +170,16 @@ export class ResearchTimelineRenderer {
 			let key: string;
 			switch (groupMode) {
 				case 'person':
-					key = a.person || 'Unknown';
+					key = a.person || '未知';
 					break;
 				case 'project':
-					key = a.project || 'Unknown';
+					key = a.project || '未知';
 					break;
 				case 'source':
-					key = a.source || 'Unknown';
+					key = a.source || '未知';
 					break;
 				default:
-					key = 'All';
+					key = '全部';
 			}
 
 			if (!groups.has(key)) groups.set(key, []);
@@ -231,13 +231,13 @@ export class ResearchTimelineRenderer {
 
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Date' });
-		headerRow.createEl('th', { text: 'Source' });
-		headerRow.createEl('th', { text: 'Searched for' });
-		headerRow.createEl('th', { text: 'Result' });
-		headerRow.createEl('th', { text: 'Project' });
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Gap (days)' });
+			headerRow.createEl('th', { text: '日期' });
+		headerRow.createEl('th', { text: '来源' });
+		headerRow.createEl('th', { text: '检索目标' });
+		headerRow.createEl('th', { text: '结果' });
+		headerRow.createEl('th', { text: '项目' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '间隔（天）' });
 
 		const tbody = table.createEl('tbody');
 
@@ -374,7 +374,7 @@ export class ResearchTimelineRenderer {
 
 		// Day labels
 		const dayLabels = wrapper.createDiv({ cls: 'cr-research-timeline__heatmap-day-labels' });
-		const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 		for (let d = 0; d < 7; d++) {
 			const label = dayLabels.createDiv({ cls: 'cr-research-timeline__heatmap-day-label' });
 			// Only show labels for Mon, Wed, Fri to avoid crowding
@@ -406,8 +406,8 @@ export class ResearchTimelineRenderer {
 			weekEl!.createDiv({
 				cls: `cr-research-timeline__heatmap-cell cr-research-timeline__heatmap-cell--level-${level}`,
 				attr: {
-					'aria-label': `${dateStr}: ${count} ${count === 1 ? 'activity' : 'activities'}`,
-					title: `${dateStr}: ${count} ${count === 1 ? 'activity' : 'activities'}`
+					'aria-label': `${dateStr}：${count} 项活动`,
+					title: `${dateStr}：${count} 项活动`
 				}
 			});
 
@@ -438,13 +438,13 @@ export class ResearchTimelineRenderer {
 
 		// Legend
 		const legend = wrapper.createDiv({ cls: 'cr-research-timeline__heatmap-legend' });
-		legend.createSpan({ text: 'Less', cls: 'cr-research-timeline__heatmap-legend-label' });
+		legend.createSpan({ text: '少', cls: 'cr-research-timeline__heatmap-legend-label' });
 		for (let i = 0; i <= 4; i++) {
 			legend.createDiv({
 				cls: `cr-research-timeline__heatmap-cell cr-research-timeline__heatmap-cell--level-${i}`
 			});
 		}
-		legend.createSpan({ text: 'More', cls: 'cr-research-timeline__heatmap-legend-label' });
+		legend.createSpan({ text: '多', cls: 'cr-research-timeline__heatmap-legend-label' });
 
 		// Gap summary: find longest inactive stretch within the date range
 		if (allDates.length > 1) {
@@ -467,7 +467,7 @@ export class ResearchTimelineRenderer {
 				const iconEl = gapSummary.createSpan({ cls: 'cr-research-timeline__heatmap-summary-icon' });
 				setIcon(iconEl, 'alert-triangle');
 				gapSummary.createSpan({
-					text: ` Longest gap: ${longestGap} days (${gapStart} to ${gapEnd})`
+					text: ` 最长间隔：${longestGap} 天（${gapStart} 至 ${gapEnd}）`
 				});
 			}
 		}
@@ -491,8 +491,8 @@ export class ResearchTimelineRenderer {
 		for (const a of activities) {
 			if (!a.date) continue;
 			const key = groupBy === 'project'
-				? (a.project || 'Unknown project')
-				: (a.person || 'Unknown person');
+				? (a.project || '未知项目')
+				: (a.person || '未知人物');
 			if (!groups.has(key)) groups.set(key, []);
 			groups.get(key)!.push(a);
 		}
@@ -500,7 +500,7 @@ export class ResearchTimelineRenderer {
 		if (groups.size === 0) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No dated research activity found.'
+				text: '未找到带日期的研究活动。'
 			});
 			return;
 		}
@@ -554,7 +554,7 @@ export class ResearchTimelineRenderer {
 					const gapEl = bar.createDiv({
 						cls: 'cr-research-timeline__timeline-gap',
 						attr: {
-							title: `${gapDays}-day gap (${sortedByDate[i - 1].date} to ${sortedByDate[i].date})`
+							title: `间隔 ${gapDays} 天（${sortedByDate[i - 1].date} 至 ${sortedByDate[i].date}）`
 						}
 					});
 					gapEl.style.left = `${leftPct}%`;
@@ -571,7 +571,7 @@ export class ResearchTimelineRenderer {
 				const marker = bar.createDiv({
 					cls: `cr-research-timeline__timeline-marker ${resultCls}`,
 					attr: {
-						title: `${a.date}: ${a.searchedFor || 'Research activity'} (${a.result || 'unknown'})`
+						title: `${a.date}：${a.searchedFor || '研究活动'}（${a.result || '未知'}）`
 					}
 				});
 				marker.style.left = `${leftPct}%`;
@@ -612,15 +612,15 @@ export class ResearchTimelineRenderer {
 		if (!this.currentActivities || !this.currentConfig) return '';
 
 		const gapThreshold = typeof this.currentConfig.gap === 'number' ? this.currentConfig.gap : 30;
-		const title = (this.currentConfig.title as string) || 'Research timeline';
+		const title = (this.currentConfig.title as string) || '研究时间轴';
 		const lines: string[] = [`## ${title}`, ''];
 
 		if (this.currentActivities.length === 0) {
-			lines.push('*No research activity found.*');
+			lines.push('*未找到研究活动。*');
 			return lines.join('\n');
 		}
 
-		lines.push('| Date | Source | Searched for | Result | Project | Person | Gap (days) |');
+		lines.push('| 日期 | 来源 | 检索目标 | 结果 | 项目 | 人物 | 间隔（天） |');
 		lines.push('|------|--------|--------------|--------|---------|--------|------------|');
 
 		for (let i = 0; i < this.currentActivities.length; i++) {

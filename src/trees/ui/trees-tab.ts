@@ -78,14 +78,14 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 	const cardHeader = overviewCard.createDiv({ cls: 'crc-tree-card__header' });
 	const titleSection = cardHeader.createDiv({ cls: 'crc-tree-card__title-section' });
 	titleSection.appendChild(createLucideIcon('git-branch', 20));
-	titleSection.createSpan({ text: 'Canvas Trees', cls: 'crc-tree-card__title' });
+	titleSection.createSpan({ text: '画布树', cls: 'crc-tree-card__title' });
 
 	// Quick actions in header
 	const actionsSection = cardHeader.createDiv({ cls: 'crc-tree-card__actions' });
 
 	const newTreeBtn = actionsSection.createEl('button', { cls: 'cr-btn cr-btn--primary' });
 	newTreeBtn.appendChild(createLucideIcon('plus', 16));
-	newTreeBtn.appendText('New Tree');
+	newTreeBtn.appendText('新建树');
 	newTreeBtn.addEventListener('click', () => {
 		const wizard = new UnifiedTreeWizardModal(plugin, {
 			onComplete: () => showTab('tree-generation')
@@ -96,7 +96,7 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 	if (recentTrees.length > 0) {
 		const openLatestBtn = actionsSection.createEl('button', { cls: 'cr-btn cr-btn--secondary' });
 		openLatestBtn.appendChild(createLucideIcon('external-link', 16));
-		openLatestBtn.appendText('Open Latest');
+		openLatestBtn.appendText('打开最新');
 		openLatestBtn.addEventListener('click', () => {
 			void openCanvasTree(recentTrees[0].canvasPath);
 		});
@@ -105,7 +105,7 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 	if (familyComponents.length > 1) {
 		const allTreesBtn = actionsSection.createEl('button', { cls: 'cr-btn cr-btn--secondary' });
 		allTreesBtn.appendChild(createLucideIcon('network', 16));
-		allTreesBtn.appendText(`Generate All (${familyComponents.length})`);
+		allTreesBtn.appendText(`全部生成（${familyComponents.length}）`);
 		allTreesBtn.addEventListener('click', () => {
 			void openAndGenerateAllTrees();
 		});
@@ -115,10 +115,10 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 	const statsGrid = overviewCard.createDiv({ cls: 'crc-tree-card__stats' });
 
 	const stats = [
-		{ value: recentTrees.length, label: 'Trees', icon: 'file' as const },
-		{ value: totalPeopleInTrees, label: 'In Trees', icon: 'users' as const },
-		{ value: familyComponents.length, label: 'Families', icon: 'home' as const },
-		{ value: totalPeopleInVault, label: 'In Vault', icon: 'user' as const }
+		{ value: recentTrees.length, label: '树', icon: 'file' as const },
+		{ value: totalPeopleInTrees, label: '树中人物', icon: 'users' as const },
+		{ value: familyComponents.length, label: '家族', icon: 'home' as const },
+		{ value: totalPeopleInVault, label: '库中人物', icon: 'user' as const }
 	];
 
 	stats.forEach(stat => {
@@ -133,7 +133,7 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 	const recentCard = container.createDiv({ cls: 'crc-tree-card' });
 	const recentHeader = recentCard.createDiv({ cls: 'crc-tree-card__header crc-tree-card__header--simple' });
 	recentHeader.appendChild(createLucideIcon('clock', 18));
-	recentHeader.createSpan({ text: 'Recent trees', cls: 'crc-tree-card__title' });
+	recentHeader.createSpan({ text: '最近的树', cls: 'crc-tree-card__title' });
 	if (recentTrees.length > 0) {
 		recentHeader.createSpan({ text: String(recentTrees.length), cls: 'crc-tree-card__badge' });
 	}
@@ -156,10 +156,10 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 			});
 
 			const metaRow = treeInfo.createDiv({ cls: 'crc-recent-tree-meta' });
-			metaRow.createSpan({ text: `${tree.peopleCount} people`, cls: 'crc-badge crc-badge--small' });
+			metaRow.createSpan({ text: `${tree.peopleCount} 人`, cls: 'crc-badge crc-badge--small' });
 			if (tree.rootPerson) {
 				metaRow.createSpan({ text: ' · ', cls: 'crc-text-muted' });
-				metaRow.createSpan({ text: `Root: ${tree.rootPerson}`, cls: 'crc-text-muted crc-text-sm' });
+				metaRow.createSpan({ text: `根人物：${tree.rootPerson}`, cls: 'crc-text-muted crc-text-sm' });
 			}
 			if (tree.timestamp) {
 				metaRow.createSpan({ text: ' · ', cls: 'crc-text-muted' });
@@ -170,7 +170,7 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 
 			const openBtn = actionRow.createEl('button', {
 				cls: 'crc-btn crc-btn--icon',
-				attr: { 'aria-label': 'Open canvas' }
+				attr: { 'aria-label': '打开画布' }
 			});
 			openBtn.appendChild(createLucideIcon('external-link', 14));
 			openBtn.addEventListener('click', (e) => {
@@ -180,7 +180,7 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 
 			const moreBtn = actionRow.createEl('button', {
 				cls: 'crc-btn crc-btn--icon',
-				attr: { 'aria-label': 'More actions' }
+				attr: { 'aria-label': '更多操作' }
 			});
 			moreBtn.appendChild(createLucideIcon('more-vertical', 14));
 			moreBtn.addEventListener('click', (e) => {
@@ -198,7 +198,7 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 		const emptyIcon = emptyState.createDiv({ cls: 'crc-tree-empty-icon' });
 		emptyIcon.appendChild(createLucideIcon('git-branch', 40));
 		emptyState.createEl('p', {
-			text: 'No trees yet. Click "New Tree" to create your first canvas.',
+			text: '还没有树。点击「新建树」创建你的第一个画布。',
 			cls: 'crc-text-muted'
 		});
 	}
@@ -207,14 +207,14 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 	const tipsCard = container.createDiv({ cls: 'crc-tree-card crc-tree-card--muted' });
 	const tipsHeader = tipsCard.createDiv({ cls: 'crc-tree-card__header crc-tree-card__header--simple' });
 	tipsHeader.appendChild(createLucideIcon('lightbulb', 18));
-	tipsHeader.createSpan({ text: 'Tips', cls: 'crc-tree-card__title' });
+	tipsHeader.createSpan({ text: '提示', cls: 'crc-tree-card__title' });
 
 	const tipsContent = tipsCard.createDiv({ cls: 'crc-tree-card__content' });
 	const tipsList = tipsContent.createEl('ul', { cls: 'crc-tree-tips-list' });
 	const tips = [
-		'Use "Ancestors" or "Descendants" for focused lineage views.',
-		'Filter by collection to generate trees for specific branches.',
-		'Right-click recent trees for regenerate, reveal, or delete options.'
+		'使用「祖先」或「后代」获得聚焦的世系视图。',
+		'按合集筛选，为特定分支生成树。',
+		'右键单击最近的树，可重新生成、定位或删除。'
 	];
 	tips.forEach(tip => tipsList.createEl('li', { text: tip }));
 
@@ -222,16 +222,16 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 	const bookCard = container.createDiv({ cls: 'crc-tree-card' });
 	const bookHeader = bookCard.createDiv({ cls: 'crc-tree-card__header crc-tree-card__header--simple' });
 	bookHeader.appendChild(createLucideIcon('book', 18));
-	bookHeader.createSpan({ text: 'Book builder', cls: 'crc-tree-card__title' });
+	bookHeader.createSpan({ text: '书籍构建器', cls: 'crc-tree-card__title' });
 
 	const bookContent = bookCard.createDiv({ cls: 'crc-tree-card__content' });
 	const bookDesc = bookContent.createDiv({ cls: 'crc-text-muted crc-mb-2' });
-	bookDesc.setText('Compile reports, trees, and notes into a single PDF or ODT activeDocument.');
+	bookDesc.setText('将报告、树和笔记编译为单个 PDF 或 ODT 文档。');
 
 	const bookActions = bookContent.createDiv({ cls: 'cr-sv-report-card-actions' });
 	const bookBtn = bookActions.createEl('button', {
 		cls: 'mod-cta',
-		text: 'Open book builder'
+		text: '打开书籍构建器'
 	});
 
 	bookBtn.addEventListener('click', () => {
@@ -243,16 +243,16 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 	const wizardCard = container.createDiv({ cls: 'crc-tree-card' });
 	const wizardHeader = wizardCard.createDiv({ cls: 'crc-tree-card__header crc-tree-card__header--simple' });
 	wizardHeader.appendChild(createLucideIcon('wand', 18));
-	wizardHeader.createSpan({ text: 'Report wizard', cls: 'crc-tree-card__title' });
+	wizardHeader.createSpan({ text: '报告向导', cls: 'crc-tree-card__title' });
 
 	const wizardContent = wizardCard.createDiv({ cls: 'crc-tree-card__content' });
 	const wizardDesc = wizardContent.createDiv({ cls: 'crc-text-muted crc-mb-2' });
-	wizardDesc.setText('Step-by-step wizard to generate any report type with options.');
+	wizardDesc.setText('分步向导，可为任意报告类型生成并配置选项。');
 
 	const wizardActions = wizardContent.createDiv({ cls: 'cr-sv-report-card-actions' });
 	const wizardBtn = wizardActions.createEl('button', {
 		cls: 'mod-cta',
-		text: 'Open report wizard'
+		text: '打开报告向导'
 	});
 
 	wizardBtn.addEventListener('click', () => {
@@ -265,11 +265,11 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 	const reportsCard = container.createDiv({ cls: 'crc-tree-card' });
 	const reportsHeader = reportsCard.createDiv({ cls: 'crc-tree-card__header crc-tree-card__header--simple' });
 	reportsHeader.appendChild(createLucideIcon('file-text', 18));
-	reportsHeader.createSpan({ text: 'Reports', cls: 'crc-tree-card__title' });
+	reportsHeader.createSpan({ text: '报告', cls: 'crc-tree-card__title' });
 
 	const reportsContent = reportsCard.createDiv({ cls: 'crc-tree-card__content' });
 	const reportsDesc = reportsContent.createDiv({ cls: 'crc-text-muted crc-mb-2' });
-	reportsDesc.setText('Generate formatted reports from your genealogy data.');
+	reportsDesc.setText('根据你的家谱数据生成格式化报告。');
 
 	const reportsGrid = reportsContent.createDiv({ cls: 'cr-sv-reports-grid' });
 
@@ -290,7 +290,7 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 		const reportCardActions = reportCard.createDiv({ cls: 'cr-sv-report-card-actions' });
 		const generateBtn = reportCardActions.createEl('button', {
 			cls: 'mod-cta',
-			text: 'Generate'
+			text: '生成'
 		});
 
 		generateBtn.addEventListener('click', () => {
@@ -305,11 +305,11 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 	const visualTreesCard = container.createDiv({ cls: 'crc-tree-card' });
 	const visualTreesHeader = visualTreesCard.createDiv({ cls: 'crc-tree-card__header crc-tree-card__header--simple' });
 	visualTreesHeader.appendChild(createLucideIcon('file-image', 18));
-	visualTreesHeader.createSpan({ text: 'Visual trees', cls: 'crc-tree-card__title' });
+	visualTreesHeader.createSpan({ text: '视觉树', cls: 'crc-tree-card__title' });
 
 	const visualTreesContent = visualTreesCard.createDiv({ cls: 'crc-tree-card__content' });
 	const visualTreesDesc = visualTreesContent.createDiv({ cls: 'crc-text-muted crc-mb-2' });
-	visualTreesDesc.setText('Generate printable PDF tree diagrams with positioned boxes and connecting lines.');
+	visualTreesDesc.setText('生成可打印的 PDF 树图，包含定位的方框和连接线。');
 
 	const visualTreesGrid = visualTreesContent.createDiv({ cls: 'cr-sv-reports-grid' });
 
@@ -338,7 +338,7 @@ function showTreeGenerationTab(options: TreesTabOptions): void {
 		const vtCardActions = vtCard.createDiv({ cls: 'cr-sv-report-card-actions' });
 		const vtGenerateBtn = vtCardActions.createEl('button', {
 			cls: 'mod-cta',
-			text: 'Generate'
+			text: '生成'
 		});
 
 		vtGenerateBtn.addEventListener('click', () => {

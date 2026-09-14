@@ -40,7 +40,7 @@ export class CaptionModal extends Modal {
 		contentEl.addClass('cr-caption-modal');
 
 		contentEl.createEl('h2', {
-			text: this.existingCaption ? 'Edit caption' : 'Set caption'
+			text: this.existingCaption ? '编辑说明文字' : '设置说明文字'
 		});
 		contentEl.createEl('p', {
 			text: this.imageFile.name,
@@ -50,11 +50,11 @@ export class CaptionModal extends Modal {
 		let captionValue = this.existingCaption;
 
 		new Setting(contentEl)
-			.setName('Caption')
-			.setDesc('Short label rendered beneath the thumbnail in the gallery')
+			.setName('说明文字')
+			.setDesc('在图库缩略图下方显示的简短标签')
 			.addText(text => {
 				text.setValue(captionValue);
-				text.setPlaceholder('e.g. Wedding day, June 1925');
+				text.setPlaceholder('例如：婚礼当天，1925年6月');
 				text.onChange(v => {
 					captionValue = v;
 				});
@@ -73,10 +73,10 @@ export class CaptionModal extends Modal {
 			});
 
 		const buttonRow = contentEl.createDiv({ cls: 'cr-caption-modal__buttons' });
-		const cancelBtn = buttonRow.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonRow.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
-		const saveBtn = buttonRow.createEl('button', { text: 'Save', cls: 'mod-cta' });
+		const saveBtn = buttonRow.createEl('button', { text: '保存', cls: 'mod-cta' });
 		saveBtn.addEventListener('click', () => this.commit(captionValue));
 	}
 

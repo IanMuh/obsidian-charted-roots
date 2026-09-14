@@ -63,11 +63,11 @@ export class TemplateSnippetsModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('file-code', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Templater templates');
+		titleContainer.appendText('Templater 模板');
 
 		// Description
 		contentEl.createEl('p', {
-			text: 'Copy these templates into your Templater template files. They use Templater syntax for dynamic values.',
+			text: '将这些模板复制到你的 Templater 模板文件中。它们使用 Templater 语法来生成动态值。',
 			cls: 'crc-text--muted'
 		});
 
@@ -76,15 +76,15 @@ export class TemplateSnippetsModal extends Modal {
 
 		type TileConfig = { type: TemplateType; label: string; icon: string; el?: HTMLButtonElement };
 		const tiles: TileConfig[] = [
-			{ type: 'person', label: 'People', icon: 'users' },
-			{ type: 'event', label: 'Events', icon: 'calendar' },
-			{ type: 'place', label: 'Places', icon: 'map-pin' },
-			{ type: 'source', label: 'Sources', icon: 'archive' },
-			{ type: 'organization', label: 'Organizations', icon: 'building' },
-			{ type: 'universe', label: 'Universes', icon: 'globe' },
-			{ type: 'note', label: 'Notes', icon: 'file-text' },
-			{ type: 'proof', label: 'Proof summaries', icon: 'scale' },
-			{ type: 'reference', label: 'Reference', icon: 'book-open' }
+			{ type: 'person', label: '人物', icon: 'users' },
+			{ type: 'event', label: '事件', icon: 'calendar' },
+			{ type: 'place', label: '地点', icon: 'map-pin' },
+			{ type: 'source', label: '来源', icon: 'archive' },
+			{ type: 'organization', label: '组织', icon: 'building' },
+			{ type: 'universe', label: '宇宙', icon: 'globe' },
+			{ type: 'note', label: '笔记', icon: 'file-text' },
+			{ type: 'proof', label: '论证摘要', icon: 'scale' },
+			{ type: 'reference', label: '参考', icon: 'book-open' }
 		];
 
 		for (const tile of tiles) {
@@ -120,7 +120,7 @@ export class TemplateSnippetsModal extends Modal {
 		// Close button
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons crc-mt-4' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.onClick(() => this.close());
 	}
 
@@ -187,7 +187,7 @@ export class TemplateSnippetsModal extends Modal {
 
 			const copyBtn = codeWrapper.createEl('button', {
 				cls: 'crc-template-copy-btn',
-				attr: { 'aria-label': 'Copy template' }
+				attr: { 'aria-label': '复制模板' }
 			});
 			const copyIcon = createLucideIcon('copy', 16);
 			copyBtn.appendChild(copyIcon);
@@ -196,7 +196,7 @@ export class TemplateSnippetsModal extends Modal {
 				void (async () => {
 					try {
 						await navigator.clipboard.writeText(template.template);
-						new Notice('Template copied to clipboard');
+						new Notice('模板已复制到剪贴板');
 
 						// Visual feedback
 						copyBtn.empty();
@@ -210,7 +210,7 @@ export class TemplateSnippetsModal extends Modal {
 							copyBtn.removeClass('crc-template-copy-btn--success');
 						}, 2000);
 					} catch {
-						new Notice('Failed to copy template');
+						new Notice('复制模板失败');
 					}
 				})();
 			});
@@ -222,19 +222,19 @@ export class TemplateSnippetsModal extends Modal {
 	 */
 	private renderVariableReference(container: HTMLElement): void {
 		const variables = [
-			{ syntax: '<% tp.file.title %>', description: 'Current file name (for name field)' },
-			{ syntax: '<% tp.date.now("YYYY-MM-DD") %>', description: 'Today\'s date (for born/died fields)' },
-			{ syntax: '<% tp.file.cursor() %>', description: 'Place cursor here after template insertion' },
-			{ syntax: '<% tp.system.prompt("Question?") %>', description: 'Prompt user for input' },
-			{ syntax: '<% tp.system.suggester(["opt1", "opt2"], ["val1", "val2"]) %>', description: 'Show selection dialog' }
+			{ syntax: '<% tp.file.title %>', description: '当前文件名（用于 name 字段）' },
+			{ syntax: '<% tp.date.now("YYYY-MM-DD") %>', description: '今天的日期（用于 born/died 字段）' },
+			{ syntax: '<% tp.file.cursor() %>', description: '模板插入后将光标置于此处' },
+			{ syntax: '<% tp.system.prompt("Question?") %>', description: '提示用户输入' },
+			{ syntax: '<% tp.system.suggester(["opt1", "opt2"], ["val1", "val2"]) %>', description: '显示选择对话框' }
 		];
 
 		const table = container.createEl('table', { cls: 'crc-template-table' });
 
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Syntax' });
-		headerRow.createEl('th', { text: 'Description' });
+		headerRow.createEl('th', { text: '语法' });
+		headerRow.createEl('th', { text: '描述' });
 
 		const tbody = table.createEl('tbody');
 		for (const v of variables) {
@@ -251,7 +251,7 @@ export class TemplateSnippetsModal extends Modal {
 	private renderReferenceContent(container: HTMLElement): void {
 		// Variable reference section
 		const referenceSection = container.createDiv({ cls: 'crc-template-reference-section' });
-		referenceSection.createEl('h4', { text: 'Templater variable reference', cls: 'crc-mb-2' });
+		referenceSection.createEl('h4', { text: 'Templater 变量参考', cls: 'crc-mb-2' });
 
 		const referenceContent = referenceSection.createDiv({ cls: 'crc-template-reference-content' });
 		this.renderVariableReference(referenceContent);
@@ -259,9 +259,9 @@ export class TemplateSnippetsModal extends Modal {
 		// Schema documentation link
 		const schemaSection = container.createDiv({ cls: 'crc-template-schema-link crc-mt-3' });
 		const schemaNote = schemaSection.createEl('p', { cls: 'crc-text--muted' });
-		schemaNote.appendText('These templates include common fields. For the complete list of supported frontmatter properties, see the ');
+		schemaNote.appendText('这些模板包含常用字段。关于支持的 frontmatter 属性的完整列表，请参阅 ');
 		const schemaLink = schemaNote.createEl('a', {
-			text: 'Frontmatter schema reference',
+			text: 'frontmatter 模式参考',
 			cls: 'crc-link',
 			href: 'https://github.com/banisterious/obsidian-charted-roots/blob/main/docs/reference/frontmatter-schema.md'
 		});
@@ -270,9 +270,9 @@ export class TemplateSnippetsModal extends Modal {
 
 		// Advanced setup link (user scripts)
 		const advancedNote = schemaSection.createEl('p', { cls: 'crc-text--muted crc-mt-2' });
-		advancedNote.appendText('For advanced setup with reusable user scripts and cr_id generation functions, see the ');
+		advancedNote.appendText('关于使用可复用用户脚本和 cr_id 生成函数的高级设置，请参阅 ');
 		const advancedLink = advancedNote.createEl('a', {
-			text: 'Templater integration guide',
+			text: 'Templater 集成指南',
 			cls: 'crc-link',
 			href: 'https://github.com/banisterious/obsidian-charted-roots/wiki/Templater-Integration'
 		});
@@ -288,8 +288,8 @@ export class TemplateSnippetsModal extends Modal {
 
 		return [
 			{
-				name: 'Basic person note',
-				description: 'Minimal template with essential fields',
+				name: '基础人物笔记',
+				description: '包含基本字段的精简模板',
 				template: `---
 ${p('cr_type')}: person
 ${p('cr_id')}:
@@ -304,8 +304,8 @@ ${p('died')}:
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Full person note',
-				description: 'Complete template with family relationships, dynamic blocks, and place fields',
+				name: '完整人物笔记',
+				description: '包含家族关系、动态块和地点字段的完整模板',
 				template: `---
 ${p('cr_type')}: person
 ${p('cr_id')}:
@@ -368,8 +368,8 @@ editable: true
 `
 			},
 			{
-				name: 'Person with prompts',
-				description: 'Interactive template that prompts for key information',
+				name: '带提示的人物',
+				description: '交互式模板，会提示输入关键信息',
 				template: `---
 ${p('cr_type')}: person
 ${p('cr_id')}:
@@ -385,8 +385,8 @@ ${p('birth_place')}: "<% tp.system.prompt("Birth place?", "", false) %>"
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'DNA match',
-				description: 'Template for tracking DNA matches from genetic genealogy',
+				name: 'DNA 匹配',
+				description: '用于追踪遗传谱系中 DNA 匹配的模板',
 				template: `---
 ${p('cr_type')}: person
 ${p('cr_id')}:
@@ -428,8 +428,8 @@ dna_notes:
 
 		return [
 			{
-				name: 'Basic place note',
-				description: 'Minimal template for real-world locations',
+				name: '基础地点笔记',
+				description: '用于现实世界地点的精简模板',
 				template: `---
 ${p('cr_type')}: place
 ${p('cr_id')}:
@@ -443,8 +443,8 @@ ${p('parent_place')}:
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Place with coordinates',
-				description: 'For real-world locations with geographic coordinates',
+				name: '含坐标的地点',
+				description: '用于带有地理坐标的现实世界地点',
 				template: `---
 ${p('cr_type')}: place
 ${p('cr_id')}:
@@ -462,8 +462,8 @@ ${p('coordinates')}:
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Historical place',
-				description: 'For places that no longer exist or have changed significantly',
+				name: '历史地点',
+				description: '用于已不复存在或发生重大变化的地点',
 				template: `---
 ${p('cr_type')}: place
 ${p('cr_id')}:
@@ -482,8 +482,8 @@ historical_name_periods:
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Fictional place',
-				description: 'For world-building and fictional locations',
+				name: '虚构地点',
+				description: '用于世界观构建和虚构地点',
 				template: `---
 ${p('cr_type')}: place
 ${p('cr_id')}:
@@ -509,8 +509,8 @@ custom_coordinates:
 `
 			},
 			{
-				name: 'Full place note',
-				description: 'Complete template with all available fields',
+				name: '完整地点笔记',
+				description: '包含所有可用字段的完整模板',
 				template: `---
 ${p('cr_type')}: place
 ${p('cr_id')}:
@@ -548,8 +548,8 @@ ${p('collection')}:
 
 		return [
 			{
-				name: 'Basic source note',
-				description: 'Minimal template for documenting a source',
+				name: '基础来源笔记',
+				description: '用于记录来源的精简模板',
 				template: `---
 ${p('cr_type')}: source
 ${p('cr_id')}:
@@ -564,8 +564,8 @@ ${p('confidence')}: <% tp.system.suggester(["High", "Medium", "Low", "Unknown"],
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Census source',
-				description: 'Template for census records',
+				name: '人口普查来源',
+				description: '用于人口普查记录的模板',
 				template: `---
 ${p('cr_type')}: source
 ${p('cr_id')}:
@@ -611,8 +611,8 @@ media:
 `
 			},
 			{
-				name: 'Vital record source',
-				description: 'Template for birth, death, or marriage certificates',
+				name: '重要记录来源',
+				description: '用于出生、死亡或婚姻证明的模板',
 				template: `---
 ${p('cr_type')}: source
 ${p('cr_id')}:
@@ -649,8 +649,8 @@ media:
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Full source note',
-				description: 'Complete template with all source fields',
+				name: '完整来源笔记',
+				description: '包含所有来源字段的完整模板',
 				template: `---
 ${p('cr_type')}: source
 ${p('cr_id')}:
@@ -695,8 +695,8 @@ citation_override:
 
 		return [
 			{
-				name: 'Basic organization note',
-				description: 'Minimal template for any organization type',
+				name: '基础组织笔记',
+				description: '适用于任何组织类型的精简模板',
 				template: `---
 ${p('cr_type')}: organization
 ${p('cr_id')}:
@@ -709,8 +709,8 @@ org_type: <% tp.system.suggester(["Noble house", "Guild", "Corporation", "Milita
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Noble house',
-				description: 'Template for feudal houses and dynasties',
+				name: '贵族家族',
+				description: '用于封建家族和王朝的模板',
 				template: `---
 ${p('cr_type')}: organization
 ${p('cr_id')}:
@@ -737,8 +737,8 @@ ${p('universe')}: "<% tp.system.prompt("Universe/World name?", "", false) %>"
 `
 			},
 			{
-				name: 'Military unit',
-				description: 'Template for armies, regiments, and military organizations',
+				name: '军事单位',
+				description: '用于军队、军团和军事组织的模板',
 				template: `---
 ${p('cr_type')}: organization
 ${p('cr_id')}:
@@ -766,8 +766,8 @@ ${p('universe')}:
 `
 			},
 			{
-				name: 'Full organization note',
-				description: 'Complete template with all organization fields',
+				name: '完整组织笔记',
+				description: '包含所有组织字段的完整模板',
 				template: `---
 ${p('cr_type')}: organization
 ${p('cr_id')}:
@@ -807,8 +807,8 @@ ${p('collection')}:
 
 		return [
 			{
-				name: 'Basic universe note',
-				description: 'Minimal template for fictional worlds and settings',
+				name: '基础宇宙笔记',
+				description: '用于虚构世界和设定的精简模板',
 				template: `---
 ${p('cr_type')}: universe
 ${p('cr_id')}:
@@ -822,8 +822,8 @@ status: active
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Full universe note',
-				description: 'Complete template with all universe fields',
+				name: '完整宇宙笔记',
+				description: '包含所有宇宙字段的完整模板',
 				template: `---
 ${p('cr_type')}: universe
 ${p('cr_id')}:
@@ -855,8 +855,8 @@ default_map:
 `
 			},
 			{
-				name: 'Universe with calendar',
-				description: 'Template including custom date system setup',
+				name: '含历法的宇宙',
+				description: '包含自定义日期系统设置的模板',
 				template: `---
 ${p('cr_type')}: universe
 ${p('cr_id')}:
@@ -904,8 +904,8 @@ This universe uses a custom date system. Define your calendar in the Date System
 
 		return [
 			{
-				name: 'Basic note',
-				description: 'Minimal template for research notes',
+				name: '基础笔记',
+				description: '用于研究笔记的精简模板',
 				template: `---
 ${p('cr_type')}: note
 ${p('cr_id')}:
@@ -918,8 +918,8 @@ private: false
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Research note',
-				description: 'Template for documenting research findings',
+				name: '研究笔记',
+				description: '用于记录研究发现成果的模板',
 				template: `---
 ${p('cr_type')}: note
 ${p('cr_id')}:
@@ -942,8 +942,8 @@ linked_entities:
 `
 			},
 			{
-				name: 'Transcript note',
-				description: 'For document transcriptions',
+				name: '转录笔记',
+				description: '用于文档转录',
 				template: `---
 ${p('cr_type')}: note
 ${p('cr_id')}:
@@ -973,8 +973,8 @@ source: "[[<% tp.system.prompt("Source document?", "", false) %>]]"
 
 		return [
 			{
-				name: 'Basic proof summary',
-				description: 'Minimal template for documenting a genealogical conclusion',
+				name: '基础论证摘要',
+				description: '用于记录谱系结论的精简模板',
 				template: `---
 ${p('cr_type')}: proof_summary
 ${p('cr_id')}:
@@ -1000,8 +1000,8 @@ evidence: []
 `
 			},
 			{
-				name: 'Proof summary with evidence',
-				description: 'Template with pre-structured evidence entries',
+				name: '含证据的论证摘要',
+				description: '带有预结构化证据条目的模板',
 				template: `---
 ${p('cr_type')}: proof_summary
 ${p('cr_id')}:
@@ -1046,8 +1046,8 @@ evidence:
 `
 			},
 			{
-				name: 'Conflict resolution proof',
-				description: 'Template for documenting how conflicting evidence was resolved',
+				name: '冲突解决论证',
+				description: '用于记录如何解决证据冲突的模板',
 				template: `---
 ${p('cr_type')}: proof_summary
 ${p('cr_id')}:
@@ -1102,8 +1102,8 @@ Explain how you resolved the conflict and why you chose one conclusion over anot
 
 		return [
 			{
-				name: 'Basic event note',
-				description: 'Minimal template for recording life events',
+				name: '基础事件笔记',
+				description: '用于记录生平事件的精简模板',
 				template: `---
 ${p('cr_type')}: event
 ${p('cr_id')}:
@@ -1123,8 +1123,8 @@ ${p('confidence')}: <% tp.system.suggester(["High", "Medium", "Low", "Unknown"],
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Birth event',
-				description: 'Template for recording a birth event',
+				name: '出生事件',
+				description: '用于记录出生事件的模板',
 				template: `---
 ${p('cr_type')}: event
 ${p('cr_id')}:
@@ -1144,8 +1144,8 @@ ${p('confidence')}: <% tp.system.suggester(["High", "Medium", "Low", "Unknown"],
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Marriage event',
-				description: 'Template for recording a marriage event',
+				name: '婚姻事件',
+				description: '用于记录婚姻事件的模板',
 				template: `---
 ${p('cr_type')}: event
 ${p('cr_id')}:
@@ -1166,8 +1166,8 @@ ${p('confidence')}: <% tp.system.suggester(["High", "Medium", "Low", "Unknown"],
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Death event',
-				description: 'Template for recording a death event',
+				name: '去世事件',
+				description: '用于记录去世事件的模板',
 				template: `---
 ${p('cr_type')}: event
 ${p('cr_id')}:
@@ -1187,8 +1187,8 @@ ${p('confidence')}: <% tp.system.suggester(["High", "Medium", "Low", "Unknown"],
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Narrative event',
-				description: 'Template for worldbuilders and storytellers',
+				name: '叙事事件',
+				description: '面向世界观构建者和故事创作者的模板',
 				template: `---
 ${p('cr_type')}: event
 ${p('cr_id')}:
@@ -1209,8 +1209,8 @@ ${p('confidence')}: medium
 <% tp.file.cursor() %>`
 			},
 			{
-				name: 'Relative-ordered event',
-				description: 'Event without exact date, using relative ordering',
+				name: '相对排序事件',
+				description: '没有确切日期、使用相对排序的事件',
 				template: `---
 ${p('cr_type')}: event
 ${p('cr_id')}:
@@ -1240,8 +1240,8 @@ ${p('confidence')}: medium
 This event's position is determined by its relationships to other events, not by a specific date.`
 			},
 			{
-				name: 'Full event note',
-				description: 'Complete template with all event fields',
+				name: '完整事件笔记',
+				description: '包含所有事件字段的完整模板',
 				template: `---
 ${p('cr_type')}: event
 ${p('cr_id')}:

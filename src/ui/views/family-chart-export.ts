@@ -140,12 +140,12 @@ async function exportAsPngWithOptions(
 ): Promise<void> {
 	const svg = ctx.getChartSvg();
 	if (!svg) {
-		new Notice('No chart to export');
+		new Notice('没有可导出的图表');
 		return;
 	}
 
 	try {
-		onProgress?.({ phase: 'preparing', current: 0, total: 100, message: 'Preparing chart...' });
+		onProgress?.({ phase: 'preparing', current: 0, total: 100, message: '正在准备图表…' });
 
 		const { svgClone, width, height } = prepareSvgForExport(ctx, svg);
 
@@ -159,12 +159,12 @@ async function exportAsPngWithOptions(
 		const scaledArea = scaledWidth * scaledHeight;
 
 		if (scaledWidth > maxDimension || scaledHeight > maxDimension) {
-			new Notice(`Chart too large for PNG export (${Math.round(width)}x${Math.round(height)}px). Try SVG export instead.`, 0);
+			new Notice(`图表过大，无法导出为PNG（${Math.round(width)}x${Math.round(height)}px）。请尝试导出为SVG。`, 0);
 			return;
 		}
 
 		if (scaledArea > maxArea) {
-			new Notice(`Chart too large for PNG export (${Math.round(scaledArea / 1000000)}M pixels). Try SVG export instead.`, 0);
+			new Notice(`图表过大，无法导出为PNG（${Math.round(scaledArea / 1000000)}M像素）。请尝试导出为SVG。`, 0);
 			return;
 		}
 
@@ -179,7 +179,7 @@ async function exportAsPngWithOptions(
 			removeAppImages(svgClone);
 		}
 
-		onProgress?.({ phase: 'rendering', current: 0, total: 100, message: 'Rendering image...' });
+		onProgress?.({ phase: 'rendering', current: 0, total: 100, message: '正在渲染图像…' });
 
 		// Serialize SVG
 		const serializer = new XMLSerializer();
@@ -193,7 +193,7 @@ async function exportAsPngWithOptions(
 		canvas.height = scaledHeight;
 		const ctxCanvas = canvas.getContext('2d');
 		if (!ctxCanvas) {
-			new Notice('Failed to create canvas context');
+			new Notice('创建画布上下文失败');
 			return;
 		}
 
@@ -203,33 +203,33 @@ async function exportAsPngWithOptions(
 			ctxCanvas.drawImage(img, 0, 0);
 			URL.revokeObjectURL(svgUrl);
 
-			onProgress?.({ phase: 'encoding', current: 0, total: 100, message: 'Creating PNG...' });
+			onProgress?.({ phase: 'encoding', current: 0, total: 100, message: '正在创建PNG…' });
 
 			canvas.toBlob((blob) => {
 				if (blob) {
-					onProgress?.({ phase: 'saving', current: 0, total: 100, message: 'Saving file...' });
+					onProgress?.({ phase: 'saving', current: 0, total: 100, message: '正在保存文件…' });
 					const url = URL.createObjectURL(blob);
 					const link = activeDocument.createElement('a');
 					link.href = url;
 					link.download = filename;
 					link.click();
 					URL.revokeObjectURL(url);
-					onProgress?.({ phase: 'complete', current: 100, total: 100, message: 'Done!' });
-					new Notice('PNG exported successfully');
+					onProgress?.({ phase: 'complete', current: 100, total: 100, message: '完成！' });
+					new Notice('PNG导出成功');
 				} else {
-					new Notice('Failed to create PNG image');
+					new Notice('创建PNG图像失败');
 				}
 			}, 'image/png');
 		};
 		img.onerror = () => {
 			URL.revokeObjectURL(svgUrl);
-			new Notice('Failed to render chart as PNG. Try SVG export instead.');
+			new Notice('无法将图表渲染为PNG。请尝试导出为SVG。');
 		};
 		img.src = svgUrl;
 
 	} catch (error) {
 		logger.error('export-png', 'Failed to export PNG', { error });
-		new Notice('Failed to export PNG');
+		new Notice('导出PNG失败');
 	}
 }
 
@@ -245,12 +245,12 @@ async function exportAsSvgWithOptions(
 ): Promise<void> {
 	const svg = ctx.getChartSvg();
 	if (!svg) {
-		new Notice('No chart to export');
+		new Notice('没有可导出的图表');
 		return;
 	}
 
 	try {
-		onProgress?.({ phase: 'preparing', current: 0, total: 100, message: 'Preparing chart...' });
+		onProgress?.({ phase: 'preparing', current: 0, total: 100, message: '正在准备图表…' });
 
 		const { svgClone } = prepareSvgForExport(ctx, svg);
 
@@ -265,7 +265,7 @@ async function exportAsSvgWithOptions(
 			removeAppImages(svgClone);
 		}
 
-		onProgress?.({ phase: 'saving', current: 0, total: 100, message: 'Saving file...' });
+		onProgress?.({ phase: 'saving', current: 0, total: 100, message: '正在保存文件…' });
 
 		// Serialize and download
 		const serializer = new XMLSerializer();
@@ -278,12 +278,12 @@ async function exportAsSvgWithOptions(
 		link.click();
 		URL.revokeObjectURL(url);
 
-		onProgress?.({ phase: 'complete', current: 100, total: 100, message: 'Done!' });
-		new Notice('SVG exported successfully');
+		onProgress?.({ phase: 'complete', current: 100, total: 100, message: '完成！' });
+		new Notice('SVG导出成功');
 
 	} catch (error) {
 		logger.error('export-svg', 'Failed to export SVG', { error });
-		new Notice('Failed to export SVG');
+		new Notice('导出SVG失败');
 	}
 }
 
@@ -308,12 +308,12 @@ async function exportAsPdfWithOptions(
 ): Promise<void> {
 	const svg = ctx.getChartSvg();
 	if (!svg) {
-		new Notice('No chart to export');
+		new Notice('没有可导出的图表');
 		return;
 	}
 
 	try {
-		onProgress?.({ phase: 'preparing', current: 0, total: 100, message: 'Preparing chart...' });
+		onProgress?.({ phase: 'preparing', current: 0, total: 100, message: '正在准备图表…' });
 
 		const { svgClone, width, height } = prepareSvgForExport(ctx, svg);
 
@@ -329,12 +329,12 @@ async function exportAsPdfWithOptions(
 		const scaledArea = scaledWidth * scaledHeight;
 
 		if (scaledWidth > maxDimension || scaledHeight > maxDimension) {
-			new Notice(`Chart too large for PDF export (${Math.round(width)}x${Math.round(height)}px). Try SVG export instead.`, 0);
+			new Notice(`图表过大，无法导出为PDF（${Math.round(width)}x${Math.round(height)}px）。请尝试导出为SVG。`, 0);
 			return;
 		}
 
 		if (scaledArea > maxArea) {
-			new Notice(`Chart too large for PDF export (${Math.round(scaledArea / 1000000)}M pixels). Try SVG export instead.`, 0);
+			new Notice(`图表过大，无法导出为PDF（${Math.round(scaledArea / 1000000)}M像素）。请尝试导出为SVG。`, 0);
 			return;
 		}
 
@@ -358,7 +358,7 @@ async function exportAsPdfWithOptions(
 		const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
 		const svgUrl = URL.createObjectURL(svgBlob);
 
-		onProgress?.({ phase: 'rendering', current: 0, total: 100, message: 'Rendering image...' });
+		onProgress?.({ phase: 'rendering', current: 0, total: 100, message: '正在渲染图像…' });
 
 		// Create canvas
 		const canvas = activeDocument.createElement('canvas');
@@ -366,7 +366,7 @@ async function exportAsPdfWithOptions(
 		canvas.height = scaledHeight;
 		const ctxCanvas = canvas.getContext('2d');
 		if (!ctxCanvas) {
-			new Notice('Failed to create canvas context');
+			new Notice('创建画布上下文失败');
 			return;
 		}
 
@@ -376,7 +376,7 @@ async function exportAsPdfWithOptions(
 			ctxCanvas.drawImage(img, 0, 0);
 			URL.revokeObjectURL(svgUrl);
 
-			onProgress?.({ phase: 'encoding', current: 0, total: 100, message: 'Creating PDF...' });
+			onProgress?.({ phase: 'encoding', current: 0, total: 100, message: '正在创建PDF…' });
 
 			// Determine PDF dimensions and orientation
 			const pageSpec = PDF_PAGE_SIZES[pdfOptions.pageSize];
@@ -474,20 +474,20 @@ async function exportAsPdfWithOptions(
 			// Add footer to chart page
 			addPdfFooter(pdf, currentPage, totalPages, useRoboto);
 
-			onProgress?.({ phase: 'saving', current: 0, total: 100, message: 'Saving file...' });
+			onProgress?.({ phase: 'saving', current: 0, total: 100, message: '正在保存文件…' });
 			pdf.save(filename);
-			onProgress?.({ phase: 'complete', current: 100, total: 100, message: 'Done!' });
-			new Notice('PDF exported successfully');
+			onProgress?.({ phase: 'complete', current: 100, total: 100, message: '完成！' });
+			new Notice('PDF导出成功');
 		};
 		img.onerror = () => {
 			URL.revokeObjectURL(svgUrl);
-			new Notice('Failed to render chart as PDF. Try SVG export instead.');
+			new Notice('无法将图表渲染为PDF。请尝试导出为SVG。');
 		};
 		img.src = svgUrl;
 
 	} catch (error) {
 		logger.error('export-pdf', 'Failed to export PDF', { error });
-		new Notice('Failed to export PDF');
+		new Notice('导出PDF失败');
 	}
 }
 
@@ -509,12 +509,12 @@ async function exportAsOdtWithOptions(
 ): Promise<void> {
 	const svg = ctx.getChartSvg();
 	if (!svg) {
-		new Notice('No chart to export');
+		new Notice('没有可导出的图表');
 		return;
 	}
 
 	try {
-		onProgress?.({ phase: 'preparing', current: 0, total: 100, message: 'Preparing chart...' });
+		onProgress?.({ phase: 'preparing', current: 0, total: 100, message: '正在准备图表…' });
 
 		const { svgClone, width, height } = prepareSvgForExport(ctx, svg);
 
@@ -530,12 +530,12 @@ async function exportAsOdtWithOptions(
 		const scaledArea = scaledWidth * scaledHeight;
 
 		if (scaledWidth > maxDimension || scaledHeight > maxDimension) {
-			new Notice(`Chart too large for ODT export (${Math.round(width)}x${Math.round(height)}px). Try SVG export instead.`, 0);
+			new Notice(`图表过大，无法导出为ODT（${Math.round(width)}x${Math.round(height)}px）。请尝试导出为SVG。`, 0);
 			return;
 		}
 
 		if (scaledArea > maxArea) {
-			new Notice(`Chart too large for ODT export (${Math.round(scaledArea / 1000000)}M pixels). Try SVG export instead.`, 0);
+			new Notice(`图表过大，无法导出为ODT（${Math.round(scaledArea / 1000000)}M像素）。请尝试导出为SVG。`, 0);
 			return;
 		}
 
@@ -550,7 +550,7 @@ async function exportAsOdtWithOptions(
 			removeAppImages(svgClone);
 		}
 
-		onProgress?.({ phase: 'rendering', current: 0, total: 100, message: 'Rendering image...' });
+		onProgress?.({ phase: 'rendering', current: 0, total: 100, message: '正在渲染图像…' });
 
 		// Serialize SVG
 		const serializer = new XMLSerializer();
@@ -564,7 +564,7 @@ async function exportAsOdtWithOptions(
 		canvas.height = scaledHeight;
 		const ctxCanvas = canvas.getContext('2d');
 		if (!ctxCanvas) {
-			new Notice('Failed to create canvas context');
+			new Notice('创建画布上下文失败');
 			return;
 		}
 
@@ -574,7 +574,7 @@ async function exportAsOdtWithOptions(
 			ctxCanvas.drawImage(img, 0, 0);
 			URL.revokeObjectURL(svgUrl);
 
-			onProgress?.({ phase: 'encoding', current: 0, total: 100, message: 'Creating ODT...' });
+			onProgress?.({ phase: 'encoding', current: 0, total: 100, message: '正在创建ODT…' });
 
 			// Get PNG data from canvas
 			const pngDataUrl = canvas.toDataURL('image/png');
@@ -595,7 +595,7 @@ async function exportAsOdtWithOptions(
 				rootPersonName: exportInfo.rootPersonName
 			});
 
-			onProgress?.({ phase: 'saving', current: 0, total: 100, message: 'Saving file...' });
+			onProgress?.({ phase: 'saving', current: 0, total: 100, message: '正在保存文件…' });
 
 			// Download the ODT file
 			const url = URL.createObjectURL(odtBlob);
@@ -605,18 +605,18 @@ async function exportAsOdtWithOptions(
 			link.click();
 			URL.revokeObjectURL(url);
 
-			onProgress?.({ phase: 'complete', current: 100, total: 100, message: 'Done!' });
-			new Notice('ODT exported successfully');
+			onProgress?.({ phase: 'complete', current: 100, total: 100, message: '完成！' });
+			new Notice('ODT导出成功');
 		};
 		img.onerror = () => {
 			URL.revokeObjectURL(svgUrl);
-			new Notice('Failed to render chart as ODT. Try SVG export instead.');
+			new Notice('无法将图表渲染为ODT。请尝试导出为SVG。');
 		};
 		img.src = svgUrl;
 
 	} catch (error) {
 		logger.error('export-odt', 'Failed to export ODT', { error });
-		new Notice('Failed to export ODT');
+		new Notice('导出ODT失败');
 	}
 }
 
@@ -842,25 +842,25 @@ export function showExportMenu(ctx: FamilyChartExportContext, e: MouseEvent): vo
 	const menu = new Menu();
 
 	menu.addItem((item) => {
-		item.setTitle('Export as PNG')
+		item.setTitle('导出为PNG')
 			.setIcon('image')
 			.onClick(() => void exportAsPng(ctx));
 	});
 
 	menu.addItem((item) => {
-		item.setTitle('Export as SVG')
+		item.setTitle('导出为SVG')
 			.setIcon('file-code')
 			.onClick(() => void exportAsSvg(ctx, true));
 	});
 
 	menu.addItem((item) => {
-		item.setTitle('Export as SVG (no avatars)')
+		item.setTitle('导出为SVG（不含头像）')
 			.setIcon('file-code')
 			.onClick(() => void exportAsSvg(ctx, false));
 	});
 
 	menu.addItem((item) => {
-		item.setTitle('Export as PDF')
+		item.setTitle('导出为PDF')
 			.setIcon('file-text')
 			.onClick(() => void exportAsPdf(ctx));
 	});
@@ -906,7 +906,7 @@ export function generateExportFilename(ctx: FamilyChartExportContext, extension:
 export async function exportAsPng(ctx: FamilyChartExportContext): Promise<void> {
 	const svg = ctx.getChartSvg();
 	if (!svg) {
-		new Notice('No chart to export');
+		new Notice('没有可导出的图表');
 		return;
 	}
 
@@ -925,13 +925,13 @@ export async function exportAsPng(ctx: FamilyChartExportContext): Promise<void> 
 
 		if (scaledWidth > maxDimension || scaledHeight > maxDimension) {
 			logger.warn('export-png', 'Canvas dimensions exceed browser limits', { scaledWidth, scaledHeight, maxDimension });
-			new Notice(`Chart too large for PNG export (${Math.round(width)}x${Math.round(height)}px). Try SVG export instead.`, 0);
+			new Notice(`图表过大，无法导出为PNG（${Math.round(width)}x${Math.round(height)}px）。请尝试导出为SVG。`, 0);
 			return;
 		}
 
 		if (scaledArea > maxArea) {
 			logger.warn('export-png', 'Canvas area exceeds browser limits', { scaledArea, maxArea });
-			new Notice(`Chart too large for PNG export (${Math.round(scaledArea / 1000000)}M pixels). Try SVG export instead.`, 0);
+			new Notice(`图表过大，无法导出为PNG（${Math.round(scaledArea / 1000000)}M像素）。请尝试导出为SVG。`, 0);
 			return;
 		}
 
@@ -952,7 +952,7 @@ export async function exportAsPng(ctx: FamilyChartExportContext): Promise<void> 
 		canvas.height = scaledHeight;
 		const ctxCanvas = canvas.getContext('2d');
 		if (!ctxCanvas) {
-			new Notice('Failed to create canvas context');
+			new Notice('创建画布上下文失败');
 			return;
 		}
 
@@ -976,23 +976,23 @@ export async function exportAsPng(ctx: FamilyChartExportContext): Promise<void> 
 					link.download = filename;
 					link.click();
 					URL.revokeObjectURL(url);
-					new Notice('PNG exported successfully');
+					new Notice('PNG导出成功');
 				} else {
 					logger.error('export-png', 'Failed to create blob from canvas');
-					new Notice('Failed to create PNG image');
+					new Notice('创建PNG图像失败');
 				}
 			}, 'image/png');
 		};
 		img.onerror = (e) => {
 			URL.revokeObjectURL(svgUrl);
 			logger.error('export-png', 'Failed to load SVG as image', { error: e });
-			new Notice('Failed to render chart as PNG. Try SVG export instead.');
+			new Notice('无法将图表渲染为PNG。请尝试导出为SVG。');
 		};
 		img.src = svgUrl;
 
 	} catch (error) {
 		logger.error('export-png', 'Failed to export PNG', { error });
-		new Notice('Failed to export PNG');
+		new Notice('导出PNG失败');
 	}
 }
 
@@ -1382,7 +1382,7 @@ export async function embedImagesAsBase64(svgClone: SVGSVGElement): Promise<void
 
 	// Warn user about large exports
 	if (totalImages > 50) {
-		new Notice(`Embedding ${totalImages} images... This may take a moment.`, 5000);
+		new Notice(`正在嵌入${totalImages}张图片…这可能需要一点时间。`, 5000);
 	}
 
 	logger.debug('export', 'Embedding images as base64', { totalImages });
@@ -1451,7 +1451,7 @@ async function embedImagesAsBase64WithProgress(
 			phase: 'embedding',
 			current: i + 1,
 			total: totalImages,
-			message: `Embedding avatar ${i + 1} of ${totalImages}...`
+			message: `正在嵌入头像，第${i + 1}项，共${totalImages}项…`
 		});
 
 		try {
@@ -1560,7 +1560,7 @@ export function getExportInfo(ctx: FamilyChartExportContext): {
 export async function exportAsSvg(ctx: FamilyChartExportContext, includeAvatars: boolean = true): Promise<void> {
 	const svg = ctx.getChartSvg();
 	if (!svg) {
-		new Notice('No chart to export');
+		new Notice('没有可导出的图表');
 		return;
 	}
 
@@ -1582,10 +1582,10 @@ export async function exportAsSvg(ctx: FamilyChartExportContext, includeAvatars:
 			// Warn about large exports that may crash due to memory exhaustion
 			if (avatarCount > 75) {
 				const depthHint = (ctx.ancestryDepth === null || ctx.progenyDepth === null)
-					? ' Try reducing tree depth first (branch icon in toolbar).'
+					? ' 请先减小家谱深度（工具栏中的分支图标）。'
 					: '';
 				new Notice(
-					`Warning: Exporting ${avatarCount} avatars may cause issues.${depthHint} Consider "Export as SVG (no avatars)" for large trees.`,
+					`警告：导出${avatarCount}个头像可能引发问题。${depthHint}对于较大的家谱，建议使用"导出为SVG（不含头像）"。`,
 					10000
 				);
 			}
@@ -1616,11 +1616,11 @@ export async function exportAsSvg(ctx: FamilyChartExportContext, includeAvatars:
 		link.click();
 		URL.revokeObjectURL(url);
 
-		new Notice('SVG exported successfully');
+		new Notice('SVG导出成功');
 
 	} catch (error) {
 		logger.error('export-svg', 'Failed to export SVG', { error });
-		new Notice('Failed to export SVG');
+		new Notice('导出SVG失败');
 	}
 }
 
@@ -1630,7 +1630,7 @@ export async function exportAsSvg(ctx: FamilyChartExportContext, includeAvatars:
 export async function exportAsPdf(ctx: FamilyChartExportContext): Promise<void> {
 	const svg = ctx.getChartSvg();
 	if (!svg) {
-		new Notice('No chart to export');
+		new Notice('没有可导出的图表');
 		return;
 	}
 
@@ -1650,13 +1650,13 @@ export async function exportAsPdf(ctx: FamilyChartExportContext): Promise<void> 
 
 		if (scaledWidth > maxDimension || scaledHeight > maxDimension) {
 			logger.warn('export-pdf', 'Canvas dimensions exceed browser limits', { scaledWidth, scaledHeight, maxDimension });
-			new Notice(`Chart too large for PDF export (${Math.round(width)}x${Math.round(height)}px). Try SVG export instead.`, 0);
+			new Notice(`图表过大，无法导出为PDF（${Math.round(width)}x${Math.round(height)}px）。请尝试导出为SVG。`, 0);
 			return;
 		}
 
 		if (scaledArea > maxArea) {
 			logger.warn('export-pdf', 'Canvas area exceeds browser limits', { scaledArea, maxArea });
-			new Notice(`Chart too large for PDF export (${Math.round(scaledArea / 1000000)}M pixels). Try SVG export instead.`, 0);
+			new Notice(`图表过大，无法导出为PDF（${Math.round(scaledArea / 1000000)}M像素）。请尝试导出为SVG。`, 0);
 			return;
 		}
 
@@ -1675,7 +1675,7 @@ export async function exportAsPdf(ctx: FamilyChartExportContext): Promise<void> 
 		canvas.height = scaledHeight;
 		const ctxCanvas = canvas.getContext('2d');
 		if (!ctxCanvas) {
-			new Notice('Failed to create canvas context');
+			new Notice('创建画布上下文失败');
 			return;
 		}
 
@@ -1704,18 +1704,18 @@ export async function exportAsPdf(ctx: FamilyChartExportContext): Promise<void> 
 
 			// Save PDF
 			pdf.save(filename);
-			new Notice('PDF exported successfully');
+			new Notice('PDF导出成功');
 		};
 		img.onerror = (e) => {
 			URL.revokeObjectURL(svgUrl);
 			logger.error('export-pdf', 'Failed to load SVG as image', { error: e });
-			new Notice('Failed to render chart as PDF. Try SVG export instead.');
+			new Notice('无法将图表渲染为PDF。请尝试导出为SVG。');
 		};
 		img.src = svgUrl;
 
 	} catch (error) {
 		logger.error('export-pdf', 'Failed to export PDF', { error });
-		new Notice('Failed to export PDF');
+		new Notice('导出PDF失败');
 	}
 }
 

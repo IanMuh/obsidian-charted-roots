@@ -307,7 +307,7 @@ export class ExcalidrawExporter {
 		};
 
 		try {
-			new Notice('Reading canvas file...');
+			new Notice('正在读取画布文件…');
 
 			// Read canvas JSON
 			const canvasContent = await this.app.vault.read(options.canvasFile);
@@ -329,12 +329,12 @@ export class ExcalidrawExporter {
 			let excalidrawData: ExcalidrawFile;
 			if (ea) {
 				// Use API mode for enhanced features
-				new Notice('Converting with ExcalidrawAutomate API...');
+				new Notice('正在使用 ExcalidrawAutomate API 转换…');
 				excalidrawData = this.convertWithApi(ea, canvasData, options);
 				result.usedApi = true;
 			} else {
 				// Fallback to JSON generation
-				new Notice('Converting to Excalidraw format...');
+				new Notice('正在转换为 Excalidraw 格式…');
 				excalidrawData = this.convertCanvasToExcalidraw(canvasData, options);
 			}
 
@@ -350,16 +350,16 @@ export class ExcalidrawExporter {
 			result.elementsExported = excalidrawData.elements.length;
 			result.success = true;
 
-			const modeLabel = result.usedApi ? ' (with smart connectors)' : '';
+			const modeLabel = result.usedApi ? '（含智能连接线）' : '';
 			logger.info('export', `Export completed successfully${modeLabel}`);
-			new Notice(`Export complete: ${result.elementsExported} elements exported${modeLabel}`);
+			new Notice(`导出完成：已导出 ${result.elementsExported} 个元素${modeLabel}`);
 
 		} catch (error: unknown) {
 			const errorMsg = getErrorMessage(error);
 			const errorStack = error instanceof Error ? error.stack : '';
-			result.errors.push(`Export failed: ${errorMsg}`);
+			result.errors.push(`导出失败：${errorMsg}`);
 			logger.error('export', 'Export failed', { error: errorMsg, stack: errorStack });
-			new Notice(`Export failed: ${errorMsg}`);
+			new Notice(`导出失败：${errorMsg}`);
 		}
 
 		// Clear caches

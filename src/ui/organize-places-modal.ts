@@ -63,11 +63,11 @@ export class OrganizePlacesModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('folder', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Organize places by category');
+		titleContainer.appendText('按分类整理地点');
 
 		// Description
 		contentEl.createEl('p', {
-			text: `Found ${this.misplacedPlaces.length} place${this.misplacedPlaces.length !== 1 ? 's' : ''} not stored in their category-appropriate folder.`,
+			text: `发现 ${this.misplacedPlaces.length} 个地点未存放在其分类对应的文件夹中。`,
 			cls: 'crc-text--muted'
 		});
 
@@ -77,14 +77,14 @@ export class OrganizePlacesModal extends Modal {
 		warningIcon.addClass('crc-info-box-icon');
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: 'Moving files may affect wikilinks if they use full paths. Obsidian will automatically update links for most cases.'
+			text: '移动文件可能影响使用完整路径的 wikilink。多数情况下 Obsidian 会自动更新链接。'
 		});
 
 		// Selection controls
 		const controlsRow = contentEl.createDiv({ cls: 'crc-controls-row crc-mb-3 crc-mt-3' });
 
 		const selectAllBtn = controlsRow.createEl('button', {
-			text: 'Select all',
+			text: '全选',
 			cls: 'crc-btn crc-btn--small'
 		});
 		selectAllBtn.addEventListener('click', () => {
@@ -93,7 +93,7 @@ export class OrganizePlacesModal extends Modal {
 		});
 
 		const selectNoneBtn = controlsRow.createEl('button', {
-			text: 'Select none',
+			text: '取消全选',
 			cls: 'crc-btn crc-btn--small crc-ml-2'
 		});
 		selectNoneBtn.addEventListener('click', () => {
@@ -114,11 +114,11 @@ export class OrganizePlacesModal extends Modal {
 		const footer = contentEl.createDiv({ cls: 'crc-modal-footer crc-mt-4' });
 
 		new ButtonComponent(footer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => this.close());
 
 		const moveBtn = footer.createEl('button', {
-			text: `Move ${this.selectedPlaces.size} place${this.selectedPlaces.size !== 1 ? 's' : ''}`,
+			text: `移动 ${this.selectedPlaces.size} 个地点`,
 			cls: 'crc-btn crc-btn--primary crc-ml-2'
 		});
 		moveBtn.addEventListener('click', () => { void this.moveSelectedPlaces(); });
@@ -143,10 +143,10 @@ export class OrganizePlacesModal extends Modal {
 
 	private updateSelectionCount(): void {
 		if (this.selectionCountEl) {
-			this.selectionCountEl.textContent = `${this.selectedPlaces.size} of ${this.misplacedPlaces.length} selected`;
+			this.selectionCountEl.textContent = `已选择 ${this.selectedPlaces.size} / ${this.misplacedPlaces.length}`;
 		}
 		if (this.moveButton) {
-			this.moveButton.textContent = `Move ${this.selectedPlaces.size} place${this.selectedPlaces.size !== 1 ? 's' : ''}`;
+			this.moveButton.textContent = `移动 ${this.selectedPlaces.size} 个地点`;
 			this.moveButton.disabled = this.selectedPlaces.size === 0;
 		}
 	}
@@ -157,7 +157,7 @@ export class OrganizePlacesModal extends Modal {
 
 		if (this.misplacedPlaces.length === 0) {
 			this.placeListContainer.createEl('p', {
-				text: 'All places are in their correct folders!',
+				text: '所有地点都在正确的文件夹中！',
 				cls: 'crc-text--success'
 			});
 			return;
@@ -168,10 +168,10 @@ export class OrganizePlacesModal extends Modal {
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
 		headerRow.createEl('th', { text: '', cls: 'crc-place-list-th--checkbox' });
-		headerRow.createEl('th', { text: 'Place' });
-		headerRow.createEl('th', { text: 'Category' });
-		headerRow.createEl('th', { text: 'Current folder' });
-		headerRow.createEl('th', { text: 'Target folder' });
+		headerRow.createEl('th', { text: '地点' });
+		headerRow.createEl('th', { text: '分类' });
+		headerRow.createEl('th', { text: '当前文件夹' });
+		headerRow.createEl('th', { text: '目标文件夹' });
 
 		const tbody = table.createEl('tbody');
 
@@ -216,7 +216,7 @@ export class OrganizePlacesModal extends Modal {
 
 			// Current folder
 			const currentCell = row.createEl('td', { cls: 'crc-place-list-td--folder' });
-			currentCell.createEl('code', { text: mp.currentFolder || '(root)' });
+			currentCell.createEl('code', { text: mp.currentFolder || '(根目录)' });
 
 			// Target folder
 			const targetCell = row.createEl('td', { cls: 'crc-place-list-td--folder' });
@@ -228,7 +228,7 @@ export class OrganizePlacesModal extends Modal {
 
 	private async moveSelectedPlaces(): Promise<void> {
 		if (this.selectedPlaces.size === 0) {
-			new Notice('No places selected');
+			new Notice('未选择地点');
 			return;
 		}
 
@@ -239,7 +239,7 @@ export class OrganizePlacesModal extends Modal {
 		// Disable the move button while processing
 		if (this.moveButton) {
 			this.moveButton.disabled = true;
-			this.moveButton.textContent = 'Moving...';
+			this.moveButton.textContent = '移动中…';
 		}
 
 		for (const mp of toMove) {
@@ -280,10 +280,10 @@ export class OrganizePlacesModal extends Modal {
 
 		// Report results
 		if (moved > 0) {
-			new Notice(`✓ Moved ${moved} place${moved !== 1 ? 's' : ''} to category folders`);
+			new Notice(`✓ 已将 ${moved} 个地点移动到分类文件夹`);
 		}
 		if (failed > 0) {
-			new Notice(`⚠ Failed to move ${failed} place${failed !== 1 ? 's' : ''}`);
+			new Notice(`⚠ 移动 ${failed} 个地点失败`);
 		}
 
 		// Callback and close

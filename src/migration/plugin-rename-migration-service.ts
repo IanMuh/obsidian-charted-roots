@@ -14,7 +14,6 @@
  */
 
 import { App, Notice } from 'obsidian';
-import { pluralize } from '../utils/format-utils';
 import { getLogger } from '../core/logging';
 
 const logger = getLogger('PluginRenameMigration');
@@ -268,17 +267,17 @@ export function showMigrationNotice(result: PluginRenameMigrationResult): void {
 	const parts: string[] = [];
 
 	if (result.canvasFilesUpdated > 0) {
-		parts.push(`${result.canvasFilesUpdated} canvas ${pluralize(result.canvasFilesUpdated, 'file')}`);
+		parts.push(`${result.canvasFilesUpdated} 个画布文件`);
 	}
 
 	if (result.markdownFilesUpdated > 0) {
-		parts.push(`${result.markdownFilesUpdated} ${pluralize(result.markdownFilesUpdated, 'note')} with code blocks`);
+		parts.push(`${result.markdownFilesUpdated} 个含代码块的笔记`);
 	}
 
-	const message = `Charted Roots: Migrated ${parts.join(' and ')} from Charted Roots format.`;
+	const message = `Charted Roots：已从 Charted Roots 格式迁移 ${parts.join('、')}。`;
 
 	if (result.errors.length > 0) {
-		new Notice(`${message}\n\n${result.errors.length} error(s) occurred. Check console for details.`, 10000);
+		new Notice(`${message}\n\n发生 ${result.errors.length} 个错误，详情请查看控制台。`, 10000);
 	} else {
 		new Notice(message, 5000);
 	}

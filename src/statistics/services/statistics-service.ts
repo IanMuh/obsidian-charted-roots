@@ -2076,9 +2076,9 @@ export class StatisticsService {
 		if (birthYear && deathYear) {
 			return `${birthYear}\u2013${deathYear}`;
 		} else if (birthYear) {
-			return `b. ${birthYear}`;
+			return `生 ${birthYear}`;
 		} else if (deathYear) {
-			return `d. ${deathYear}`;
+			return `卒 ${deathYear}`;
 		}
 		return null;
 	}
@@ -2102,10 +2102,10 @@ export class StatisticsService {
 		withAge.sort((a, b) => b.age - a.age);
 
 		return {
-			label: 'Oldest people',
+			label: '最长寿',
 			icon: 'crown',
 			entries: withAge.slice(0, topN).map(({ person, age, isLiving }) =>
-				this.buildRecordEntry(person, `${age} years${isLiving ? ' (living)' : ''}`)
+				this.buildRecordEntry(person, `${age} 岁${isLiving ? '（在世）' : ''}`)
 			)
 		};
 	}
@@ -2126,10 +2126,10 @@ export class StatisticsService {
 		withLifespan.sort((a, b) => a.age - b.age);
 
 		return {
-			label: 'Youngest deaths',
+			label: '最早去世',
 			icon: 'heart-crack',
 			entries: withLifespan.slice(0, topN).map(({ person, age }) =>
-				this.buildRecordEntry(person, `${age} years`)
+				this.buildRecordEntry(person, `${age} 岁`)
 			)
 		};
 	}
@@ -2144,10 +2144,10 @@ export class StatisticsService {
 			.sort((a, b) => b.count - a.count);
 
 		return {
-			label: 'Most children',
+			label: '子女最多',
 			icon: 'baby',
 			entries: withChildren.slice(0, topN).map(({ person, count }) =>
-				this.buildRecordEntry(person, `${count} children`)
+				this.buildRecordEntry(person, `${count} 个子女`)
 			)
 		};
 	}
@@ -2162,10 +2162,10 @@ export class StatisticsService {
 			.sort((a, b) => b.count - a.count);
 
 		return {
-			label: 'Most marriages',
+			label: '婚姻最多',
 			icon: 'heart',
 			entries: withSpouses.slice(0, topN).map(({ person, count }) =>
-				this.buildRecordEntry(person, `${count} marriages`)
+				this.buildRecordEntry(person, `${count} 段婚姻`)
 			)
 		};
 	}
@@ -2186,10 +2186,10 @@ export class StatisticsService {
 		withBirth.sort((a, b) => a.year - b.year);
 
 		return {
-			label: 'Earliest births',
+			label: '最早出生',
 			icon: 'clock',
 			entries: withBirth.slice(0, topN).map(({ person, year }) =>
-				this.buildRecordEntry(person, `Born ${year}`)
+				this.buildRecordEntry(person, `生于 ${year}`)
 			)
 		};
 	}
@@ -2210,10 +2210,10 @@ export class StatisticsService {
 		withDeath.sort((a, b) => b.year - a.year);
 
 		return {
-			label: 'Most recent deaths',
+			label: '最近去世',
 			icon: 'calendar-check',
 			entries: withDeath.slice(0, topN).map(({ person, year }) =>
-				this.buildRecordEntry(person, `Died ${year}`)
+				this.buildRecordEntry(person, `卒于 ${year}`)
 			)
 		};
 	}
@@ -2228,10 +2228,10 @@ export class StatisticsService {
 			.sort((a, b) => b.count - a.count);
 
 		return {
-			label: 'Most documented',
+			label: '记录最全',
 			icon: 'archive',
 			entries: withSources.slice(0, topN).map(({ person, count }) =>
-				this.buildRecordEntry(person, `${count} sources`)
+				this.buildRecordEntry(person, `${count} 个来源`)
 			)
 		};
 	}
@@ -2294,10 +2294,10 @@ export class StatisticsService {
 		deduped.sort((a, b) => b.years - a.years);
 
 		return {
-			label: 'Longest marriages',
+			label: '婚姻最长',
 			icon: 'heart-handshake',
 			entries: deduped.slice(0, topN).map(({ person, spouseName, years }) =>
-				this.buildRecordEntry(person, `${years} years (with ${spouseName})`)
+				this.buildRecordEntry(person, `${years} 年（与 ${spouseName}）`)
 			)
 		};
 	}

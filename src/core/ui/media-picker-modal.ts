@@ -204,7 +204,7 @@ export class MediaPickerModal extends Modal {
 		const titleSection = header.createDiv({ cls: 'crc-picker-title' });
 		const icon = titleSection.createSpan();
 		setIcon(icon, 'image');
-		titleSection.appendText(this.options.title || 'Select media');
+		titleSection.appendText(this.options.title || '选择媒体');
 
 		// Optional subtitle
 		if (this.options.subtitle) {
@@ -224,7 +224,7 @@ export class MediaPickerModal extends Modal {
 			});
 			const uploadIcon = uploadBtn.createSpan({ cls: 'crc-btn-icon' });
 			setIcon(uploadIcon, 'upload');
-			uploadBtn.appendText(' Upload files...');
+			uploadBtn.appendText(' 上传文件…');
 
 			uploadBtn.addEventListener('click', () => {
 				this.openUploadDialog();
@@ -235,7 +235,7 @@ export class MediaPickerModal extends Modal {
 			cls: 'crc-form-input',
 			attr: {
 				type: 'text',
-				placeholder: 'Search media files...'
+				placeholder: '搜索媒体文件…'
 			}
 		});
 
@@ -252,15 +252,15 @@ export class MediaPickerModal extends Modal {
 
 		// Type filter
 		const typeFilter = filtersRow.createDiv({ cls: 'crc-picker-filter' });
-		typeFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Type:' });
+		typeFilter.createSpan({ cls: 'crc-picker-filter__label', text: '类型：' });
 		const typeSelect = typeFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 
 		const typeOptions: Array<{ value: MediaFilterType; label: string }> = [
-			{ value: 'all', label: 'All media' },
-			{ value: 'image', label: 'Images' },
-			{ value: 'video', label: 'Videos' },
-			{ value: 'audio', label: 'Audio' },
-			{ value: 'document', label: 'Documents' }
+			{ value: 'all', label: '所有媒体' },
+			{ value: 'image', label: '图片' },
+			{ value: 'video', label: '视频' },
+			{ value: 'audio', label: '音频' },
+			{ value: 'document', label: '文档' }
 		];
 
 		typeOptions.forEach(opt => {
@@ -274,14 +274,14 @@ export class MediaPickerModal extends Modal {
 
 		// Sort filter
 		const sortFilter = filtersRow.createDiv({ cls: 'crc-picker-filter' });
-		sortFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Sort:' });
+		sortFilter.createSpan({ cls: 'crc-picker-filter__label', text: '排序：' });
 		const sortSelect = sortFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 
 		const sortOptions: Array<{ value: SortOption; label: string }> = [
-			{ value: 'modified', label: 'Recently modified' },
-			{ value: 'name-asc', label: 'Name (A-Z)' },
-			{ value: 'name-desc', label: 'Name (Z-A)' },
-			{ value: 'size', label: 'File size' }
+			{ value: 'modified', label: '最近修改' },
+			{ value: 'name-asc', label: '名称（A-Z）' },
+			{ value: 'name-desc', label: '名称（Z-A）' },
+			{ value: 'size', label: '文件大小' }
 		];
 
 		sortOptions.forEach(opt => {
@@ -311,7 +311,7 @@ export class MediaPickerModal extends Modal {
 
 		const confirmBtn = footerButtons.createEl('button', {
 			cls: 'mod-cta',
-			text: this.options.multiSelect ? 'Add selected' : 'Select'
+			text: this.options.multiSelect ? '添加所选' : '选择'
 		});
 
 		confirmBtn.addEventListener('click', () => {
@@ -356,11 +356,11 @@ export class MediaPickerModal extends Modal {
 			const emptyState = this.resultsContainer.createDiv({ cls: 'crc-picker-empty' });
 			const emptyIcon = emptyState.createSpan();
 			setIcon(emptyIcon, 'search');
-			emptyState.createEl('p', { text: 'No media files found' });
+			emptyState.createEl('p', { text: '未找到媒体文件' });
 			emptyState.createEl('p', {
 				text: this.allMedia.length === 0
-					? 'Add media files to your vault to link them'
-					: 'Try a different search term or filter',
+					? '将媒体文件添加到你的库中即可链接它们'
+					: '请尝试其他搜索词或筛选条件',
 				cls: 'crc-text-muted'
 			});
 			return;
@@ -506,7 +506,7 @@ export class MediaPickerModal extends Modal {
 
 		const count = this.selectedFiles.size;
 		if (this.options.multiSelect) {
-			this.selectionCountEl.setText(`${count} file${count !== 1 ? 's' : ''} selected`);
+			this.selectionCountEl.setText(`已选择 ${count} 个文件`);
 		} else {
 			this.selectionCountEl.setText('');
 		}
@@ -584,7 +584,7 @@ export class MediaPickerModal extends Modal {
 
 			// Validate file type
 			if (!ALL_MEDIA_EXTENSIONS.includes(ext)) {
-				new Notice(`Unsupported file type: ${file.name}`);
+				new Notice(`不支持的文件类型：${file.name}`);
 				continue;
 			}
 
@@ -595,12 +595,12 @@ export class MediaPickerModal extends Modal {
 				}
 			} catch (error) {
 				console.error('Error uploading file:', error);
-				new Notice(`Failed to upload ${file.name}`);
+				new Notice(`上传 ${file.name} 失败`);
 			}
 		}
 
 		if (uploadedPaths.length > 0) {
-			new Notice(`Uploaded ${uploadedPaths.length} file${uploadedPaths.length > 1 ? 's' : ''} to ${folder}`);
+			new Notice(`已将 ${uploadedPaths.length} 个文件上传到 ${folder}`);
 
 			// Reload media files and auto-select newly uploaded files
 			this.loadMediaFiles();
@@ -630,11 +630,11 @@ export class MediaPickerModal extends Modal {
 		const header = this.folderConfigContainer.createDiv({ cls: 'crc-folder-config-header' });
 		const headerIcon = header.createSpan({ cls: 'crc-folder-config-icon' });
 		setIcon(headerIcon, 'folder-cog');
-		header.createSpan({ text: 'Configure Media Folder', cls: 'crc-folder-config-title' });
+		header.createSpan({ text: '配置媒体文件夹', cls: 'crc-folder-config-title' });
 
 		// Description
 		this.folderConfigContainer.createEl('p', {
-			text: 'No media folder is configured. Enter a folder path to store uploaded media files.',
+			text: '尚未配置媒体文件夹。请输入用于存放上传媒体的文件夹路径。',
 			cls: 'crc-folder-config-desc'
 		});
 
@@ -643,7 +643,7 @@ export class MediaPickerModal extends Modal {
 
 		const inputWrapper = inputRow.createDiv({ cls: 'crc-folder-config-input-wrapper' });
 		const textComponent = new TextComponent(inputWrapper);
-		textComponent.setPlaceholder('e.g., Media or Attachments/Media');
+		textComponent.setPlaceholder('例如：媒体 或 附件/媒体');
 		textComponent.inputEl.addClass('crc-folder-config-input');
 
 		let selectedFolder = '';
@@ -660,14 +660,14 @@ export class MediaPickerModal extends Modal {
 
 		// Set folder button
 		new ButtonComponent(inputRow)
-			.setButtonText('Set folder')
+			.setButtonText('设置文件夹')
 			.setCta()
 			.onClick(() => {
 				void (async () => {
 					const folderPath = selectedFolder.trim() || textComponent.getValue().trim();
 
 					if (!folderPath) {
-						new Notice('Please enter a folder path');
+						new Notice('请输入文件夹路径');
 						return;
 					}
 

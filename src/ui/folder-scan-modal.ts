@@ -2,7 +2,6 @@ import { App, ButtonComponent, Modal, TFolder, TFile } from 'obsidian';
 import { RelationshipValidator, ValidationResult } from '../core/relationship-validator';
 import type { PersonIndexService } from '../core/person-index-service';
 import { createLucideIcon } from './lucide-icons';
-import { pluralize } from '../utils/format-utils';
 
 /**
  * Modal to display folder-wide validation scan results
@@ -30,14 +29,14 @@ export class FolderScanModal extends Modal {
 
 		// Title
 		contentEl.createEl('h2', {
-			text: `Scan: ${this.folder.name}`,
+			text: `扫描：${this.folder.name}`,
 			cls: 'crc-modal-title'
 		});
 
 		// Scanning message
 		const loadingEl = contentEl.createDiv({ cls: 'cr-scan-loading' });
 		loadingEl.createEl('p', {
-			text: 'Scanning person notes...',
+			text: '正在扫描人物笔记…',
 			cls: 'cr-text-muted'
 		});
 
@@ -62,7 +61,7 @@ export class FolderScanModal extends Modal {
 		} catch (error: unknown) {
 			loadingEl.remove();
 			contentEl.createEl('p', {
-				text: 'Error scanning folder',
+				text: '扫描文件夹出错',
 				cls: 'cr-text-error'
 			});
 			console.error('Folder scan error:', error);
@@ -97,19 +96,19 @@ export class FolderScanModal extends Modal {
 		emptyState.appendChild(icon);
 
 		emptyState.createEl('p', {
-			text: 'No person notes found',
+			text: '未找到人物笔记',
 			cls: 'cr-scan-empty__title'
 		});
 
 		emptyState.createEl('p', {
-			text: 'This folder does not contain any person notes with cr_id fields.',
+			text: '此文件夹不包含任何带 cr_id 字段的人物笔记。',
 			cls: 'cr-scan-empty__description'
 		});
 
 		// Close button
 		const buttonContainer = container.createDiv({ cls: 'cr-modal-buttons' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.setCta()
 			.onClick(() => {
 				this.close();
@@ -133,7 +132,7 @@ export class FolderScanModal extends Modal {
 			cls: 'cr-scan-stat__value'
 		});
 		totalStat.createEl('div', {
-			text: 'person notes',
+			text: '人物笔记',
 			cls: 'cr-scan-stat__label'
 		});
 
@@ -143,7 +142,7 @@ export class FolderScanModal extends Modal {
 			cls: 'cr-scan-stat__value cr-scan-stat__value--' + (notesWithIssues > 0 ? 'warning' : 'success')
 		});
 		issuesStat.createEl('div', {
-			text: 'with issues',
+			text: '有问题',
 			cls: 'cr-scan-stat__label'
 		});
 
@@ -153,14 +152,14 @@ export class FolderScanModal extends Modal {
 			cls: 'cr-scan-stat__value cr-scan-stat__value--' + (totalIssues > 0 ? 'error' : 'success')
 		});
 		totalIssuesStat.createEl('div', {
-			text: 'total issues',
+			text: '问题总数',
 			cls: 'cr-scan-stat__label'
 		});
 
 		// Results list (only show notes with issues)
 		if (notesWithIssues > 0) {
 			container.createEl('h3', {
-				text: 'Notes with issues',
+				text: '有问题的笔记',
 				cls: 'cr-scan-results-header'
 			});
 
@@ -184,7 +183,7 @@ export class FolderScanModal extends Modal {
 					});
 
 					resultHeader.createEl('span', {
-						text: `${result.issues.length} ${pluralize(result.issues.length, 'issue')}`,
+						text: `${result.issues.length} 个问题`,
 						cls: 'cr-scan-result__badge'
 					});
 
@@ -193,7 +192,7 @@ export class FolderScanModal extends Modal {
 					result.issues.forEach(issue => {
 						const issueEl = issueList.createDiv({ cls: 'cr-scan-issue' });
 						issueEl.createEl('span', {
-							text: `${issue.field}: `,
+							text: `${issue.field}：`,
 							cls: 'cr-scan-issue__field'
 						});
 						issueEl.createEl('span', {
@@ -217,7 +216,7 @@ export class FolderScanModal extends Modal {
 		// Close button
 		const buttonContainer = container.createDiv({ cls: 'cr-modal-buttons' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.setCta()
 			.onClick(() => {
 				this.close();

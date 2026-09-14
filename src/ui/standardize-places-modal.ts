@@ -74,36 +74,36 @@ export class StandardizePlacesModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('edit', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Standardize place names');
+		titleContainer.appendText('标准化地点名称');
 
 		// Description - what the modal does
 		const descriptionEl = contentEl.createDiv({ cls: 'crc-standardize-description' });
 		descriptionEl.createEl('p', {
-			text: `Found ${this.variationGroups.length} group${this.variationGroups.length !== 1 ? 's' : ''} of similar place names that may be variations of the same location.`,
+			text: `找到 ${this.variationGroups.length} 组相似地点名称，它们可能是同一地点的不同写法。`,
 			cls: 'crc-text--muted'
 		});
 
 		// Explanation of what happens
 		const explanationEl = descriptionEl.createDiv({ cls: 'crc-standardize-explanation' });
 		explanationEl.createEl('p', {
-			text: 'For each group, select the name you want to use as the standard. Applying will update these frontmatter fields in your person notes:',
+			text: '为每组选择一个作为标准名称。应用后将更新人物笔记中的以下 frontmatter 字段：',
 			cls: 'crc-text--muted'
 		});
 		const fieldsList = explanationEl.createEl('ul', { cls: 'crc-field-list' });
 		fieldsList.createEl('li', { text: 'birth_place' });
 		fieldsList.createEl('li', { text: 'death_place' });
 		fieldsList.createEl('li', { text: 'burial_place' });
-		fieldsList.createEl('li', { text: 'spouse marriage locations' });
+		fieldsList.createEl('li', { text: '配偶婚姻地点' });
 
 		if (this.variationGroups.length === 0) {
 			contentEl.createEl('p', {
-				text: 'No place name variations found. Your place names are already consistent!',
+				text: '未发现地点名称差异。你的地点名称已经统一！',
 				cls: 'crc-text--success crc-mt-3'
 			});
 
 			const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 			new ButtonComponent(buttonContainer)
-				.setButtonText('Close')
+				.setButtonText('关闭')
 				.setCta()
 				.onClick(() => this.close());
 			return;
@@ -118,22 +118,22 @@ export class StandardizePlacesModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+			text: ' 继续前请先备份你的库。此操作将修改现有笔记。'
 		});
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.onClick(() => this.close());
 
 		// Calculate total impact for the main button
 		const totalImpact = this.calculateTotalImpact();
 		new ButtonComponent(buttonContainer)
-			.setButtonText(`Standardize all (${totalImpact.totalRefs} refs)`)
+			.setButtonText(`全部标准化（${totalImpact.totalRefs} 处引用）`)
 			.setCta()
-			.setTooltip(`Update ${totalImpact.totalRefs} references across ${totalImpact.groupCount} groups`)
+			.setTooltip(`更新 ${totalImpact.groupCount} 组中的 ${totalImpact.totalRefs} 处引用`)
 			.onClick(() => void this.applyStandardization());
 	}
 
@@ -184,28 +184,28 @@ export class StandardizePlacesModal extends Modal {
 
 			const headerInfo = groupHeader.createDiv({ cls: 'crc-variation-group-info' });
 			headerInfo.createEl('strong', {
-				text: `${group.variations.length} variations`,
+				text: `${group.variations.length} 种写法`,
 				cls: 'crc-variation-count'
 			});
 			headerInfo.createEl('span', {
-				text: ` • ${group.totalCount} total references`,
+				text: ` • 共 ${group.totalCount} 处引用`,
 				cls: 'crc-text--muted'
 			});
 			if (group.hasLinkedVariation) {
 				const linkedBadge = headerInfo.createEl('span', {
-					text: 'has place note',
+					text: '已关联地点笔记',
 					cls: 'crc-badge crc-badge--success crc-badge--small crc-ml-2'
 				});
-				linkedBadge.title = 'One or more variations are linked to place notes';
+				linkedBadge.title = '一种或多种写法已关联到地点笔记';
 			}
 
 			// Apply button for this group - with dynamic label showing impact
 			const impact = this.calculateGroupImpact(group);
 			const applyBtn = groupHeader.createEl('button', {
-				text: `Standardize (${impact.totalRefs})`,
+				text: `标准化（${impact.totalRefs}）`,
 				cls: 'crc-btn crc-btn--small'
 			});
-			applyBtn.title = `Update ${impact.totalRefs} reference${impact.totalRefs !== 1 ? 's' : ''} in ${impact.fileCount} file${impact.fileCount !== 1 ? 's' : ''}`;
+			applyBtn.title = `更新 ${impact.fileCount} 个文件中的 ${impact.totalRefs} 处引用`;
 			this.groupApplyButtons.set(group, applyBtn);
 			applyBtn.addEventListener('click', () => void this.applyGroupStandardization(group, groupEl, applyBtn));
 
@@ -250,7 +250,7 @@ export class StandardizePlacesModal extends Modal {
 					text: `(${references.length})`,
 					cls: 'crc-variation-count-link'
 				});
-				countEl.title = 'Click to show affected notes';
+				countEl.title = '点击显示受影响的笔记';
 
 				// Reference type breakdown (e.g., "birth: 2, death: 1")
 				if (typeCounts.size > 0) {
@@ -266,7 +266,7 @@ export class StandardizePlacesModal extends Modal {
 
 				if (isLinked) {
 					meta.createEl('span', {
-						text: ' ✓ linked',
+						text: ' ✓ 已关联',
 						cls: 'crc-text--success'
 					});
 				}
@@ -296,14 +296,14 @@ export class StandardizePlacesModal extends Modal {
 
 			const customLabel = customOptionEl.createEl('label', { cls: 'crc-radio-label' });
 			customLabel.setAttribute('for', customRadioId);
-			customLabel.createEl('span', { text: 'Custom name...', cls: 'crc-text--muted' });
+			customLabel.createEl('span', { text: '自定义名称…', cls: 'crc-text--muted' });
 
 			// Custom input container (hidden by default)
 			const customInputContainer = variationsEl.createDiv({ cls: 'crc-custom-name-input crc-hidden' });
 			const customInput = customInputContainer.createEl('input', {
 				type: 'text',
 				cls: 'crc-input',
-				placeholder: 'Enter custom place name'
+				placeholder: '输入自定义地点名称'
 			});
 			// Pre-fill with the suggested canonical
 			customInput.value = group.canonical;
@@ -384,21 +384,21 @@ export class StandardizePlacesModal extends Modal {
 			if (impact.totalRefs === 0 && !wasApplied) {
 				// Nothing to change - disable the button
 				applyBtn.disabled = true;
-				applyBtn.textContent = 'Nothing to change';
-				applyBtn.title = 'All references already use the selected name';
+				applyBtn.textContent = '无需更改';
+				applyBtn.title = '所有引用已使用所选名称';
 				applyBtn.removeClass('crc-btn--success');
 			} else if (!wasApplied) {
 				// Enable and update label
 				applyBtn.disabled = false;
-				applyBtn.textContent = `Standardize (${impact.totalRefs})`;
-				applyBtn.title = `Update ${impact.totalRefs} reference${impact.totalRefs !== 1 ? 's' : ''} in ${impact.fileCount} file${impact.fileCount !== 1 ? 's' : ''}`;
+				applyBtn.textContent = `标准化（${impact.totalRefs}）`;
+				applyBtn.title = `更新 ${impact.fileCount} 个文件中的 ${impact.totalRefs} 处引用`;
 			}
 			// If wasApplied, leave button in its "Done" state
 		}
 
 		if (impact.totalRefs === 0) {
 			impactEl.createEl('span', {
-				text: '✓ All references already use this name',
+				text: '✓ 所有引用已使用此名称',
 				cls: 'crc-text--success crc-impact-message'
 			});
 		} else {
@@ -408,7 +408,7 @@ export class StandardizePlacesModal extends Modal {
 			// Show which variations will be replaced
 			const variationNames = variationsToUpdate.map(v => `"${v}"`).join(', ');
 			impactText.createEl('span', {
-				text: `Will update ${impact.totalRefs} reference${impact.totalRefs !== 1 ? 's' : ''} `,
+				text: `将更新 ${impact.totalRefs} 处引用 `,
 				cls: 'crc-text--muted'
 			});
 			impactText.createEl('span', {
@@ -427,7 +427,7 @@ export class StandardizePlacesModal extends Modal {
 					typeBreakdown.push(`${count} ${this.formatReferenceType(type)}`);
 				}
 				impactEl.createEl('div', {
-					text: `Fields: ${typeBreakdown.join(', ')}`,
+					text: `字段：${typeBreakdown.join(', ')}`,
 					cls: 'crc-text--muted crc-impact-types'
 				});
 			}
@@ -447,7 +447,7 @@ export class StandardizePlacesModal extends Modal {
 
 		// Disable the button while processing
 		applyBtn.disabled = true;
-		applyBtn.textContent = 'Applying...';
+		applyBtn.textContent = '正在应用…';
 
 		const variationsToUpdate = group.variations.filter(v => v !== canonical);
 		let updated = 0;
@@ -458,7 +458,7 @@ export class StandardizePlacesModal extends Modal {
 				const count = await this.updatePlaceReferences(oldValue, canonical);
 				updated += count;
 			} catch (error) {
-				errors.push(`${oldValue}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+				errors.push(`${oldValue}: ${error instanceof Error ? error.message : '未知错误'}`);
 			}
 		}
 
@@ -467,7 +467,7 @@ export class StandardizePlacesModal extends Modal {
 
 		// Update the group element to show completion
 		groupEl.addClass('crc-variation-group--applied');
-		applyBtn.textContent = `Done (${updated})`;
+		applyBtn.textContent = `完成（${updated}）`;
 		applyBtn.addClass('crc-btn--success');
 
 		// Disable radio buttons
@@ -476,11 +476,11 @@ export class StandardizePlacesModal extends Modal {
 
 		if (errors.length > 0) {
 			console.error('Errors during group standardization:', errors);
-			new Notice(`Updated ${updated} references with ${errors.length} errors`);
+			new Notice(`已更新 ${updated} 处引用，出现 ${errors.length} 个错误`);
 		} else if (updated > 0) {
-			new Notice(`Updated ${updated} reference${updated !== 1 ? 's' : ''} to "${canonical}"`);
+			new Notice(`已将 ${updated} 处引用更新为"${canonical}"`);
 		} else {
-			new Notice('No changes were needed');
+			new Notice('无需更改');
 		}
 	}
 
@@ -517,10 +517,10 @@ export class StandardizePlacesModal extends Modal {
 	 */
 	private formatReferenceType(type: PlaceReferenceType): string {
 		switch (type) {
-			case 'birth': return 'birth';
-			case 'death': return 'death';
-			case 'burial': return 'burial';
-			case 'marriage': return 'marriage';
+			case 'birth': return '出生';
+			case 'death': return '去世';
+			case 'burial': return '安葬';
+			case 'marriage': return '婚姻';
 			default: return type;
 		}
 	}
@@ -551,7 +551,7 @@ export class StandardizePlacesModal extends Modal {
 	private renderVariationDetails(container: HTMLElement, references: PlaceReference[]): void {
 		if (references.length === 0) {
 			container.createEl('span', {
-				text: 'No references found',
+				text: '未找到引用',
 				cls: 'crc-text--muted'
 			});
 			return;
@@ -603,7 +603,7 @@ export class StandardizePlacesModal extends Modal {
 					const updated = await this.updatePlaceReferences(oldValue, canonical);
 					batchUpdated += updated;
 				} catch (error) {
-					errors.push(`${oldValue} → ${canonical}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+					errors.push(`${oldValue} → ${canonical}: ${error instanceof Error ? error.message : '未知错误'}`);
 				}
 			}
 
@@ -614,11 +614,11 @@ export class StandardizePlacesModal extends Modal {
 
 		if (errors.length > 0) {
 			console.error('Errors during standardization:', errors);
-			new Notice(`Updated ${batchUpdated} references. ${errors.length} errors occurred.`);
+			new Notice(`已更新 ${batchUpdated} 处引用。出现 ${errors.length} 个错误。`);
 		} else if (batchUpdated > 0) {
-			new Notice(`Updated ${batchUpdated} place reference${batchUpdated !== 1 ? 's' : ''}`);
+			new Notice(`已更新 ${batchUpdated} 处地点引用`);
 		} else {
-			new Notice('No changes were needed');
+			new Notice('无需更改');
 		}
 
 		if (this.onComplete) {

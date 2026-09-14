@@ -14,10 +14,10 @@ export type CitationQuality = 0 | 1 | 2 | 3;
 
 /** Human-readable labels for citation quality values */
 export const CITATION_QUALITY_LABELS: Record<CitationQuality, string> = {
-	0: 'Unreliable',
-	1: 'Questionable',
-	2: 'Secondary evidence',
-	3: 'Primary evidence'
+	0: '不可靠',
+	1: '存疑',
+	2: '二手证据',
+	3: '一手证据'
 };
 
 /**

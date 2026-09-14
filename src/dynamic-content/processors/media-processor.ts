@@ -73,7 +73,7 @@ export class MediaProcessor {
 
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			renderBlockError(el, `Error rendering media gallery: ${message}`);
+			renderBlockError(el, `渲染媒体库失败：${message}`);
 		}
 	}
 

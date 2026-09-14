@@ -50,9 +50,9 @@ export class AddMembershipModal extends Modal {
 		const cache = this.app.metadataCache.getFileCache(this.personFile);
 		const personName = cache?.frontmatter?.name || this.personFile.basename;
 
-		contentEl.createEl('h2', { text: 'Add membership' });
+		contentEl.createEl('h2', { text: '添加成员身份' });
 		contentEl.createEl('p', {
-			text: `Adding membership for: ${personName}`,
+			text: `正在为以下人物添加成员身份：${personName}`,
 			cls: 'crc-text-muted'
 		});
 
@@ -61,31 +61,31 @@ export class AddMembershipModal extends Modal {
 
 		if (orgs.length === 0) {
 			contentEl.createEl('p', {
-				text: 'No organizations found. Create an organization first.',
+				text: '未找到组织。请先创建组织。',
 				cls: 'crc-text-muted'
 			});
 
 			const buttonContainer = contentEl.createDiv({ cls: 'cr-modal-buttons' });
-			const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+			const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 			cancelBtn.addEventListener('click', () => this.close());
 
-			const createBtn = buttonContainer.createEl('button', { text: 'Create organization', cls: 'mod-cta' });
+			const createBtn = buttonContainer.createEl('button', { text: '创建组织', cls: 'mod-cta' });
 			createBtn.addEventListener('click', () => this.openCreateOrganization());
 
 			return;
 		}
 
 		new Setting(contentEl)
-			.setName('Organization')
-			.setDesc('Select the organization')
+			.setName('组织')
+			.setDesc('选择组织')
 			.addDropdown(dropdown => {
-				dropdown.addOption('', '-- Select organization --');
+				dropdown.addOption('', '-- 选择组织 --');
 				for (const org of orgs.sort((a, b) => a.name.localeCompare(b.name))) {
 					dropdown.addOption(org.crId, org.name);
 				}
 				// Inline org creation without leaving the modal (#710), matching the
 				// "+ New" options in the place / person modals.
-				dropdown.addOption(NEW_ORGANIZATION_VALUE, '+ New organization');
+				dropdown.addOption(NEW_ORGANIZATION_VALUE, '+ 新建组织');
 				dropdown.onChange(value => {
 					if (value === NEW_ORGANIZATION_VALUE) {
 						this.openCreateOrganization();
@@ -111,10 +111,10 @@ export class AddMembershipModal extends Modal {
 		// Role
 		let roleTextComponent: TextComponent | null = null;
 		new Setting(contentEl)
-			.setName('Role')
-			.setDesc('Position or role within the organization')
+			.setName('角色')
+			.setDesc('组织内的职位或角色')
 			.addText(text => {
-				text.setPlaceholder('e.g., Lord, Member, Captain')
+				text.setPlaceholder('例如：领主、成员、队长')
 					.setValue(this.role)
 					.onChange(value => this.role = value);
 				roleTextComponent = text;
@@ -122,38 +122,38 @@ export class AddMembershipModal extends Modal {
 
 		// From date
 		new Setting(contentEl)
-			.setName('From')
-			.setDesc('Start date of membership (optional)')
+			.setName('开始')
+			.setDesc('成员身份的开始日期（可选）')
 			.addText(text => text
-				.setPlaceholder('e.g., 283 AC, TA 2941')
+				.setPlaceholder('例如：283 AC、TA 2941')
 				.setValue(this.fromDate)
 				.onChange(value => this.fromDate = value));
 
 		// To date
 		new Setting(contentEl)
-			.setName('To')
-			.setDesc('End date of membership (optional, leave empty if current)')
+			.setName('结束')
+			.setDesc('成员身份的结束日期（可选，若仍在任则留空）')
 			.addText(text => text
-				.setPlaceholder('e.g., 298 AC')
+				.setPlaceholder('例如：298 AC')
 				.setValue(this.toDate)
 				.onChange(value => this.toDate = value));
 
 		// Notes
 		new Setting(contentEl)
-			.setName('Notes')
-			.setDesc('Additional context about this membership (optional)')
+			.setName('备注')
+			.setDesc('关于此成员身份的补充说明（可选）')
 			.addText(text => text
-				.setPlaceholder('e.g., Appointed after death of Jon Arryn')
+				.setPlaceholder('例如：在琼恩·艾林去世后受任命')
 				.setValue(this.notes)
 				.onChange(value => this.notes = value));
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-modal-buttons' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
-		const addBtn = buttonContainer.createEl('button', { text: 'Add', cls: 'mod-cta' });
+		const addBtn = buttonContainer.createEl('button', { text: '添加', cls: 'mod-cta' });
 		addBtn.addEventListener('click', () => void this.addMembership());
 	}
 
@@ -180,7 +180,7 @@ export class AddMembershipModal extends Modal {
 
 	private async addMembership(): Promise<void> {
 		if (!this.selectedOrg) {
-			new Notice('Please select an organization');
+			new Notice('请选择一个组织');
 			return;
 		}
 
@@ -207,7 +207,7 @@ export class AddMembershipModal extends Modal {
 			this.close();
 			this.onSuccess();
 		} catch (error) {
-			new Notice(`Failed to add membership: ${error}`);
+			new Notice(`添加成员身份失败：${error}`);
 		}
 	}
 }

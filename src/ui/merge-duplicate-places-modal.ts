@@ -91,18 +91,18 @@ export class MergeDuplicatePlacesModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('copy', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Merge duplicate places');
+		titleContainer.appendText('合并重复地点');
 
 		// Help link
 		const helpBtn = header.createEl('a', {
 			cls: 'crc-modal-help-link',
 			attr: {
 				href: 'https://github.com/banisterious/obsidian-charted-roots/wiki/Geographic-Features#merge-duplicate-places',
-				'aria-label': 'Documentation'
+				'aria-label': '文档'
 			}
 		});
 		helpBtn.appendChild(createLucideIcon('book-open', 16));
-		helpBtn.appendText('Help');
+		helpBtn.appendText('帮助');
 		helpBtn.addEventListener('click', (e) => {
 			e.preventDefault();
 			window.open(helpBtn.href, '_blank');
@@ -111,35 +111,35 @@ export class MergeDuplicatePlacesModal extends Modal {
 		// Description - what the modal does
 		const descriptionEl = contentEl.createDiv({ cls: 'crc-standardize-description' });
 		descriptionEl.createEl('p', {
-			text: `Found ${this.duplicateGroups.length} group${this.duplicateGroups.length !== 1 ? 's' : ''} of place notes that may represent the same location.`,
+			text: `找到 ${this.duplicateGroups.length} 组可能表示同一地点的地点笔记。`,
 			cls: 'crc-text--muted'
 		});
 
 		// Explanation of what happens
 		const explanationEl = descriptionEl.createDiv({ cls: 'crc-standardize-explanation' });
 		explanationEl.createEl('p', {
-			text: 'For each group, select the place note to keep as the canonical version. Merging will:',
+			text: '为每组选择要保留为标准版本的地点笔记。合并将：',
 			cls: 'crc-text--muted'
 		});
 		const actionsList = explanationEl.createEl('ul', { cls: 'crc-field-list' });
-		actionsList.createEl('li', { text: 'Update person notes to reference the canonical place' });
-		actionsList.createEl('li', { text: 'Update child places to use the canonical as parent' });
+		actionsList.createEl('li', { text: '更新人物笔记以引用标准地点' });
+		actionsList.createEl('li', { text: '更新子地点以将标准地点作为父级' });
 		const trashItem = actionsList.createEl('li');
-		trashItem.appendText('Move duplicate notes to trash ');
+		trashItem.appendText('将重复笔记移到回收站 ');
 		trashItem.createEl('span', {
-			text: '(check Settings → Files and links → Deleted files to ensure recovery is possible)',
+			text: '（请检查 设置 → 文件与链接 → 已删除文件 以确保可以恢复）',
 			cls: 'crc-text--muted'
 		});
 
 		if (this.duplicateGroups.length === 0) {
 			contentEl.createEl('p', {
-				text: 'No duplicate place notes found. Your place notes are unique!',
+				text: '未发现重复的地点笔记。你的地点笔记都是唯一的！',
 				cls: 'crc-text--success crc-mt-3'
 			});
 
 			const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 			new ButtonComponent(buttonContainer)
-				.setButtonText('Close')
+				.setButtonText('关闭')
 				.setCta()
 				.onClick(() => this.close());
 			return;
@@ -158,22 +158,22 @@ export class MergeDuplicatePlacesModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will modify and delete existing notes.'
+			text: ' 继续前请先备份你的库。此操作将修改并删除现有笔记。'
 		});
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.onClick(() => this.close());
 
 		// Calculate total impact for the main button
 		const totalImpact = this.calculateTotalImpact();
 		new ButtonComponent(buttonContainer)
-			.setButtonText(`Merge all (${totalImpact.duplicateCount} duplicates)`)
+			.setButtonText(`全部合并（${totalImpact.duplicateCount} 个重复项）`)
 			.setCta()
-			.setTooltip(`Merge ${totalImpact.duplicateCount} duplicate place notes across ${totalImpact.groupCount} groups`)
+			.setTooltip(`合并 ${totalImpact.groupCount} 组中的 ${totalImpact.duplicateCount} 条重复地点笔记`)
 			.onClick(() => void this.applyAllMerges());
 	}
 
@@ -215,7 +215,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 		const searchInput = searchGroup.createEl('input', {
 			type: 'text',
 			cls: 'crc-input crc-input--small crc-search-input',
-			placeholder: 'Search places...'
+			placeholder: '搜索地点…'
 		});
 		searchInput.value = this.searchQuery;
 
@@ -242,14 +242,14 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		// Sort dropdown
 		const sortGroup = controlsRow.createDiv({ cls: 'crc-control-group' });
-		sortGroup.createEl('label', { text: 'Sort:', cls: 'crc-control-label' });
+		sortGroup.createEl('label', { text: '排序：', cls: 'crc-control-label' });
 		const sortSelect = sortGroup.createEl('select', { cls: 'crc-select crc-select--small' });
 
 		const sortOptions: Array<{ value: SortOption; label: string }> = [
-			{ value: 'duplicates-desc', label: 'Most duplicates' },
-			{ value: 'duplicates-asc', label: 'Fewest duplicates' },
-			{ value: 'name-asc', label: 'Name (A-Z)' },
-			{ value: 'name-desc', label: 'Name (Z-A)' }
+			{ value: 'duplicates-desc', label: '重复最多' },
+			{ value: 'duplicates-asc', label: '重复最少' },
+			{ value: 'name-asc', label: '名称（A-Z）' },
+			{ value: 'name-desc', label: '名称（Z-A）' }
 		];
 
 		for (const opt of sortOptions) {
@@ -265,14 +265,14 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		// Filter dropdown
 		const filterGroup = controlsRow.createDiv({ cls: 'crc-control-group' });
-		filterGroup.createEl('label', { text: 'Show:', cls: 'crc-control-label' });
+		filterGroup.createEl('label', { text: '显示：', cls: 'crc-control-label' });
 		const filterSelect = filterGroup.createEl('select', { cls: 'crc-select crc-select--small' });
 
 		const filterOptions: Array<{ value: FilterOption; label: string }> = [
-			{ value: 'all', label: 'All groups' },
-			{ value: 'pending', label: 'Pending only' },
-			{ value: 'has-content', label: 'Has metadata' },
-			{ value: 'has-coords', label: 'Has coordinates' }
+			{ value: 'all', label: '全部分组' },
+			{ value: 'pending', label: '仅待处理' },
+			{ value: 'has-content', label: '有元数据' },
+			{ value: 'has-coords', label: '有坐标' }
 		];
 
 		for (const opt of filterOptions) {
@@ -304,19 +304,19 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		if (showing === total) {
 			this.statusEl.createEl('span', {
-				text: `${showing} group${showing !== 1 ? 's' : ''}`,
+				text: `${showing} 组`,
 				cls: 'crc-text--muted'
 			});
 		} else {
 			this.statusEl.createEl('span', {
-				text: `Showing ${showing} of ${total} groups`,
+				text: `显示 ${total} 组中的 ${showing} 组`,
 				cls: 'crc-text--muted'
 			});
 		}
 
 		if (pending < total) {
 			this.statusEl.createEl('span', {
-				text: ` (${total - pending} merged)`,
+				text: `（已合并 ${total - pending}）`,
 				cls: 'crc-text--success'
 			});
 		}
@@ -388,7 +388,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		if (this.filteredGroups.length === 0) {
 			container.createEl('p', {
-				text: 'No groups match the current filter.',
+				text: '没有分组符合当前筛选条件。',
 				cls: 'crc-text--muted crc-mt-2'
 			});
 			return;
@@ -403,7 +403,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 			const headerInfo = groupHeader.createDiv({ cls: 'crc-variation-group-info' });
 			headerInfo.createEl('strong', {
-				text: `${group.places.length} place notes`,
+				text: `${group.places.length} 条地点笔记`,
 				cls: 'crc-variation-count'
 			});
 
@@ -416,10 +416,10 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 			// Merge button for this group
 			const mergeBtn = groupHeader.createEl('button', {
-				text: `Merge (${group.places.length - 1})`,
+				text: `合并（${group.places.length - 1}）`,
 				cls: 'crc-btn crc-btn--small'
 			});
-			mergeBtn.title = `Merge ${group.places.length - 1} duplicate${group.places.length - 1 !== 1 ? 's' : ''} into the selected canonical place`;
+			mergeBtn.title = `将 ${group.places.length - 1} 个重复项合并到所选的标准地点`;
 			this.groupApplyButtons.set(group, mergeBtn);
 			mergeBtn.addEventListener('click', () => void this.applyGroupMerge(group, groupEl, mergeBtn));
 
@@ -458,9 +458,9 @@ export class MergeDuplicatePlacesModal extends Modal {
 				// Open note button (outside label to avoid triggering radio)
 				const openBtn = optionEl.createEl('button', {
 					cls: 'crc-btn crc-btn--icon crc-duplicate-open-btn',
-					attr: { 'aria-label': 'Open note' }
+					attr: { 'aria-label': '打开笔记' }
 				});
-				openBtn.title = 'Open note to inspect content (right-click for options)';
+				openBtn.title = '打开笔记以检查内容（右键查看更多选项）';
 				const openIcon = createLucideIcon('external-link', 14);
 				openBtn.appendChild(openIcon);
 				openBtn.addEventListener('click', (e) => {
@@ -487,7 +487,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 				if (place.parentId) {
 					const parent = this.placeService.getPlaceByCrId(place.parentId);
 					metaEl.createEl('span', {
-						text: `↑ ${parent?.name || 'Parent'}`,
+						text: `↑ ${parent?.name || '父级'}`,
 						cls: 'crc-badge crc-badge--small'
 					});
 				}
@@ -495,7 +495,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 				// Coordinates
 				if (place.coordinates) {
 					metaEl.createEl('span', {
-						text: '📍 Coords',
+						text: '📍 坐标',
 						cls: 'crc-badge crc-badge--small crc-badge--success'
 					});
 				}
@@ -513,7 +513,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 				const refCount = this.getPlaceReferenceCount(place);
 				if (refCount > 0) {
 					metaEl.createEl('span', {
-						text: `${refCount} ref${refCount !== 1 ? 's' : ''}`,
+						text: `${refCount} 处引用`,
 						cls: 'crc-badge crc-badge--small crc-badge--info'
 					});
 				}
@@ -521,7 +521,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 				// Suggested badge
 				if (place.id === group.suggestedCanonical.id) {
 					metaEl.createEl('span', {
-						text: 'suggested',
+						text: '建议',
 						cls: 'crc-badge crc-badge--small crc-badge--accent'
 					});
 				}
@@ -534,7 +534,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 							text: fullName,
 							cls: 'crc-duplicate-place-fullname crc-text--muted'
 						});
-						fullNameEl.title = 'Full place hierarchy from GEDCOM import';
+						fullNameEl.title = '从 GEDCOM 导入的完整地点层级';
 						// Insert at the beginning of metaEl
 						metaEl.insertBefore(fullNameEl, metaEl.firstChild);
 					}
@@ -544,14 +544,14 @@ export class MergeDuplicatePlacesModal extends Modal {
 							text: charLabel,
 							cls: 'crc-badge crc-badge--small crc-badge--warning'
 						});
-						bodyBadge.title = `This note has ${bodyCharCount.toLocaleString()} characters of text content below the frontmatter`;
+						bodyBadge.title = `此笔记在 frontmatter 下方有 ${bodyCharCount.toLocaleString()} 个字符的文本内容`;
 					}
 					if (hasCustomProps) {
 						const propsBadge = metaEl.createEl('span', {
-							text: 'custom props',
+							text: '自定义属性',
 							cls: 'crc-badge crc-badge--small crc-badge--warning'
 						});
-						propsBadge.title = 'This note has non-standard frontmatter properties';
+						propsBadge.title = '此笔记包含非标准 frontmatter 属性';
 					}
 				});
 			}
@@ -588,7 +588,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 		const container = filenameEl.createDiv({ cls: 'crc-filename-row' });
 
 		container.createEl('span', {
-			text: 'Final filename:',
+			text: '最终文件名：',
 			cls: 'crc-text--muted'
 		});
 
@@ -600,9 +600,9 @@ export class MergeDuplicatePlacesModal extends Modal {
 		// Edit button
 		const editBtn = container.createEl('button', {
 			cls: 'crc-btn crc-btn--icon crc-btn--small',
-			attr: { 'aria-label': 'Edit filename' }
+			attr: { 'aria-label': '编辑文件名' }
 		});
-		editBtn.title = 'Change filename after merge';
+		editBtn.title = '合并后更改文件名';
 		editBtn.appendChild(createLucideIcon('edit', 14));
 		editBtn.addEventListener('click', (e) => {
 			e.preventDefault();
@@ -613,9 +613,9 @@ export class MergeDuplicatePlacesModal extends Modal {
 		if (newFilename) {
 			const resetBtn = container.createEl('button', {
 				cls: 'crc-btn crc-btn--icon crc-btn--small',
-				attr: { 'aria-label': 'Reset filename' }
+				attr: { 'aria-label': '重置文件名' }
 			});
-			resetBtn.title = 'Reset to original filename';
+			resetBtn.title = '重置为原始文件名';
 			resetBtn.appendChild(createLucideIcon('undo-2', 14));
 			resetBtn.addEventListener('click', (e) => {
 				e.preventDefault();
@@ -634,7 +634,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 		const editorRow = container.createDiv({ cls: 'crc-filename-editor' });
 
 		editorRow.createEl('span', {
-			text: 'Final filename:',
+			text: '最终文件名：',
 			cls: 'crc-text--muted'
 		});
 
@@ -652,7 +652,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		const saveBtn = editorRow.createEl('button', {
 			cls: 'crc-btn crc-btn--small crc-btn--primary',
-			text: 'Save'
+			text: '保存'
 		});
 		saveBtn.addEventListener('click', () => {
 			const value = input.value.trim();
@@ -668,7 +668,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		const cancelBtn = editorRow.createEl('button', {
 			cls: 'crc-btn crc-btn--small',
-			text: 'Cancel'
+			text: '取消'
 		});
 		cancelBtn.addEventListener('click', () => {
 			this.updateFilenameDisplay(group);
@@ -694,19 +694,19 @@ export class MergeDuplicatePlacesModal extends Modal {
 	private getMatchReasonText(reason: 'exact_name' | 'similar_name' | 'same_parent_and_name' | 'similar_full_name' | 'same_parent_shared_base' | 'state_abbreviation_variant'): string {
 		switch (reason) {
 			case 'exact_name':
-				return 'exact name match';
+				return '名称完全相同';
 			case 'similar_name':
-				return 'similar names';
+				return '名称相似';
 			case 'same_parent_and_name':
-				return 'same name and parent';
+				return '名称与父级相同';
 			case 'similar_full_name':
-				return 'similar full name';
+				return '全名相似';
 			case 'same_parent_shared_base':
-				return 'same parent, shared base name';
+				return '父级相同，基础名称相同';
 			case 'state_abbreviation_variant':
-				return 'state abbreviation variant';
+				return '州缩写写法差异';
 			default:
-				return 'potential duplicate';
+				return '潜在重复项';
 		}
 	}
 
@@ -725,9 +725,9 @@ export class MergeDuplicatePlacesModal extends Modal {
 	private formatCharCount(count: number): string {
 		if (count >= 1000) {
 			const k = count / 1000;
-			return `${k.toFixed(k >= 10 ? 0 : 1)}k chars`;
+			return `${k.toFixed(k >= 10 ? 0 : 1)}k 字符`;
 		}
-		return `${count} chars`;
+		return `${count} 字符`;
 	}
 
 	/**
@@ -809,19 +809,19 @@ export class MergeDuplicatePlacesModal extends Modal {
 		const menu = new Menu();
 
 		menu.addItem((item) => {
-			item.setTitle('Open in new tab')
+			item.setTitle('在新标签页中打开')
 				.setIcon('file-plus')
 				.onClick(() => this.openPlaceNote(place, 'tab'));
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Open to the right')
+			item.setTitle('在右侧打开')
 				.setIcon('separator-vertical')
 				.onClick(() => this.openPlaceNote(place, 'split'));
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Open in new window')
+			item.setTitle('在新窗口中打开')
 				.setIcon('picture-in-picture-2')
 				.onClick(() => this.openPlaceNote(place, 'window'));
 		});
@@ -847,8 +847,8 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		// Update button label
 		if (mergeBtn && !mergeBtn.disabled) {
-			mergeBtn.textContent = `Merge (${duplicateCount})`;
-			mergeBtn.title = `Merge ${duplicateCount} duplicate${duplicateCount !== 1 ? 's' : ''} into "${canonical.name}"`;
+			mergeBtn.textContent = `合并（${duplicateCount}）`;
+			mergeBtn.title = `将 ${duplicateCount} 个重复项合并到"${canonical.name}"`;
 		}
 
 		// Calculate what will be updated
@@ -865,7 +865,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 		const impactText = impactEl.createEl('div', { cls: 'crc-impact-message' });
 
 		impactText.createEl('span', {
-			text: `Keep "${canonical.name}" (${canonical.filePath})`,
+			text: `保留"${canonical.name}"（${canonical.filePath}）`,
 			cls: 'crc-text--accent'
 		});
 
@@ -873,21 +873,21 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		if (duplicateCount > 0) {
 			detailsEl.createEl('span', {
-				text: `• ${duplicateCount} duplicate${duplicateCount !== 1 ? 's' : ''} will be moved to trash`,
+				text: `• ${duplicateCount} 个重复项将被移到回收站`,
 				cls: 'crc-text--muted'
 			});
 		}
 
 		if (totalRefsToUpdate > 0) {
 			detailsEl.createEl('span', {
-				text: `• ${totalRefsToUpdate} person reference${totalRefsToUpdate !== 1 ? 's' : ''} will be updated`,
+				text: `• ${totalRefsToUpdate} 处人物引用将被更新`,
 				cls: 'crc-text--muted'
 			});
 		}
 
 		if (childPlacesToUpdate > 0) {
 			detailsEl.createEl('span', {
-				text: `• ${childPlacesToUpdate} child place${childPlacesToUpdate !== 1 ? 's' : ''} will be re-parented`,
+				text: `• ${childPlacesToUpdate} 个子地点将被重新指定父级`,
 				cls: 'crc-text--muted'
 			});
 		}
@@ -906,7 +906,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		// Disable the button while processing
 		mergeBtn.disabled = true;
-		mergeBtn.textContent = 'Merging...';
+		mergeBtn.textContent = '正在合并…';
 
 		const duplicates = group.places.filter(p => p.id !== canonical.id);
 		let refsUpdated = 0;
@@ -931,7 +931,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 					filesDeleted++;
 				}
 			} catch (error) {
-				errors.push(`${duplicate.name}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+				errors.push(`${duplicate.name}: ${error instanceof Error ? error.message : '未知错误'}`);
 			}
 		}
 
@@ -940,7 +940,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 		try {
 			historicalNamesKept = await this.preserveHistoricalNames(canonical, duplicates);
 		} catch (error) {
-			errors.push(`Preserve historical names failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			errors.push(`保留历史名称失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 
 		// 4. Rename canonical file if a new filename was specified
@@ -956,7 +956,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 					renamed = true;
 				}
 			} catch (error) {
-				errors.push(`Rename failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+				errors.push(`重命名失败：${error instanceof Error ? error.message : '未知错误'}`);
 			}
 		}
 
@@ -966,7 +966,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		// Update the group element to show completion
 		groupEl.addClass('crc-variation-group--applied');
-		mergeBtn.textContent = `Done (${filesDeleted} deleted)`;
+		mergeBtn.textContent = `完成（已删除 ${filesDeleted}）`;
 		mergeBtn.addClass('crc-btn--success');
 
 		// Disable radio buttons and hide filename editor
@@ -977,7 +977,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 			filenameSection.empty();
 			if (renamed && newFilename) {
 				filenameSection.createEl('span', {
-					text: `✓ Renamed to ${newFilename}.md`,
+					text: `✓ 已重命名为 ${newFilename}.md`,
 					cls: 'crc-text--success'
 				});
 			}
@@ -985,13 +985,13 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		if (errors.length > 0) {
 			console.error('Errors during merge:', errors);
-			new Notice(`Merged with ${errors.length} errors. Check console for details.`);
+			new Notice(`合并完成，但有 ${errors.length} 个错误。详情请查看控制台。`);
 		} else {
-			const renameMsg = renamed ? ` and renamed to "${newFilename}.md"` : '';
+			const renameMsg = renamed ? `，并重命名为"${newFilename}.md"` : '';
 			const historicalMsg = historicalNamesKept > 0
-				? `; kept ${historicalNamesKept} historical name${historicalNamesKept !== 1 ? 's' : ''}`
+				? `；保留了 ${historicalNamesKept} 个历史名称`
 				: '';
-			new Notice(`Merged ${filesDeleted} duplicate${filesDeleted !== 1 ? 's' : ''} into "${canonical.name}"${renameMsg}${historicalMsg}`);
+			new Notice(`已将 ${filesDeleted} 个重复项合并到"${canonical.name}"${renameMsg}${historicalMsg}`);
 		}
 	}
 
@@ -1029,7 +1029,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 						totalDeleted++;
 					}
 				} catch (error) {
-					errors.push(`${duplicate.name}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+					errors.push(`${duplicate.name}: ${error instanceof Error ? error.message : '未知错误'}`);
 				}
 			}
 
@@ -1037,7 +1037,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 			try {
 				totalHistoricalKept += await this.preserveHistoricalNames(canonical, duplicates);
 			} catch (error) {
-				errors.push(`Preserve historical names "${canonical.name}" failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+				errors.push(`保留"${canonical.name}"的历史名称失败：${error instanceof Error ? error.message : '未知错误'}`);
 			}
 
 			// Rename canonical file if a new filename was specified
@@ -1052,7 +1052,7 @@ export class MergeDuplicatePlacesModal extends Modal {
 						totalRenamed++;
 					}
 				} catch (error) {
-					errors.push(`Rename "${canonical.name}" failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+					errors.push(`重命名"${canonical.name}"失败：${error instanceof Error ? error.message : '未知错误'}`);
 				}
 			}
 
@@ -1064,15 +1064,15 @@ export class MergeDuplicatePlacesModal extends Modal {
 
 		if (errors.length > 0) {
 			console.error('Errors during bulk merge:', errors);
-			new Notice(`Merged ${totalDeleted} duplicates with ${errors.length} errors`);
+			new Notice(`已合并 ${totalDeleted} 个重复项，出现 ${errors.length} 个错误`);
 		} else if (totalDeleted > 0) {
-			const renameMsg = totalRenamed > 0 ? `, renamed ${totalRenamed}` : '';
+			const renameMsg = totalRenamed > 0 ? `，重命名 ${totalRenamed} 个` : '';
 			const historicalMsg = totalHistoricalKept > 0
-				? `, kept ${totalHistoricalKept} historical name${totalHistoricalKept !== 1 ? 's' : ''}`
+				? `，保留 ${totalHistoricalKept} 个历史名称`
 				: '';
-			new Notice(`Merged ${totalDeleted} duplicate place note${totalDeleted !== 1 ? 's' : ''}${renameMsg}${historicalMsg}`);
+			new Notice(`已合并 ${totalDeleted} 条重复地点笔记${renameMsg}${historicalMsg}`);
 		} else {
-			new Notice('No duplicates to merge');
+			new Notice('没有可合并的重复项');
 		}
 
 		if (this.onComplete) {

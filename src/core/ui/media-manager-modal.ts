@@ -190,7 +190,7 @@ export class MediaManagerModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'crc-media-manager-header' });
 		const headerIcon = header.createDiv({ cls: 'crc-media-manager-header-icon' });
 		setIcon(headerIcon, 'image');
-		header.createEl('h2', { text: 'Media Manager' });
+		header.createEl('h2', { text: '媒体管理器' });
 
 		// Action cards grid (6 tiles in 3×2 layout)
 		const grid = contentEl.createDiv({ cls: 'crc-media-manager-grid' });
@@ -201,9 +201,9 @@ export class MediaManagerModal extends Modal {
 		this.renderActionCard(grid, {
 			icon: 'layout-grid',
 			iconClass: 'gallery',
-			title: 'Linked Media Gallery',
-			description: 'View media files linked to entities. Filter by entity type, search by name.',
-			stat: this.stats ? `${this.stats.linkedFiles} linked files` : 'Loading...',
+			title: '已链接媒体图库',
+			description: '查看链接到实体的媒体文件。按实体类型筛选，按名称搜索。',
+			stat: this.stats ? `已链接 ${this.stats.linkedFiles} 个文件` : '加载中…',
 			onClick: () => this.openBrowseGallery()
 		});
 
@@ -211,9 +211,9 @@ export class MediaManagerModal extends Modal {
 		this.renderActionCard(grid, {
 			icon: 'unlink',
 			iconClass: 'unlinked',
-			title: 'Find Unlinked',
-			description: 'Discover media files in your vault that aren\'t linked to any entity.',
-			stat: this.stats ? `${this.stats.unlinkedFiles} orphaned files` : 'Loading...',
+			title: '查找未链接',
+			description: '发现库中未链接到任何实体的媒体文件。',
+			stat: this.stats ? `${this.stats.unlinkedFiles} 个孤立文件` : '加载中…',
 			onClick: () => this.openFindUnlinked()
 		});
 
@@ -221,9 +221,9 @@ export class MediaManagerModal extends Modal {
 		this.renderActionCard(grid, {
 			icon: 'file-image',
 			iconClass: 'sources',
-			title: 'Source Media Linker',
-			description: 'Smart matching to link images to sources by filename patterns.',
-			stat: this.stats ? `${this.stats.sourcesToReview} sources to review` : 'Loading...',
+			title: '来源媒体链接器',
+			description: '按文件名模式智能匹配，将图片链接到来源。',
+			stat: this.stats ? `${this.stats.sourcesToReview} 个来源待检查` : '加载中…',
 			onClick: () => this.openSourceMediaLinker()
 		});
 
@@ -233,9 +233,9 @@ export class MediaManagerModal extends Modal {
 		this.renderActionCard(grid, {
 			icon: 'upload',
 			iconClass: 'upload',
-			title: 'Upload Media',
-			description: 'Upload files to your vault and optionally link them to entities.',
-			stat: this.stats ? `Upload to ${this.getUploadDestination()}` : 'Loading...',
+			title: '上传媒体',
+			description: '将文件上传到你的库，并可选地链接到实体。',
+			stat: this.stats ? `上传到 ${this.getUploadDestination()}` : '加载中…',
 			onClick: () => this.openUploadMedia()
 		});
 
@@ -243,9 +243,9 @@ export class MediaManagerModal extends Modal {
 		this.renderActionCard(grid, {
 			icon: 'link',
 			iconClass: 'link',
-			title: 'Link Media',
-			description: 'Select media files from your vault, then choose entities to link them to.',
-			stat: this.stats ? `${this.stats.totalMediaFiles} files available` : 'Loading...',
+			title: '链接媒体',
+			description: '从库中选择媒体文件，然后选择要链接到的实体。',
+			stat: this.stats ? `可用文件 ${this.stats.totalMediaFiles} 个` : '加载中…',
 			onClick: () => this.openLinkMedia()
 		});
 
@@ -253,9 +253,9 @@ export class MediaManagerModal extends Modal {
 		this.renderActionCard(grid, {
 			icon: 'layers',
 			iconClass: 'bulk',
-			title: 'Bulk Link to Entities',
-			description: 'Select multiple entities, then choose media files to link to all of them.',
-			stat: this.stats ? `${this.stats.entitiesWithoutMedia} entities without media` : 'Loading...',
+			title: '批量链接到实体',
+			description: '选择多个实体，然后选择要链接到它们的媒体文件。',
+			stat: this.stats ? `${this.stats.entitiesWithoutMedia} 个实体没有媒体` : '加载中…',
 			onClick: () => this.openBulkLinkMedia()
 		});
 
@@ -263,17 +263,17 @@ export class MediaManagerModal extends Modal {
 		if (this.stats) {
 			const statsBar = contentEl.createDiv({ cls: 'crc-media-manager-stats' });
 
-			this.renderStatItem(statsBar, this.stats.totalMediaFiles.toString(), 'Total files');
+			this.renderStatItem(statsBar, this.stats.totalMediaFiles.toString(), '文件总数');
 			this.renderStatDivider(statsBar);
-			this.renderStatItem(statsBar, this.stats.linkedFiles.toString(), 'Linked');
+			this.renderStatItem(statsBar, this.stats.linkedFiles.toString(), '已链接');
 			this.renderStatDivider(statsBar);
-			this.renderStatItem(statsBar, this.stats.unlinkedFiles.toString(), 'Unlinked');
+			this.renderStatItem(statsBar, this.stats.unlinkedFiles.toString(), '未链接');
 			this.renderStatDivider(statsBar);
 
 			const coverage = this.stats.totalMediaFiles > 0
 				? Math.round((this.stats.linkedFiles / this.stats.totalMediaFiles) * 100)
 				: 0;
-			this.renderStatItem(statsBar, `${coverage}%`, 'Coverage');
+			this.renderStatItem(statsBar, `${coverage}%`, '覆盖率');
 		}
 	}
 
@@ -378,8 +378,8 @@ export class MediaManagerModal extends Modal {
 				}
 			},
 			{
-				title: 'Select media to link',
-				subtitle: 'Choose media files, then select entities to link them to',
+				title: '选择要链接的媒体',
+				subtitle: '选择媒体文件，然后选择要链接到的实体',
 				multiSelect: true
 			},
 			this.plugin
@@ -392,7 +392,7 @@ export class MediaManagerModal extends Modal {
 	private getUploadDestination(): string {
 		const { mediaFolders } = this.plugin.settings;
 		if (mediaFolders.length === 0) {
-			return 'Not configured';
+			return '未配置';
 		}
 		// Show just the folder name, not full path
 		const firstFolder = mediaFolders[0];

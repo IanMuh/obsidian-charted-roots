@@ -9,7 +9,6 @@
 import { App, TFile, Notice } from 'obsidian';
 import { getLogger } from './logging';
 import { getErrorMessage } from './error-utils';
-import { pluralize } from '../utils/format-utils';
 
 const logger = getLogger('RelationshipHistory');
 
@@ -224,7 +223,7 @@ export class RelationshipHistoryService {
 				id: changeId,
 				error: errorMsg
 			});
-			new Notice(`Failed to undo change: ${errorMsg}`);
+			new Notice(`撤销关系变更失败：${errorMsg}`);
 			return false;
 		}
 	}
@@ -371,7 +370,7 @@ export class RelationshipHistoryService {
 
 		if (recentChanges.length === 0) {
 			logger.info('history-undo', 'No changes to undo');
-			new Notice('No relationship changes to undo');
+			new Notice('没有可撤销的关系变更');
 			return null;
 		}
 
@@ -511,32 +510,32 @@ export function formatChangeDescription(change: RelationshipChange): string {
 
 	switch (change.type) {
 		case 'add_father':
-			return `Added ${target} as father of ${source}`;
+			return `已将 ${target} 添加为 ${source} 的父亲`;
 		case 'add_mother':
-			return `Added ${target} as mother of ${source}`;
+			return `已将 ${target} 添加为 ${source} 的母亲`;
 		case 'add_parent':
-			return `Added ${target} as parent of ${source}`;
+			return `已将 ${target} 添加为 ${source} 的父母`;
 		case 'add_spouse':
-			return `Added ${target} as spouse of ${source}`;
+			return `已将 ${target} 添加为 ${source} 的配偶`;
 		case 'add_child':
-			return `Added ${target} as child of ${source}`;
+			return `已将 ${target} 添加为 ${source} 的子女`;
 		case 'remove_father':
-			return `Removed ${target} as father of ${source}`;
+			return `已移除 ${source} 的父亲 ${target}`;
 		case 'remove_mother':
-			return `Removed ${target} as mother of ${source}`;
+			return `已移除 ${source} 的母亲 ${target}`;
 		case 'remove_parent':
-			return `Removed ${target} as parent of ${source}`;
+			return `已移除 ${source} 的父母 ${target}`;
 		case 'remove_spouse':
-			return `Removed ${target} as spouse of ${source}`;
+			return `已移除 ${source} 的配偶 ${target}`;
 		case 'remove_child':
-			return `Removed ${target} as child of ${source}`;
+			return `已移除 ${source} 的子女 ${target}`;
 		case 'update_father':
-			return `Changed father of ${source} from ${change.previousValue} to ${target}`;
+			return `已将 ${source} 的父亲从 ${change.previousValue} 改为 ${target}`;
 		case 'update_mother':
-			return `Changed mother of ${source} from ${change.previousValue} to ${target}`;
+			return `已将 ${source} 的母亲从 ${change.previousValue} 改为 ${target}`;
 		default: {
 			const _exhaustiveCheck: never = change.type;
-			return `Unknown change: ${String(_exhaustiveCheck)}`;
+			return `未知变更：${String(_exhaustiveCheck)}`;
 		}
 	}
 }
@@ -551,25 +550,25 @@ export function formatChangeTimestamp(timestamp: number): string {
 
 	// Less than a minute ago
 	if (diff < 60 * 1000) {
-		return 'Just now';
+		return '刚刚';
 	}
 
 	// Less than an hour ago
 	if (diff < 60 * 60 * 1000) {
 		const minutes = Math.floor(diff / (60 * 1000));
-		return `${minutes} ${pluralize(minutes, 'minute')} ago`;
+		return `${minutes}分钟前`;
 	}
 
 	// Less than a day ago
 	if (diff < 24 * 60 * 60 * 1000) {
 		const hours = Math.floor(diff / (60 * 60 * 1000));
-		return `${hours} ${pluralize(hours, 'hour')} ago`;
+		return `${hours}小时前`;
 	}
 
 	// Less than a week ago
 	if (diff < 7 * 24 * 60 * 60 * 1000) {
 		const days = Math.floor(diff / (24 * 60 * 60 * 1000));
-		return `${days} ${pluralize(days, 'day')} ago`;
+		return `${days}天前`;
 	}
 
 	// Format as date

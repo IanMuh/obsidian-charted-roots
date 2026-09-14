@@ -339,12 +339,12 @@ export const DEFAULT_PLACE_CATEGORY: PlaceCategory = 'real';
  * would otherwise show the raw lowercase id (#745).
  */
 export const PLACE_CATEGORY_LABELS: Record<PlaceCategory, string> = {
-	real: 'Real',
-	historical: 'Historical',
-	disputed: 'Disputed',
-	legendary: 'Legendary',
-	mythological: 'Mythological',
-	fictional: 'Fictional'
+	real: '真实',
+	historical: '历史',
+	disputed: '存疑',
+	legendary: '传说',
+	mythological: '神话',
+	fictional: '虚构'
 };
 
 /**

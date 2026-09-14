@@ -380,7 +380,7 @@ export class CreatePersonModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon(this.editMode ? 'edit' : 'user-plus', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText(this.editMode ? 'Edit person note' : 'Create person note');
+		titleContainer.appendText(this.editMode ? '编辑人物笔记' : '创建人物笔记');
 
 		// Check for persisted state (only in create mode)
 		if (this.persistence && !this.editMode) {
@@ -430,10 +430,10 @@ export class CreatePersonModal extends Modal {
 
 		// Name (required)
 		new Setting(form)
-			.setName('Name')
-			.setDesc('Full name of the person')
+			.setName('姓名')
+			.setDesc('人物的全名')
 			.addText(text => text
-				.setPlaceholder('e.g., John Robert Smith')
+				.setPlaceholder('例：张三')
 				.setValue(this.personData.name || '')
 				.onChange(value => {
 					this.personData.name = value;
@@ -445,14 +445,14 @@ export class CreatePersonModal extends Modal {
 
 		// Sex
 		new Setting(form)
-			.setName('Sex')
-			.setDesc('Sex (used for relationship terminology and display)')
+			.setName('性别')
+			.setDesc('性别（用于关系称谓与显示）')
 			.addDropdown(dropdown => dropdown
-				.addOption('', '(None)')
-				.addOption('M', 'Male')
-				.addOption('F', 'Female')
-				.addOption('X', 'Non-binary')
-				.addOption('U', 'Unknown')
+				.addOption('', '（无）')
+				.addOption('M', '男')
+				.addOption('F', '女')
+				.addOption('X', '非二元')
+				.addOption('U', '未知')
 				.setValue(this.personData.sex || '')
 				.onChange(value => {
 					this.personData.sex = value || undefined;
@@ -464,38 +464,38 @@ export class CreatePersonModal extends Modal {
 		// === LIFE EVENTS SECTION (moved higher for better UX) ===
 		// Birth date
 		new Setting(form)
-			.setName('Birth date')
-			.setDesc('Date of birth (YYYY-MM-DD recommended; append T HH:MM to disambiguate twins)')
+			.setName('出生日期')
+			.setDesc('出生日期（建议 YYYY-MM-DD；可在末尾追加 T HH:MM 以区分双胞胎）')
 			.addText(text => text
-				.setPlaceholder('e.g., 1888-05-15 or 1888-05-15T03:42')
+				.setPlaceholder('例：1888-05-15 或 1888-05-15T03:42')
 				.setValue(this.personData.birthDate || '')
 				.onChange(value => {
 					this.personData.birthDate = value || undefined;
 				}));
 
 		// Birth place (link field)
-		this.createPlaceField(form, 'Birth place', this.birthPlaceField);
+		this.createPlaceField(form, '出生地点', this.birthPlaceField);
 
 		// Death date
 		new Setting(form)
-			.setName('Death date')
-			.setDesc('Date of death (leave blank if still living)')
+			.setName('去世日期')
+			.setDesc('去世日期（在世则留空）')
 			.addText(text => text
-				.setPlaceholder('e.g., 1952-08-20')
+				.setPlaceholder('例：1952-08-20')
 				.setValue(this.personData.deathDate || '')
 				.onChange(value => {
 					this.personData.deathDate = value || undefined;
 				}));
 
 		// Death place (link field)
-		this.createPlaceField(form, 'Death place', this.deathPlaceField);
+		this.createPlaceField(form, '去世地点', this.deathPlaceField);
 
 		// Burial date (#682)
 		new Setting(form)
-			.setName('Burial date')
-			.setDesc('Date of burial or interment')
+			.setName('安葬日期')
+			.setDesc('安葬或下葬日期')
 			.addText(text => text
-				.setPlaceholder('e.g., 1952-08-23')
+				.setPlaceholder('例：1952-08-23')
 				.setValue(this.personData.burialDate || '')
 				.onChange(value => {
 					this.personData.burialDate = value || undefined;
@@ -506,13 +506,13 @@ export class CreatePersonModal extends Modal {
 		// frontmatter. Sits directly under the death/burial fields and shows in
 		// both create and edit mode.
 		new Setting(form)
-			.setName('Living status')
-			.setDesc('Mark whether this person is living or deceased, overriding automatic detection (also used for privacy protection in exports)')
+			.setName('在世状态')
+			.setDesc('标记此人在世或已故，覆盖自动判定（也用于导出时的隐私保护）')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('', '(Automatic)')
-					.addOption('true', 'Living (protected)')
-					.addOption('false', 'Deceased (not protected)')
+					.addOption('', '（自动）')
+					.addOption('true', '在世（受保护）')
+					.addOption('false', '已故（不受保护）')
 					.setValue(this.personData.cr_living === undefined ? '' : String(this.personData.cr_living))
 					.onChange(value => {
 						if (value === '') {
@@ -531,10 +531,10 @@ export class CreatePersonModal extends Modal {
 		// Research level (only shown when Research Tools are enabled)
 		if (this.settings?.trackFactSourcing) {
 			new Setting(form)
-				.setName('Research level')
-				.setDesc('Research progress toward GPS-compliant documentation')
+				.setName('研究等级')
+				.setDesc('朝向 GPS 合规文档的研究进度')
 				.addDropdown(dropdown => {
-					dropdown.addOption('', '(Not assessed)');
+					dropdown.addOption('', '（未评估）');
 					for (const [level, info] of Object.entries(RESEARCH_LEVELS)) {
 						dropdown.addOption(level, `${level} - ${info.name}`);
 					}
@@ -553,13 +553,13 @@ export class CreatePersonModal extends Modal {
 
 		// Relationship fields section header
 		const relSection = form.createDiv({ cls: 'crc-relationship-section' });
-		relSection.createEl('h4', { text: 'Family relationships', cls: 'crc-section-header' });
+		relSection.createEl('h4', { text: '家族关系', cls: 'crc-section-header' });
 
 		// Father relationship
-		this.createRelationshipField(relSection, 'Father', this.fatherField);
+		this.createRelationshipField(relSection, '父亲', this.fatherField);
 
 		// Mother relationship
-		this.createRelationshipField(relSection, 'Mother', this.motherField);
+		this.createRelationshipField(relSection, '母亲', this.motherField);
 
 		// Spouses section (multi-select, shown in edit mode or if spouses exist)
 		if (this.editMode || this.spousesField.spouses.length > 0) {
@@ -587,8 +587,8 @@ export class CreatePersonModal extends Modal {
 
 		// Collection - dropdown with existing + text for custom
 		const collectionSetting = new Setting(form)
-			.setName('Collection')
-			.setDesc('User-defined grouping for organizing person notes');
+			.setName('合集')
+			.setDesc('用于组织人物笔记的自定义分组');
 
 		if (this.existingCollections.length > 0) {
 			let customInput: HTMLInputElement | null = null;
@@ -596,8 +596,8 @@ export class CreatePersonModal extends Modal {
 
 			collectionSetting.addDropdown(dropdown => {
 				dropdown
-					.addOption('', '(None)')
-					.addOption('__custom__', '+ New collection...');
+					.addOption('', '（无）')
+					.addOption('__custom__', '＋新建合集…');
 
 				for (const coll of this.existingCollections) {
 					dropdown.addOption(coll, coll);
@@ -624,7 +624,7 @@ export class CreatePersonModal extends Modal {
 			// Add text input for custom collection (hidden by default)
 			collectionSetting.addText(text => {
 				customInput = text.inputEl;
-				text.setPlaceholder('Enter new collection name')
+				text.setPlaceholder('输入新合集名称')
 					.onChange(value => {
 						collectionValue = value || undefined;
 					});
@@ -637,7 +637,7 @@ export class CreatePersonModal extends Modal {
 		} else {
 			let collectionValue: string | undefined = this.personData.collection;
 			collectionSetting.addText(text => text
-				.setPlaceholder('e.g., Smith Family')
+				.setPlaceholder('例：Smith 家族')
 				.setValue(collectionValue || '')
 				.onChange(value => {
 					collectionValue = value || undefined;
@@ -647,8 +647,8 @@ export class CreatePersonModal extends Modal {
 
 		// Universe - dropdown with existing + text for custom
 		const universeSetting = new Setting(form)
-			.setName('Universe')
-			.setDesc('Fictional universe or world this person belongs to');
+			.setName('宇宙')
+			.setDesc('此人所属的虚构宇宙或世界');
 
 		if (this.existingUniverses.length > 0) {
 			let universeCustomInput: HTMLInputElement | null = null;
@@ -656,8 +656,8 @@ export class CreatePersonModal extends Modal {
 
 			universeSetting.addDropdown(dropdown => {
 				dropdown
-					.addOption('', '(None)')
-					.addOption('__custom__', '+ New universe...');
+					.addOption('', '（无）')
+					.addOption('__custom__', '＋新建宇宙…');
 
 				for (const univ of this.existingUniverses) {
 					dropdown.addOption(univ, univ);
@@ -684,7 +684,7 @@ export class CreatePersonModal extends Modal {
 			// Add text input for custom universe (hidden by default)
 			universeSetting.addText(text => {
 				universeCustomInput = text.inputEl;
-				text.setPlaceholder('Enter new universe name')
+				text.setPlaceholder('输入新宇宙名称')
 					.onChange(value => {
 						universeValue = value || undefined;
 					});
@@ -697,7 +697,7 @@ export class CreatePersonModal extends Modal {
 		} else {
 			let universeValue: string | undefined = this.personData.universe;
 			universeSetting.addText(text => text
-				.setPlaceholder('e.g., Westeros, Middle-earth')
+				.setPlaceholder('例：Westeros、Middle-earth')
 				.setValue(universeValue || '')
 				.onChange(value => {
 					universeValue = value || undefined;
@@ -708,10 +708,10 @@ export class CreatePersonModal extends Modal {
 		// Directory setting (only show in create mode)
 		if (!this.editMode) {
 			new Setting(form)
-				.setName('Directory')
-				.setDesc('Where to create the person note')
+				.setName('文件夹')
+				.setDesc('人物笔记的创建位置')
 				.addText(text => text
-					.setPlaceholder('e.g., People')
+					.setPlaceholder('例：People')
 					.setValue(this.directory)
 					.onChange(value => {
 						this.directory = value;
@@ -719,8 +719,8 @@ export class CreatePersonModal extends Modal {
 
 			// Dynamic blocks toggle (only in create mode)
 			new Setting(form)
-				.setName('Include dynamic blocks')
-				.setDesc('Add timeline, relationships, and media gallery blocks that update automatically')
+				.setName('包含动态区块')
+				.setDesc('添加会自动更新的时间轴、关系和媒体库区块')
 				.addToggle(toggle => toggle
 					.setValue(this.includeDynamicBlocks)
 					.onChange(value => {
@@ -732,13 +732,13 @@ export class CreatePersonModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons crc-modal-buttons--sticky' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				this.close();
 			});
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText(this.editMode ? 'Save changes' : 'Create person')
+			.setButtonText(this.editMode ? '保存更改' : '创建人物')
 			.setCta()
 			.onClick(() => {
 				if (this.editMode) {
@@ -930,14 +930,14 @@ export class CreatePersonModal extends Modal {
 		const displayName = extractDisplayLabel(fieldData.name);
 		const setting = new Setting(container)
 			.setName(label)
-			.setDesc(displayName ? `Linked to: ${displayName}` : `Click "Link" to select ${label.toLowerCase()}`);
+			.setDesc(displayName ? `已关联：${displayName}` : `点击"关联"选择${label}`);
 
 		// Text input (readonly, shows selected person name)
 		let inputEl: HTMLInputElement;
 
 		setting.addText(text => {
 			inputEl = text.inputEl;
-			text.setPlaceholder(`Click "Link" to select ${label.toLowerCase()}`)
+			text.setPlaceholder(`点击"关联"选择${label}`)
 				.setValue(displayName);
 			text.inputEl.readOnly = true;
 			if (fieldData.name) {
@@ -953,11 +953,11 @@ export class CreatePersonModal extends Modal {
 				if (isLinked) {
 					const unlinkIcon = createLucideIcon('unlink', 16);
 					btn.buttonEl.appendChild(unlinkIcon);
-					btn.buttonEl.appendText(' Unlink');
+					btn.buttonEl.appendText(' 取消关联');
 				} else {
 					const linkIcon = createLucideIcon('link', 16);
 					btn.buttonEl.appendChild(linkIcon);
-					btn.buttonEl.appendText(' Link');
+					btn.buttonEl.appendText(' 关联');
 				}
 			};
 
@@ -970,7 +970,7 @@ export class CreatePersonModal extends Modal {
 					fieldData.name = undefined;
 					inputEl.value = '';
 					inputEl.removeClass('crc-input--linked');
-					setting.setDesc(`Click "Link" to select ${label.toLowerCase()}`);
+					setting.setDesc(`点击"关联"选择${label}`);
 					updateButton(false);
 				} else {
 					// Build relationship context for inline creation
@@ -982,10 +982,10 @@ export class CreatePersonModal extends Modal {
 						fieldData.crId = person.crId;
 						inputEl.value = person.name;
 						inputEl.addClass('crc-input--linked');
-						setting.setDesc(`Linked to: ${person.name}`);
+						setting.setDesc(`已关联：${person.name}`);
 						updateButton(true);
 					}, {
-						title: `Select ${label.toLowerCase()}`,
+						title: `选择${label}`,
 						createContext: createContext,
 						onCreateNew: () => {
 							// This callback is called when user clicks "Create new"
@@ -1007,17 +1007,27 @@ export class CreatePersonModal extends Modal {
 	private buildRelationshipContext(label: string): RelationshipContext {
 		const labelLower = label.toLowerCase();
 
+		// Map the (localized) field label back to a stable relationship token
+		// consumed by the person picker / quick-create modal.
+		let relationshipType = labelLower;
+		if (label.includes('继父')) relationshipType = 'step-father';
+		else if (label.includes('继母')) relationshipType = 'step-mother';
+		else if (label.includes('养父')) relationshipType = 'adoptive father';
+		else if (label.includes('养母')) relationshipType = 'adoptive mother';
+		else if (label.includes('父')) relationshipType = 'father';
+		else if (label.includes('母')) relationshipType = 'mother';
+
 		// Determine suggested sex based on relationship type
 		let suggestedSex: 'male' | 'female' | undefined;
-		if (labelLower.includes('father')) {
+		if (labelLower.includes('father') || label.includes('父')) {
 			suggestedSex = 'male';
-		} else if (labelLower.includes('mother')) {
+		} else if (labelLower.includes('mother') || label.includes('母')) {
 			suggestedSex = 'female';
 		}
 		// Spouse has no suggested sex
 
 		return {
-			relationshipType: label.toLowerCase(),
+			relationshipType,
 			suggestedSex,
 			parentCrId: this.personData.crId,
 			directory: this.directory
@@ -1036,14 +1046,14 @@ export class CreatePersonModal extends Modal {
 		const displayName = extractDisplayLabel(fieldData.name);
 		const setting = new Setting(container)
 			.setName(label)
-			.setDesc(displayName ? `Linked to: ${displayName}` : `Click "Link" to select ${label.toLowerCase()}`);
+			.setDesc(displayName ? `已关联：${displayName}` : `点击"关联"选择${label}`);
 
 		// Text input (readonly, shows selected place name)
 		let inputEl: HTMLInputElement;
 
 		setting.addText(text => {
 			inputEl = text.inputEl;
-			text.setPlaceholder(`Click "Link" to select ${label.toLowerCase()}`)
+			text.setPlaceholder(`点击"关联"选择${label}`)
 				.setValue(displayName);
 			text.inputEl.readOnly = true;
 			if (fieldData.name) {
@@ -1059,11 +1069,11 @@ export class CreatePersonModal extends Modal {
 				if (isLinked) {
 					const unlinkIcon = createLucideIcon('unlink', 16);
 					btn.buttonEl.appendChild(unlinkIcon);
-					btn.buttonEl.appendText(' Unlink');
+					btn.buttonEl.appendText(' 取消关联');
 				} else {
 					const linkIcon = createLucideIcon('map-pin', 16);
 					btn.buttonEl.appendChild(linkIcon);
-					btn.buttonEl.appendText(' Link');
+					btn.buttonEl.appendText(' 关联');
 				}
 			};
 
@@ -1076,7 +1086,7 @@ export class CreatePersonModal extends Modal {
 					fieldData.name = undefined;
 					inputEl.value = '';
 					inputEl.removeClass('crc-input--linked');
-					setting.setDesc(`Click "Link" to select ${label.toLowerCase()}`);
+					setting.setDesc(`点击"关联"选择${label}`);
 					updateButton(false);
 				} else {
 					// Open place picker
@@ -1085,7 +1095,7 @@ export class CreatePersonModal extends Modal {
 						fieldData.crId = place.crId;
 						inputEl.value = place.name;
 						inputEl.addClass('crc-input--linked');
-						setting.setDesc(`Linked to: ${place.name}`);
+						setting.setDesc(`已关联：${place.name}`);
 						updateButton(true);
 					}, {
 						placeGraph: this.placeGraph,
@@ -1108,14 +1118,14 @@ export class CreatePersonModal extends Modal {
 
 		// Header with label and add button
 		const header = childrenContainer.createDiv({ cls: 'crc-children-field__header' });
-		header.createSpan({ cls: 'crc-children-field__label', text: 'Children' });
+		header.createSpan({ cls: 'crc-children-field__label', text: '子女' });
 
 		const addBtn = header.createEl('button', {
 			cls: 'crc-btn crc-btn--secondary crc-btn--small'
 		});
 		const addIcon = createLucideIcon('plus', 14);
 		addBtn.appendChild(addIcon);
-		addBtn.appendText(' Add child');
+		addBtn.appendText(' 添加子女');
 
 		// List of current children
 		const childList = childrenContainer.createDiv({ cls: 'crc-children-field__list' });
@@ -1126,7 +1136,7 @@ export class CreatePersonModal extends Modal {
 
 			if (this.childrenField.crIds.length === 0) {
 				const emptyState = childList.createDiv({ cls: 'crc-children-field__empty' });
-				emptyState.setText('No children linked');
+				emptyState.setText('未关联子女');
 				return;
 			}
 
@@ -1143,7 +1153,7 @@ export class CreatePersonModal extends Modal {
 				// Remove button
 				const removeBtn = childItem.createEl('button', {
 					cls: 'crc-btn crc-btn--icon crc-btn--danger',
-					attr: { 'aria-label': `Remove ${name}` }
+					attr: { 'aria-label': `移除${name}` }
 				});
 				const removeIcon = createLucideIcon('x', 14);
 				removeBtn.appendChild(removeIcon);
@@ -1172,17 +1182,17 @@ export class CreatePersonModal extends Modal {
 			const picker = new PersonPickerModal(this.app, (person: PersonInfo) => {
 				// Check if already added
 				if (this.childrenField.crIds.includes(person.crId)) {
-					new Notice(`${person.name} is already linked as a child`);
-					return;
-				}
+						new Notice(`${person.name}已关联为子女`);
+						return;
+					}
 
 				// Add to arrays
 				this.childrenField.crIds.push(person.crId);
 				this.childrenField.names.push(person.name);
 				renderChildList();
-			}, {
-				title: 'Select child',
-				subtitle: 'Select an existing person or create a new one',
+				}, {
+					title: '选择子女',
+					subtitle: '选择已有的人物或新建一个',
 				createContext: createContext,
 				onCreateNew: () => {
 					// This callback signals inline creation support
@@ -1210,7 +1220,7 @@ export class CreatePersonModal extends Modal {
 		});
 		const addIcon = createLucideIcon('plus', 14);
 		addBtn.appendChild(addIcon);
-		addBtn.appendText(` Add ${label.toLowerCase().replace(/s$/, '')}`); // "Add parent" from "Parents"
+		addBtn.appendText(` 添加${label}`); // "Add parent" from "Parents"
 
 		// List of current parents
 		const parentList = parentsContainer.createDiv({ cls: 'crc-children-field__list' });
@@ -1221,7 +1231,7 @@ export class CreatePersonModal extends Modal {
 
 			if (this.parentsField.crIds.length === 0) {
 				const emptyState = parentList.createDiv({ cls: 'crc-children-field__empty' });
-				emptyState.setText(`No ${label.toLowerCase()} linked`);
+				emptyState.setText(`未关联${label}`);
 				return;
 			}
 
@@ -1238,7 +1248,7 @@ export class CreatePersonModal extends Modal {
 				// Remove button
 				const removeBtn = parentItem.createEl('button', {
 					cls: 'crc-btn crc-btn--icon crc-btn--danger',
-					attr: { 'aria-label': `Remove ${name}` }
+					attr: { 'aria-label': `移除${name}` }
 				});
 				const removeIcon = createLucideIcon('x', 14);
 				removeBtn.appendChild(removeIcon);
@@ -1259,7 +1269,7 @@ export class CreatePersonModal extends Modal {
 		addBtn.addEventListener('click', () => {
 			// Build context for inline creation - no suggested sex for gender-neutral parents
 			const createContext: RelationshipContext = {
-				relationshipType: label.toLowerCase().replace(/s$/, ''), // "parent" from "Parents"
+				relationshipType: 'parent',
 				parentCrId: undefined, // Not applicable for parent relationship
 				directory: this.directory
 			};
@@ -1267,7 +1277,7 @@ export class CreatePersonModal extends Modal {
 			const picker = new PersonPickerModal(this.app, (person: PersonInfo) => {
 				// Check if already added
 				if (this.parentsField.crIds.includes(person.crId)) {
-					new Notice(`${person.name} is already linked as a ${label.toLowerCase().replace(/s$/, '')}`);
+					new Notice(`${person.name}已关联为${label}`);
 					return;
 				}
 
@@ -1276,8 +1286,8 @@ export class CreatePersonModal extends Modal {
 				this.parentsField.names.push(person.name);
 				renderParentList();
 			}, {
-				title: `Select ${label.toLowerCase().replace(/s$/, '')}`,
-				subtitle: 'Select an existing person or create a new one',
+				title: `选择${label}`,
+				subtitle: '选择已有的人物或新建一个',
 				createContext: createContext,
 				onCreateNew: () => {
 					// This callback signals inline creation support
@@ -1334,16 +1344,16 @@ export class CreatePersonModal extends Modal {
 		// Collapsed-state trigger
 		const expandLink = wrapper.createDiv({ cls: 'crc-inline-expand__trigger' });
 		const linkIcon = expandLink.createSpan({ cls: 'crc-inline-expand__icon' });
-		expandLink.createSpan({ text: 'Extended name options', cls: 'crc-inline-expand__text' });
+		expandLink.createSpan({ text: '扩展姓名选项', cls: 'crc-inline-expand__text' });
 		setIcon(linkIcon, 'chevron-down');
 
 		// Expanded content
 		const content = wrapper.createDiv({ cls: 'crc-inline-expand__content' });
 		const collapseHeader = content.createDiv({ cls: 'crc-inline-expand__header' });
-		collapseHeader.createSpan({ text: 'Extended name options', cls: 'crc-inline-expand__title' });
+		collapseHeader.createSpan({ text: '扩展姓名选项', cls: 'crc-inline-expand__title' });
 		const collapseLink = collapseHeader.createEl('button', {
 			cls: 'crc-inline-expand__collapse clickable-icon',
-			attr: { 'aria-label': 'Collapse section' }
+			attr: { 'aria-label': '折叠此区块' }
 		});
 		setIcon(collapseLink, 'chevron-up');
 
@@ -1360,10 +1370,10 @@ export class CreatePersonModal extends Modal {
 
 		// Nickname (optional)
 		new Setting(fields)
-			.setName('Nickname')
-			.setDesc('Informal name or alias (optional)')
+			.setName('昵称')
+			.setDesc('非正式名称或别名（可选）')
 			.addText(text => text
-				.setPlaceholder('e.g., Bobby, Gram')
+				.setPlaceholder('例：小明、奶奶')
 				.setValue(this.personData.nickname || '')
 				.onChange(value => {
 					this.personData.nickname = value || undefined;
@@ -1371,20 +1381,20 @@ export class CreatePersonModal extends Modal {
 
 		// Name components (optional) - for cultures with multiple surnames or explicit name parts
 		new Setting(fields)
-			.setName('Given name')
-			.setDesc('First/given name(s), if different from what appears in full name')
+			.setName('名')
+			.setDesc('名（若与全名中显示的不同）')
 			.addText(text => text
-				.setPlaceholder('e.g., María José')
+				.setPlaceholder('例：María José')
 				.setValue(this.personData.givenName || '')
 				.onChange(value => {
 					this.personData.givenName = value || undefined;
 				}));
 
 		new Setting(fields)
-			.setName('Surname(s)')
-			.setDesc('Family name(s) - separate multiple with commas (e.g., "García, López")')
+			.setName('姓氏')
+			.setDesc('家族姓氏——多个用逗号分隔（例："García, López"）')
 			.addText(text => text
-				.setPlaceholder('e.g., García, López')
+				.setPlaceholder('例：García, López')
 				.setValue(this.personData.surnames?.join(', ') || '')
 				.onChange(value => {
 					if (value) {
@@ -1399,30 +1409,30 @@ export class CreatePersonModal extends Modal {
 		// populated by GEDCOM import; written to name_prefix / name_suffix /
 		// surname_prefix (#709).
 		new Setting(fields)
-			.setName('Name prefix')
-			.setDesc('Title or honorific (e.g., Dr., Rev., Dame)')
+			.setName('名前缀')
+			.setDesc('头衔或敬称（例：Dr.、Rev.、Dame）')
 			.addText(text => text
-				.setPlaceholder('e.g., Dr.')
+				.setPlaceholder('例：Dr.')
 				.setValue(this.personData.namePrefix || '')
 				.onChange(value => {
 					this.personData.namePrefix = value || undefined;
 				}));
 
 		new Setting(fields)
-			.setName('Name suffix')
-			.setDesc('Generational suffix (e.g., Jr., III, V)')
+			.setName('名后缀')
+			.setDesc('世代后缀（例：Jr.、III、V）')
 			.addText(text => text
-				.setPlaceholder('e.g., Jr.')
+				.setPlaceholder('例：Jr.')
 				.setValue(this.personData.nameSuffix || '')
 				.onChange(value => {
 					this.personData.nameSuffix = value || undefined;
 				}));
 
 		new Setting(fields)
-			.setName('Surname prefix')
-			.setDesc('Surname particle (e.g., von, de la)')
+			.setName('姓氏前缀')
+			.setDesc('姓氏助词（例：von、de la）')
 			.addText(text => text
-				.setPlaceholder('e.g., von')
+				.setPlaceholder('例：von')
 				.setValue(this.personData.surnamePrefix || '')
 				.onChange(value => {
 					this.personData.surnamePrefix = value || undefined;
@@ -1431,20 +1441,20 @@ export class CreatePersonModal extends Modal {
 		// Maiden/married names - only show in edit mode
 		if (this.editMode) {
 			new Setting(fields)
-				.setName('Maiden name')
-				.setDesc('Birth surname (before marriage)')
+				.setName('婚前姓')
+				.setDesc('出生时的姓氏（婚前）')
 				.addText(text => text
-					.setPlaceholder('e.g., Johnson')
+					.setPlaceholder('例：Johnson')
 					.setValue(this.personData.maidenName || '')
 					.onChange(value => {
 						this.personData.maidenName = value || undefined;
 					}));
 
 			new Setting(fields)
-				.setName('Married name(s)')
-				.setDesc('Surname(s) after marriage - separate multiple with commas')
+				.setName('婚后姓')
+				.setDesc('婚后的姓氏——多个用逗号分隔')
 				.addText(text => text
-					.setPlaceholder('e.g., Smith, Jones')
+					.setPlaceholder('例：Smith, Jones')
 					.setValue(this.personData.marriedNames?.join(', ') || '')
 					.onChange(value => {
 						if (value) {
@@ -1477,8 +1487,8 @@ export class CreatePersonModal extends Modal {
 		const PRESET_PRONOUNS = ['she/her', 'he/him', 'they/them'];
 
 		const setting = new Setting(container)
-			.setName('Pronouns')
-			.setDesc('Pronouns for the person (optional)');
+			.setName('代词')
+			.setDesc('人物的代词（可选）');
 
 		const controlEl = setting.controlEl;
 
@@ -1488,7 +1498,7 @@ export class CreatePersonModal extends Modal {
 		// Text input for custom pronouns
 		const inputEl = controlEl.createEl('input', {
 			cls: 'cr-pronouns-input',
-			attr: { type: 'text', placeholder: 'Add custom...' }
+			attr: { type: 'text', placeholder: '添加自定义…' }
 		});
 
 		const renderChips = () => {
@@ -1558,7 +1568,7 @@ export class CreatePersonModal extends Modal {
 		// Create expansion link (hidden when expanded)
 		const expandLink = wrapper.createDiv({ cls: 'crc-inline-expand__trigger' });
 		const linkIcon = expandLink.createSpan({ cls: 'crc-inline-expand__icon' });
-		expandLink.createSpan({ text: 'DNA information', cls: 'crc-inline-expand__text' });
+		expandLink.createSpan({ text: 'DNA 信息', cls: 'crc-inline-expand__text' });
 		setIcon(linkIcon, 'chevron-down');
 
 		// Create content container (hidden by default unless has data)
@@ -1566,10 +1576,10 @@ export class CreatePersonModal extends Modal {
 
 		// Collapse link (shown when expanded)
 		const collapseHeader = content.createDiv({ cls: 'crc-inline-expand__header' });
-		collapseHeader.createSpan({ text: 'DNA information', cls: 'crc-inline-expand__title' });
+		collapseHeader.createSpan({ text: 'DNA 信息', cls: 'crc-inline-expand__title' });
 		const collapseLink = collapseHeader.createEl('button', {
 			cls: 'crc-inline-expand__collapse clickable-icon',
-			attr: { 'aria-label': 'Collapse section' }
+			attr: { 'aria-label': '折叠此区块' }
 		});
 		setIcon(collapseLink, 'chevron-up');
 
@@ -1591,11 +1601,11 @@ export class CreatePersonModal extends Modal {
 
 		// Person type
 		new Setting(fields)
-			.setName('Person type')
-			.setDesc('Classify this person (for genetic genealogy workflows)')
+			.setName('人物类型')
+			.setDesc('为此人物分类（用于遗传谱系工作流）')
 			.addDropdown(dropdown => dropdown
-				.addOption('', '(Regular person)')
-				.addOption('DNA Match', 'DNA Match')
+				.addOption('', '（普通人物）')
+				.addOption('DNA Match', 'DNA 匹配')
 				.setValue(this.personData.personType || '')
 				.onChange(value => {
 					this.personData.personType = value || undefined;
@@ -1603,10 +1613,10 @@ export class CreatePersonModal extends Modal {
 
 		// Shared cM
 		new Setting(fields)
-			.setName('Shared cM')
-			.setDesc('Shared centiMorgans with this match')
+			.setName('共享 cM')
+			.setDesc('与此匹配共享的厘摩数')
 			.addText(text => text
-				.setPlaceholder('e.g., 1847')
+				.setPlaceholder('例：1847')
 				.setValue(this.personData.dnaSharedCm?.toString() || '')
 				.onChange(value => {
 					const num = parseFloat(value);
@@ -1615,10 +1625,10 @@ export class CreatePersonModal extends Modal {
 
 		// Testing Company
 		new Setting(fields)
-			.setName('Testing company')
-			.setDesc('DNA testing service provider')
+			.setName('检测公司')
+			.setDesc('DNA 检测服务提供商')
 			.addDropdown(dropdown => dropdown
-				.addOption('', '(Not specified)')
+				.addOption('', '（未指定）')
 				.addOption('AncestryDNA', 'AncestryDNA')
 				.addOption('23andMe', '23andMe')
 				.addOption('FamilyTreeDNA', 'FamilyTreeDNA')
@@ -1632,10 +1642,10 @@ export class CreatePersonModal extends Modal {
 
 		// Kit ID
 		new Setting(fields)
-			.setName('Kit ID')
-			.setDesc('DNA kit identifier')
+			.setName('试剂盒 ID')
+			.setDesc('DNA 试剂盒标识符')
 			.addText(text => text
-				.setPlaceholder('e.g., ABC123')
+				.setPlaceholder('例：ABC123')
 				.setValue(this.personData.dnaKitId || '')
 				.onChange(value => {
 					this.personData.dnaKitId = value || undefined;
@@ -1643,14 +1653,14 @@ export class CreatePersonModal extends Modal {
 
 		// Match Type
 		new Setting(fields)
-			.setName('Match type')
-			.setDesc('Classification of this DNA match')
+			.setName('匹配类型')
+			.setDesc('此 DNA 匹配的分类')
 			.addDropdown(dropdown => dropdown
-				.addOption('', '(Not classified)')
-				.addOption('BKM', 'BKM (Best Known Match)')
-				.addOption('BMM', 'BMM (Best Mystery Match)')
-				.addOption('confirmed', 'Confirmed relationship')
-				.addOption('unconfirmed', 'Unconfirmed')
+				.addOption('', '（未分类）')
+				.addOption('BKM', 'BKM（最佳已知匹配）')
+				.addOption('BMM', 'BMM（最佳未知匹配）')
+				.addOption('confirmed', '已确认关系')
+				.addOption('unconfirmed', '未确认')
 				.setValue(this.personData.dnaMatchType || '')
 				.onChange(value => {
 					this.personData.dnaMatchType = value || undefined;
@@ -1660,8 +1670,8 @@ export class CreatePersonModal extends Modal {
 		// would convert a toggled-off `false` to `undefined`, which the writer's
 		// `!== undefined` guard then reads as "untouched" (#413).
 		new Setting(fields)
-			.setName('Endogamy flag')
-			.setDesc('Mark if match may be affected by endogamy (inflated cM values)')
+			.setName('内婚制标记')
+			.setDesc('标记匹配是否可能受内婚制影响（cM 值偏高）')
 			.addToggle(toggle => toggle
 				.setValue(this.personData.dnaEndogamyFlag || false)
 				.onChange(value => {
@@ -1670,10 +1680,10 @@ export class CreatePersonModal extends Modal {
 
 		// DNA Notes
 		new Setting(fields)
-			.setName('DNA notes')
-			.setDesc('Additional notes about this DNA match')
+			.setName('DNA 备注')
+			.setDesc('关于此 DNA 匹配的补充备注')
 			.addTextArea(textarea => textarea
-				.setPlaceholder('e.g., Matches on chromosome 7')
+				.setPlaceholder('例：在第7号染色体上匹配')
 				.setValue(this.personData.dnaNotes || '')
 				.onChange(value => {
 					this.personData.dnaNotes = value || undefined;
@@ -1690,7 +1700,7 @@ export class CreatePersonModal extends Modal {
 		// Create expansion link
 		const expandLink = wrapper.createDiv({ cls: 'crc-inline-expand__trigger' });
 		const linkIcon = expandLink.createSpan({ cls: 'crc-inline-expand__icon' });
-		expandLink.createSpan({ text: 'Step or adoptive parents', cls: 'crc-inline-expand__text' });
+		expandLink.createSpan({ text: '继父母或养父母', cls: 'crc-inline-expand__text' });
 		setIcon(linkIcon, 'chevron-down');
 
 		// Create content container
@@ -1698,10 +1708,10 @@ export class CreatePersonModal extends Modal {
 
 		// Collapse header
 		const collapseHeader = content.createDiv({ cls: 'crc-inline-expand__header' });
-		collapseHeader.createSpan({ text: 'Step & adoptive parents', cls: 'crc-inline-expand__title' });
+		collapseHeader.createSpan({ text: '继父母与养父母', cls: 'crc-inline-expand__title' });
 		const collapseLink = collapseHeader.createEl('button', {
 			cls: 'crc-inline-expand__collapse clickable-icon',
-			attr: { 'aria-label': 'Collapse section' }
+			attr: { 'aria-label': '折叠此区块' }
 		});
 		setIcon(collapseLink, 'chevron-up');
 
@@ -1721,14 +1731,14 @@ export class CreatePersonModal extends Modal {
 		// Step/adoptive fields
 		const fields = content.createDiv({ cls: 'crc-inline-expand__fields' });
 
-		this.createRelationshipField(fields, 'Step-father', this.stepfatherField);
-		this.createRelationshipField(fields, 'Step-mother', this.stepmotherField);
-		this.createRelationshipField(fields, 'Adoptive father', this.adoptiveFatherField);
-		this.createRelationshipField(fields, 'Adoptive mother', this.adoptiveMotherField);
+		this.createRelationshipField(fields, '继父', this.stepfatherField);
+		this.createRelationshipField(fields, '继母', this.stepmotherField);
+		this.createRelationshipField(fields, '养父', this.adoptiveFatherField);
+		this.createRelationshipField(fields, '养母', this.adoptiveMotherField);
 
 		// Gender-neutral parents (only shown if enabled in settings)
 		if (this.plugin?.settings.enableInclusiveParents) {
-			const parentsLabel = this.plugin.settings.parentFieldLabel || 'Parents';
+			const parentsLabel = this.plugin.settings.parentFieldLabel || '父母';
 			this.createParentsField(fields, parentsLabel);
 		}
 	}
@@ -1743,7 +1753,7 @@ export class CreatePersonModal extends Modal {
 		// Create expansion link
 		const expandLink = wrapper.createDiv({ cls: 'crc-inline-expand__trigger' });
 		const linkIcon = expandLink.createSpan({ cls: 'crc-inline-expand__icon' });
-		expandLink.createSpan({ text: 'Sources', cls: 'crc-inline-expand__text' });
+		expandLink.createSpan({ text: '来源', cls: 'crc-inline-expand__text' });
 		setIcon(linkIcon, 'chevron-down');
 
 		// Create content container
@@ -1751,10 +1761,10 @@ export class CreatePersonModal extends Modal {
 
 		// Collapse header
 		const collapseHeader = content.createDiv({ cls: 'crc-inline-expand__header' });
-		collapseHeader.createSpan({ text: 'Sources', cls: 'crc-inline-expand__title' });
+		collapseHeader.createSpan({ text: '来源', cls: 'crc-inline-expand__title' });
 		const collapseLink = collapseHeader.createEl('button', {
 			cls: 'crc-inline-expand__collapse clickable-icon',
-			attr: { 'aria-label': 'Collapse section' }
+			attr: { 'aria-label': '折叠此区块' }
 		});
 		setIcon(collapseLink, 'chevron-up');
 
@@ -1787,7 +1797,7 @@ export class CreatePersonModal extends Modal {
 		// Create expansion link
 		const expandLink = wrapper.createDiv({ cls: 'crc-inline-expand__trigger' });
 		const linkIcon = expandLink.createSpan({ cls: 'crc-inline-expand__icon' });
-		expandLink.createSpan({ text: 'Fact-level source citations', cls: 'crc-inline-expand__text' });
+		expandLink.createSpan({ text: '事实级来源引文', cls: 'crc-inline-expand__text' });
 		setIcon(linkIcon, 'chevron-down');
 
 		// Create content container
@@ -1795,10 +1805,10 @@ export class CreatePersonModal extends Modal {
 
 		// Collapse header
 		const collapseHeader = content.createDiv({ cls: 'crc-inline-expand__header' });
-		collapseHeader.createSpan({ text: 'Source tracking', cls: 'crc-inline-expand__title' });
+		collapseHeader.createSpan({ text: '来源追踪', cls: 'crc-inline-expand__title' });
 		const collapseLink = collapseHeader.createEl('button', {
 			cls: 'crc-inline-expand__collapse clickable-icon',
-			attr: { 'aria-label': 'Collapse section' }
+			attr: { 'aria-label': '折叠此区块' }
 		});
 		setIcon(collapseLink, 'chevron-up');
 
@@ -1819,7 +1829,7 @@ export class CreatePersonModal extends Modal {
 
 		// Description
 		fields.createEl('p', {
-			text: 'Track which sources support each key fact. This data feeds the coverage score in data quality reports.',
+			text: '追踪哪些来源支持每项关键事实。此数据会用于数据质量报告中的覆盖率得分。',
 			cls: 'setting-item-description cr-source-tracking-desc'
 		});
 
@@ -1868,7 +1878,7 @@ export class CreatePersonModal extends Modal {
 		// Add button
 		const addBtn = valueArea.createEl('button', {
 			cls: 'cr-sourced-fact-row__add clickable-icon',
-			attr: { 'aria-label': `Add source for ${FACT_KEY_LABELS[factKey]}` }
+			attr: { 'aria-label': `为${FACT_KEY_LABELS[factKey]}添加来源` }
 		});
 		setIcon(addBtn, 'plus');
 		addBtn.addEventListener('click', () => {
@@ -1901,7 +1911,7 @@ export class CreatePersonModal extends Modal {
 
 		// Header with label and buttons
 		const header = sourcesContainer.createDiv({ cls: 'crc-sources-field__header' });
-		header.createSpan({ cls: 'crc-sources-field__label', text: 'Sources' });
+		header.createSpan({ cls: 'crc-sources-field__label', text: '来源' });
 
 		// Button container for multiple buttons (matching Events pattern)
 		const buttonContainer = header.createDiv({ cls: 'crc-sources-field__buttons' });
@@ -1911,14 +1921,14 @@ export class CreatePersonModal extends Modal {
 		});
 		const linkIcon = createLucideIcon('link', 14);
 		linkBtn.appendChild(linkIcon);
-		linkBtn.appendText(' Link');
+		linkBtn.appendText(' 关联');
 
 		const createBtn = buttonContainer.createEl('button', {
 			cls: 'crc-btn crc-btn--secondary crc-btn--small'
 		});
 		const createIcon = createLucideIcon('plus', 14);
 		createBtn.appendChild(createIcon);
-		createBtn.appendText(' Create');
+		createBtn.appendText(' 创建');
 
 		// List of current sources
 		const sourceList = sourcesContainer.createDiv({ cls: 'crc-sources-field__list' });
@@ -1929,7 +1939,7 @@ export class CreatePersonModal extends Modal {
 
 			if (this.sourcesField.crIds.length === 0) {
 				const emptyState = sourceList.createDiv({ cls: 'crc-sources-field__empty' });
-				emptyState.setText('No sources linked');
+				emptyState.setText('未关联来源');
 				return;
 			}
 
@@ -1974,7 +1984,7 @@ export class CreatePersonModal extends Modal {
 				// Remove button
 				const removeBtn = sourceItem.createEl('button', {
 					cls: 'crc-btn crc-btn--icon crc-btn--danger',
-					attr: { 'aria-label': `Remove ${name}` }
+					attr: { 'aria-label': `移除${name}` }
 				});
 				const removeIcon = createLucideIcon('x', 14);
 				removeBtn.appendChild(removeIcon);
@@ -1994,7 +2004,7 @@ export class CreatePersonModal extends Modal {
 		// Link button handler - open source picker
 		linkBtn.addEventListener('click', () => {
 			if (!this.plugin) {
-				new Notice('Plugin not available');
+				new Notice('插件不可用');
 				return;
 			}
 
@@ -2002,7 +2012,7 @@ export class CreatePersonModal extends Modal {
 				onSelect: (source) => {
 					// Check if already added
 					if (this.sourcesField.crIds.includes(source.crId)) {
-						new Notice(`${source.title} is already linked as a source`);
+						new Notice(`${source.title}已关联为来源`);
 						return;
 					}
 
@@ -2021,7 +2031,7 @@ export class CreatePersonModal extends Modal {
 		// Create button handler - open create source modal
 		createBtn.addEventListener('click', () => {
 			if (!this.plugin) {
-				new Notice('Plugin not available');
+				new Notice('插件不可用');
 				return;
 			}
 
@@ -2056,7 +2066,7 @@ export class CreatePersonModal extends Modal {
 
 		// Header with label and add button
 		const header = eventsContainer.createDiv({ cls: 'crc-events-field__header' });
-		header.createSpan({ cls: 'crc-events-field__label', text: 'Events' });
+		header.createSpan({ cls: 'crc-events-field__label', text: '事件' });
 
 		// Button container for multiple buttons
 		const buttonContainer = header.createDiv({ cls: 'crc-events-field__buttons' });
@@ -2066,14 +2076,14 @@ export class CreatePersonModal extends Modal {
 		});
 		const linkIcon = createLucideIcon('link', 14);
 		linkBtn.appendChild(linkIcon);
-		linkBtn.appendText(' Link');
+		linkBtn.appendText(' 关联');
 
 		const createBtn = buttonContainer.createEl('button', {
 			cls: 'crc-btn crc-btn--secondary crc-btn--small'
 		});
 		const createIcon = createLucideIcon('plus', 14);
 		createBtn.appendChild(createIcon);
-		createBtn.appendText(' Create');
+		createBtn.appendText(' 创建');
 
 		// List of events referencing this person
 		const eventList = eventsContainer.createDiv({ cls: 'crc-events-field__list' });
@@ -2086,7 +2096,7 @@ export class CreatePersonModal extends Modal {
 
 			if (personEvents.length === 0) {
 				const emptyState = eventList.createDiv({ cls: 'crc-events-field__empty' });
-				emptyState.setText('No events reference this person');
+				emptyState.setText('没有引用此人物的事件');
 				return;
 			}
 
@@ -2129,7 +2139,7 @@ export class CreatePersonModal extends Modal {
 				// Unlink button
 				const unlinkBtn = eventItem.createEl('button', {
 					cls: 'crc-btn crc-btn--icon crc-btn--danger',
-					attr: { 'aria-label': `Unlink ${event.title}` }
+					attr: { 'aria-label': `取消关联${event.title}` }
 				});
 				const unlinkIcon = createLucideIcon('unlink', 14);
 				unlinkBtn.appendChild(unlinkIcon);
@@ -2155,7 +2165,7 @@ export class CreatePersonModal extends Modal {
 		// Link button handler - open event picker
 		linkBtn.addEventListener('click', () => {
 			if (!this.plugin) {
-				new Notice('Plugin not available');
+				new Notice('插件不可用');
 				return;
 			}
 
@@ -2176,13 +2186,13 @@ export class CreatePersonModal extends Modal {
 		// Create button handler - open create event modal with person pre-filled
 		createBtn.addEventListener('click', () => {
 			if (!this.plugin) {
-				new Notice('Plugin not available');
+				new Notice('插件不可用');
 				return;
 			}
 
 			const eventService = this.plugin.getEventService();
 			if (!eventService) {
-				new Notice('Event service not available');
+					new Notice('事件服务不可用');
 				return;
 			}
 
@@ -2213,7 +2223,7 @@ export class CreatePersonModal extends Modal {
 	private async linkEventToPerson(event: EventNote): Promise<void> {
 		const personName = this.personData.name;
 		if (!personName) {
-			new Notice('Person name is required to link events');
+			new Notice('关联事件需要填写人物姓名');
 			return;
 		}
 
@@ -2243,10 +2253,10 @@ export class CreatePersonModal extends Modal {
 				}
 			});
 
-			new Notice(`Linked "${event.title}" to ${personName}`);
+			new Notice(`已将"${event.title}"关联到${personName}`);
 		} catch (error) {
 			console.error('Failed to link event:', error);
-			new Notice(`Failed to link event: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`关联事件失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -2285,10 +2295,10 @@ export class CreatePersonModal extends Modal {
 				}
 			});
 
-			new Notice(`Unlinked "${event.title}" from ${personName}`);
+			new Notice(`已取消"${event.title}"与${personName}的关联`);
 		} catch (error) {
 			console.error('Failed to unlink event:', error);
-			new Notice(`Failed to unlink event: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`取消关联事件失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -2344,14 +2354,14 @@ export class CreatePersonModal extends Modal {
 
 		const setting = new Setting(spouseContainer)
 			.setName(getSpouseLabel(this.plugin?.settings))
-			.setDesc('Link to an existing person or create a new one');
+			.setDesc('关联已有的人物或新建一个');
 
 		let inputEl: HTMLInputElement;
 
 		setting.addText(text => {
 			inputEl = text.inputEl;
 			text
-				.setPlaceholder('Click link button to select...')
+				.setPlaceholder('点击关联按钮选择…')
 				.setDisabled(true);
 		});
 
@@ -2360,8 +2370,8 @@ export class CreatePersonModal extends Modal {
 			button.buttonEl.empty();
 			button.buttonEl.addClass('crc-btn', 'crc-btn--secondary');
 			button.buttonEl.appendChild(icon);
-			button.buttonEl.appendText(' Link');
-			button.setTooltip(`Link ${getSpouseLabel(this.plugin?.settings, { lowercase: true })}`);
+			button.buttonEl.appendText(' 关联');
+			button.setTooltip(`关联${getSpouseLabel(this.plugin?.settings, { lowercase: true })}`);
 
 			button.onClick(() => {
 				const createContext: RelationshipContext = {
@@ -2379,10 +2389,10 @@ export class CreatePersonModal extends Modal {
 					}
 					inputEl.value = person.name;
 					inputEl.addClass('crc-input--linked');
-					setting.setDesc(`Linked to: ${person.name}`);
+					setting.setDesc(`已关联：${person.name}`);
 				}, {
-					title: `Select ${getSpouseLabel(this.plugin?.settings, { lowercase: true })}`,
-					subtitle: 'Select an existing person or create a new one',
+					title: `选择${getSpouseLabel(this.plugin?.settings, { lowercase: true })}`,
+					subtitle: '选择已有的人物或新建一个',
 					createContext: createContext,
 					onCreateNew: () => {
 						// Callback signals inline creation support
@@ -2422,7 +2432,7 @@ export class CreatePersonModal extends Modal {
 
 			if (this.spousesField.spouses.length === 0) {
 				const emptyState = spouseList.createDiv({ cls: 'crc-spouses-field__empty' });
-				emptyState.setText(`No ${getSpouseLabel(this.plugin?.settings, { plural: true, lowercase: true })} linked`);
+				emptyState.setText(`未关联${getSpouseLabel(this.plugin?.settings, { plural: true, lowercase: true })}`);
 				return;
 			}
 
@@ -2445,7 +2455,7 @@ export class CreatePersonModal extends Modal {
 			const picker = new PersonPickerModal(this.app, (person: PersonInfo) => {
 				// Check if already added
 				if (this.spousesField.spouses.some(s => s.crId === person.crId)) {
-					new Notice(`${person.name} is already linked as a ${getSpouseLabel(this.plugin?.settings, { lowercase: true })}`);
+					new Notice(`${person.name}已关联为${getSpouseLabel(this.plugin?.settings, { lowercase: true })}`);
 					return;
 				}
 
@@ -2456,8 +2466,8 @@ export class CreatePersonModal extends Modal {
 				});
 				renderSpouseList();
 			}, {
-				title: `Select ${getSpouseLabel(this.plugin?.settings, { lowercase: true })}`,
-				subtitle: 'Select an existing person or create a new one',
+				title: `选择${getSpouseLabel(this.plugin?.settings, { lowercase: true })}`,
+				subtitle: '选择已有的人物或新建一个',
 				createContext: createContext,
 				onCreateNew: () => {
 					// This callback signals inline creation support
@@ -2501,7 +2511,7 @@ export class CreatePersonModal extends Modal {
 		// Expand/collapse button for metadata (only show if not already expanded)
 		const expandBtn = actions.createEl('button', {
 			cls: 'crc-btn crc-btn--icon',
-			attr: { 'aria-label': 'Add marriage details' }
+			attr: { 'aria-label': '添加婚姻详情' }
 		});
 		const expandIcon = createLucideIcon(hasMetadata ? 'chevron-down' : 'calendar-plus', 14);
 		expandBtn.appendChild(expandIcon);
@@ -2509,7 +2519,7 @@ export class CreatePersonModal extends Modal {
 		// Remove button
 		const removeBtn = actions.createEl('button', {
 			cls: 'crc-btn crc-btn--icon crc-btn--danger',
-			attr: { 'aria-label': `Remove ${displayName}` }
+			attr: { 'aria-label': `移除${displayName}` }
 		});
 		const removeIcon = createLucideIcon('x', 14);
 		removeBtn.appendChild(removeIcon);
@@ -2528,7 +2538,7 @@ export class CreatePersonModal extends Modal {
 
 			// Marriage date
 			new Setting(metadataContent)
-				.setName('Marriage date')
+				.setName('结婚日期')
 				.addText(text => text
 					.setPlaceholder('YYYY-MM-DD')
 					.setValue(spouse.marriageDate || '')
@@ -2538,7 +2548,7 @@ export class CreatePersonModal extends Modal {
 
 			// Marriage location (with place picker if placeGraph available)
 			const locationSetting = new Setting(metadataContent)
-				.setName('Marriage location');
+				.setName('结婚地点');
 
 			// Same display-label cleanup as the spouse name (#543 follow-up):
 			// strip brackets, paths, and pipe-aliases for display so users
@@ -2552,7 +2562,7 @@ export class CreatePersonModal extends Modal {
 				locationSetting.addText(text => {
 					locationInput = text.inputEl;
 					text
-						.setPlaceholder('Click link to select...')
+						.setPlaceholder('点击关联进行选择…')
 						.setValue(locationDisplay)
 						.setDisabled(true);
 				});
@@ -2564,7 +2574,7 @@ export class CreatePersonModal extends Modal {
 						button.buttonEl.addClass('crc-btn', 'crc-btn--secondary', 'crc-btn--small');
 						if (spouse.marriageLocation) {
 							button.buttonEl.appendChild(createLucideIcon('unlink', 14));
-							button.buttonEl.appendText(' Unlink');
+							button.buttonEl.appendText(' 取消关联');
 						} else {
 							button.buttonEl.appendChild(createLucideIcon('link', 14));
 						}
@@ -2600,8 +2610,8 @@ export class CreatePersonModal extends Modal {
 				// Show the raw value so any edit preserves the underlying
 				// wikilink shape (the readonly placeGraph path above strips
 				// for display only).
-				locationSetting.addText(text => text
-					.setPlaceholder('e.g., St. Mary\'s Church, London')
+					locationSetting.addText(text => text
+						.setPlaceholder('例：圣玛丽教堂，伦敦')
 					.setValue(spouse.marriageLocation || '')
 					.onChange(value => {
 						spouse.marriageLocation = value || undefined;
@@ -2610,14 +2620,14 @@ export class CreatePersonModal extends Modal {
 
 			// Marriage status
 			new Setting(metadataContent)
-				.setName('Status')
+				.setName('状态')
 				.addDropdown(dropdown => dropdown
-					.addOption('', '(Not specified)')
-					.addOption('current', 'Current')
-					.addOption('divorced', 'Divorced')
-					.addOption('widowed', 'Widowed')
-					.addOption('separated', 'Separated')
-					.addOption('annulled', 'Annulled')
+					.addOption('', '（未指定）')
+					.addOption('current', '存续')
+					.addOption('divorced', '离婚')
+					.addOption('widowed', '丧偶')
+					.addOption('separated', '分居')
+					.addOption('annulled', '婚姻无效')
 					.setValue(spouse.marriageStatus || '')
 					.onChange(value => {
 						spouse.marriageStatus = (value as MarriageStatus) || undefined;
@@ -2625,18 +2635,18 @@ export class CreatePersonModal extends Modal {
 
 			// Marriage type (#628) — preset dropdown + free-text custom
 			{
-				const marriageTypeSetting = new Setting(metadataContent)
-					.setName('Marriage type');
+					const marriageTypeSetting = new Setting(metadataContent)
+						.setName('婚姻类型');
 				let typeCustomInput: HTMLInputElement | null = null;
 				const presetList = MARRIAGE_TYPE_PRESETS as readonly string[];
 				const startsCustom = !!spouse.marriageType && !presetList.includes(spouse.marriageType);
 
 				marriageTypeSetting.addDropdown(dropdown => {
-					dropdown.addOption('', '(Not specified)');
+					dropdown.addOption('', '（未指定）');
 					for (const preset of MARRIAGE_TYPE_PRESETS) {
 						dropdown.addOption(preset, preset);
 					}
-					dropdown.addOption('__custom__', 'Custom...');
+					dropdown.addOption('__custom__', '自定义…');
 					dropdown.setValue(startsCustom ? '__custom__' : (spouse.marriageType || ''));
 					dropdown.onChange(value => {
 						if (value === '__custom__') {
@@ -2658,7 +2668,7 @@ export class CreatePersonModal extends Modal {
 				// Free-text input for custom marriage type (hidden unless "Custom..." is chosen)
 				marriageTypeSetting.addText(text => {
 					typeCustomInput = text.inputEl;
-					text.setPlaceholder('e.g., Handfasting')
+					text.setPlaceholder('例：Handfasting')
 						.setValue(startsCustom ? (spouse.marriageType || '') : '')
 						.onChange(value => {
 							spouse.marriageType = value || undefined;
@@ -2672,7 +2682,7 @@ export class CreatePersonModal extends Modal {
 
 			// Divorce date (only shown if status indicates it might be relevant)
 			new Setting(metadataContent)
-				.setName('Divorce date')
+				.setName('离婚日期')
 				.addText(text => text
 					.setPlaceholder('YYYY-MM-DD')
 					.setValue(spouse.divorceDate || '')
@@ -2684,7 +2694,7 @@ export class CreatePersonModal extends Modal {
 			const collapseRow = metadataContent.createDiv({ cls: 'crc-spouse-item__collapse-row' });
 			const collapseLink = collapseRow.createEl('button', {
 				cls: 'crc-btn crc-btn--small',
-				text: 'Collapse'
+				text: '收起'
 			});
 			collapseLink.addEventListener('click', () => {
 				spouseItem.removeClass('crc-spouse-item--expanded');
@@ -2722,23 +2732,23 @@ export class CreatePersonModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title crc-modal-title--success' });
 		const icon = createLucideIcon('check-circle', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Person created!');
+		titleContainer.appendText('人物已创建！');
 
 		// Created person info
 		const infoSection = contentEl.createDiv({ cls: 'crc-post-create-info' });
 		infoSection.createDiv({
 			cls: 'crc-post-create-info__name',
-			text: this.createdPersonName || 'Unknown'
+			text: this.createdPersonName || '未知'
 		});
 		infoSection.createDiv({
 			cls: 'crc-post-create-info__hint',
-			text: 'Continue building the family or close this dialog'
+			text: '继续完善家族信息，或关闭此对话框'
 		});
 
 		// Action buttons
 		const actionsSection = contentEl.createDiv({ cls: 'crc-post-create-actions' });
 		actionsSection.createEl('h4', {
-			text: 'Add to this person:',
+			text: '为此人物添加：',
 			cls: 'crc-post-create-actions__header'
 		});
 
@@ -2750,19 +2760,19 @@ export class CreatePersonModal extends Modal {
 		});
 
 		// Add child button
-		this.createActionButton(actionsGrid, 'baby', 'Add child', () => {
+		this.createActionButton(actionsGrid, 'baby', '添加子女', () => {
 			this.openPostCreatePicker('child');
 		});
 
 		// Add parent button
-		this.createActionButton(actionsGrid, 'users', 'Add parent', () => {
+		this.createActionButton(actionsGrid, 'users', '添加父母', () => {
 			this.openPostCreatePicker('parent');
 		});
 
 		// Done button (closes modal)
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Done')
+			.setButtonText('完成')
 			.setCta()
 			.onClick(() => {
 				this.close();
@@ -2792,7 +2802,7 @@ export class CreatePersonModal extends Modal {
 	 */
 	private openPostCreatePicker(relationshipType: 'spouse' | 'child' | 'parent'): void {
 		if (!this.createdPersonCrId || !this.createdFile) {
-			new Notice('Error: No person context available');
+			new Notice('错误：没有可用的人物上下文');
 			return;
 		}
 
@@ -2807,10 +2817,10 @@ export class CreatePersonModal extends Modal {
 			this.showParentTypeSelector();
 			return;
 		} else if (relationshipType === 'spouse') {
-			pickerTitle = `Select ${getSpouseLabel(this.plugin?.settings, { lowercase: true })}`;
+			pickerTitle = `选择${getSpouseLabel(this.plugin?.settings, { lowercase: true })}`;
 			relationshipLabel = getSpouseLabel(this.plugin?.settings, { lowercase: true });
 		} else {
-			pickerTitle = 'Select child';
+			pickerTitle = '选择子女';
 			relationshipLabel = 'child';
 		}
 
@@ -2828,7 +2838,7 @@ export class CreatePersonModal extends Modal {
 			});
 		}, {
 			title: pickerTitle,
-			subtitle: 'Select an existing person or create a new one',
+			subtitle: '选择已有的人物或新建一个',
 			createContext: createContext,
 			onCreateNew: () => {
 				// Callback signals inline creation support
@@ -2852,12 +2862,12 @@ export class CreatePersonModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('users', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Add parent');
+		titleContainer.appendText('添加父母');
 
 		const choiceSection = contentEl.createDiv({ cls: 'crc-parent-type-choice' });
 		choiceSection.createDiv({
 			cls: 'crc-parent-type-choice__hint',
-			text: 'Which parent do you want to add?'
+			text: '要添加哪一位父母？'
 		});
 
 		const choiceGrid = choiceSection.createDiv({ cls: 'crc-parent-type-choice__grid' });
@@ -2868,7 +2878,7 @@ export class CreatePersonModal extends Modal {
 		});
 		const fatherIcon = createLucideIcon('user', 20);
 		fatherBtn.appendChild(fatherIcon);
-		fatherBtn.createSpan({ text: 'Father' });
+		fatherBtn.createSpan({ text: '父亲' });
 		fatherBtn.addEventListener('click', () => {
 			this.openParentPicker('father');
 		});
@@ -2879,7 +2889,7 @@ export class CreatePersonModal extends Modal {
 		});
 		const motherIcon = createLucideIcon('user', 20);
 		motherBtn.appendChild(motherIcon);
-		motherBtn.createSpan({ text: 'Mother' });
+		motherBtn.createSpan({ text: '母亲' });
 		motherBtn.addEventListener('click', () => {
 			this.openParentPicker('mother');
 		});
@@ -2887,7 +2897,7 @@ export class CreatePersonModal extends Modal {
 		// Back button
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Back')
+			.setButtonText('上一步')
 			.onClick(() => {
 				this.renderPostCreateActions(contentEl);
 			});
@@ -2912,8 +2922,8 @@ export class CreatePersonModal extends Modal {
 				this.renderPostCreateActions(this.contentEl);
 			});
 		}, {
-			title: `Select ${parentType}`,
-			subtitle: 'Select an existing person or create a new one',
+			title: `选择${parentType === 'father' ? '父亲' : '母亲'}`,
+			subtitle: '选择已有的人物或新建一个',
 			createContext: createContext,
 			onCreateNew: () => {
 				// Callback signals inline creation support
@@ -2933,7 +2943,7 @@ export class CreatePersonModal extends Modal {
 		person: PersonInfo
 	): Promise<void> {
 		if (!this.createdFile) {
-			new Notice('Error: No file to update');
+			new Notice('错误：没有可更新的文件');
 			return;
 		}
 
@@ -2945,7 +2955,7 @@ export class CreatePersonModal extends Modal {
 			const createdPersonSex = cache?.frontmatter?.sex;
 
 			if (!createdPersonCrId) {
-				new Notice('Error: Could not find cr_id of created person');
+				new Notice('错误：找不到所创建人物的 cr_id');
 				return;
 			}
 
@@ -3024,10 +3034,10 @@ export class CreatePersonModal extends Modal {
 					this.plugin.bidirectionalLinker.resume();
 				}
 			}
-			new Notice(`Added ${relationshipType}: ${person.name}`);
+			new Notice(`已添加${relationshipType === 'spouse' ? '配偶' : relationshipType === 'child' ? '子女' : relationshipType === 'father' ? '父亲' : '母亲'}：${person.name}`);
 		} catch (error) {
 			console.error(`Failed to add ${relationshipType}:`, error);
-			new Notice(`Failed to add ${relationshipType}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`添加${relationshipType === 'spouse' ? '配偶' : relationshipType === 'child' ? '子女' : relationshipType === 'father' ? '父亲' : '母亲'}失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -3148,7 +3158,7 @@ export class CreatePersonModal extends Modal {
 				dynamicBlockTypes: this.dynamicBlockTypes
 			});
 
-			new Notice(`Created person note: ${file.basename}`);
+			new Notice(`已创建人物笔记：${file.basename}`);
 
 			// Mark as saved successfully and clear persisted state
 			this.savedSuccessfully = true;
@@ -3171,7 +3181,7 @@ export class CreatePersonModal extends Modal {
 			this.renderPostCreateActions(this.contentEl);
 		} catch (error) {
 			console.error('Failed to create person note:', error);
-			new Notice(`Failed to create person note: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建人物笔记失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -3180,7 +3190,7 @@ export class CreatePersonModal extends Modal {
 	 */
 	private async updatePerson(): Promise<void> {
 		if (!this.editingFile) {
-			new Notice('No file to update');
+			new Notice('没有要更新的文件');
 			return;
 		}
 
@@ -3382,7 +3392,7 @@ export class CreatePersonModal extends Modal {
 				if (shouldRename) {
 					// Get folder from current file path
 					const folder = this.editingFile.parent?.path || '';
-					const newPath = this.generateUniqueFilename(folder, currentName || 'Untitled Person');
+					const newPath = this.generateUniqueFilename(folder, currentName || '未命名人物');
 
 					try {
 						// Get cr_id before rename for updating relationships
@@ -3394,7 +3404,7 @@ export class CreatePersonModal extends Modal {
 						const newFile = this.app.vault.getAbstractFileByPath(newPath);
 						if (newFile instanceof TFile) {
 							renamedFile = newFile;
-							new Notice(`Renamed file to: ${newFile.basename}`);
+								new Notice(`文件已重命名为：${newFile.basename}`);
 
 							// Update relationship wikilinks in other notes
 							if (personCrId && currentName) {
@@ -3409,12 +3419,12 @@ export class CreatePersonModal extends Modal {
 						}
 					} catch (renameError) {
 						console.error('Failed to rename file:', renameError);
-						new Notice(`Failed to rename file: ${renameError instanceof Error ? renameError.message : 'Unknown error'}`);
+						new Notice(`重命名文件失败：${renameError instanceof Error ? renameError.message : '未知错误'}`);
 					}
 				}
 			}
 
-			new Notice(`Updated person note: ${(renamedFile || this.editingFile).basename}`);
+			new Notice(`已更新人物笔记：${(renamedFile || this.editingFile).basename}`);
 
 			if (this.onUpdated) {
 				this.onUpdated(renamedFile || this.editingFile);
@@ -3423,7 +3433,7 @@ export class CreatePersonModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to update person note:', error);
-			new Notice(`Failed to update person note: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`更新人物笔记失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -3433,25 +3443,25 @@ export class CreatePersonModal extends Modal {
 	private showRenameConfirmation(oldName: string, newName: string): Promise<boolean> {
 		return new Promise((resolve) => {
 			const modal = new Modal(this.app);
-			modal.titleEl.setText('Rename file?');
+			modal.titleEl.setText('重命名文件？');
 
 			modal.contentEl.createEl('p', {
-				text: `You changed the person's name from "${oldName}" to "${newName}".`
+				text: `你将人物姓名从"${oldName}"改为"${newName}"。`
 			});
 			modal.contentEl.createEl('p', {
-				text: 'Would you like to rename the note file to match?'
+				text: '是否要将笔记文件重命名以保持一致？'
 			});
 
 			const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
 
-			buttonContainer.createEl('button', { text: 'Keep original filename' })
+			buttonContainer.createEl('button', { text: '保留原文件名' })
 				.addEventListener('click', () => {
 					modal.close();
 					resolve(false);
 				});
 
 			const renameBtn = buttonContainer.createEl('button', {
-				text: 'Rename file',
+				text: '重命名文件',
 				cls: 'mod-cta'
 			});
 			renameBtn.addEventListener('click', () => {

@@ -278,7 +278,7 @@ export class TimelineCanvasExporter {
 		options: TimelineCanvasOptions = {}
 	): Promise<{ success: boolean; path?: string; error?: string; warnings?: string[] }> {
 		const {
-			title = 'Event Timeline',
+			title = '事件时间轴',
 			colorScheme = 'event_type',
 			layoutStyle = 'horizontal',
 			nodeWidth = 200,
@@ -314,7 +314,7 @@ export class TimelineCanvasExporter {
 			}
 
 			if (filteredEvents.length === 0) {
-				return { success: false, error: 'No events to export after filtering' };
+				return { success: false, error: '筛选后没有可导出的事件' };
 			}
 
 			// Sort events
@@ -329,9 +329,9 @@ export class TimelineCanvasExporter {
 				const eventsWithPerson = sortedEvents.filter(e => e.person);
 
 				if (datedEvents.length === 0) {
-					warnings.push('Gantt layout requires dated events. No events have parseable dates (YYYY format). Falling back to horizontal layout.');
+					warnings.push('甘特布局需要带日期的事件。没有事件具有可解析的日期（YYYY 格式）。将回退为水平布局。');
 				} else if (eventsWithPerson.length === 0) {
-					warnings.push('Gantt layout works best with events linked to people. All events will appear in a single row.');
+					warnings.push('甘特布局最适合关联了人物的事件。所有事件都将显示在同一行中。');
 				}
 			}
 
@@ -749,7 +749,7 @@ export class TimelineCanvasExporter {
 			toSide: isHorizontal ? 'left' : 'top',
 			toEnd: 'arrow',
 			color: '5', // Blue for ordering edges
-			label: 'before'
+			label: '之前'
 		};
 	}
 
@@ -926,7 +926,7 @@ export class TimelineCanvasExporter {
 			// Read existing canvas to get metadata
 			const file = this.app.vault.getAbstractFileByPath(canvasFile.path);
 			if (!(file instanceof TFile)) {
-				return { success: false, error: 'Canvas file not found' };
+				return { success: false, error: '未找到画布文件' };
 			}
 			const canvasContent = await this.app.vault.read(file);
 			const canvasData = JSON.parse(canvasContent);
@@ -934,7 +934,7 @@ export class TimelineCanvasExporter {
 			// Extract timeline metadata
 			const metadata = canvasData.metadata?.frontmatter?.['canvas-roots'];
 			if (!metadata || metadata.type !== 'timeline-export') {
-				return { success: false, error: 'Not a timeline canvas' };
+				return { success: false, error: '不是时间轴画布' };
 			}
 
 			// Merge stored settings with style overrides
@@ -972,7 +972,7 @@ export class TimelineCanvasExporter {
 			}
 
 			if (filteredEvents.length === 0) {
-				return { success: false, error: 'No events to export after filtering' };
+				return { success: false, error: '筛选后没有可导出的事件' };
 			}
 
 			// Sort events

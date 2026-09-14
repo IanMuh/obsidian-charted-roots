@@ -222,7 +222,7 @@ export class GrampsParser {
 			if (parseError) {
 				result.valid = false;
 				result.errors.push({
-					message: `XML parsing error: ${parseError.textContent || 'Unknown error'}`
+					message: `XML 解析错误：${parseError.textContent || '未知错误'}`
 				});
 				return result;
 			}
@@ -232,7 +232,7 @@ export class GrampsParser {
 			if (!database) {
 				result.valid = false;
 				result.errors.push({
-					message: 'No <database> element found - not a valid Gramps XML file'
+					message: '未找到 <database> 元素 - 不是有效的 Gramps XML 文件'
 				});
 				return result;
 			}
@@ -260,7 +260,7 @@ export class GrampsParser {
 				if (!handle) {
 					result.errors.push({
 						path: `people/person[${index}]`,
-						message: 'Person is missing required handle attribute'
+						message: '人物缺少必需的 handle 属性'
 					});
 					result.valid = false;
 				}
@@ -270,7 +270,7 @@ export class GrampsParser {
 				if (!gender) {
 					result.warnings.push({
 						path: `people/person[${index}]`,
-						message: `Person ${handle || index} has no gender element`
+						message: `人物 ${handle || index} 没有 gender 元素`
 					});
 				}
 
@@ -279,7 +279,7 @@ export class GrampsParser {
 				if (!name) {
 					result.warnings.push({
 						path: `people/person[${index}]`,
-						message: `Person ${handle || index} has no name`
+						message: `人物 ${handle || index} 没有姓名`
 					});
 				}
 			});
@@ -290,7 +290,7 @@ export class GrampsParser {
 				if (!handle) {
 					result.errors.push({
 						path: `families/family[${index}]`,
-						message: 'Family is missing required handle attribute'
+						message: '家族缺少必需的 handle 属性'
 					});
 					result.valid = false;
 				}
@@ -299,7 +299,7 @@ export class GrampsParser {
 		} catch (error) {
 			result.valid = false;
 			result.errors.push({
-				message: `Validation error: ${error instanceof Error ? error.message : String(error)}`
+				message: `校验错误：${error instanceof Error ? error.message : String(error)}`
 			});
 		}
 

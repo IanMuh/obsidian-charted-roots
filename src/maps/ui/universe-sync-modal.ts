@@ -37,39 +37,39 @@ export class UniverseSyncModal extends Modal {
 		contentEl.addClass('cr-universe-sync-modal');
 
 		// Title
-		contentEl.createEl('h2', { text: 'Universe mismatch' });
+		contentEl.createEl('h2', { text: '宇宙不匹配' });
 
 		// Description
 		const placeUniverseText = this.options.placeUniverses.length === 1
-			? `"${this.options.placeUniverses[0]}"`
-			: this.options.placeUniverses.map(u => `"${u}"`).join(', ');
+			? `“${this.options.placeUniverses[0]}”`
+			: this.options.placeUniverses.map(u => `“${u}”`).join('、');
 
 		const descEl = contentEl.createEl('p');
-		descEl.createSpan({ text: `"${this.options.placeName}" belongs to universe ${placeUniverseText}.` });
+		descEl.createSpan({ text: `“${this.options.placeName}” 属于宇宙 ${placeUniverseText}。` });
 		descEl.createEl('br');
-		descEl.createSpan({ text: `This map belongs to universe "${this.options.mapUniverse}".` });
+		descEl.createSpan({ text: `此地图属于宇宙 “${this.options.mapUniverse}”。` });
 
-		contentEl.createEl('p', { text: 'How would you like to proceed?' });
+		contentEl.createEl('p', { text: '您希望如何处理？' });
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-universe-sync-buttons' });
 
 		new Setting(buttonContainer)
 			.addButton(btn => btn
-				.setButtonText('Add universe')
+				.setButtonText('添加宇宙')
 				.setCta()
 				.onClick(() => {
 					this.resolvePromise?.({ action: 'add' });
 					this.close();
 				}))
 			.addButton(btn => btn
-				.setButtonText('Replace universe')
+				.setButtonText('替换宇宙')
 				.onClick(() => {
 					this.resolvePromise?.({ action: 'replace' });
 					this.close();
 				}))
 			.addButton(btn => btn
-				.setButtonText('Cancel')
+				.setButtonText('取消')
 				.onClick(() => {
 					this.resolvePromise?.({ action: 'cancel' });
 					this.close();

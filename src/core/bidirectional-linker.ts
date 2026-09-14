@@ -409,7 +409,7 @@ export class BidirectionalLinker {
 				file: personFile.path,
 				error: errorMsg
 			});
-			new Notice(`Failed to sync relationships: ${errorMsg}`);
+			new Notice(`同步关系失败：${errorMsg}`);
 		}
 	}
 

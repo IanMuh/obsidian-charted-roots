@@ -437,7 +437,7 @@ export class VisualTreeSvgRenderer {
 			if (node.person.birthPlace) {
 				const place = this.stripWikilinks(node.person.birthPlace);
 				// Truncate long place names
-				lines.push(place.length > 25 ? place.substring(0, 22) + '...' : place);
+				lines.push(place.length > 25 ? place.substring(0, 22) + '…' : place);
 			}
 		}
 

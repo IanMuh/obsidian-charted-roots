@@ -24,7 +24,7 @@ export function createDateSystemsCard(
 	createCard: (options: { title: string; icon?: LucideIconName }) => HTMLElement
 ): HTMLElement {
 	const card = createCard({
-		title: 'Fictional date systems',
+		title: '虚构日期系统',
 		icon: 'calendar'
 	});
 
@@ -43,8 +43,8 @@ export function createDateSystemsCard(
 
 		// Show built-in systems toggle
 		new Setting(conditionalContainer)
-			.setName('Show built-in systems')
-			.setDesc('Include preset calendars (Middle-earth, Westeros, Star Wars)')
+			.setName('显示内置系统')
+			.setDesc('包含预设历法（中土、维斯特洛、星球大战）')
 			.addToggle(toggle => toggle
 				.setValue(plugin.settings.showBuiltInDateSystems)
 				.onChange(async (value) => {
@@ -59,27 +59,27 @@ export function createDateSystemsCard(
 
 		// Add button
 		new Setting(conditionalContainer)
-			.setName('Add date system')
-			.setDesc('Create a new fictional calendar system')
+			.setName('添加日期系统')
+			.setDesc('创建新的虚构历法系统')
 			.addButton(button => button
-				.setButtonText('Add')
+				.setButtonText('添加')
 				.setCta()
 				.onClick(() => {
 					new DateSystemModal(plugin.app, plugin, null, async (system) => {
 						plugin.settings.fictionalDateSystems.push(system);
 						await plugin.saveSettings();
 						void renderDateSystemsList(listContainer, plugin, createCard);
-						new Notice(`Added date system: ${system.name}`);
+						new Notice(`已添加日期系统：${system.name}`);
 					}).open();
 				}));
 
 		// Test parsing section
-		conditionalContainer.createEl('h4', { text: 'Test date parsing', cls: 'cr-subsection-heading' });
+		conditionalContainer.createEl('h4', { text: '测试日期解析', cls: 'cr-subsection-heading' });
 
 		const testContainer = conditionalContainer.createDiv({ cls: 'cr-date-test-container' });
 		const testInput = testContainer.createEl('input', {
 			cls: 'cr-date-test-input',
-			attr: { type: 'text', placeholder: 'Enter a date (e.g., "TA 2941")' }
+			attr: { type: 'text', placeholder: '输入日期（例如 "TA 2941"）' }
 		});
 		const testResult = testContainer.createDiv({ cls: 'cr-date-test-result' });
 
@@ -87,7 +87,7 @@ export function createDateSystemsCard(
 			const value = testInput.value.trim();
 			if (!value) {
 				testResult.empty();
-				testResult.setText('Enter a date to test');
+				testResult.setText('输入日期以测试');
 				testResult.removeClass('cr-date-test-result--success', 'cr-date-test-result--error');
 				return;
 			}
@@ -101,13 +101,13 @@ export function createDateSystemsCard(
 				testResult.empty();
 				testResult.addClass('cr-date-test-result--success');
 				testResult.removeClass('cr-date-test-result--error');
-				testResult.createEl('div', { text: `${result.date.era.name}, Year ${result.date.year}` });
+				testResult.createEl('div', { text: `${result.date.era.name}，${result.date.year}年` });
 				testResult.createEl('div', {
-					text: `System: ${result.date.system.name}`,
+					text: `系统：${result.date.system.name}`,
 					cls: 'cr-date-test-result-detail'
 				});
 				testResult.createEl('div', {
-					text: `Canonical year: ${result.date.canonicalYear}`,
+					text: `标准年份：${result.date.canonicalYear}`,
 					cls: 'cr-date-test-result-detail'
 				});
 			} else {
@@ -121,8 +121,8 @@ export function createDateSystemsCard(
 
 	// Enable/disable toggle (always visible)
 	new Setting(content)
-		.setName('Enable fictional dates')
-		.setDesc('Parse and display fictional calendar dates (e.g., "TA 2941")')
+		.setName('启用虚构日期')
+		.setDesc('解析并显示虚构历法日期（例如 "TA 2941"）')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.enableFictionalDates)
 			.onChange(async (value) => {
@@ -148,8 +148,8 @@ export function renderDateSystemsSettings(
 ): void {
 	// Enable/disable toggle
 	new Setting(container)
-		.setName('Enable fictional dates')
-		.setDesc('Parse and display fictional calendar dates (e.g., "TA 2941", "DE 1200")')
+		.setName('启用虚构日期')
+		.setDesc('解析并显示虚构历法日期（例如 "TA 2941"、"DE 1200"）')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.enableFictionalDates)
 			.onChange(async (value) => {
@@ -166,8 +166,8 @@ export function renderDateSystemsSettings(
 
 		// Built-in systems subsection
 		new Setting(conditionalContainer)
-			.setName('Show built-in systems')
-			.setDesc('Include preset calendars (Middle-earth, Westeros, Star Wars)')
+			.setName('显示内置系统')
+			.setDesc('包含预设历法（中土、维斯特洛、星球大战）')
 			.addToggle(toggle => toggle
 				.setValue(plugin.settings.showBuiltInDateSystems)
 				.onChange(async (value) => {
@@ -180,9 +180,9 @@ export function renderDateSystemsSettings(
 			const builtInTable = conditionalContainer.createEl('table', { cls: 'cr-date-systems-table' });
 			const thead = builtInTable.createEl('thead');
 			const headerRow = thead.createEl('tr');
-			headerRow.createEl('th', { text: 'Name' });
-			headerRow.createEl('th', { text: 'Eras' });
-			headerRow.createEl('th', { text: 'Universe' });
+			headerRow.createEl('th', { text: '名称' });
+			headerRow.createEl('th', { text: '纪元' });
+			headerRow.createEl('th', { text: '宇宙' });
 			headerRow.createEl('th', { text: '', cls: 'cr-date-systems-table__actions' });
 
 			const tbody = builtInTable.createEl('tbody');
@@ -194,7 +194,7 @@ export function renderDateSystemsSettings(
 				const actionsCell = row.createEl('td', { cls: 'cr-date-systems-table__actions' });
 				const viewBtn = actionsCell.createEl('button', {
 					cls: 'cr-btn-icon',
-					attr: { 'aria-label': 'View details' }
+					attr: { 'aria-label': '查看详情' }
 				});
 				setIcon(viewBtn, 'eye');
 				viewBtn.addEventListener('click', () => {
@@ -206,13 +206,13 @@ export function renderDateSystemsSettings(
 		// Custom systems list
 		const customSystems = plugin.settings.fictionalDateSystems;
 		if (customSystems.length > 0) {
-			conditionalContainer.createEl('h4', { text: 'Custom systems', cls: 'cr-subsection-heading' });
+			conditionalContainer.createEl('h4', { text: '自定义系统', cls: 'cr-subsection-heading' });
 			for (const system of customSystems) {
 				new Setting(conditionalContainer)
 					.setName(system.name)
-					.setDesc(`Prefix: ${system.eras?.[0]?.abbrev || '(none)'} · ${system.eras?.length || 0} era(s)`)
+					.setDesc(`前缀：${system.eras?.[0]?.abbrev || '（无）'} · ${system.eras?.length || 0} 个纪元`)
 					.addButton(btn => btn
-						.setButtonText('Edit')
+						.setButtonText('编辑')
 						.onClick(() => {
 							new DateSystemModal(plugin.app, plugin, system, async (updated) => {
 								const idx = plugin.settings.fictionalDateSystems.indexOf(system);
@@ -224,29 +224,29 @@ export function renderDateSystemsSettings(
 							}).open();
 						}))
 					.addButton(btn => btn
-						.setButtonText('Delete')
+						.setButtonText('删除')
 						.onClick(async () => {
 							plugin.settings.fictionalDateSystems = plugin.settings.fictionalDateSystems.filter(s => s !== system);
 							await plugin.saveSettings();
 							refreshContent();
-							new Notice(`Removed date system: ${system.name}`);
+							new Notice(`已移除日期系统：${system.name}`);
 						}));
 			}
 		}
 
 		// Add button
 		new Setting(conditionalContainer)
-			.setName('Add date system')
-			.setDesc('Create a new fictional calendar system')
+			.setName('添加日期系统')
+			.setDesc('创建新的虚构历法系统')
 			.addButton(button => button
-				.setButtonText('Add')
+				.setButtonText('添加')
 				.setCta()
 				.onClick(() => {
 					new DateSystemModal(plugin.app, plugin, null, async (system) => {
 						plugin.settings.fictionalDateSystems.push(system);
 						await plugin.saveSettings();
 						refreshContent();
-						new Notice(`Added date system: ${system.name}`);
+						new Notice(`已添加日期系统：${system.name}`);
 					}).open();
 				}));
 	};
@@ -319,7 +319,7 @@ async function renderDateSystemsList(
 
 	if (systems.length === 0) {
 		container.createEl('p', {
-			text: 'No date systems configured. Add one or enable built-in systems.',
+			text: '未配置任何日期系统。请添加一个或启用内置系统。',
 			cls: 'cr-empty-state'
 		});
 		return;
@@ -333,7 +333,7 @@ async function renderDateSystemsList(
 	// Built-in systems as table
 	if (builtIn.length > 0) {
 		const builtInSection = container.createDiv({ cls: 'cr-date-systems-section' });
-		builtInSection.createEl('h4', { text: 'Built-in systems', cls: 'cr-subsection-heading' });
+		builtInSection.createEl('h4', { text: '内置系统', cls: 'cr-subsection-heading' });
 
 		renderDateSystemsTable(builtInSection, builtIn, plugin);
 	}
@@ -341,7 +341,7 @@ async function renderDateSystemsList(
 	// Calendarium systems as table (view-only)
 	if (calendarium.length > 0) {
 		const calendariumSection = container.createDiv({ cls: 'cr-date-systems-section' });
-		calendariumSection.createEl('h4', { text: 'From Calendarium', cls: 'cr-subsection-heading' });
+		calendariumSection.createEl('h4', { text: '来自 Calendarium', cls: 'cr-subsection-heading' });
 
 		renderDateSystemsTable(calendariumSection, calendarium, plugin);
 	}
@@ -349,7 +349,7 @@ async function renderDateSystemsList(
 	// Custom systems (keep card style for edit/delete actions)
 	if (custom.length > 0) {
 		const customSection = container.createDiv({ cls: 'cr-date-systems-section' });
-		customSection.createEl('h4', { text: 'Custom systems', cls: 'cr-subsection-heading' });
+		customSection.createEl('h4', { text: '自定义系统', cls: 'cr-subsection-heading' });
 
 		for (const system of custom) {
 			createSystemItem(customSection, system, plugin, false, container, createCard);
@@ -368,9 +368,9 @@ function renderDateSystemsTable(
 	const table = container.createEl('table', { cls: 'cr-date-systems-table' });
 	const thead = table.createEl('thead');
 	const headerRow = thead.createEl('tr');
-	headerRow.createEl('th', { text: 'Name' });
-	headerRow.createEl('th', { text: 'Eras' });
-	headerRow.createEl('th', { text: 'Universe' });
+	headerRow.createEl('th', { text: '名称' });
+	headerRow.createEl('th', { text: '纪元' });
+	headerRow.createEl('th', { text: '宇宙' });
 	headerRow.createEl('th', { text: '', cls: 'cr-date-systems-table__actions' });
 
 	const tbody = table.createEl('tbody');
@@ -384,7 +384,7 @@ function renderDateSystemsTable(
 		const actionsCell = row.createEl('td', { cls: 'cr-date-systems-table__actions' });
 		const viewBtn = actionsCell.createEl('button', {
 			cls: 'cr-btn-icon',
-			attr: { 'aria-label': 'View details' }
+			attr: { 'aria-label': '查看详情' }
 		});
 		setIcon(viewBtn, 'eye');
 		viewBtn.addEventListener('click', () => {
@@ -415,16 +415,16 @@ function createSystemItem(
 
 	const nameEl = header.createSpan({ cls: 'cr-date-system-item-name', text: system.name });
 	if (isBuiltIn) {
-		nameEl.createSpan({ cls: 'cr-ds-badge cr-ds-badge--muted', text: 'built-in' });
+		nameEl.createSpan({ cls: 'cr-ds-badge cr-ds-badge--muted', text: '内置' });
 	}
 
 	// Eras list
 	const erasText = system.eras.map(e => e.abbrev).join(', ');
-	item.createDiv({ cls: 'cr-date-system-item-eras', text: `Eras: ${erasText}` });
+	item.createDiv({ cls: 'cr-date-system-item-eras', text: `纪元：${erasText}` });
 
 	// Universe
 	if (system.universe) {
-		item.createDiv({ cls: 'cr-date-system-item-universe', text: `Universe: ${system.universe}` });
+		item.createDiv({ cls: 'cr-date-system-item-universe', text: `宇宙：${system.universe}` });
 	}
 
 	// Actions
@@ -432,7 +432,7 @@ function createSystemItem(
 
 	if (!isBuiltIn) {
 		// Edit button
-		const editBtn = actions.createEl('button', { cls: 'cr-btn-icon', attr: { 'aria-label': 'Edit' } });
+		const editBtn = actions.createEl('button', { cls: 'cr-btn-icon', attr: { 'aria-label': '编辑' } });
 		setIcon(editBtn, 'edit');
 		editBtn.addEventListener('click', () => {
 			new DateSystemModal(plugin.app, plugin, system, async (updated) => {
@@ -441,13 +441,13 @@ function createSystemItem(
 					plugin.settings.fictionalDateSystems[index] = updated;
 					await plugin.saveSettings();
 					void renderDateSystemsList(listContainer, plugin, createCard);
-					new Notice(`Updated date system: ${updated.name}`);
+					new Notice(`已更新日期系统：${updated.name}`);
 				}
 			}).open();
 		});
 
 		// Delete button
-		const deleteBtn = actions.createEl('button', { cls: 'cr-btn-icon cr-btn-icon--danger', attr: { 'aria-label': 'Delete' } });
+		const deleteBtn = actions.createEl('button', { cls: 'cr-btn-icon cr-btn-icon--danger', attr: { 'aria-label': '删除' } });
 		setIcon(deleteBtn, 'trash');
 		deleteBtn.addEventListener('click', () => {
 			void (async () => {
@@ -458,13 +458,13 @@ function createSystemItem(
 					);
 					await plugin.saveSettings();
 					void renderDateSystemsList(listContainer, plugin, createCard);
-					new Notice(`Deleted date system: ${system.name}`);
+					new Notice(`已删除日期系统：${system.name}`);
 				}
 			})();
 		});
 	} else {
 		// View-only indicator for built-in
-		const viewBtn = actions.createEl('button', { cls: 'cr-btn-icon', attr: { 'aria-label': 'View details' } });
+		const viewBtn = actions.createEl('button', { cls: 'cr-btn-icon', attr: { 'aria-label': '查看详情' } });
 		setIcon(viewBtn, 'eye');
 		viewBtn.addEventListener('click', () => {
 			new DateSystemModal(plugin.app, plugin, system, async () => {
@@ -480,20 +480,20 @@ function createSystemItem(
 async function confirmDelete(app: App, systemName: string): Promise<boolean> {
 	return new Promise((resolve) => {
 		const modal = new Modal(app);
-		modal.titleEl.setText('Delete date system');
+		modal.titleEl.setText('删除日期系统');
 		modal.contentEl.createEl('p', {
-			text: `Are you sure you want to delete "${systemName}"? This action cannot be undone.`
+			text: `确定要删除「${systemName}」吗？此操作无法撤销。`
 		});
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => {
 			modal.close();
 			resolve(false);
 		});
 
-		const deleteBtn = buttonContainer.createEl('button', { cls: 'mod-warning', text: 'Delete' });
+		const deleteBtn = buttonContainer.createEl('button', { cls: 'mod-warning', text: '删除' });
 		deleteBtn.addEventListener('click', () => {
 			modal.close();
 			resolve(true);
@@ -557,8 +557,8 @@ class DateSystemModal extends Modal {
 
 		// Title
 		const title = this.system
-			? (this.viewOnly ? `View: ${this.system.name}` : `Edit: ${this.system.name}`)
-			: 'Add date system';
+			? (this.viewOnly ? `查看：${this.system.name}` : `编辑：${this.system.name}`)
+			: '添加日期系统';
 		this.titleEl.setText(title);
 
 		// Form
@@ -566,10 +566,10 @@ class DateSystemModal extends Modal {
 
 		// Name
 		new Setting(form)
-			.setName('Name')
-			.setDesc('Display name for this calendar system')
+			.setName('名称')
+			.setDesc('此历法系统的显示名称')
 			.addText(text => text
-				.setPlaceholder('Middle-earth Calendar')
+				.setPlaceholder('中土历法')
 				.setValue(this.formData.name)
 				.setDisabled(this.viewOnly)
 				.onChange(value => {
@@ -583,7 +583,7 @@ class DateSystemModal extends Modal {
 		// ID (read-only for existing systems)
 		new Setting(form)
 			.setName('ID')
-			.setDesc('Unique identifier (auto-generated from name)')
+			.setDesc('唯一标识符（由名称自动生成）')
 			.addText(text => text
 				.setPlaceholder('middle_earth')
 				.setValue(this.formData.id)
@@ -594,8 +594,8 @@ class DateSystemModal extends Modal {
 
 		// Universe
 		new Setting(form)
-			.setName('Universe')
-			.setDesc('Optional: scope this calendar to a specific universe')
+			.setName('宇宙')
+			.setDesc('可选：将此历法限定到特定宇宙')
 			.addText(text => text
 				.setPlaceholder('Middle-earth')
 				.setValue(this.formData.universe)
@@ -605,14 +605,14 @@ class DateSystemModal extends Modal {
 				}));
 
 		// Eras section
-		form.createEl('h4', { text: 'Eras', cls: 'cr-subsection-heading' });
+		form.createEl('h4', { text: '纪元', cls: 'cr-subsection-heading' });
 		const erasContainer = form.createDiv({ cls: 'cr-eras-container' });
 		this.renderEras(erasContainer);
 
 		if (!this.viewOnly) {
 			const addEraBtn = form.createEl('button', {
 				cls: 'cr-add-era-btn',
-				text: '+ Add era'
+				text: '+ 添加纪元'
 			});
 			addEraBtn.addEventListener('click', () => {
 				this.formData.eras.push({
@@ -628,12 +628,12 @@ class DateSystemModal extends Modal {
 
 		// Default era dropdown
 		const defaultEraSetting = new Setting(form)
-			.setName('Default era')
-			.setDesc('Era to use when creating new dates');
+			.setName('默认纪元')
+			.setDesc('创建新日期时使用的纪元');
 
 		if (!this.viewOnly) {
 			defaultEraSetting.addDropdown(dropdown => {
-				dropdown.addOption('', '(None)');
+				dropdown.addOption('', '（无）');
 				for (const era of this.formData.eras) {
 					if (era.id && era.name) {
 						dropdown.addOption(era.id, era.name);
@@ -646,20 +646,20 @@ class DateSystemModal extends Modal {
 			});
 		} else {
 			const defaultEra = this.formData.eras.find(e => e.id === this.formData.defaultEra);
-			defaultEraSetting.setDesc(defaultEra?.name || '(None)');
+			defaultEraSetting.setDesc(defaultEra?.name || '（无）');
 		}
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'modal-button-container' });
 
 		if (this.viewOnly) {
-			const closeBtn = buttonContainer.createEl('button', { text: 'Close' });
+			const closeBtn = buttonContainer.createEl('button', { text: '关闭' });
 			closeBtn.addEventListener('click', () => this.close());
 		} else {
-			const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+			const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 			cancelBtn.addEventListener('click', () => this.close());
 
-			const saveBtn = buttonContainer.createEl('button', { cls: 'mod-cta', text: 'Save' });
+			const saveBtn = buttonContainer.createEl('button', { cls: 'mod-cta', text: '保存' });
 			saveBtn.addEventListener('click', () => {
 				if (this.validate()) {
 					const system: FictionalDateSystem = {
@@ -681,7 +681,7 @@ class DateSystemModal extends Modal {
 
 		if (this.formData.eras.length === 0) {
 			container.createEl('p', {
-				text: 'No eras defined. Add at least one era.',
+				text: '尚未定义纪元。请至少添加一个纪元。',
 				cls: 'cr-empty-state'
 			});
 			return;
@@ -691,10 +691,10 @@ class DateSystemModal extends Modal {
 		const table = container.createEl('table', { cls: 'cr-eras-table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name' });
-		headerRow.createEl('th', { text: 'Abbrev' });
-		headerRow.createEl('th', { text: 'Epoch' });
-		headerRow.createEl('th', { text: 'Direction' });
+		headerRow.createEl('th', { text: '名称' });
+		headerRow.createEl('th', { text: '缩写' });
+		headerRow.createEl('th', { text: '纪元起点' });
+		headerRow.createEl('th', { text: '方向' });
 		if (!this.viewOnly) {
 			headerRow.createEl('th', { text: '' }); // Actions column
 		}
@@ -712,7 +712,7 @@ class DateSystemModal extends Modal {
 			} else {
 				const nameInput = nameCell.createEl('input', {
 					cls: 'cr-era-input',
-					attr: { type: 'text', placeholder: 'Third Age' }
+					attr: { type: 'text', placeholder: '第三纪元' }
 				});
 				nameInput.value = era.name;
 				nameInput.addEventListener('input', () => {
@@ -758,8 +758,8 @@ class DateSystemModal extends Modal {
 				directionCell.setText(era.direction || 'forward');
 			} else {
 				const directionSelect = directionCell.createEl('select', { cls: 'cr-era-select' });
-				directionSelect.createEl('option', { text: 'Forward', attr: { value: 'forward' } });
-				directionSelect.createEl('option', { text: 'Backward', attr: { value: 'backward' } });
+				directionSelect.createEl('option', { text: '正向', attr: { value: 'forward' } });
+				directionSelect.createEl('option', { text: '反向', attr: { value: 'backward' } });
 				directionSelect.value = era.direction || 'forward';
 				directionSelect.addEventListener('change', () => {
 					era.direction = directionSelect.value as 'forward' | 'backward';
@@ -771,7 +771,7 @@ class DateSystemModal extends Modal {
 				const actionsCell = row.createEl('td');
 				const deleteBtn = actionsCell.createEl('button', {
 					cls: 'cr-btn-icon cr-btn-icon--danger cr-btn-icon--small',
-					attr: { 'aria-label': 'Remove era' }
+					attr: { 'aria-label': '移除纪元' }
 				});
 				setIcon(deleteBtn, 'x');
 				deleteBtn.addEventListener('click', () => {
@@ -784,12 +784,12 @@ class DateSystemModal extends Modal {
 
 	private validate(): boolean {
 		if (!this.formData.name.trim()) {
-			new Notice('Please enter a name for the date system');
+			new Notice('请输入日期系统的名称');
 			return false;
 		}
 
 		if (!this.formData.id.trim()) {
-			new Notice('Please enter an ID for the date system');
+			new Notice('请输入日期系统的 ID');
 			return false;
 		}
 
@@ -798,14 +798,14 @@ class DateSystemModal extends Modal {
 			.filter(s => s.id !== this.system?.id)
 			.map(s => s.id);
 		if (existingIds.includes(this.formData.id)) {
-			new Notice(`A date system with ID "${this.formData.id}" already exists`);
+			new Notice(`ID 为 "${this.formData.id}" 的日期系统已存在`);
 			return false;
 		}
 
 		// Must have at least one era
 		const validEras = this.formData.eras.filter(e => e.name && e.abbrev);
 		if (validEras.length === 0) {
-			new Notice('Please add at least one era with name and abbreviation');
+			new Notice('请至少添加一个包含名称和缩写的纪元');
 			return false;
 		}
 
@@ -813,7 +813,7 @@ class DateSystemModal extends Modal {
 		const abbrevs = validEras.map(e => e.abbrev.toUpperCase());
 		const uniqueAbbrevs = new Set(abbrevs);
 		if (abbrevs.length !== uniqueAbbrevs.size) {
-			new Notice('Era abbreviations must be unique');
+			new Notice('纪元缩写必须唯一');
 			return false;
 		}
 

@@ -954,23 +954,23 @@ export const DEFAULT_SETTINGS: CanvasRootsSettings = {
 	timelineShowPlaceContext: false,          // Off by default (don't change existing timeline output)
 	timelinePlaceContextDepth: 1,             // Immediate parent only (0 = full hierarchy)
 	defaultTimelineTemplate: '',              // No default template
-	timelineBirthLabel: 'Born',
-	timelineDeathLabel: 'Died',
-	timelineChildBirthLabel: 'Birth of {name}',
-	timelineSpouseDeathLabel: 'Death of {name}',
-	timelineParentDeathLabel: 'Death of {name}',
-	timelineSiblingBirthLabel: 'Birth of {name}',
-	timelineChildDeathLabel: 'Death of {name}',
-	timelineStepparentDeathLabel: 'Death of {name}',
-	timelineSiblingDeathLabel: 'Death of {name}',
-	timelineGrandchildBirthLabel: 'Birth of {name}',
-	timelineAdoptedSiblingBirthLabel: 'Birth of adopted sibling {name}',
-	timelineAdoptedGrandchildBirthLabel: 'Birth of adopted grandchild {name}',
-	timelineAdoptedSiblingAdoptionLabel: 'Adoption of {name}',
-	timelineAdoptedGrandchildAdoptionLabel: 'Adoption of {name}',
-	timelineChildMarriageLabel: 'Marriage of {name} to {spouse}',
-	timelineParentMarriageLabel: 'Marriage of {name} to {spouse}',
-	timelineSiblingMarriageLabel: 'Marriage of {name} to {spouse}',
+	timelineBirthLabel: '出生',
+	timelineDeathLabel: '去世',
+	timelineChildBirthLabel: '{name}的出生',
+	timelineSpouseDeathLabel: '{name}的去世',
+	timelineParentDeathLabel: '{name}的去世',
+	timelineSiblingBirthLabel: '{name}的出生',
+	timelineChildDeathLabel: '{name}的去世',
+	timelineStepparentDeathLabel: '{name}的去世',
+	timelineSiblingDeathLabel: '{name}的去世',
+	timelineGrandchildBirthLabel: '{name}的出生',
+	timelineAdoptedSiblingBirthLabel: '被收养的兄弟姐妹{name}的出生',
+	timelineAdoptedGrandchildBirthLabel: '被收养的孙辈{name}的出生',
+	timelineAdoptedSiblingAdoptionLabel: '收养{name}',
+	timelineAdoptedGrandchildAdoptionLabel: '收养{name}',
+	timelineChildMarriageLabel: '{name}与{spouse}的婚姻',
+	timelineParentMarriageLabel: '{name}与{spouse}的婚姻',
+	timelineSiblingMarriageLabel: '{name}与{spouse}的婚姻',
 	timelineShowChildrenBirths: false,        // Off by default
 	timelineShowSpouseDeaths: true,           // Default on — major life event for the survivor; toggle lets users hide (#447)
 	timelineShowParentDeaths: false,
@@ -987,7 +987,7 @@ export const DEFAULT_SETTINGS: CanvasRootsSettings = {
 	frozenGalleryCalloutType: 'info',          // Callout type for frozen media galleries
 	// Inclusive parent relationships (opt-in feature)
 	enableInclusiveParents: false,             // Default: OFF - users opt-in to gender-neutral parents
-	parentFieldLabel: 'Parents',               // Default label for gender-neutral parent field
+	parentFieldLabel: '父母',               // Default label for gender-neutral parent field
 	// DNA match tracking (opt-in feature)
 	enableDnaTracking: false                   // Default: OFF - users opt-in to DNA match tracking
 };
@@ -1122,10 +1122,10 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		// Search box for filtering settings
 		const searchContainer = containerEl.createDiv({ cls: 'cr-settings-search' });
 		new Setting(searchContainer)
-			.setName('Search settings')
+			.setName('搜索设置')
 			.addSearch(search => {
 				search
-					.setPlaceholder('Filter settings...')
+					.setPlaceholder('筛选设置…')
 					.onChange((query) => {
 						this.filterSettings(containerEl, query);
 					});
@@ -1151,67 +1151,67 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const foldersDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		foldersDetails.dataset.sectionName = 'folders';
 		const foldersSummary = foldersDetails.createEl('summary');
-		foldersSummary.createSpan({ text: 'Folders' });
-		foldersSummary.createSpan({ cls: 'cr-section-desc', text: 'Where Charted Roots stores and finds notes' });
+		foldersSummary.createSpan({ text: '文件夹' });
+		foldersSummary.createSpan({ cls: 'cr-section-desc', text: 'Charted Roots 存储和查找笔记的位置' });
 		const foldersContent = foldersDetails.createDiv({ cls: 'cr-section-content' });
 
 		// Folder explanation
 		const folderExplanation = foldersContent.createDiv({ cls: 'setting-item-description cr-info-box' });
-		folderExplanation.appendText('These folders determine where new notes are created. Charted Roots identifies notes by their properties (cr_type), not their location—your notes can live anywhere in your vault.');
+		folderExplanation.appendText('这些文件夹决定新笔记的创建位置。Charted Roots 通过属性（cr_type）而非位置识别笔记——你的笔记可以放在库中的任何位置。');
 
 		// --- Entity folders subsection ---
-		new Setting(foldersContent).setName("Entity folders").setHeading();
+		new Setting(foldersContent).setName("实体文件夹").setHeading();
 
-		this.createFolderSetting(foldersContent, 'People folder', 'Default folder for person notes', 'Charted Roots/People',
+		this.createFolderSetting(foldersContent, '人物文件夹', '人物笔记的默认文件夹', 'Charted Roots/People',
 			() => this.plugin.settings.peopleFolder, (v) => { this.plugin.settings.peopleFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Places folder', 'Default folder for place notes', 'Charted Roots/Places',
+		this.createFolderSetting(foldersContent, '地点文件夹', '地点笔记的默认文件夹', 'Charted Roots/Places',
 			() => this.plugin.settings.placesFolder, (v) => { this.plugin.settings.placesFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Events folder', 'Default folder for event notes', 'Charted Roots/Events',
+		this.createFolderSetting(foldersContent, '事件文件夹', '事件笔记的默认文件夹', 'Charted Roots/Events',
 			() => this.plugin.settings.eventsFolder, (v) => { this.plugin.settings.eventsFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Sources folder', 'Default folder for source notes', 'Charted Roots/Sources',
+		this.createFolderSetting(foldersContent, '来源文件夹', '来源笔记的默认文件夹', 'Charted Roots/Sources',
 			() => this.plugin.settings.sourcesFolder, (v) => { this.plugin.settings.sourcesFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Citations folder', 'Default folder for citation notes', 'Charted Roots/Citations',
+		this.createFolderSetting(foldersContent, '引文文件夹', '引文笔记的默认文件夹', 'Charted Roots/Citations',
 			() => this.plugin.settings.citationsFolder, (v) => { this.plugin.settings.citationsFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Organizations folder', 'Default folder for organization notes', 'Charted Roots/Organizations',
+		this.createFolderSetting(foldersContent, '组织文件夹', '组织笔记的默认文件夹', 'Charted Roots/Organizations',
 			() => this.plugin.settings.organizationsFolder, (v) => { this.plugin.settings.organizationsFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Universes folder', 'Default folder for universe notes (fictional worlds)', 'Charted Roots/Universes',
+		this.createFolderSetting(foldersContent, '宇宙文件夹', '宇宙笔记的默认文件夹（虚构世界）', 'Charted Roots/Universes',
 			() => this.plugin.settings.universesFolder, (v) => { this.plugin.settings.universesFolder = v; });
 
 		// --- Output folders subsection ---
-		new Setting(foldersContent).setName("Output folders").setHeading();
+		new Setting(foldersContent).setName("输出文件夹").setHeading();
 
-		this.createFolderSetting(foldersContent, 'Canvases folder', 'Default folder for generated canvas files', 'Charted Roots/Canvases',
+		this.createFolderSetting(foldersContent, '画布文件夹', '生成的画布文件的默认文件夹', 'Charted Roots/Canvases',
 			() => this.plugin.settings.canvasesFolder, (v) => { this.plugin.settings.canvasesFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Maps folder', 'Default folder for map notes', 'Charted Roots/Places/Maps',
+		this.createFolderSetting(foldersContent, '地图文件夹', '地图笔记的默认文件夹', 'Charted Roots/Places/Maps',
 			() => this.plugin.settings.mapsFolder, (v) => { this.plugin.settings.mapsFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Timelines folder', 'Default folder for timeline notes', 'Charted Roots/Timelines',
+		this.createFolderSetting(foldersContent, '时间轴文件夹', '时间轴笔记的默认文件夹', 'Charted Roots/Timelines',
 			() => this.plugin.settings.timelinesFolder, (v) => { this.plugin.settings.timelinesFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Reports folder', 'Default folder for generated reports', 'Charted Roots/Reports',
+		this.createFolderSetting(foldersContent, '报告文件夹', '生成的报告的默认文件夹', 'Charted Roots/Reports',
 			() => this.plugin.settings.reportsFolder, (v) => { this.plugin.settings.reportsFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Bases folder', 'Default folder for Obsidian Bases files', 'Charted Roots/Bases',
+		this.createFolderSetting(foldersContent, 'Bases 文件夹', 'Obsidian Bases 文件的默认文件夹', 'Charted Roots/Bases',
 			() => this.plugin.settings.basesFolder, (v) => { this.plugin.settings.basesFolder = v; });
 
 		// --- Media folder filtering subsection ---
-		new Setting(foldersContent).setName("Media folder filtering").setHeading();
+		new Setting(foldersContent).setName("媒体文件夹筛选").setHeading();
 
 		foldersContent.createEl('p', {
 			cls: 'setting-item-description',
-			text: 'Limit media discovery to specific folders. This affects Find Unlinked, Media Manager stats, and the media picker—but not already-linked media or the Browse Gallery.'
+			text: '将媒体发现限制在特定文件夹。这会影响“查找未链接”、媒体管理器统计和媒体选择器——但不会影响已链接的媒体或浏览图库。'
 		});
 
 		new Setting(foldersContent)
-			.setName('Limit media scanning to specified folders')
-			.setDesc('When enabled, only scan the folders listed below for media files')
+			.setName('将媒体扫描限制在指定文件夹')
+			.setDesc('启用后，仅扫描下方列出的文件夹中的媒体文件')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.enableMediaFolderFilter)
 				.onChange(async (value) => {
@@ -1228,19 +1228,19 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const advancedIcon = advancedNote.createSpan({ cls: 'cr-info-box-icon' });
 		setIcon(advancedIcon, 'settings');
 		advancedNote.createSpan({
-			text: 'For folder filtering options (include/exclude folders from discovery), see Advanced below.'
+			text: '有关文件夹筛选选项（在发现中包括/排除文件夹），请参阅下方的“高级”。'
 		});
 
 		// --- System folders subsection ---
-		new Setting(foldersContent).setName("System folders").setHeading();
+		new Setting(foldersContent).setName("系统文件夹").setHeading();
 
-		this.createFolderSetting(foldersContent, 'Schemas folder', 'Default folder for validation schemas', 'Charted Roots/Schemas',
+		this.createFolderSetting(foldersContent, 'Schema 文件夹', '验证 schema 的默认文件夹', 'Charted Roots/Schemas',
 			() => this.plugin.settings.schemasFolder, (v) => { this.plugin.settings.schemasFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Staging folder', 'Folder for import staging (isolated from main vault)', 'Charted Roots/Staging',
+		this.createFolderSetting(foldersContent, '暂存文件夹', '导入暂存用的文件夹（与主库隔离）', 'Charted Roots/Staging',
 			() => this.plugin.settings.stagingFolder, (v) => { this.plugin.settings.stagingFolder = v; });
 
-		this.createFolderSetting(foldersContent, 'Log export folder', 'Vault folder for exported log files', '.charted-roots/logs',
+		this.createFolderSetting(foldersContent, '日志导出文件夹', '导出日志文件的库文件夹', '.charted-roots/logs',
 			() => this.plugin.settings.logExportPath, (v) => { this.plugin.settings.logExportPath = v; });
 	}
 
@@ -1251,14 +1251,14 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const dataDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		dataDetails.dataset.sectionName = 'data';
 		const dataSummary = dataDetails.createEl('summary');
-		dataSummary.createSpan({ text: 'Data & detection' });
-		dataSummary.createSpan({ cls: 'cr-section-desc', text: 'How Charted Roots identifies and syncs notes' });
+		dataSummary.createSpan({ text: '数据与检测' });
+		dataSummary.createSpan({ cls: 'cr-section-desc', text: 'Charted Roots 识别和同步笔记的方式' });
 		const dataContent = dataDetails.createDiv({ cls: 'cr-section-content' });
 
 		// Auto-generate cr_id
 		new Setting(dataContent)
-			.setName('Auto-generate cr_id')
-			.setDesc('Automatically generate cr_id for person notes that don\'t have one')
+			.setName('自动生成 cr_id')
+			.setDesc('为没有 cr_id 的人物笔记自动生成 cr_id')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.autoGenerateCrId)
 				.onChange(async (value) => {
@@ -1268,11 +1268,11 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		// Primary type property (from Note type detection)
 		new Setting(dataContent)
-			.setName('Primary type property')
-			.setDesc('Which frontmatter property to check first for note type (person, place, event, etc.)')
+			.setName('主要类型属性')
+			.setDesc('检查笔记类型时优先使用哪个 frontmatter 属性（人物、地点、事件等）')
 			.addDropdown(dropdown => dropdown
-				.addOption('cr_type', 'cr_type (recommended)')
-				.addOption('type', 'type (legacy)')
+				.addOption('cr_type', 'cr_type（推荐）')
+				.addOption('type', 'type（旧版）')
 				.setValue(this.plugin.settings.noteTypeDetection.primaryTypeProperty)
 				.onChange(async (value) => {
 					this.plugin.settings.noteTypeDetection.primaryTypeProperty = value as 'type' | 'cr_type';
@@ -1281,8 +1281,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		// Enable tag-based detection
 		new Setting(dataContent)
-			.setName('Enable tag-based detection')
-			.setDesc('Allow tags (#person, #place, #event, #source) as fallback when no type property is found')
+			.setName('启用基于标签的检测')
+			.setDesc('当未找到类型属性时，允许使用标签（#person、#place、#event、#source）作为回退')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.noteTypeDetection.enableTagDetection)
 				.onChange(async (value) => {
@@ -1292,8 +1292,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		// Accept DMS coordinate format
 		new Setting(dataContent)
-			.setName('Accept DMS coordinate format')
-			.setDesc('Allow entering coordinates in degrees, minutes, seconds format (e.g., 33°51\'08"N)')
+			.setName('接受 DMS 坐标格式')
+			.setDesc('允许以度、分、秒格式输入坐标（例如 33°51\'08"N）')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.enableDMSCoordinates)
 				.onChange(async (value) => {
@@ -1303,12 +1303,12 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		// GEDCOM compatibility mode
 		new Setting(dataContent)
-			.setName('GEDCOM compatibility mode')
-			.setDesc('Fix vendor-specific issues in GEDCOM imports (MyHeritage: BOM, double-encoded entities, <br> tags)')
+			.setName('GEDCOM 兼容模式')
+			.setDesc('修复 GEDCOM 导入中的厂商特有问题（MyHeritage：BOM、双重编码实体、<br> 标签）')
 			.addDropdown(dropdown => dropdown
-				.addOption('auto', 'Auto (detect and fix)')
-				.addOption('myheritage', 'MyHeritage (always fix)')
-				.addOption('none', 'None (disabled)')
+				.addOption('auto', '自动（检测并修复）')
+				.addOption('myheritage', 'MyHeritage（始终修复）')
+				.addOption('none', '无（禁用）')
 				.setValue(this.plugin.settings.gedcomCompatibilityMode)
 				.onChange(async (value) => {
 					this.plugin.settings.gedcomCompatibilityMode = value as GedcomCompatibilityMode;
@@ -1317,8 +1317,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		// Bidirectional relationship sync
 		new Setting(dataContent)
-			.setName('Enable bidirectional relationship sync')
-			.setDesc('Automatically maintain reciprocal relationships when editing notes')
+			.setName('启用双向关系同步')
+			.setDesc('编辑笔记时自动维护互惠关系')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.enableBidirectionalSync)
 				.onChange(async (value) => {
@@ -1332,8 +1332,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		// Sync on file modify
 		new Setting(dataContent)
-			.setName('Sync on file modify')
-			.setDesc('Automatically sync relationships when person notes are edited')
+			.setName('文件修改时同步')
+			.setDesc('人物笔记被编辑时自动同步关系')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.syncOnFileModify)
 				.onChange(async (value) => {
@@ -1352,13 +1352,13 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const privacyDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		privacyDetails.dataset.sectionName = 'privacy';
 		const privacySummary = privacyDetails.createEl('summary');
-		privacySummary.createSpan({ text: 'Privacy & export' });
-		privacySummary.createSpan({ cls: 'cr-section-desc', text: 'Control how data is protected and exported' });
+		privacySummary.createSpan({ text: '隐私与导出' });
+		privacySummary.createSpan({ cls: 'cr-section-desc', text: '控制数据如何受到保护和导出' });
 		const privacyContent = privacyDetails.createDiv({ cls: 'cr-section-content' });
 
 		new Setting(privacyContent)
-			.setName('Enable privacy protection')
-			.setDesc('Protect living persons in exports and canvas displays')
+			.setName('启用隐私保护')
+			.setDesc('在导出和画布显示中保护在世人物')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.enablePrivacyProtection)
 				.onChange(async (value) => {
@@ -1367,8 +1367,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(privacyContent)
-			.setName('Living person age threshold')
-			.setDesc('Assume a person is living if born within this many years')
+			.setName('在世人物年龄阈值')
+			.setDesc('如果出生距今在此年数内，则假定该人物在世')
 			.addText(text => text
 				.setPlaceholder('100')
 				.setValue(String(this.plugin.settings.livingPersonAgeThreshold))
@@ -1381,13 +1381,13 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(privacyContent)
-			.setName('Privacy display format')
-			.setDesc('How to display protected persons')
+			.setName('隐私显示格式')
+			.setDesc('如何显示受保护的人物')
 			.addDropdown(dropdown => dropdown
-				.addOption('living', 'Show "Living"')
-				.addOption('private', 'Show "Private"')
-				.addOption('initials', 'Show initials only')
-				.addOption('hidden', 'Exclude entirely')
+				.addOption('living', '显示“在世”')
+				.addOption('private', '显示“私密”')
+				.addOption('initials', '仅显示首字母')
+				.addOption('hidden', '完全排除')
 				.setValue(this.plugin.settings.privacyDisplayFormat)
 				.onChange(async (value: 'living' | 'private' | 'initials' | 'hidden') => {
 					this.plugin.settings.privacyDisplayFormat = value;
@@ -1395,8 +1395,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(privacyContent)
-			.setName('Hide details for living persons')
-			.setDesc('Hide birth dates and places for living persons')
+			.setName('隐藏在世人物的详细信息')
+			.setDesc('隐藏在世人物的出生日期和地点')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.hideDetailsForLiving)
 				.onChange(async (value) => {
@@ -1405,8 +1405,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(privacyContent)
-			.setName('Export filename pattern')
-			.setDesc('Use {name} for root person, {date} for current date')
+			.setName('导出文件名模式')
+			.setDesc('使用{name}表示根人物，{date}表示当前日期')
 			.addText(text => text
 				.setPlaceholder('{name}-family-chart-{date}')
 				.setValue(this.plugin.settings.exportFilenamePattern)
@@ -1423,20 +1423,20 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const canvasDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		canvasDetails.dataset.sectionName = 'canvas';
 		const canvasSummary = canvasDetails.createEl('summary');
-		canvasSummary.createSpan({ text: 'Canvas & trees' });
-		canvasSummary.createSpan({ cls: 'cr-section-desc', text: 'Tree generation layout and styling' });
+		canvasSummary.createSpan({ text: '画布与树' });
+		canvasSummary.createSpan({ cls: 'cr-section-desc', text: '树生成的布局与样式' });
 		const canvasContent = canvasDetails.createDiv({ cls: 'cr-section-content' });
 
 		// Info text
 		const canvasInfo = canvasContent.createDiv({ cls: 'setting-item-description cr-info-box' });
-		canvasInfo.appendText('Changes apply to new tree generations. To update existing canvases, right-click the canvas file and select "Re-layout family tree".');
+		canvasInfo.appendText('更改会应用于新生成的树。要更新现有画布，请右键单击画布文件并选择“重新布局家谱”。');
 
 		// --- Node dimensions subsection ---
-		new Setting(canvasContent).setName("Node dimensions").setHeading();
+		new Setting(canvasContent).setName("节点尺寸").setHeading();
 
 		new Setting(canvasContent)
-			.setName('Node width')
-			.setDesc('Width of person nodes in pixels')
+			.setName('节点宽度')
+			.setDesc('人物节点的宽度（像素）')
 			.addSlider(slider => slider
 				.setLimits(100, 500, 25)
 				.setValue(this.plugin.settings.defaultNodeWidth)
@@ -1446,8 +1446,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(canvasContent)
-			.setName('Node height')
-			.setDesc('Height of person nodes in pixels')
+			.setName('节点高度')
+			.setDesc('人物节点的高度（像素）')
 			.addSlider(slider => slider
 				.setLimits(50, 300, 25)
 				.setValue(this.plugin.settings.defaultNodeHeight)
@@ -1457,11 +1457,11 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		// --- Spacing subsection ---
-		new Setting(canvasContent).setName("Spacing").setHeading();
+		new Setting(canvasContent).setName("间距").setHeading();
 
 		new Setting(canvasContent)
-			.setName('Horizontal spacing')
-			.setDesc('Space between nodes horizontally')
+			.setName('水平间距')
+			.setDesc('节点之间的水平间距')
 			.addSlider(slider => slider
 				.setLimits(100, 1000, 50)
 				.setValue(this.plugin.settings.horizontalSpacing)
@@ -1471,8 +1471,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(canvasContent)
-			.setName('Vertical spacing')
-			.setDesc('Space between generations vertically')
+			.setName('垂直间距')
+			.setDesc('世代之间的垂直间距')
 			.addSlider(slider => slider
 				.setLimits(100, 1000, 50)
 				.setValue(this.plugin.settings.verticalSpacing)
@@ -1482,16 +1482,16 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		// --- Colors & styling subsection ---
-		new Setting(canvasContent).setName("Colors & styling").setHeading();
+		new Setting(canvasContent).setName("颜色与样式").setHeading();
 
 		new Setting(canvasContent)
-			.setName('Color scheme')
-			.setDesc('How to color person nodes in family trees')
+			.setName('配色方案')
+			.setDesc('如何为家谱中的人物节点着色')
 			.addDropdown(dropdown => dropdown
-				.addOption('sex', 'Sex - green for males, purple for females')
-				.addOption('generation', 'Generation - color by generation level')
-				.addOption('collection', 'Collection - different color per collection')
-				.addOption('monochrome', 'Monochrome - no coloring')
+				.addOption('sex', '性别 - 男性绿色，女性紫色')
+				.addOption('generation', '世代 - 按世代层级着色')
+				.addOption('collection', '合集 - 每个合集使用不同颜色')
+				.addOption('monochrome', '单色 - 不着色')
 				.setValue(this.plugin.settings.nodeColorScheme)
 				.onChange(async (value) => {
 					this.plugin.settings.nodeColorScheme = value as ColorScheme;
@@ -1499,13 +1499,13 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(canvasContent)
-			.setName('Canvas grouping')
-			.setDesc('Visual groups to organize related nodes on the canvas')
+			.setName('画布分组')
+			.setDesc('用于在画布上组织相关节点的可视组')
 			.addDropdown(dropdown => dropdown
-				.addOption('none', 'None - no grouping')
-				.addOption('generation', 'By generation')
-				.addOption('nuclear-family', 'By couples')
-				.addOption('collection', 'By collection')
+				.addOption('none', '无 - 不分组')
+				.addOption('generation', '按世代')
+				.addOption('nuclear-family', '按夫妻')
+				.addOption('collection', '按合集')
 				.setValue(this.plugin.settings.canvasGroupingStrategy)
 				.onChange(async (value) => {
 					this.plugin.settings.canvasGroupingStrategy = value as CanvasGroupingStrategy;
@@ -1513,15 +1513,15 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		// --- Arrow styles subsection ---
-		new Setting(canvasContent).setName("Arrow styles").setHeading();
+		new Setting(canvasContent).setName("箭头样式").setHeading();
 
 		new Setting(canvasContent)
-			.setName('Parent → child arrows')
-			.setDesc('Arrow style for parent-child relationships')
+			.setName('父母 → 子女箭头')
+			.setDesc('亲子关系的箭头样式')
 			.addDropdown(dropdown => dropdown
-				.addOption('directed', 'Directed (→)')
-				.addOption('bidirectional', 'Bidirectional (↔)')
-				.addOption('undirected', 'Undirected (—)')
+				.addOption('directed', '有向（→）')
+				.addOption('bidirectional', '双向（↔）')
+				.addOption('undirected', '无向（—）')
 				.setValue(this.plugin.settings.parentChildArrowStyle)
 				.onChange(async (value) => {
 					this.plugin.settings.parentChildArrowStyle = value as ArrowStyle;
@@ -1530,11 +1530,11 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		new Setting(canvasContent)
 			.setName(getSpouseCompoundLabel(this.plugin.settings, 'arrows'))
-			.setDesc('Arrow style for spouse/partner relationships')
+			.setDesc('配偶/伴侣关系的箭头样式')
 			.addDropdown(dropdown => dropdown
-				.addOption('directed', 'Directed (→)')
-				.addOption('bidirectional', 'Bidirectional (↔)')
-				.addOption('undirected', 'Undirected (—)')
+				.addOption('directed', '有向（→）')
+				.addOption('bidirectional', '双向（↔）')
+				.addOption('undirected', '无向（—）')
 				.setValue(this.plugin.settings.spouseArrowStyle)
 				.onChange(async (value) => {
 					this.plugin.settings.spouseArrowStyle = value as ArrowStyle;
@@ -1545,8 +1545,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		new Setting(canvasContent).setName("").setHeading();
 
 		new Setting(canvasContent)
-			.setName(`Show ${getSpouseCompoundLabel(this.plugin.settings, 'edges').toLowerCase()}`)
-			.setDesc('Display edges between spouses/partners with marriage metadata')
+			.setName(`显示${getSpouseCompoundLabel(this.plugin.settings, 'edges').toLowerCase()}`)
+			.setDesc('显示配偶/伴侣之间的连线及婚姻元数据')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.showSpouseEdges)
 				.onChange(async (value) => {
@@ -1556,12 +1556,12 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		new Setting(canvasContent)
 			.setName(getSpouseCompoundLabel(this.plugin.settings, 'edge label format'))
-			.setDesc('How to display marriage information on spouse/partner edges')
+			.setDesc('如何在配偶/伴侣连线上显示婚姻信息')
 			.addDropdown(dropdown => dropdown
-				.addOption('none', 'None')
-				.addOption('date-only', 'Date only')
-				.addOption('date-location', 'Date and location')
-				.addOption('full', 'Full details')
+				.addOption('none', '无')
+				.addOption('date-only', '仅日期')
+				.addOption('date-location', '日期和地点')
+				.addOption('full', '完整详情')
 				.setValue(this.plugin.settings.spouseEdgeLabelFormat)
 				.onChange(async (value) => {
 					this.plugin.settings.spouseEdgeLabelFormat = value as SpouseEdgeLabelFormat;
@@ -1576,17 +1576,17 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const datesDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		datesDetails.dataset.sectionName = 'dates';
 		const datesSummary = datesDetails.createEl('summary');
-		datesSummary.createSpan({ text: 'Dates & validation' });
-		datesSummary.createSpan({ cls: 'cr-section-desc', text: 'Date format and validation rules' });
+		datesSummary.createSpan({ text: '日期与验证' });
+		datesSummary.createSpan({ cls: 'cr-section-desc', text: '日期格式与验证规则' });
 		const datesContent = datesDetails.createDiv({ cls: 'cr-section-content' });
 
 		new Setting(datesContent)
-			.setName('Date format standard')
-			.setDesc('Preferred date format standard for validation')
+			.setName('日期格式标准')
+			.setDesc('验证时首选的日期格式标准')
 			.addDropdown(dropdown => dropdown
-				.addOption('iso8601', 'ISO 8601 - strict YYYY-MM-DD')
+				.addOption('iso8601', 'ISO 8601 - 严格的 YYYY-MM-DD')
 				.addOption('gedcom', 'GEDCOM - DD MMM YYYY')
-				.addOption('flexible', 'Flexible - multiple formats')
+				.addOption('flexible', '灵活 - 多种格式')
 				.setValue(this.plugin.settings.dateFormatStandard)
 				.onChange(async (value) => {
 					this.plugin.settings.dateFormatStandard = value as 'iso8601' | 'gedcom' | 'flexible';
@@ -1594,8 +1594,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(datesContent)
-			.setName('Allow partial dates')
-			.setDesc('Accept dates with missing day or month (e.g., "1920-05" or "1920")')
+			.setName('允许部分日期')
+			.setDesc('接受缺少日或月的日期（例如“1920-05”或“1920”）')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.allowPartialDates)
 				.onChange(async (value) => {
@@ -1604,8 +1604,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(datesContent)
-			.setName('Allow circa dates')
-			.setDesc('Accept approximate dates with "c.", "ca.", "circa", or "~" prefix')
+			.setName('允许约略日期')
+			.setDesc('接受带有“c.”、“ca.”、“circa”或“~”前缀的近似日期')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.allowCircaDates)
 				.onChange(async (value) => {
@@ -1614,8 +1614,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(datesContent)
-			.setName('Allow date ranges')
-			.setDesc('Accept date ranges with hyphen or "to" (e.g., "1850-1920")')
+			.setName('允许日期范围')
+			.setDesc('接受使用连字符或“to”的日期范围（例如“1850-1920”）')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.allowDateRanges)
 				.onChange(async (value) => {
@@ -1624,8 +1624,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(datesContent)
-			.setName('Require leading zeros')
-			.setDesc('Require zero-padded months and days (e.g., "1920-05-01")')
+			.setName('要求前导零')
+			.setDesc('要求月和日补零（例如“1920-05-01”）')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.requireLeadingZeros)
 				.onChange(async (value) => {
@@ -1636,8 +1636,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		// Fictional date systems (#358)
 		const fictionalDetails = datesContent.createEl('details', { cls: 'cr-settings-section' });
 		const fictionalSummary = fictionalDetails.createEl('summary');
-		fictionalSummary.createSpan({ text: 'Fictional date systems' });
-		fictionalSummary.createSpan({ cls: 'cr-section-desc', text: 'Custom calendars for worldbuilding' });
+		fictionalSummary.createSpan({ text: '虚构日期系统' });
+		fictionalSummary.createSpan({ cls: 'cr-section-desc', text: '用于世界观构建的自定义历法' });
 		const fictionalContent = fictionalDetails.createDiv({ cls: 'cr-section-content' });
 
 		// Calendarium integration — moved here from Advanced so the enable
@@ -1655,11 +1655,11 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		};
 
 		new Setting(fictionalContent)
-			.setName('Calendarium integration')
-			.setDesc('Import calendar definitions from the Calendarium plugin')
+			.setName('Calendarium 集成')
+			.setDesc('从 Calendarium 插件导入历法定义')
 			.addDropdown(dropdown => dropdown
-				.addOption('off', 'Off')
-				.addOption('read', 'Read calendars')
+				.addOption('off', '关闭')
+				.addOption('read', '读取历法')
 				.setValue(this.plugin.settings.calendariumIntegration)
 				.onChange(async (value) => {
 					this.plugin.settings.calendariumIntegration = value as 'off' | 'read';
@@ -1668,8 +1668,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(fictionalContent)
-			.setName('Sync Calendarium events')
-			.setDesc('Show Calendarium dates (fc-date, fc-end) on timelines')
+			.setName('同步 Calendarium 事件')
+			.setDesc('在时间轴上显示 Calendarium 日期（fc-date、fc-end）')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.syncCalendariumEvents)
 				.onChange(async (value) => {
@@ -1688,20 +1688,20 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const timelineDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		timelineDetails.dataset.sectionName = 'timeline';
 		const timelineSummary = timelineDetails.createEl('summary');
-		timelineSummary.createSpan({ text: 'Events & timelines' });
-		timelineSummary.createSpan({ cls: 'cr-section-desc', text: 'Event display, layout, labels, and event coverage' });
+		timelineSummary.createSpan({ text: '事件与时间轴' });
+		timelineSummary.createSpan({ cls: 'cr-section-desc', text: '事件显示、布局、标签和事件覆盖范围' });
 		const timelineContent = timelineDetails.createDiv({ cls: 'cr-section-content' });
 
 		// --- Event display subsection ---
-		new Setting(timelineContent).setName("Event display").setHeading();
+		new Setting(timelineContent).setName("事件显示").setHeading();
 
 		new Setting(timelineContent)
-			.setName('Event type display')
-			.setDesc('How to show event types in timelines, canvas event nodes, and maps')
+			.setName('事件类型显示')
+			.setDesc('如何在时间轴、画布事件节点和地图中显示事件类型')
 			.addDropdown(dropdown => dropdown
-				.addOption('text', 'Text label')
-				.addOption('icon', 'Icon (with tooltip)')
-				.addOption('both', 'Icon with label')
+				.addOption('text', '文本标签')
+				.addOption('icon', '图标（带提示）')
+				.addOption('both', '图标加标签')
 				.setValue(this.plugin.settings.eventIconMode)
 				.onChange(async (value) => {
 					this.plugin.settings.eventIconMode = value as EventIconMode;
@@ -1709,8 +1709,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show place context')
-			.setDesc('Append parent locations to timeline places, so "London" reads "London, England". Parents come from the place note hierarchy (parent_place). Override per block with place_context: true / false / a number / full.')
+			.setName('显示地点上下文')
+			.setDesc('为时间轴地点追加父级位置，使“London”显示为“London, England”。父级来自地点笔记层级（parent_place）。可使用 place_context: true / false / 数字 / full 按块覆盖。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowPlaceContext)
 				.onChange(async (value) => {
@@ -1719,8 +1719,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Place context depth')
-			.setDesc('How many parent levels to append when place context is on. 1 = immediate parent only; 0 = full hierarchy up to the root place. Override per block with place_context: <number> or place_context: full.')
+			.setName('地点上下文深度')
+			.setDesc('地点上下文开启时追加的父级层数。1 = 仅直接父级；0 = 直到根地点的完整层级。可使用 place_context: <数字> 或 place_context: full 按块覆盖。')
 			.addText(text => text
 				.setPlaceholder('1')
 				.setValue(String(this.plugin.settings.timelinePlaceContextDepth ?? 1))
@@ -1732,8 +1732,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show marriage type')
-			.setDesc('Append the type of union (e.g. "Common-law marriage") to timeline marriage rows when set, so a row reads "Marriage to Jane Doe (Common-law marriage)". Set the type per spouse in the person editor.')
+			.setName('显示婚姻类型')
+			.setDesc('设置后，在时间轴婚姻行中追加婚姻类型（例如“Common-law marriage”），使该行显示为“Marriage to Jane Doe (Common-law marriage)”。可在人物编辑器中为每位配偶设置类型。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.showMarriageType)
 				.onChange(async (value) => {
@@ -1742,15 +1742,15 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		// --- Timeline layout subsection ---
-		new Setting(timelineContent).setName("Timeline layout").setHeading();
+		new Setting(timelineContent).setName("时间轴布局").setHeading();
 
 		new Setting(timelineContent)
-			.setName('Default layout')
-			.setDesc('How events are arranged on timelines')
+			.setName('默认布局')
+			.setDesc('事件在时间轴上的排列方式')
 			.addDropdown(dropdown => dropdown
-				.addOption('chronological', 'Chronological — all events interleaved by date')
-				.addOption('grouped', 'Grouped — personal, family, then historical')
-				.addOption('personal-first', 'Personal first — personal events, then others chronologically')
+				.addOption('chronological', '按时间顺序 — 所有事件按日期交错排列')
+				.addOption('grouped', '分组 — 个人、家庭，然后是历史')
+				.addOption('personal-first', '个人优先 — 先个人事件，其余按时间顺序')
 				.setValue(this.plugin.settings.timelineLayout)
 				.onChange(async (value) => {
 					this.plugin.settings.timelineLayout = value as 'chronological' | 'grouped' | 'personal-first';
@@ -1758,10 +1758,10 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Default timeline template')
-			.setDesc('Note defining timeline sections with custom sort, include, and format. Can be overridden per block with template: [[Note]].')
+			.setName('默认时间轴模板')
+			.setDesc('定义时间轴分区的笔记，可自定义排序、包含和格式。可使用 template: [[Note]] 按块覆盖。')
 			.addText(text => text
-				.setPlaceholder('[[My Timeline Template]]')
+				.setPlaceholder('[[我的时间轴模板]]')
 				.setValue(this.plugin.settings.defaultTimelineTemplate)
 				.onChange(async (value) => {
 					this.plugin.settings.defaultTimelineTemplate = value;
@@ -1769,32 +1769,32 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		// --- Timeline labels subsection ---
-		new Setting(timelineContent).setName("Timeline labels").setHeading();
+		new Setting(timelineContent).setName("时间轴标签").setHeading();
 
 		const labelSettings: Array<{ key: keyof typeof this.plugin.settings; name: string; placeholder: string; desc?: string }> = [
-			{ key: 'timelineBirthLabel', name: 'Birth label', placeholder: 'Born' },
-			{ key: 'timelineDeathLabel', name: 'Death label', placeholder: 'Died' },
-			{ key: 'timelineChildBirthLabel', name: 'Child birth label', placeholder: 'Birth of {name}' },
-			{ key: 'timelineSpouseDeathLabel', name: 'Spouse death label', placeholder: 'Death of {name}' },
-			{ key: 'timelineParentDeathLabel', name: 'Parent death label', placeholder: 'Death of {name}' },
-			{ key: 'timelineSiblingBirthLabel', name: 'Sibling birth label', placeholder: 'Birth of {name}' },
-			{ key: 'timelineChildDeathLabel', name: 'Child death label', placeholder: 'Death of {name}' },
-			{ key: 'timelineStepparentDeathLabel', name: 'Stepparent death label', placeholder: 'Death of {name}' },
-			{ key: 'timelineSiblingDeathLabel', name: 'Sibling death label', placeholder: 'Death of {name}' },
-			{ key: 'timelineGrandchildBirthLabel', name: 'Grandchild birth label', placeholder: 'Birth of {name}' },
-			{ key: 'timelineAdoptedSiblingBirthLabel', name: 'Adopted sibling birth label', placeholder: 'Birth of adopted sibling {name}' },
-			{ key: 'timelineAdoptedGrandchildBirthLabel', name: 'Adopted grandchild birth label', placeholder: 'Birth of adopted grandchild {name}' },
-			{ key: 'timelineAdoptedSiblingAdoptionLabel', name: 'Adopted sibling adoption label', placeholder: 'Adoption of {name}' },
-			{ key: 'timelineAdoptedGrandchildAdoptionLabel', name: 'Adopted grandchild adoption label', placeholder: 'Adoption of {name}' },
-			{ key: 'timelineChildMarriageLabel', name: 'Child marriage label', placeholder: 'Marriage of {name} to {spouse}', desc: 'Use {name} for the child and {spouse} for their spouse' },
-			{ key: 'timelineParentMarriageLabel', name: 'Parent marriage label', placeholder: 'Marriage of {name} to {spouse}', desc: 'Use {name} for the parent and {spouse} for their spouse' },
-			{ key: 'timelineSiblingMarriageLabel', name: 'Sibling marriage label', placeholder: 'Marriage of {name} to {spouse}', desc: 'Use {name} for the sibling and {spouse} for their spouse' },
+			{ key: 'timelineBirthLabel', name: '出生标签', placeholder: '出生' },
+			{ key: 'timelineDeathLabel', name: '去世标签', placeholder: '去世' },
+			{ key: 'timelineChildBirthLabel', name: '子女出生标签', placeholder: '{name}的出生' },
+			{ key: 'timelineSpouseDeathLabel', name: '配偶去世标签', placeholder: '{name}的去世' },
+			{ key: 'timelineParentDeathLabel', name: '父母去世标签', placeholder: '{name}的去世' },
+			{ key: 'timelineSiblingBirthLabel', name: '兄弟姐妹出生标签', placeholder: '{name}的出生' },
+			{ key: 'timelineChildDeathLabel', name: '子女去世标签', placeholder: '{name}的去世' },
+			{ key: 'timelineStepparentDeathLabel', name: '继父母去世标签', placeholder: '{name}的去世' },
+			{ key: 'timelineSiblingDeathLabel', name: '兄弟姐妹去世标签', placeholder: '{name}的去世' },
+			{ key: 'timelineGrandchildBirthLabel', name: '孙辈出生标签', placeholder: '{name}的出生' },
+			{ key: 'timelineAdoptedSiblingBirthLabel', name: '被收养兄弟姐妹出生标签', placeholder: '被收养的兄弟姐妹{name}的出生' },
+			{ key: 'timelineAdoptedGrandchildBirthLabel', name: '被收养孙辈出生标签', placeholder: '被收养的孙辈{name}的出生' },
+			{ key: 'timelineAdoptedSiblingAdoptionLabel', name: '被收养兄弟姐妹收养标签', placeholder: '收养{name}' },
+			{ key: 'timelineAdoptedGrandchildAdoptionLabel', name: '被收养孙辈收养标签', placeholder: '收养{name}' },
+			{ key: 'timelineChildMarriageLabel', name: '子女婚姻标签', placeholder: '{name}与{spouse}的婚姻', desc: '使用{name}表示子女，{spouse}表示其配偶' },
+			{ key: 'timelineParentMarriageLabel', name: '父母婚姻标签', placeholder: '{name}与{spouse}的婚姻', desc: '使用{name}表示父母，{spouse}表示其配偶' },
+			{ key: 'timelineSiblingMarriageLabel', name: '兄弟姐妹婚姻标签', placeholder: '{name}与{spouse}的婚姻', desc: '使用{name}表示兄弟姐妹，{spouse}表示其配偶' },
 		];
 
 		for (const label of labelSettings) {
 			new Setting(timelineContent)
 				.setName(label.name)
-				.setDesc(label.desc || `Use {name} for the person's name`)
+				.setDesc(label.desc || `使用{name}表示人物姓名`)
 				.addText(text => text
 					.setPlaceholder(label.placeholder)
 					.setValue((this.plugin.settings as unknown as Record<string, unknown>)[label.key as string] as string)
@@ -1805,11 +1805,11 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		}
 
 		// --- Family events on timelines subsection ---
-		new Setting(timelineContent).setName("Family events on timelines").setHeading();
+		new Setting(timelineContent).setName("时间轴上的家庭事件").setHeading();
 
 		new Setting(timelineContent)
-			.setName('Show children\'s births')
-			.setDesc('Display birth events of children on the parent\'s timeline')
+			.setName('显示子女出生')
+			.setDesc('在父母的时间轴上显示子女的出生事件')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowChildrenBirths)
 				.onChange(async (value) => {
@@ -1818,8 +1818,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show spouse deaths')
-			.setDesc('Display death events of spouses on the person\'s timeline')
+			.setName('显示配偶去世')
+			.setDesc('在人物的时间轴上显示配偶的去世事件')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowSpouseDeaths)
 				.onChange(async (value) => {
@@ -1828,8 +1828,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show parent deaths')
-			.setDesc('Display death events of parents on the person\'s timeline')
+			.setName('显示父母去世')
+			.setDesc('在人物的时间轴上显示父母的去世事件')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowParentDeaths)
 				.onChange(async (value) => {
@@ -1838,8 +1838,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show sibling births')
-			.setDesc('Display birth events of siblings on the person\'s timeline')
+			.setName('显示兄弟姐妹出生')
+			.setDesc('在人物的时间轴上显示兄弟姐妹的出生事件')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowSiblingBirths)
 				.onChange(async (value) => {
@@ -1848,8 +1848,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show adopted children\'s births')
-			.setDesc('Display birth events of adopted relations across all surfaces — adopted children on the adoptive parent\'s timeline, adopted siblings on the focal person\'s timeline, and adopted grandchildren on the grandparent\'s timeline. Independent of the bio-side birth toggles. When on, the adopted relation\'s entry uses a distinct label ("Birth of adopted sibling X" / "Birth of adopted grandchild X") so it stands out from biological entries. Adoption dates themselves always render on both adoptive parent\'s and adoptee\'s timelines.')
+			.setName('显示被收养子女出生')
+			.setDesc('在所有界面中显示被收养关系的出生事件——收养父母时间轴上的被收养子女、焦点人物时间轴上的被收养兄弟姐妹，以及祖父母时间轴上的被收养孙辈。独立于亲生子女的出生开关。启用后，被收养关系的条目使用不同标签（“被收养的兄弟姐妹X的出生”/“被收养的孙辈X的出生”），以便与亲生条目区分。收养日期本身始终显示在收养父母和被收养者的时间轴上。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowAdoptedChildrenBirths)
 				.onChange(async (value) => {
@@ -1858,8 +1858,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show divorces')
-			.setDesc('Display divorce events on the person\'s timeline. Marriages always render when present; this toggle governs divorces only.')
+			.setName('显示离婚')
+			.setDesc('在人物的时间轴上显示离婚事件。婚姻始终在有数据时显示；此开关仅控制离婚。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowDivorces)
 				.onChange(async (value) => {
@@ -1868,8 +1868,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show children\'s deaths')
-			.setDesc('Display death events of children on the parent\'s timeline. Covers biological, adopted, and step-children when the focal person is recorded as a parent or stepparent.')
+			.setName('显示子女去世')
+			.setDesc('在父母的时间轴上显示子女的去世事件。当焦点人物被记录为父母或继父母时，涵盖亲生、被收养和继子女。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowChildrenDeaths)
 				.onChange(async (value) => {
@@ -1878,8 +1878,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show stepparent deaths')
-			.setDesc('Display death events of stepparents on the stepchild\'s timeline.')
+			.setName('显示继父母去世')
+			.setDesc('在继子女的时间轴上显示继父母的去世事件。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowStepparentDeaths)
 				.onChange(async (value) => {
@@ -1888,8 +1888,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show sibling deaths')
-			.setDesc('Display death events of siblings on the person\'s timeline.')
+			.setName('显示兄弟姐妹去世')
+			.setDesc('在人物的时间轴上显示兄弟姐妹的去世事件。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowSiblingDeaths)
 				.onChange(async (value) => {
@@ -1898,8 +1898,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show grandchildren\'s births')
-			.setDesc('Display birth events of grandchildren (biological and adopted) on the grandparent\'s timeline.')
+			.setName('显示孙辈出生')
+			.setDesc('在祖父母的时间轴上显示孙辈（亲生和收养）的出生事件。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowGrandchildrenBirths)
 				.onChange(async (value) => {
@@ -1908,8 +1908,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show children\'s marriages')
-			.setDesc('Display marriage events of children on the parent\'s timeline. Covers biological, adopted, and step-children. Renders the spouse\'s name and (when set) the marriage location.')
+			.setName('显示子女婚姻')
+			.setDesc('在父母的时间轴上显示子女的婚姻事件。涵盖亲生、被收养和继子女。显示配偶姓名以及（设置后）婚姻地点。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowChildrenMarriages)
 				.onChange(async (value) => {
@@ -1918,8 +1918,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show parent\'s marriages')
-			.setDesc('Display marriage events of biological and adoptive parents on the child\'s timeline. Skips the marriage between the two biological parents (the pairing implicit in the parent links). Adoptive-parent couple marriages and parent remarriages both appear.')
+			.setName('显示父母婚姻')
+			.setDesc('在子女的时间轴上显示亲生和收养父母的婚姻事件。跳过两位亲生父母之间的婚姻（父母链接中隐含的配对）。收养父母双方的婚姻和父母的再婚都会显示。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowParentMarriages)
 				.onChange(async (value) => {
@@ -1928,8 +1928,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Show sibling\'s marriages')
-			.setDesc('Display marriage events of siblings on the person\'s timeline. Covers biological and adopted siblings; step-siblings are excluded (matching sibling births). Renders the spouse\'s name and (when set) the marriage location.')
+			.setName('显示兄弟姐妹婚姻')
+			.setDesc('在人物的时间轴上显示兄弟姐妹的婚姻事件。涵盖亲生和被收养的兄弟姐妹；排除继兄弟姐妹（与兄弟姐妹出生保持一致）。显示配偶姓名以及（设置后）婚姻地点。')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.timelineShowSiblingMarriages)
 				.onChange(async (value) => {
@@ -1938,13 +1938,13 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		// --- Context events subsection ---
-		new Setting(timelineContent).setName("Context events").setHeading();
+		new Setting(timelineContent).setName("上下文事件").setHeading();
 
 		new Setting(timelineContent)
-			.setName('Default timeline context')
-			.setDesc('Note with historical events to overlay on all timelines (e.g., [[World History]]). Can be overridden per block with context: [[Note]].')
+			.setName('默认时间轴上下文')
+			.setDesc('包含历史事件的笔记，用于叠加到所有时间轴上（例如 [[World History]]）。可使用 context: [[Note]] 按块覆盖。')
 			.addText(text => text
-				.setPlaceholder('[[My Historical Events]]')
+				.setPlaceholder('[[我的历史事件]]')
 				.setValue(this.plugin.settings.defaultTimelineContext)
 				.onChange(async (value) => {
 					this.plugin.settings.defaultTimelineContext = value;
@@ -1952,8 +1952,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(timelineContent)
-			.setName('Context lifespan margin')
-			.setDesc('Only show context events within this many years of the person\'s lifespan. Set to 0 to show all context events (default).')
+			.setName('上下文寿命边距')
+			.setDesc('仅显示在人物寿命前后此年数范围内的上下文事件。设置为 0 可显示所有上下文事件（默认）。')
 			.addText(text => text
 				.setPlaceholder('0')
 				.setValue(String(this.plugin.settings.contextLifespanMargin))
@@ -1973,17 +1973,17 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const sexDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		sexDetails.dataset.sectionName = 'sex';
 		const sexSummary = sexDetails.createEl('summary');
-		sexSummary.createSpan({ text: 'Sex & gender' });
-		sexSummary.createSpan({ cls: 'cr-section-desc', text: 'Sex normalization and inclusive options' });
+		sexSummary.createSpan({ text: '性别' });
+		sexSummary.createSpan({ cls: 'cr-section-desc', text: '性别规范化与包容性选项' });
 		const sexContent = sexDetails.createDiv({ cls: 'cr-section-content' });
 
 		new Setting(sexContent)
-			.setName('Sex normalization mode')
-			.setDesc('How sex values are normalized in batch operations')
+			.setName('性别规范化模式')
+			.setDesc('批量操作中性别值的规范化方式')
 			.addDropdown(dropdown => dropdown
-				.addOption('standard', 'Standard - normalize to GEDCOM M/F')
-				.addOption('schema-aware', 'Schema-aware - skip notes with custom schemas')
-				.addOption('disabled', 'Disabled - never normalize')
+				.addOption('standard', '标准 - 规范化为 GEDCOM M/F')
+				.addOption('schema-aware', 'Schema 感知 - 跳过具有自定义 schema 的笔记')
+				.addOption('disabled', '禁用 - 从不规范化')
 				.setValue(this.plugin.settings.sexNormalizationMode)
 				.onChange(async (value) => {
 					this.plugin.settings.sexNormalizationMode = value as SexNormalizationMode;
@@ -1991,8 +1991,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(sexContent)
-			.setName('Enable gender-neutral parent property')
-			.setDesc('Show a "Parents" property in person modals for inclusive terminology')
+			.setName('启用性别中立父母属性')
+			.setDesc('在人物模态框中显示“父母”属性以实现包容性术语')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.enableInclusiveParents)
 				.onChange(async (value) => {
@@ -2003,20 +2003,20 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		if (this.plugin.settings.enableInclusiveParents) {
 			new Setting(sexContent)
-				.setName('Parent property label')
-				.setDesc('Customize the UI label for the gender-neutral parent property')
+				.setName('父母属性标签')
+				.setDesc('自定义性别中立父母属性的界面标签')
 				.addText(text => text
-					.setPlaceholder('Parents')
+					.setPlaceholder('父母')
 					.setValue(this.plugin.settings.parentFieldLabel)
 					.onChange(async (value) => {
-						this.plugin.settings.parentFieldLabel = value || 'Parents';
+						this.plugin.settings.parentFieldLabel = value || '父母';
 						await this.plugin.saveSettings();
 					}));
 		}
 
 		new Setting(sexContent)
-			.setName('Show pronouns')
-			.setDesc('Display pronouns in person pickers and cards')
+			.setName('显示代词')
+			.setDesc('在人物选择器和卡片中显示代词')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.showPronouns)
 				.onChange(async (value) => {
@@ -2025,11 +2025,11 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(sexContent)
-			.setName('Romantic relationship label')
-			.setDesc('Choose terminology for spouse/partner relationships in the UI')
+			.setName('恋爱关系标签')
+			.setDesc('为界面中的配偶/伴侣关系选择术语')
 			.addDropdown(dropdown => dropdown
-				.addOption('spouse', 'Spouse')
-				.addOption('partner', 'Partner')
+				.addOption('spouse', '配偶')
+				.addOption('partner', '伴侣')
 				.setValue(this.plugin.settings.romanticRelationshipLabel)
 				.onChange(async (value: 'spouse' | 'partner') => {
 					this.plugin.settings.romanticRelationshipLabel = value;
@@ -2044,13 +2044,13 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const placesDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		placesDetails.dataset.sectionName = 'places';
 		const placesSummary = placesDetails.createEl('summary');
-		placesSummary.createSpan({ text: 'Places' });
-		placesSummary.createSpan({ cls: 'cr-section-desc', text: 'Place organization and coordinate handling' });
+		placesSummary.createSpan({ text: '地点' });
+		placesSummary.createSpan({ cls: 'cr-section-desc', text: '地点组织与坐标处理' });
 		const placesContent = placesDetails.createDiv({ cls: 'cr-section-content' });
 
 		new Setting(placesContent)
-			.setName('Use category-based subfolders')
-			.setDesc('Automatically organize new places into subfolders based on their category')
+			.setName('使用基于分类的子文件夹')
+			.setDesc('根据分类自动将新地点整理到子文件夹中')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.useCategorySubfolders)
 				.onChange(async (value) => {
@@ -2061,11 +2061,11 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		// Show category folder overrides section if enabled
 		if (this.plugin.settings.useCategorySubfolders) {
-			new Setting(placesContent).setName("Category folder overrides").setHeading();
+			new Setting(placesContent).setName("分类文件夹覆盖").setHeading();
 
 			placesContent.createEl('p', {
 				cls: 'setting-item-description',
-				text: 'Override the default subfolder name for specific categories. Leave empty to use the capitalized category name (e.g., "Historical").'
+				text: '为特定分类覆盖默认子文件夹名称。留空则使用首字母大写的分类名称（例如“Historical”）。'
 			});
 
 			const rulesContainer = placesContent.createDiv({ cls: 'cr-category-folder-rules' });
@@ -2073,15 +2073,15 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		}
 
 		new Setting(placesContent)
-			.setName('Default place category')
-			.setDesc('Category assigned to new places when not specified')
+			.setName('默认地点分类')
+			.setDesc('未指定时为新建地点分配的分类')
 			.addDropdown(dropdown => dropdown
-				.addOption('real', 'Real')
-				.addOption('historical', 'Historical')
-				.addOption('disputed', 'Disputed')
-				.addOption('legendary', 'Legendary')
-				.addOption('mythological', 'Mythological')
-				.addOption('fictional', 'Fictional')
+				.addOption('real', '真实')
+				.addOption('historical', '历史')
+				.addOption('disputed', '有争议')
+				.addOption('legendary', '传说')
+				.addOption('mythological', '神话')
+				.addOption('fictional', '虚构')
 				.setValue(this.plugin.settings.defaultPlaceCategory)
 				.onChange(async (value) => {
 					this.plugin.settings.defaultPlaceCategory = value as PlaceCategory;
@@ -2092,10 +2092,10 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		// organizations when their universe field is left empty. Placed beside the
 		// place-category default since the two pair up for fictional worldbuilding.
 		new Setting(placesContent)
-			.setName('Default universe')
-			.setDesc('Universe assigned to new people, places, events, and organizations when not specified. For places, it only applies to fictional categories.')
+			.setName('默认宇宙')
+			.setDesc('未指定时为新建人物、地点、事件和组织分配的宇宙。对于地点，仅适用于虚构分类。')
 			.addDropdown(dropdown => {
-				dropdown.addOption('', '(None)');
+				dropdown.addOption('', '（无）');
 				const current = this.plugin.settings.defaultUniverse || '';
 				const names = createUniverseService(this.plugin).getAllUniverses().map(u => u.name);
 				for (const name of names) {
@@ -2103,7 +2103,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}
 				// Keep a previously-set universe selectable even if its note was removed.
 				if (current && !names.includes(current)) {
-					dropdown.addOption(current, `${current} (missing)`);
+					dropdown.addOption(current, `${current}（缺失）`);
 				}
 				dropdown.setValue(current);
 				dropdown.onChange(async (value) => {
@@ -2113,8 +2113,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(placesContent)
-			.setName('Accept DMS coordinate format')
-			.setDesc('Allow entering coordinates in degrees, minutes, seconds format')
+			.setName('接受 DMS 坐标格式')
+			.setDesc('允许以度、分、秒格式输入坐标')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.enableDMSCoordinates)
 				.onChange(async (value) => {
@@ -2123,19 +2123,19 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		// --- Place lookup subsection (#218) ---
-		new Setting(placesContent).setName("Place lookup").setHeading();
+		new Setting(placesContent).setName("地点查找").setHeading();
 
 		new Setting(placesContent)
-			.setName('GeoNames username')
+			.setName('GeoNames 用户名')
 			.setDesc(createFragment(f => {
-				f.appendText('Optional. Enables GeoNames as an additional lookup source. ');
-				f.createEl('a', { text: 'Register free', href: 'https://www.geonames.org/login' });
-				f.appendText(', then ');
-				f.createEl('a', { text: 'enable free web services', href: 'https://www.geonames.org/manageaccount' });
-				f.appendText(' on your account page (required for API access).');
+				f.appendText('可选。将 GeoNames 启用为附加查找来源。');
+				f.createEl('a', { text: '免费注册', href: 'https://www.geonames.org/login' });
+				f.appendText('，然后');
+				f.createEl('a', { text: '启用免费网络服务', href: 'https://www.geonames.org/manageaccount' });
+				f.appendText('（在账户页面上，API 访问所需）。');
 			}))
 			.addText(text => text
-				.setPlaceholder('your-username')
+				.setPlaceholder('你的用户名')
 				.setValue(this.plugin.settings.geonamesUsername)
 				.onChange(async (value) => {
 					this.plugin.settings.geonamesUsername = value.trim();
@@ -2144,12 +2144,12 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		// Heat map intensity
 		new Setting(placesContent)
-			.setName('Heat map intensity')
-			.setDesc('Controls the brightness and radius of the heat map overlay in map view. Also adjustable in the map Layers menu.')
+			.setName('热力图强度')
+			.setDesc('控制地图视图中热力图叠加层的亮度和半径。也可在地图“图层”菜单中调整。')
 			.addDropdown(dropdown => dropdown
-				.addOption('low', 'Low')
-				.addOption('medium', 'Medium')
-				.addOption('high', 'High')
+				.addOption('low', '低')
+				.addOption('medium', '中')
+				.addOption('high', '高')
 				.setValue(this.plugin.settings.heatMapIntensity)
 				.onChange(async (value) => {
 					this.plugin.settings.heatMapIntensity = value as 'low' | 'medium' | 'high';
@@ -2161,10 +2161,10 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		for (const level of ['low', 'medium', 'high'] as const) {
 			const preset = presets[level];
 			new Setting(placesContent)
-				.setName(`${level.charAt(0).toUpperCase() + level.slice(1)} preset`)
-				.setDesc(`Radius: ${preset.radius}, Blur: ${preset.blur}, Opacity: ${preset.opacity}`)
+				.setName(`${({ low: '低', medium: '中', high: '高' } as const)[level]}预设`)
+				.setDesc(`半径：${preset.radius}，模糊：${preset.blur}，不透明度：${preset.opacity}`)
 				.addText(text => text
-					.setPlaceholder('radius')
+					.setPlaceholder('半径')
 					.setValue(String(preset.radius))
 					.onChange(async (value) => {
 						const num = parseFloat(value);
@@ -2174,7 +2174,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 						}
 					}))
 				.addText(text => text
-					.setPlaceholder('blur')
+					.setPlaceholder('模糊')
 					.setValue(String(preset.blur))
 					.onChange(async (value) => {
 						const num = parseFloat(value);
@@ -2184,7 +2184,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 						}
 					}))
 				.addText(text => text
-					.setPlaceholder('opacity')
+					.setPlaceholder('不透明度')
 					.setValue(String(preset.opacity))
 					.onChange(async (value) => {
 						const num = parseFloat(value);
@@ -2197,12 +2197,12 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		// Map path label outline (#483)
 		new Setting(placesContent)
-			.setName('Map path label outline')
-			.setDesc('Add a contrasting outline around path labels for legibility on colorful or dark backgrounds.')
+			.setName('地图路径标签描边')
+			.setDesc('在路径标签周围添加对比描边，以便在彩色或深色背景上清晰可读。')
 			.addDropdown(dropdown => dropdown
-				.addOption('none', 'None')
-				.addOption('white', 'White outline')
-				.addOption('black', 'Black outline')
+				.addOption('none', '无')
+				.addOption('white', '白色描边')
+				.addOption('black', '黑色描边')
 				.setValue(this.plugin.settings.pathLabelStroke)
 				.onChange(async (value) => {
 					this.plugin.settings.pathLabelStroke = value as 'none' | 'white' | 'black';
@@ -2214,7 +2214,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const lookupIcon = lookupNote.createSpan({ cls: 'cr-info-box-icon' });
 		setIcon(lookupIcon, 'info');
 		lookupNote.createSpan({
-			text: 'Place lookup uses Wikidata and OpenStreetMap by default. Add a GeoNames username for additional results.'
+			text: '地点查找默认使用 Wikidata 和 OpenStreetMap。添加 GeoNames 用户名可获取更多结果。'
 		});
 
 		// Info note about imports
@@ -2222,7 +2222,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const importIcon = importNote.createSpan({ cls: 'cr-info-box-icon' });
 		setIcon(importIcon, 'info');
 		importNote.createSpan({
-			text: 'Imports (GEDCOM, Gramps) always create places in the base folder. Use Data Quality → "Places not in category folders" to organize them afterward.'
+			text: '导入（GEDCOM、Gramps）始终在基础文件夹中创建地点。之后可使用 数据质量 → “不在分类文件夹中的地点”来整理它们。'
 		});
 	}
 
@@ -2237,16 +2237,16 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const researchDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		researchDetails.dataset.sectionName = 'research';
 		const researchSummary = researchDetails.createEl('summary');
-		researchSummary.createSpan({ text: 'Research' });
-		researchSummary.createSpan({ cls: 'cr-section-desc', text: 'Evidence-based genealogy and DNA workflows' });
+		researchSummary.createSpan({ text: '研究' });
+		researchSummary.createSpan({ cls: 'cr-section-desc', text: '基于证据的谱系研究与 DNA 工作流' });
 		const researchContent = researchDetails.createDiv({ cls: 'cr-section-content' });
 
 		// --- Research tools subsection ---
-		new Setting(researchContent).setName("Research tools").setHeading();
+		new Setting(researchContent).setName("研究工具").setHeading();
 
 		new Setting(researchContent)
-			.setName('Enable fact-level source tracking')
-			.setDesc('Track which specific facts have source citations')
+			.setName('启用事实级来源追踪')
+			.setDesc('追踪哪些具体事实具有来源引文')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.trackFactSourcing)
 				.onChange(async (value) => {
@@ -2257,8 +2257,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		if (this.plugin.settings.trackFactSourcing) {
 			new Setting(researchContent)
-				.setName('Fact coverage threshold')
-				.setDesc('Number of key facts for 100% coverage calculation')
+				.setName('事实覆盖率阈值')
+				.setDesc('用于计算100%覆盖率的关键事实数量')
 				.addText(text => text
 					.setPlaceholder('6')
 					.setValue(String(this.plugin.settings.factCoverageThreshold))
@@ -2271,8 +2271,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 					}));
 
 			new Setting(researchContent)
-				.setName('Show research gaps in status tab')
-				.setDesc('Display summary of unsourced facts in control center')
+				.setName('在状态标签页中显示研究缺口')
+				.setDesc('在控制中心显示无来源事实的摘要')
 				.addToggle(toggle => toggle
 					.setValue(this.plugin.settings.showResearchGapsInStatus)
 					.onChange(async (value) => {
@@ -2282,11 +2282,11 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		}
 
 		// --- DNA tracking subsection ---
-		new Setting(researchContent).setName("DNA tracking").setHeading();
+		new Setting(researchContent).setName("DNA 追踪").setHeading();
 
 		new Setting(researchContent)
-			.setName('Enable DNA match tracking')
-			.setDesc('Show DNA-related fields and options for genetic genealogy workflows')
+			.setName('启用 DNA 匹配追踪')
+			.setDesc('为遗传谱系工作流显示 DNA 相关字段和选项')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.enableDnaTracking)
 				.onChange(async (value) => {
@@ -2298,7 +2298,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		if (this.plugin.settings.enableDnaTracking) {
 			researchContent.createEl('p', {
 				cls: 'setting-item-description',
-				text: 'When enabled: "DNA Match" person type available in Create Person, DNA fields shown in Edit Person modal, DNA Match relationship type available.'
+				text: '启用后：创建人物中可使用“DNA 匹配”人物类型，编辑人物模态框中显示 DNA 字段，可使用 DNA 匹配关系类型。'
 			});
 		}
 	}
@@ -2310,8 +2310,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const aliasesDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		aliasesDetails.dataset.sectionName = 'aliases';
 		const aliasesSummary = aliasesDetails.createEl('summary');
-		aliasesSummary.createSpan({ text: 'Property & value aliases' });
-		aliasesSummary.createSpan({ cls: 'cr-section-desc', text: 'Custom frontmatter names and value mappings' });
+		aliasesSummary.createSpan({ text: '属性与值别名' });
+		aliasesSummary.createSpan({ cls: 'cr-section-desc', text: '自定义 frontmatter 名称和值映射' });
 		const aliasesContent = aliasesDetails.createDiv({ cls: 'cr-section-content' });
 
 		// Services for alias management
@@ -2320,40 +2320,40 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		// Description
 		const aliasExplanation = aliasesContent.createDiv({ cls: 'setting-item-description cr-info-box' });
-		aliasExplanation.appendText('Use your own property names and values—Charted Roots will recognize them without rewriting your files.');
+		aliasExplanation.appendText('使用你自己的属性名称和值——Charted Roots 会识别它们，而不会重写你的文件。');
 
 		// --- Property aliases subsection ---
-		new Setting(aliasesContent).setName("Property aliases").setHeading();
+		new Setting(aliasesContent).setName("属性别名").setHeading();
 
 		// Person properties
-		this.renderPropertyAliasSection(aliasesContent, 'Person properties', PERSON_PROPERTY_METADATA, propertyAliasService);
+		this.renderPropertyAliasSection(aliasesContent, '人物属性', PERSON_PROPERTY_METADATA, propertyAliasService);
 
 		// Event properties
-		this.renderPropertyAliasSection(aliasesContent, 'Event properties', EVENT_PROPERTY_METADATA, propertyAliasService);
+		this.renderPropertyAliasSection(aliasesContent, '事件属性', EVENT_PROPERTY_METADATA, propertyAliasService);
 
 		// Place properties
-		this.renderPropertyAliasSection(aliasesContent, 'Place properties', PLACE_PROPERTY_METADATA, propertyAliasService);
+		this.renderPropertyAliasSection(aliasesContent, '地点属性', PLACE_PROPERTY_METADATA, propertyAliasService);
 
 		// Source properties
-		this.renderPropertyAliasSection(aliasesContent, 'Source properties', SOURCE_PROPERTY_METADATA, propertyAliasService);
+		this.renderPropertyAliasSection(aliasesContent, '来源属性', SOURCE_PROPERTY_METADATA, propertyAliasService);
 
 		// --- Value aliases subsection ---
-		new Setting(aliasesContent).setName("Value aliases").setHeading();
+		new Setting(aliasesContent).setName("值别名").setHeading();
 
 		const valueAliasExplanation = aliasesContent.createDiv({ cls: 'setting-item-description cr-info-box cr-info-box--muted' });
-		valueAliasExplanation.appendText('Map your custom values to Charted Roots canonical values. For example, map "nameday" to "birth" event type.');
+		valueAliasExplanation.appendText('将你的自定义值映射到 Charted Roots 的规范值。例如，将“nameday”映射到“birth”事件类型。');
 
 		// Event type values
-		this.renderValueAliasSection(aliasesContent, 'Event type values', 'eventType', CANONICAL_EVENT_TYPES, EVENT_TYPE_LABELS, valueAliasService);
+		this.renderValueAliasSection(aliasesContent, '事件类型值', 'eventType', CANONICAL_EVENT_TYPES, EVENT_TYPE_LABELS, valueAliasService);
 
 		// Sex values
-		this.renderValueAliasSection(aliasesContent, 'Sex values', 'sex', CANONICAL_SEX_VALUES, SEX_LABELS, valueAliasService);
+		this.renderValueAliasSection(aliasesContent, '性别值', 'sex', CANONICAL_SEX_VALUES, SEX_LABELS, valueAliasService);
 
 		// Place category values
-		this.renderValueAliasSection(aliasesContent, 'Place category values', 'placeCategory', CANONICAL_PLACE_CATEGORIES, PLACE_CATEGORY_LABELS, valueAliasService);
+		this.renderValueAliasSection(aliasesContent, '地点分类值', 'placeCategory', CANONICAL_PLACE_CATEGORIES, PLACE_CATEGORY_LABELS, valueAliasService);
 
 		// Note type values
-		this.renderValueAliasSection(aliasesContent, 'Note type values', 'noteType', CANONICAL_NOTE_TYPES, NOTE_TYPE_LABELS, valueAliasService);
+		this.renderValueAliasSection(aliasesContent, '笔记类型值', 'noteType', CANONICAL_NOTE_TYPES, NOTE_TYPE_LABELS, valueAliasService);
 	}
 
 	private renderAdvancedSection(containerEl: HTMLElement): void {
@@ -2363,20 +2363,20 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const advancedDetails = containerEl.createEl('details', { cls: 'cr-settings-section' });
 		advancedDetails.dataset.sectionName = 'advanced';
 		const advancedSummary = advancedDetails.createEl('summary');
-		advancedSummary.createSpan({ text: 'Advanced' });
-		advancedSummary.createSpan({ cls: 'cr-section-desc', text: 'Less frequently used settings' });
+		advancedSummary.createSpan({ text: '高级' });
+		advancedSummary.createSpan({ cls: 'cr-section-desc', text: '较少使用的设置' });
 		const advancedContent = advancedDetails.createDiv({ cls: 'cr-section-content' });
 
 		// --- Folder filtering subsection ---
-		new Setting(advancedContent).setName("Folder filtering").setHeading();
+		new Setting(advancedContent).setName("文件夹筛选").setHeading();
 
 		new Setting(advancedContent)
-			.setName('Filter mode')
-			.setDesc('Control which folders are scanned for notes')
+			.setName('筛选模式')
+			.setDesc('控制扫描哪些文件夹以查找笔记')
 			.addDropdown(dropdown => dropdown
-				.addOption('disabled', 'Disabled (scan all)')
-				.addOption('exclude', 'Exclude folders')
-				.addOption('include', 'Include folders only')
+				.addOption('disabled', '禁用（扫描全部）')
+				.addOption('exclude', '排除文件夹')
+				.addOption('include', '仅包括文件夹')
 				.setValue(this.plugin.settings.folderFilterMode)
 				.onChange(async (value: FolderFilterMode) => {
 					this.plugin.settings.folderFilterMode = value;
@@ -2391,8 +2391,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				: this.plugin.settings.includedFolders;
 
 			new Setting(advancedContent)
-				.setName(isExcludeMode ? 'Excluded folders' : 'Included folders')
-				.setDesc('One folder path per line')
+				.setName(isExcludeMode ? '排除的文件夹' : '包括的文件夹')
+				.setDesc('每行一个文件夹路径')
 				.addTextArea(textArea => textArea
 					.setPlaceholder(isExcludeMode ? 'templates\narchive' : 'People\nFamily')
 					.setValue(filterFolders.join('\n'))
@@ -2408,8 +2408,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		}
 
 		new Setting(advancedContent)
-			.setName('Staging isolation')
-			.setDesc('Exclude staging folder from normal operations')
+			.setName('暂存隔离')
+			.setDesc('从常规操作中排除暂存文件夹')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.enableStagingIsolation)
 				.onChange(async (value) => {
@@ -2418,11 +2418,11 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		// --- Template detection subsection ---
-		new Setting(advancedContent).setName("Template detection").setHeading();
+		new Setting(advancedContent).setName("模板检测").setHeading();
 
 		new Setting(advancedContent)
-			.setName('Auto-detect template folders')
-			.setDesc('Automatically exclude template folders from Templates/Templater/QuickAdd plugins')
+			.setName('自动检测模板文件夹')
+			.setDesc('自动排除来自 Templates/Templater/QuickAdd 插件的模板文件夹')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.autoDetectTemplateFolders)
 				.onChange(async (value) => {
@@ -2435,8 +2435,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(advancedContent)
-			.setName('Additional template folders')
-			.setDesc('Additional folders to exclude from note discovery (one per line)')
+			.setName('其他模板文件夹')
+			.setDesc('要从笔记发现中排除的其他文件夹（每行一个）')
 			.addTextArea(textArea => textArea
 				.setPlaceholder('_templates\nmy-templates')
 				.setValue((this.plugin.settings.templateFolders || []).join('\n'))
@@ -2447,11 +2447,11 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		// --- Relationship calculator subsection ---
-		new Setting(advancedContent).setName("Relationship calculator").setHeading();
+		new Setting(advancedContent).setName("关系计算器").setHeading();
 
 		new Setting(advancedContent)
-			.setName('Max search depth')
-			.setDesc('Maximum generations to search when calculating relationships. Set to 0 for unlimited (may be slow on large vaults).')
+			.setName('最大搜索深度')
+			.setDesc('计算关系时搜索的最大世代数。设置为 0 表示不限（在大型库中可能较慢）。')
 			.addText(text => text
 				.setPlaceholder('10')
 				.setValue(String(this.plugin.settings.relationshipMaxDepth))
@@ -2464,17 +2464,17 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		// --- Logging subsection ---
-		new Setting(advancedContent).setName("Logging").setHeading();
+		new Setting(advancedContent).setName("日志").setHeading();
 
 		new Setting(advancedContent)
-			.setName('Log level')
-			.setDesc('Verbosity of console logging')
+			.setName('日志级别')
+			.setDesc('控制台日志的详细程度')
 			.addDropdown(dropdown => dropdown
-				.addOption('debug', 'Debug (verbose)')
-				.addOption('info', 'Info')
-				.addOption('warn', 'Warn')
-				.addOption('error', 'Error')
-				.addOption('off', 'Off')
+				.addOption('debug', '调试（详细）')
+				.addOption('info', '信息')
+				.addOption('warn', '警告')
+				.addOption('error', '错误')
+				.addOption('off', '关闭')
 				.setValue(this.plugin.settings.logLevel)
 				.onChange(async (value: LogLevel) => {
 					this.plugin.settings.logLevel = value;
@@ -2484,8 +2484,8 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(advancedContent)
-			.setName('Obfuscate log exports')
-			.setDesc('Replace PII with placeholders when exporting logs')
+			.setName('混淆日志导出')
+			.setDesc('导出日志时将个人身份信息替换为占位符')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.obfuscateLogExports)
 				.onChange(async (value) => {
@@ -2494,17 +2494,17 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(advancedContent)
-			.setName('Export logs')
-			.setDesc('Export collected logs to a file in the vault')
+			.setName('导出日志')
+			.setDesc('将收集的日志导出到库中的文件')
 			.addButton(button => button
-				.setButtonText('Export')
+				.setButtonText('导出')
 				.onClick(async () => {
 					try {
 						const { LoggerFactory, obfuscateLogs } = await import('./core/logging');
 						const logs = LoggerFactory.getLogs();
 
 						if (logs.length === 0) {
-							new Notice('No logs to export');
+							new Notice('没有可导出的日志');
 							return;
 						}
 
@@ -2534,10 +2534,10 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 						}
 
 						await this.app.vault.create(fullPath, content);
-						new Notice(`Exported ${logs.length} log entries to ${fullPath}`);
+						new Notice(`已导出${logs.length}条日志到${fullPath}`);
 					} catch (error) {
 						const message = error instanceof Error ? error.message : String(error);
-						new Notice(`Failed to export logs: ${message}`);
+						new Notice(`导出日志失败：${message}`);
 					}
 				}));
 	}
@@ -2666,7 +2666,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const summary = section.createEl('summary', { cls: 'cr-property-section-summary' });
 		summary.createSpan({ text: title, cls: 'cr-property-section-title' });
 		summary.createSpan({
-			text: configuredCount > 0 ? `${configuredCount} configured` : `${properties.length} properties`,
+			text: configuredCount > 0 ? `已配置${configuredCount}项` : `${properties.length}个属性`,
 			cls: 'cr-property-section-count'
 		});
 
@@ -2696,7 +2696,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 									} else if (value !== meta.canonical && value !== currentAlias) {
 										const existingMapping = propertyAliasService.aliases[value];
 										if (existingMapping && existingMapping !== meta.canonical) {
-											new Notice(`"${value}" is already mapped to "${existingMapping}"`);
+											new Notice(`“${value}”已映射到“${existingMapping}”`);
 											text.inputEl.value = currentAlias;
 										} else {
 											await propertyAliasService.setAlias(value, meta.canonical);
@@ -2707,7 +2707,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 							});
 						})
 						.addExtraButton(button => {
-							button.setIcon('x').setTooltip('Clear alias').onClick(async () => {
+							button.setIcon('x').setTooltip('清除别名').onClick(async () => {
 								if (currentAlias) {
 									await propertyAliasService.removeAlias(currentAlias);
 									this.refreshSettings();
@@ -2739,7 +2739,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 		const summary = section.createEl('summary', { cls: 'cr-property-section-summary' });
 		summary.createSpan({ text: title, cls: 'cr-property-section-title' });
 		summary.createSpan({
-			text: `${aliasCount} ${pluralize(aliasCount, 'alias', 'aliases')}`,
+			text: `${aliasCount}${pluralize(aliasCount, '个别名', '个别名')}`,
 			cls: 'cr-property-section-count'
 		});
 
@@ -2762,7 +2762,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 						.setName(valueLabel)
 						.setDesc(canonicalValue)
 						.addText(text => {
-							text.setPlaceholder('your value').setValue(userValue);
+							text.setPlaceholder('你的值').setValue(userValue);
 							text.inputEl.addEventListener('blur', () => {
 								void (async () => {
 									const value = text.inputEl.value.trim();
@@ -2774,7 +2774,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 									} else if (value.toLowerCase() !== canonicalValue.toLowerCase() && value !== userValue) {
 										const existingMapping = aliases[value.toLowerCase()];
 										if (existingMapping && existingMapping !== canonicalValue) {
-											new Notice(`"${value}" is already mapped to "${existingMapping}"`);
+											new Notice(`“${value}”已映射到“${existingMapping}”`);
 											text.inputEl.value = userValue;
 										} else {
 											if (userValue) {
@@ -2788,7 +2788,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 							});
 						})
 						.addExtraButton(button => {
-							button.setIcon('x').setTooltip('Clear alias').onClick(async () => {
+							button.setIcon('x').setTooltip('清除别名').onClick(async () => {
 								if (userValue) {
 									await valueAliasService.removeAlias(field, userValue);
 									this.refreshSettings();
@@ -2834,7 +2834,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 			// Remove button
 			const removeBtn = row.createSpan({ cls: 'cr-media-folder-remove' });
 			setIcon(removeBtn, 'x');
-			removeBtn.setAttribute('aria-label', 'Remove folder');
+			removeBtn.setAttribute('aria-label', '移除文件夹');
 
 			removeBtn.addEventListener('click', () => {
 				this.plugin.settings.mediaFolders = folders.filter((_, idx) => idx !== i);
@@ -2910,7 +2910,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 		const addSetting = new Setting(inputWrapper)
 			.addText(text => {
-				text.setPlaceholder('Add media folder...');
+				text.setPlaceholder('添加媒体文件夹…');
 
 				// Attach folder autocomplete
 				new FolderSuggest(this.app, text, (value) => {
@@ -2990,7 +2990,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 			// Remove button
 			const removeBtn = ruleRow.createSpan({ cls: 'cr-category-folder-rule-remove' });
 			setIcon(removeBtn, 'x');
-			removeBtn.setAttribute('aria-label', 'Remove override');
+			removeBtn.setAttribute('aria-label', '移除覆盖');
 
 			removeBtn.addEventListener('click', () => {
 				void (async () => {
@@ -3009,7 +3009,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 
 			// Category dropdown
 			const categorySelect = addRow.createEl('select', { cls: 'cr-category-folder-rule-select' });
-			categorySelect.createEl('option', { value: '', text: 'Add override...' });
+			categorySelect.createEl('option', { value: '', text: '添加覆盖…' });
 			for (const cat of availableCategories) {
 				const label = PLACE_CATEGORY_LABELS[cat] || cat;
 				categorySelect.createEl('option', { value: cat, text: label });
@@ -3024,7 +3024,7 @@ export class CanvasRootsSettingTab extends PluginSettingTab {
 				cls: 'cr-category-folder-rule-folder',
 				attr: {
 					type: 'text',
-					placeholder: 'Subfolder path'
+					placeholder: '子文件夹路径'
 				}
 			});
 			folderInput.hide();

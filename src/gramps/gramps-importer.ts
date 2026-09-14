@@ -254,7 +254,7 @@ export class GrampsImporter {
 
 		try {
 			// Validate Gramps XML first
-			reportProgress('validating', 0, 1, 'Validating Gramps XML file…');
+			reportProgress('validating', 0, 1, '正在校验 Gramps XML 文件…');
 			// Small delay to allow UI to repaint before synchronous validation
 			await new Promise(resolve => window.setTimeout(resolve, 50));
 			const validation = GrampsParser.validate(content);
@@ -263,22 +263,22 @@ export class GrampsImporter {
 			// Check for critical errors
 			if (!validation.valid) {
 				result.errors.push(...validation.errors.map(e => e.message));
-				new Notice(`Gramps XML validation failed: ${validation.errors[0].message}`);
+				new Notice(`Gramps XML 校验失败：${validation.errors[0].message}`);
 				return result;
 			}
 
 			// Show validation summary
 			if (validation.warnings.length > 0) {
-				new Notice(`Found ${validation.warnings.length} warning(s) - import will continue`);
+				new Notice(`发现 ${validation.warnings.length} 条警告，导入将继续`);
 			}
-			reportProgress('validating', 1, 1, 'Validation complete');
+			reportProgress('validating', 1, 1, '校验完成');
 
 			// Parse Gramps XML
-			reportProgress('parsing', 0, 1, 'Parsing Gramps XML file…');
+			reportProgress('parsing', 0, 1, '正在解析 Gramps XML 文件…');
 			// Small delay to allow UI to repaint before synchronous parsing blocks the thread
 			await new Promise(resolve => window.setTimeout(resolve, 50));
 			const grampsData = GrampsParser.parse(content);
-			reportProgress('parsing', 1, 1, `Parsed ${grampsData.persons.size} individuals`);
+			reportProgress('parsing', 1, 1, `已解析 ${grampsData.persons.size} 位人物`);
 
 			logger.info('importFile', `Starting import of ${grampsData.persons.size} persons`);
 
@@ -291,7 +291,7 @@ export class GrampsImporter {
 				await this.ensureFolderExists(mediaFolder);
 
 				const mediaTotal = options.mediaFiles.size;
-				reportProgress('media', 0, mediaTotal, `Extracting ${mediaTotal} media files...`);
+				reportProgress('media', 0, mediaTotal, `正在提取 ${mediaTotal} 个媒体文件…`);
 
 				let mediaIndex = 0;
 				for (const [relativePath, content] of options.mediaFiles) {
@@ -309,7 +309,7 @@ export class GrampsImporter {
 						}
 					} catch (error: unknown) {
 						result.errors.push(
-							`Failed to extract media file ${relativePath}: ${getErrorMessage(error)}`
+							`提取媒体文件 ${relativePath} 失败：${getErrorMessage(error)}`
 						);
 					}
 					mediaIndex++;
@@ -333,7 +333,7 @@ export class GrampsImporter {
 				const allPlaces = this.collectAllPlacesWithHierarchy(grampsData);
 
 				if (allPlaces.size > 0) {
-					reportProgress('places', 0, allPlaces.size, `Creating ${allPlaces.size} place notes (including hierarchy)...`);
+					reportProgress('places', 0, allPlaces.size, `正在创建 ${allPlaces.size} 个地点笔记（含层级）…`);
 
 					try {
 						const placeResult = await this.createPlaceNotesWithHierarchy(
@@ -350,7 +350,7 @@ export class GrampsImporter {
 						result.placesImported = allPlaces.size;
 					} catch (error: unknown) {
 						result.errors.push(
-							`Failed to import places: ${getErrorMessage(error)}`
+							`导入地点失败：${getErrorMessage(error)}`
 						);
 					}
 				}
@@ -394,7 +394,7 @@ export class GrampsImporter {
 			const shouldCreateSources = options.createSourceNotes !== false;
 			if (shouldCreateSources && grampsData.sources.size > 0) {
 				const sourcesTotal = grampsData.sources.size;
-				reportProgress('sources', 0, sourcesTotal, `Creating ${sourcesTotal} source notes...`);
+				reportProgress('sources', 0, sourcesTotal, `正在创建 ${sourcesTotal} 个来源笔记…`);
 				const sourcesFolder = options.sourcesFolder || 'Charted Roots/Sources';
 				await this.ensureFolderExists(sourcesFolder);
 
@@ -413,7 +413,7 @@ export class GrampsImporter {
 						result.sourceNotesCreated = (result.sourceNotesCreated || 0) + 1;
 					} catch (error: unknown) {
 						result.errors.push(
-							`Failed to import source ${source.title || handle}: ${getErrorMessage(error)}`
+							`导入来源 ${source.title || handle} 失败：${getErrorMessage(error)}`
 						);
 					}
 					sourceIndex++;
@@ -464,7 +464,7 @@ export class GrampsImporter {
 					.filter(([handle]) => !sourceOnlyNotes.has(handle));
 
 				const notesTotal = notesToCreate.length;
-				reportProgress('notes', 0, notesTotal, `Creating ${notesTotal} separate note files...`);
+				reportProgress('notes', 0, notesTotal, `正在创建 ${notesTotal} 个单独笔记文件…`);
 
 				let noteIndex = 0;
 				for (const [handle, note] of notesToCreate) {
@@ -482,12 +482,12 @@ export class GrampsImporter {
 							result.separateNoteFilesCreated = (result.separateNoteFilesCreated || 0) + 1;
 						} else {
 							result.errors.push(
-								`Failed to create note file ${note.id || handle}: ${writeResult.error}`
+								`创建笔记文件 ${note.id || handle} 失败：${writeResult.error}`
 							);
 						}
 					} catch (error: unknown) {
 						result.errors.push(
-							`Failed to create note ${note.id || handle}: ${getErrorMessage(error)}`
+							`创建笔记 ${note.id || handle} 失败：${getErrorMessage(error)}`
 						);
 					}
 					noteIndex++;
@@ -497,7 +497,7 @@ export class GrampsImporter {
 
 			// Create person notes
 			const peopleTotal = grampsData.persons.size;
-			reportProgress('people', 0, peopleTotal, 'Creating person notes...');
+			reportProgress('people', 0, peopleTotal, '正在创建人物笔记…');
 
 			// Track handle → note path for wikilink correction
 			const grampsHandleToNotePath = new Map<string, string>();
@@ -530,7 +530,7 @@ export class GrampsImporter {
 					}
 				} catch (error: unknown) {
 					result.errors.push(
-						`Failed to import ${person.name}: ${getErrorMessage(error)}`
+						`导入 ${person.name} 失败：${getErrorMessage(error)}`
 					);
 				}
 				personIndex++;
@@ -539,7 +539,7 @@ export class GrampsImporter {
 
 			// Second pass: Update relationships now that all cr_ids are known
 			const relationshipsTotal = grampsData.persons.size;
-			reportProgress('relationships', 0, relationshipsTotal, 'Updating relationships...');
+			reportProgress('relationships', 0, relationshipsTotal, '正在更新关系…');
 			let relationshipIndex = 0;
 			for (const [, person] of grampsData.persons) {
 				try {
@@ -552,7 +552,7 @@ export class GrampsImporter {
 					);
 				} catch (error: unknown) {
 					result.errors.push(
-						`Failed to update relationships for ${person.name}: ${getErrorMessage(error)}`
+						`更新 ${person.name} 的关系失败：${getErrorMessage(error)}`
 					);
 				}
 				relationshipIndex++;
@@ -562,7 +562,7 @@ export class GrampsImporter {
 			// Create event notes if requested
 			if (options.createEventNotes && grampsData.events.size > 0) {
 				const eventsTotal = grampsData.events.size;
-				reportProgress('events', 0, eventsTotal, `Creating ${eventsTotal} event notes...`);
+				reportProgress('events', 0, eventsTotal, `正在创建 ${eventsTotal} 个事件笔记…`);
 				const eventsFolder = options.eventsFolder || 'Charted Roots/Events';
 				await this.ensureFolderExists(eventsFolder);
 
@@ -601,7 +601,7 @@ export class GrampsImporter {
 						result.eventNotesCreated = (result.eventNotesCreated || 0) + 1;
 					} catch (error: unknown) {
 						result.errors.push(
-							`Failed to import event ${event.type || handle}: ${getErrorMessage(error)}`
+							`导入事件 ${event.type || handle} 失败：${getErrorMessage(error)}`
 						);
 					}
 					eventIndex++;
@@ -615,29 +615,29 @@ export class GrampsImporter {
 			}
 
 			// Mark import as complete
-			reportProgress('complete', 1, 1, 'Import complete');
+			reportProgress('complete', 1, 1, '导入完成');
 
 			// Enhanced import complete notice
-			let importMessage = `Import complete: ${result.notesCreated} people imported`;
+			let importMessage = `导入完成：已导入 ${result.notesCreated} 人`;
 
 			if (result.sourceNotesCreated && result.sourceNotesCreated > 0) {
-				importMessage += `, ${result.sourceNotesCreated} sources`;
+				importMessage += `，${result.sourceNotesCreated} 个来源`;
 			}
 
 			if (result.placeNotesCreated && result.placeNotesCreated > 0) {
-				importMessage += `, ${result.placeNotesCreated} places`;
+				importMessage += `，${result.placeNotesCreated} 个地点`;
 			}
 
 			if (result.eventNotesCreated && result.eventNotesCreated > 0) {
-				importMessage += `, ${result.eventNotesCreated} events`;
+				importMessage += `，${result.eventNotesCreated} 个事件`;
 			}
 
 			if (result.malformedDataCount && result.malformedDataCount > 0) {
-				importMessage += `. ${result.malformedDataCount} had missing/invalid data`;
+				importMessage += `。${result.malformedDataCount} 人缺失或数据无效`;
 			}
 
 			if (result.errors.length > 0) {
-				importMessage += `. ${result.errors.length} errors occurred`;
+				importMessage += `。发生 ${result.errors.length} 个错误`;
 			}
 
 			new Notice(importMessage, 8000);
@@ -647,8 +647,8 @@ export class GrampsImporter {
 
 		} catch (error: unknown) {
 			const errorMsg = getErrorMessage(error);
-			result.errors.push(`Gramps XML parse error: ${errorMsg}`);
-			new Notice(`Import failed: ${errorMsg}`);
+			result.errors.push(`Gramps XML 解析错误：${errorMsg}`);
+			new Notice(`导入失败：${errorMsg}`);
 			logger.error('importFile', 'Import failed', error);
 		}
 

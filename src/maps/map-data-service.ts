@@ -376,8 +376,8 @@ export class MapDataService {
 				this.peopleFolderWarningShown = true;
 				logger.warn('person-data', `0 people found in "${peopleFolder}" but person notes exist in other folders. Check Settings > Folders > People folder.`);
 				new Notice(
-					`Map view found 0 people in the configured People folder ("${peopleFolder}"). ` +
-					`Person notes were detected in other folders. Check Settings > Folders to update the People folder path.`,
+					`地图视图在配置的人物文件夹（“${peopleFolder}”）中找到0个人物。` +
+					`在其他文件夹中检测到人物笔记。请检查设置 > 文件夹以更新人物文件夹路径。`,
 					8000
 				);
 			}

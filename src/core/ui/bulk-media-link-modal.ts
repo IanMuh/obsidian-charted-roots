@@ -50,11 +50,11 @@ interface EntityTypeConfig {
 }
 
 const ENTITY_TYPES: EntityTypeConfig[] = [
-	{ value: 'person', label: 'People', icon: 'user' },
-	{ value: 'event', label: 'Events', icon: 'calendar' },
-	{ value: 'place', label: 'Places', icon: 'map-pin' },
-	{ value: 'organization', label: 'Organizations', icon: 'building' },
-	{ value: 'source', label: 'Sources', icon: 'book-open' }
+	{ value: 'person', label: '人物', icon: 'user' },
+	{ value: 'event', label: '事件', icon: 'calendar' },
+	{ value: 'place', label: '地点', icon: 'map-pin' },
+	{ value: 'organization', label: '组织', icon: 'building' },
+	{ value: 'source', label: '来源', icon: 'book-open' }
 ];
 
 /**
@@ -115,12 +115,12 @@ export class BulkMediaLinkModal extends Modal {
 		const titleSection = header.createDiv({ cls: 'crc-picker-title' });
 		const icon = titleSection.createSpan();
 		setIcon(icon, 'image-plus');
-		titleSection.appendText('Bulk link media');
+		titleSection.appendText('批量链接媒体');
 
 		// Show different subtitle when files are preselected
 		const subtitleText = this.preselectedFiles.length > 0
-			? `Link ${this.preselectedFiles.length} selected file(s) to entities`
-			: 'Link media files to multiple entities at once';
+			? `将选中的 ${this.preselectedFiles.length} 个文件链接到实体`
+			: '一次将媒体文件链接到多个实体';
 
 		header.createDiv({
 			cls: 'crc-picker-subtitle',
@@ -131,8 +131,8 @@ export class BulkMediaLinkModal extends Modal {
 		const selectorSection = contentEl.createDiv({ cls: 'crc-bulk-media-selector' });
 
 		new Setting(selectorSection)
-			.setName('Entity type')
-			.setDesc('Select the type of entities to link media to')
+			.setName('实体类型')
+			.setDesc('选择要链接媒体的实体类型')
 			.addDropdown(dropdown => {
 				this.entityTypeSelect = dropdown.selectEl;
 				ENTITY_TYPES.forEach(type => {
@@ -149,7 +149,7 @@ export class BulkMediaLinkModal extends Modal {
 		// Instructions
 		const instructions = contentEl.createDiv({ cls: 'crc-info-callout crc-mb-3' });
 		instructions.createEl('p', {
-			text: 'Select entities without media, then choose media files to link to them.',
+			text: '选择没有媒体的实体，然后选择要链接到它们的媒体文件。',
 			cls: 'crc-text--small'
 		});
 
@@ -158,13 +158,13 @@ export class BulkMediaLinkModal extends Modal {
 
 		const selectAllBtn = bulkActions.createEl('button', {
 			cls: 'crc-btn crc-btn--small',
-			text: 'Select all'
+			text: '全选'
 		});
 		selectAllBtn.addEventListener('click', () => this.selectAll());
 
 		const deselectAllBtn = bulkActions.createEl('button', {
 			cls: 'crc-btn crc-btn--small',
-			text: 'Deselect all'
+			text: '取消全选'
 		});
 		deselectAllBtn.addEventListener('click', () => this.deselectAll());
 
@@ -178,12 +178,12 @@ export class BulkMediaLinkModal extends Modal {
 
 		const footerButtons = footer.createDiv({ cls: 'crc-picker-footer__buttons' });
 
-		const cancelBtn = footerButtons.createEl('button', { text: 'Cancel' });
+		const cancelBtn = footerButtons.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		this.linkButton = footerButtons.createEl('button', {
 			cls: 'mod-cta',
-			text: 'Link media to selected...'
+			text: '将媒体链接到所选…'
 		});
 		this.linkButton.disabled = true;
 		this.linkButton.addEventListener('click', () => this.openMediaPicker());
@@ -297,7 +297,7 @@ export class BulkMediaLinkModal extends Modal {
 				name: o.name,
 				file: o.file,
 				isSelected: false,
-				subtitle: typeDef?.name || o.orgType || 'Organization'
+				subtitle: typeDef?.name || o.orgType || '组织'
 			};
 		});
 	}
@@ -320,7 +320,7 @@ export class BulkMediaLinkModal extends Modal {
 					name: s.title,
 					file,
 					isSelected: false,
-					subtitle: s.sourceType || 'Source'
+					subtitle: s.sourceType || '来源'
 				};
 				return entity;
 			})
@@ -332,8 +332,8 @@ export class BulkMediaLinkModal extends Modal {
 	 */
 	private formatPersonSubtitle(person: PersonNode): string {
 		const parts: string[] = [];
-		if (person.birthDate) parts.push(`b. ${person.birthDate}`);
-		if (person.deathDate) parts.push(`d. ${person.deathDate}`);
+		if (person.birthDate) parts.push(`生 ${person.birthDate}`);
+		if (person.deathDate) parts.push(`卒 ${person.deathDate}`);
 		return parts.length > 0 ? parts.join(' · ') : '';
 	}
 
@@ -377,11 +377,11 @@ export class BulkMediaLinkModal extends Modal {
 		setIcon(emptyIcon, 'check-circle');
 
 		const typeConfig = ENTITY_TYPES.find(t => t.value === this.selectedEntityType);
-		const typeName = typeConfig?.label.toLowerCase() || 'entities';
+		const typeName = typeConfig?.label || '实体';
 
-		emptyState.createEl('p', { text: `All ${typeName} have media linked` });
+		emptyState.createEl('p', { text: `所有${typeName}都已链接媒体` });
 		emptyState.createEl('p', {
-			text: 'Great job! There are no entities that need media.',
+			text: '干得漂亮！没有需要添加媒体的实体了。',
 			cls: 'crc-text-muted'
 		});
 	}
@@ -467,7 +467,7 @@ export class BulkMediaLinkModal extends Modal {
 		const count = this.selectedEntities.size;
 		const total = this.entities.length;
 
-		this.selectionCountEl.setText(`${count} of ${total} selected`);
+		this.selectionCountEl.setText(`已选择 ${count} / ${total}`);
 		this.linkButton.disabled = count === 0;
 	}
 
@@ -477,7 +477,7 @@ export class BulkMediaLinkModal extends Modal {
 	private openMediaPicker(): void {
 		const selectedCount = this.selectedEntities.size;
 		const typeConfig = ENTITY_TYPES.find(t => t.value === this.selectedEntityType);
-		const typeName = typeConfig?.label.toLowerCase() || 'entities';
+		const typeName = typeConfig?.label || '实体';
 
 		// If we have preselected files, use them directly
 		if (this.preselectedFiles.length > 0) {
@@ -490,8 +490,8 @@ export class BulkMediaLinkModal extends Modal {
 			this.mediaService,
 			(files) => { void this.linkMediaToEntities(files); },
 			{
-				title: 'Select media to link',
-				subtitle: `Will be linked to ${selectedCount} ${typeName}`,
+				title: '选择要链接的媒体',
+				subtitle: `将链接到 ${selectedCount} 个${typeName}`,
 				multiSelect: true
 			}
 		).open();
@@ -560,9 +560,9 @@ export class BulkMediaLinkModal extends Modal {
 		} else {
 			// Show result notification for small operations
 			if (errorCount === 0) {
-				new Notice(`Linked ${files.length} media file(s) to ${successCount} entities`);
+				new Notice(`已将 ${files.length} 个媒体文件链接到 ${successCount} 个实体`);
 			} else {
-				new Notice(`Linked media to ${successCount} entities, ${errorCount} failed`);
+				new Notice(`已将媒体链接到 ${successCount} 个实体，${errorCount} 个失败`);
 			}
 		}
 

@@ -75,11 +75,11 @@ export class CreateMissingPlacesModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('map-pin', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Create missing place notes');
+		titleContainer.appendText('创建缺失的地点笔记');
 
 		// Description
 		contentEl.createEl('p', {
-			text: `Found ${this.places.length} place${this.places.length !== 1 ? 's' : ''} referenced in person notes without corresponding place notes.`,
+			text: `发现 ${this.places.length} 个在人物笔记中被引用但缺少对应地点笔记的地点。`,
 			cls: 'crc-text--muted'
 		});
 
@@ -87,10 +87,10 @@ export class CreateMissingPlacesModal extends Modal {
 		const form = contentEl.createDiv({ cls: 'crc-form' });
 
 		new Setting(form)
-			.setName('Directory')
-			.setDesc('Where to create the new place notes')
+			.setName('目录')
+			.setDesc('新地点笔记的创建位置')
 			.addText(text => text
-				.setPlaceholder('e.g., Places')
+				.setPlaceholder('例如：Places')
 				.setValue(this.directory)
 				.onChange(value => {
 					this.directory = value;
@@ -100,8 +100,8 @@ export class CreateMissingPlacesModal extends Modal {
 		const normalizeCount = this.places.filter(p => p.name !== p.normalizedName).length;
 		if (normalizeCount > 0) {
 			new Setting(form)
-				.setName('Normalize place names')
-				.setDesc(`Expand abbreviations and standardize ${normalizeCount} place name${normalizeCount !== 1 ? 's' : ''} (e.g., "Hunt Co, TX" → "Hunt County, Texas, USA")`)
+				.setName('规范化地点名称')
+				.setDesc(`展开缩写并标准化 ${normalizeCount} 个地点名称（例如"Hunt Co, TX"→"Hunt County, Texas, USA"）`)
 				.addToggle(toggle => toggle
 					.setValue(this.normalizeEnabled)
 					.onChange(value => {
@@ -113,8 +113,8 @@ export class CreateMissingPlacesModal extends Modal {
 		// Auto-link option (only if placeGraph is available)
 		if (this.placeGraph) {
 			new Setting(form)
-				.setName('Auto-link person notes')
-				.setDesc('Update person notes to link to the newly created place notes')
+				.setName('自动链接人物笔记')
+				.setDesc('更新人物笔记以链接到新建的地点笔记')
 				.addToggle(toggle => toggle
 					.setValue(this.autoLinkEnabled)
 					.onChange(value => {
@@ -126,7 +126,7 @@ export class CreateMissingPlacesModal extends Modal {
 		const controlsRow = contentEl.createDiv({ cls: 'crc-controls-row crc-mb-3' });
 
 		const selectAllBtn = controlsRow.createEl('button', {
-			text: 'Select all',
+			text: '全选',
 			cls: 'crc-btn crc-btn--small'
 		});
 		selectAllBtn.addEventListener('click', () => {
@@ -135,7 +135,7 @@ export class CreateMissingPlacesModal extends Modal {
 		});
 
 		const selectNoneBtn = controlsRow.createEl('button', {
-			text: 'Select none',
+			text: '取消全选',
 			cls: 'crc-btn crc-btn--small crc-ml-2'
 		});
 		selectNoneBtn.addEventListener('click', () => {
@@ -161,13 +161,13 @@ export class CreateMissingPlacesModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				this.close();
 			});
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Create selected')
+			.setButtonText('创建所选')
 			.setCta()
 			.onClick(() => void this.createSelectedPlaces());
 	}
@@ -220,7 +220,7 @@ export class CreateMissingPlacesModal extends Modal {
 			}
 
 			label.createEl('span', {
-				text: ` (${place.count} reference${place.count !== 1 ? 's' : ''})`,
+				text: `（${place.count} 处引用）`,
 				cls: 'crc-text--muted'
 			});
 
@@ -252,7 +252,7 @@ export class CreateMissingPlacesModal extends Modal {
 	 * Update the selection count display
 	 */
 	private updateSelectionCount(element: HTMLElement): void {
-		element.textContent = `${this.selectedPlaces.size} of ${this.places.length} selected`;
+		element.textContent = `已选择 ${this.selectedPlaces.size} / ${this.places.length}`;
 	}
 
 	/**
@@ -260,7 +260,7 @@ export class CreateMissingPlacesModal extends Modal {
 	 */
 	private async createSelectedPlaces(): Promise<void> {
 		if (this.selectedPlaces.size === 0) {
-			new Notice('No places selected');
+			new Notice('未选择地点');
 			return;
 		}
 
@@ -312,7 +312,7 @@ export class CreateMissingPlacesModal extends Modal {
 					createdPlaceMappings.push({ original: originalName, created: nameToCreate });
 					createdFiles.push(newFile);
 				} catch (error) {
-					errors.push(`${nameToCreate}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+					errors.push(`${nameToCreate}: ${error instanceof Error ? error.message : '未知错误'}`);
 				}
 			}
 
@@ -326,11 +326,11 @@ export class CreateMissingPlacesModal extends Modal {
 
 			if (errors.length > 0) {
 				console.error('Errors creating place notes:', errors);
-				new Notice(`Created ${created} place notes. ${errors.length} failed.`);
+				new Notice(`已创建 ${created} 篇地点笔记，${errors.length} 篇失败。`);
 			} else {
-				let message = `Created ${created} place note${created !== 1 ? 's' : ''}`;
+				let message = `已创建 ${created} 篇地点笔记`;
 				if (linkedCount > 0) {
-					message += ` and updated ${linkedCount} person note${linkedCount !== 1 ? 's' : ''}`;
+					message += `，并更新了 ${linkedCount} 篇人物笔记`;
 				}
 				new Notice(message);
 			}
@@ -342,7 +342,7 @@ export class CreateMissingPlacesModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to create place notes:', error);
-			new Notice(`Failed to create place notes: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建地点笔记失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 

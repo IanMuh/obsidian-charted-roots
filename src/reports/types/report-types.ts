@@ -1021,8 +1021,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	// Genealogical reports
 	'family-group-sheet': {
 		type: 'family-group-sheet',
-		name: 'Family group sheet',
-		description: 'Couple with spouse(s), children, vitals, and sources',
+		name: '家族群组表',
+		description: '配偶与子女、生平要点及来源',
 		icon: 'users',
 		category: 'genealogical',
 		requiresPerson: true,
@@ -1030,8 +1030,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'individual-summary': {
 		type: 'individual-summary',
-		name: 'Individual summary',
-		description: 'All known facts for one person with source citations',
+		name: '个人摘要',
+		description: '某个人的全部已知事实及来源引文',
 		icon: 'user',
 		category: 'genealogical',
 		requiresPerson: true,
@@ -1039,8 +1039,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'ahnentafel': {
 		type: 'ahnentafel',
-		name: 'Ahnentafel report',
-		description: 'Numbered ancestor list with configurable depth',
+		name: '祖先谱系报告',
+		description: '带编号的祖先列表，可配置世代深度',
 		icon: 'git-branch',
 		category: 'genealogical',
 		requiresPerson: true,
@@ -1048,8 +1048,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'register-report': {
 		type: 'register-report',
-		name: 'Register report',
-		description: 'Descendants with NGSQ-style genealogical numbering',
+		name: '世系登记报告',
+		description: '采用 NGSQ 式谱系编号的后代',
 		icon: 'list-ordered',
 		category: 'genealogical',
 		requiresPerson: true,
@@ -1057,8 +1057,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'pedigree-chart': {
 		type: 'pedigree-chart',
-		name: 'Pedigree chart',
-		description: 'Ancestor tree formatted as markdown',
+		name: '谱系图',
+		description: '以 Markdown 格式呈现的祖先树',
 		icon: 'cr-pedigree-tree',
 		category: 'genealogical',
 		requiresPerson: true,
@@ -1066,8 +1066,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'descendant-chart': {
 		type: 'descendant-chart',
-		name: 'Descendant chart',
-		description: 'Descendant tree formatted as markdown',
+		name: '后代图',
+		description: '以 Markdown 格式呈现的后代树',
 		icon: 'cr-descendant-tree',
 		category: 'genealogical',
 		requiresPerson: true,
@@ -1077,8 +1077,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	// Research reports
 	'source-summary': {
 		type: 'source-summary',
-		name: 'Source summary',
-		description: 'All sources for a person, grouped by fact type with quality ratings',
+		name: '来源摘要',
+		description: '某个人的全部来源，按事实类型分组并附质量评级',
 		icon: 'file-text',
 		category: 'research',
 		requiresPerson: true,
@@ -1086,8 +1086,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'sources-by-role': {
 		type: 'sources-by-role',
-		name: 'Sources by role',
-		description: 'Sources where a person appears as witness, informant, official, etc.',
+		name: '按角色分类的来源',
+		description: '某人以证人、信息提供者、官员等角色出现的来源',
 		icon: 'users',
 		category: 'research',
 		requiresPerson: true,
@@ -1095,32 +1095,32 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'gaps-report': {
 		type: 'gaps-report',
-		name: 'Gaps report',
-		description: 'Missing vital records and research opportunities',
+		name: '缺失报告',
+		description: '缺失的重要记录与可继续研究的方向',
 		icon: 'search',
 		category: 'research',
 		requiresPerson: false
 	},
 	'media-inventory': {
 		type: 'media-inventory',
-		name: 'Media inventory',
-		description: 'Audit media files, find orphans and coverage gaps',
+		name: '媒体清单',
+		description: '审查媒体文件，查找孤立文件和覆盖缺口',
 		icon: 'image',
 		category: 'research',
 		requiresPerson: false
 	},
 	'research-report-export': {
 		type: 'research-report-export',
-		name: 'Research report export',
-		description: 'Export a research report note as PDF or ODT',
+		name: '研究报告导出',
+		description: '将研究报告笔记导出为 PDF 或 ODT',
 		icon: 'file-text',
 		category: 'research',
 		requiresPerson: false
 	},
 	'brick-wall-report': {
 		type: 'brick-wall-report',
-		name: 'Brick wall report',
-		description: 'End-of-line ancestors with no parents — identifies where to focus research',
+		name: '研究瓶颈报告',
+		description: '没有父母的断线祖先——指出应重点研究的位置',
 		icon: 'alert-triangle',
 		category: 'research',
 		requiresPerson: true,
@@ -1128,8 +1128,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'unconnected-people': {
 		type: 'unconnected-people',
-		name: 'Unconnected people',
-		description: 'People not linked to the main family network — finds orphaned records',
+		name: '未关联人物',
+		description: '未与主要家族网络关联的人物——找出孤立记录',
 		icon: 'unlink',
 		category: 'research',
 		requiresPerson: true,
@@ -1137,8 +1137,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'kinship-report': {
 		type: 'kinship-report',
-		name: 'Kinship report',
-		description: 'All relatives of a person with relationship terms and degree',
+		name: '亲属关系报告',
+		description: '某人的全部亲属及其称谓与亲属度数',
 		icon: 'git-merge',
 		category: 'genealogical',
 		requiresPerson: true,
@@ -1148,8 +1148,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	// Timeline reports
 	'timeline-report': {
 		type: 'timeline-report',
-		name: 'Timeline report',
-		description: 'Chronological list of events with dates, participants, and places',
+		name: '时间轴报告',
+		description: '按时间顺序列出的事件，含日期、参与者和地点',
 		icon: 'calendar',
 		category: 'timeline',
 		requiresPerson: false
@@ -1158,8 +1158,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	// Geographic reports
 	'place-summary': {
 		type: 'place-summary',
-		name: 'Place summary',
-		description: 'Events and people associated with a location',
+		name: '地点摘要',
+		description: '与某个地点相关的事件和人物',
 		icon: 'map-pin',
 		category: 'geographic',
 		requiresPerson: false,
@@ -1169,8 +1169,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	// Summary reports
 	'universe-overview': {
 		type: 'universe-overview',
-		name: 'Universe overview',
-		description: 'Entity stats, date ranges, and breakdown for a universe',
+		name: '宇宙概览',
+		description: '某个宇宙的实体统计、日期范围和细分',
 		icon: 'globe',
 		category: 'summary',
 		requiresPerson: true,
@@ -1178,8 +1178,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'collection-overview': {
 		type: 'collection-overview',
-		name: 'Collection overview',
-		description: 'Summary of a user collection or family component',
+		name: '合集概览',
+		description: '用户合集或家族组成部分的摘要',
 		icon: 'folder',
 		category: 'summary',
 		requiresPerson: true,
@@ -1189,8 +1189,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	// Visual tree reports (graphical PDF output)
 	'pedigree-tree-pdf': {
 		type: 'pedigree-tree-pdf',
-		name: 'Pedigree tree PDF',
-		description: 'Graphical ancestor tree with positioned boxes and lines',
+		name: '谱系树 PDF',
+		description: '带定位方框和连线的图形化祖先树',
 		icon: 'cr-pedigree-tree',
 		category: 'visual-trees',
 		requiresPerson: true,
@@ -1198,8 +1198,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'descendant-tree-pdf': {
 		type: 'descendant-tree-pdf',
-		name: 'Descendant tree PDF',
-		description: 'Graphical descendant tree branching downward',
+		name: '后代树 PDF',
+		description: '向下分支的图形化后代树',
 		icon: 'cr-descendant-tree',
 		category: 'visual-trees',
 		requiresPerson: true,
@@ -1207,8 +1207,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'hourglass-tree-pdf': {
 		type: 'hourglass-tree-pdf',
-		name: 'Hourglass tree PDF',
-		description: 'Both ancestors and descendants from a root person',
+		name: '沙漏树 PDF',
+		description: '以某人为根，同时展示祖先和后代',
 		icon: 'cr-hourglass-tree',
 		category: 'visual-trees',
 		requiresPerson: true,
@@ -1216,8 +1216,8 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
 	},
 	'fan-chart-pdf': {
 		type: 'fan-chart-pdf',
-		name: 'Fan chart PDF',
-		description: 'Semicircular pedigree with radiating ancestor segments',
+		name: '扇形图 PDF',
+		description: '半圆形谱系，含放射状祖先扇区',
 		icon: 'cr-fan-chart',
 		category: 'visual-trees',
 		requiresPerson: true,
@@ -1231,28 +1231,28 @@ export const REPORT_METADATA: Record<ReportType, ReportMetadata> = {
  */
 export const REPORT_CATEGORY_METADATA: Record<ReportCategory, { name: string; description: string }> = {
 	genealogical: {
-		name: 'Genealogical',
-		description: 'Traditional genealogical reports'
+		name: '谱系',
+		description: '传统谱系报告'
 	},
 	research: {
-		name: 'Research',
-		description: 'Research tracking and source documentation'
+		name: '研究',
+		description: '研究追踪与来源记录'
 	},
 	timeline: {
-		name: 'Timeline',
-		description: 'Chronological event reports'
+		name: '时间轴',
+		description: '按时间顺序的事件报告'
 	},
 	geographic: {
-		name: 'Geographic',
-		description: 'Location-based reports'
+		name: '地理',
+		description: '基于地点的报告'
 	},
 	summary: {
-		name: 'Summary',
-		description: 'Collection and universe overviews'
+		name: '摘要',
+		description: '合集与宇宙概览'
 	},
 	'visual-trees': {
-		name: 'Visual Trees',
-		description: 'Graphical PDF tree diagrams'
+		name: '可视化树',
+		description: '图形化 PDF 树状图'
 	}
 };
 

@@ -178,27 +178,27 @@ export class GedcomXImporter {
 
 		try {
 			// Validate GEDCOM X first
-			new Notice('Validating GEDCOM X file…');
+			new Notice('正在校验 GEDCOM X 文件…');
 			const validation = GedcomXParser.validate(content);
 			result.validation = validation;
 
 			// Check for critical errors
 			if (!validation.valid) {
 				result.errors.push(...validation.errors.map(e => e.message));
-				new Notice(`GEDCOM X validation failed: ${validation.errors[0].message}`);
+				new Notice(`GEDCOM X 校验失败：${validation.errors[0].message}`);
 				return result;
 			}
 
 			// Show validation summary
 			if (validation.warnings.length > 0) {
-				new Notice(`Found ${validation.warnings.length} warning(s) - import will continue`);
+				new Notice(`发现 ${validation.warnings.length} 条警告，导入将继续`);
 			}
 
 			// Parse GEDCOM X
-			new Notice('Parsing GEDCOM X file…');
+			new Notice('正在解析 GEDCOM X 文件…');
 			const gedcomXData = GedcomXParser.parse(content);
 
-			new Notice(`Parsed ${gedcomXData.persons.size} individuals`);
+			new Notice(`已解析 ${gedcomXData.persons.size} 位人物`);
 			logger.info('importFile', `Starting import of ${gedcomXData.persons.size} persons`);
 
 			// Ensure people folder exists
@@ -220,7 +220,7 @@ export class GedcomXImporter {
 				const allPlaces = this.collectAllPlaces(gedcomXData);
 
 				if (allPlaces.size > 0) {
-					new Notice(`Creating ${allPlaces.size} place notes...`);
+					new Notice(`正在创建 ${allPlaces.size} 个地点笔记…`);
 
 					for (const placeString of allPlaces) {
 						try {
@@ -228,9 +228,9 @@ export class GedcomXImporter {
 							placeNameToWikilink.set(placeString, wikilink);
 							result.placesCreated = (result.placesCreated || 0) + 1;
 						} catch (error: unknown) {
-							result.errors.push(
-								`Failed to import place ${placeString}: ${getErrorMessage(error)}`
-							);
+						result.errors.push(
+							`导入地点 ${placeString} 失败：${getErrorMessage(error)}`
+						);
 						}
 					}
 				}
@@ -249,7 +249,7 @@ export class GedcomXImporter {
 
 				const sourceCount = rawDocument.sourceDescriptions.length;
 				if (sourceCount > 0) {
-					new Notice(`Creating ${sourceCount} source notes...`);
+					new Notice(`正在创建 ${sourceCount} 个来源笔记…`);
 
 					for (const source of rawDocument.sourceDescriptions) {
 						try {
@@ -261,7 +261,7 @@ export class GedcomXImporter {
 						} catch (error: unknown) {
 							const sourceTitle = source.titles?.[0]?.value || source.id || 'Unknown source';
 							result.errors.push(
-								`Failed to import source ${sourceTitle}: ${getErrorMessage(error)}`
+								`导入来源 ${sourceTitle} 失败：${getErrorMessage(error)}`
 							);
 						}
 					}
@@ -276,7 +276,7 @@ export class GedcomXImporter {
 				// Collect all events from persons
 				const allEvents = this.collectAllEvents(gedcomXData, rawDocument);
 				if (allEvents.length > 0) {
-					new Notice(`Creating ${allEvents.length} event notes...`);
+					new Notice(`正在创建 ${allEvents.length} 个事件笔记…`);
 
 					for (const eventInfo of allEvents) {
 						try {
@@ -289,7 +289,7 @@ export class GedcomXImporter {
 							result.eventsCreated = (result.eventsCreated || 0) + 1;
 						} catch (error: unknown) {
 							result.errors.push(
-								`Failed to import event ${eventInfo.title}: ${getErrorMessage(error)}`
+								`导入事件 ${eventInfo.title} 失败：${getErrorMessage(error)}`
 							);
 						}
 					}
@@ -297,7 +297,7 @@ export class GedcomXImporter {
 			}
 
 			// Create person notes
-			new Notice('Creating person notes...');
+			new Notice('正在创建人物笔记…');
 
 			// First pass: Create all person notes
 			for (const [personId, person] of gedcomXData.persons) {
@@ -324,13 +324,13 @@ export class GedcomXImporter {
 					}
 				} catch (error: unknown) {
 					result.errors.push(
-						`Failed to import ${person.name}: ${getErrorMessage(error)}`
+						`导入 ${person.name} 失败：${getErrorMessage(error)}`
 					);
 				}
 			}
 
 			// Second pass: Update relationships now that all cr_ids are known
-			new Notice('Updating relationships...');
+			new Notice('正在更新关系…');
 			for (const [, person] of gedcomXData.persons) {
 				try {
 					await this.updateRelationships(
@@ -340,32 +340,32 @@ export class GedcomXImporter {
 					);
 				} catch (error: unknown) {
 					result.errors.push(
-						`Failed to update relationships for ${person.name}: ${getErrorMessage(error)}`
+						`更新 ${person.name} 的关系失败：${getErrorMessage(error)}`
 					);
 				}
 			}
 
 			// Enhanced import complete notice
-			let importMessage = `Import complete: ${result.notesCreated} people`;
+			let importMessage = `导入完成：${result.notesCreated} 人`;
 
 			if (result.sourcesCreated && result.sourcesCreated > 0) {
-				importMessage += `, ${result.sourcesCreated} sources`;
+				importMessage += `，${result.sourcesCreated} 个来源`;
 			}
 
 			if (result.eventsCreated && result.eventsCreated > 0) {
-				importMessage += `, ${result.eventsCreated} events`;
+				importMessage += `，${result.eventsCreated} 个事件`;
 			}
 
 			if (result.placesCreated && result.placesCreated > 0) {
-				importMessage += `, ${result.placesCreated} places`;
+				importMessage += `，${result.placesCreated} 个地点`;
 			}
 
 			if (result.malformedDataCount && result.malformedDataCount > 0) {
-				importMessage += `. ${result.malformedDataCount} had missing/invalid data`;
+				importMessage += `。${result.malformedDataCount} 人缺失或数据无效`;
 			}
 
 			if (result.errors.length > 0) {
-				importMessage += `. ${result.errors.length} errors occurred`;
+				importMessage += `。发生 ${result.errors.length} 个错误`;
 			}
 
 			new Notice(importMessage, 8000);
@@ -375,8 +375,8 @@ export class GedcomXImporter {
 
 		} catch (error: unknown) {
 			const errorMsg = getErrorMessage(error);
-			result.errors.push(`GEDCOM X parse error: ${errorMsg}`);
-			new Notice(`Import failed: ${errorMsg}`);
+			result.errors.push(`GEDCOM X 解析错误：${errorMsg}`);
+			new Notice(`导入失败：${errorMsg}`);
 			logger.error('importFile', 'Import failed', error);
 		}
 

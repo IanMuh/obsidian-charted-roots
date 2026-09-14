@@ -32,6 +32,7 @@ import type {
 	JourneyWaypoint
 } from './types/map-types';
 import { getJourneyWaypointEventLabel, parseYearFilterValue } from './types/map-types';
+import { EVENT_TYPE_LABELS } from '../events/types/event-types';
 
 const logger = getLogger('MapView');
 
@@ -153,7 +154,7 @@ export class MapView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Map view';
+		return '地图视图';
 	}
 
 	getIcon(): string {
@@ -305,9 +306,9 @@ export class MapView extends ItemView {
 		// Map selector dropdown
 		this.mapSelectEl = leftSection.createEl('select', {
 			cls: 'cr-map-select',
-			attr: { 'aria-label': 'Select map' }
+			attr: { 'aria-label': '选择地图' }
 		});
-		this.mapSelectEl.createEl('option', { value: 'openstreetmap', text: 'Real world' });
+		this.mapSelectEl.createEl('option', { value: 'openstreetmap', text: '真实世界' });
 		// Custom maps will be populated after loading
 		this.mapSelectEl.addEventListener('change', () => {
 			const mapId = this.mapSelectEl?.value || 'openstreetmap';
@@ -322,7 +323,7 @@ export class MapView extends ItemView {
 		// Layers dropdown
 		const layersBtn = leftSection.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-icon',
-			attr: { 'aria-label': 'Layers' }
+			attr: { 'aria-label': '图层' }
 		});
 		setIcon(layersBtn, 'layers');
 		layersBtn.addEventListener('click', (e) => this.showLayersMenu(e));
@@ -333,9 +334,9 @@ export class MapView extends ItemView {
 		// Collection filter
 		const collectionSelect = centerSection.createEl('select', {
 			cls: 'cr-map-select',
-			attr: { 'aria-label': 'Filter by collection' }
+			attr: { 'aria-label': '按合集筛选' }
 		});
-		collectionSelect.createEl('option', { value: '', text: 'All collections' });
+		collectionSelect.createEl('option', { value: '', text: '全部合集' });
 		// Options will be populated when data loads
 		collectionSelect.addEventListener('change', () => {
 			this.filters.collection = collectionSelect.value || undefined;
@@ -346,13 +347,13 @@ export class MapView extends ItemView {
 		// "10 ABY" / "896 BBY" can be entered — a number-only field can't, and
 		// the events themselves resolve to signed canonical years, so a bare
 		// number filtered every fictional event off the map (#765).
-		const yearHint = 'Year — e.g. 1850, or a fictional era like 10 ABY / 896 BBY';
+		const yearHint = '年份 — 例如 1850，或虚构纪年如 10 ABY / 896 BBY';
 		const yearFromInput = centerSection.createEl('input', {
 			cls: 'cr-map-input',
 			attr: {
 				type: 'text',
-				placeholder: 'From year',
-				'aria-label': 'From year',
+				placeholder: '起始年份',
+				'aria-label': '起始年份',
 				title: yearHint
 			}
 		});
@@ -367,8 +368,8 @@ export class MapView extends ItemView {
 			cls: 'cr-map-input',
 			attr: {
 				type: 'text',
-				placeholder: 'To year',
-				'aria-label': 'To year',
+				placeholder: '结束年份',
+				'aria-label': '结束年份',
 				title: yearHint
 			}
 		});
@@ -383,7 +384,7 @@ export class MapView extends ItemView {
 		// Move places button (for custom maps only) - enables marker dragging
 		this.movePlacesBtn = rightSection.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-icon cr-map-btn-move',
-			attr: { 'aria-label': 'Move places' }
+			attr: { 'aria-label': '移动地点' }
 		});
 		setIcon(this.movePlacesBtn, 'move');
 		this.movePlacesBtn.addEventListener('click', () => void this.toggleMovePlacesMode());
@@ -393,7 +394,7 @@ export class MapView extends ItemView {
 		// Edit mode button (for custom maps only) - enables image alignment editing
 		this.editBtn = rightSection.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-icon cr-map-btn-edit',
-			attr: { 'aria-label': 'Edit alignment' }
+			attr: { 'aria-label': '编辑对齐' }
 		});
 		setIcon(this.editBtn, 'edit');
 		this.editBtn.addEventListener('click', () => void this.toggleEditMode());
@@ -403,7 +404,7 @@ export class MapView extends ItemView {
 		// Split view button (for side-by-side comparison)
 		const splitBtn = rightSection.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-icon',
-			attr: { 'aria-label': 'Compare' }
+			attr: { 'aria-label': '对比' }
 		});
 		setIcon(splitBtn, 'git-compare');
 		splitBtn.addEventListener('click', (e) => this.showCompareMenu(e));
@@ -411,7 +412,7 @@ export class MapView extends ItemView {
 		// Journey mode button
 		const journeyBtn = rightSection.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-icon',
-			attr: { 'aria-label': 'Journey mode' }
+			attr: { 'aria-label': '旅程模式' }
 		});
 		setIcon(journeyBtn, 'route');
 		journeyBtn.addEventListener('click', () => this.toggleJourneyMode(journeyBtn));
@@ -419,7 +420,7 @@ export class MapView extends ItemView {
 		// Timeline toggle button
 		const timelineBtn = rightSection.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-icon',
-			attr: { 'aria-label': 'Timeline' }
+			attr: { 'aria-label': '时间轴' }
 		});
 		setIcon(timelineBtn, 'clock');
 		timelineBtn.addEventListener('click', () => this.toggleTimeSlider());
@@ -427,7 +428,7 @@ export class MapView extends ItemView {
 		// Refresh button (force refresh reads directly from files, bypassing metadata cache)
 		const refreshBtn = rightSection.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => void this.refreshData(true));
@@ -435,7 +436,7 @@ export class MapView extends ItemView {
 		// Export dropdown
 		const exportBtn = rightSection.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-icon',
-			attr: { 'aria-label': 'Export' }
+			attr: { 'aria-label': '导出' }
 		});
 		setIcon(exportBtn, 'download');
 		exportBtn.addEventListener('click', (e) => this.showExportMenu(e));
@@ -449,7 +450,7 @@ export class MapView extends ItemView {
 
 		// Core life events section
 		menu.addItem((item) => {
-			item.setTitle('Birth markers')
+			item.setTitle('出生标记')
 				.setChecked(this.layers.births)
 				.onClick(() => {
 					this.layers.births = !this.layers.births;
@@ -458,7 +459,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Death markers')
+			item.setTitle('去世标记')
 				.setChecked(this.layers.deaths)
 				.onClick(() => {
 					this.layers.deaths = !this.layers.deaths;
@@ -467,7 +468,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Marriage markers')
+			item.setTitle('婚姻标记')
 				.setChecked(this.layers.marriages)
 				.onClick(() => {
 					this.layers.marriages = !this.layers.marriages;
@@ -476,7 +477,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Burial markers')
+			item.setTitle('安葬标记')
 				.setChecked(this.layers.burials)
 				.onClick(() => {
 					this.layers.burials = !this.layers.burials;
@@ -488,7 +489,7 @@ export class MapView extends ItemView {
 
 		// Additional life events section
 		menu.addItem((item) => {
-			item.setTitle('Residence markers')
+			item.setTitle('居住标记')
 				.setChecked(this.layers.residences)
 				.onClick(() => {
 					this.layers.residences = !this.layers.residences;
@@ -497,7 +498,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Occupation markers')
+			item.setTitle('职业标记')
 				.setChecked(this.layers.occupations)
 				.onClick(() => {
 					this.layers.occupations = !this.layers.occupations;
@@ -506,7 +507,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Education markers')
+			item.setTitle('教育标记')
 				.setChecked(this.layers.educations)
 				.onClick(() => {
 					this.layers.educations = !this.layers.educations;
@@ -515,7 +516,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Military markers')
+			item.setTitle('军事标记')
 				.setChecked(this.layers.military)
 				.onClick(() => {
 					this.layers.military = !this.layers.military;
@@ -524,7 +525,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Immigration markers')
+			item.setTitle('移民标记')
 				.setChecked(this.layers.immigrations)
 				.onClick(() => {
 					this.layers.immigrations = !this.layers.immigrations;
@@ -533,7 +534,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Religious markers')
+			item.setTitle('宗教标记')
 				.setChecked(this.layers.religious)
 				.onClick(() => {
 					this.layers.religious = !this.layers.religious;
@@ -542,7 +543,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Custom markers')
+			item.setTitle('自定义标记')
 				.setChecked(this.layers.custom)
 				.onClick(() => {
 					this.layers.custom = !this.layers.custom;
@@ -554,7 +555,7 @@ export class MapView extends ItemView {
 
 		// Other layers section
 		menu.addItem((item) => {
-			item.setTitle('Migration paths (birth → death)')
+			item.setTitle('迁移路径（出生 → 去世）')
 				.setChecked(this.layers.paths)
 				.onClick(() => {
 					this.layers.paths = !this.layers.paths;
@@ -563,7 +564,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Journey paths (all events)')
+			item.setTitle('旅程路径（所有事件）')
 				.setChecked(this.layers.journeys)
 				.onClick(() => {
 					this.layers.journeys = !this.layers.journeys;
@@ -572,7 +573,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('All places')
+			item.setTitle('所有地点')
 				.setChecked(this.layers.places)
 				.onClick(() => {
 					this.layers.places = !this.layers.places;
@@ -581,7 +582,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Child maps')
+			item.setTitle('子地图')
 				.setChecked(this.layers.childMaps)
 				.onClick(() => {
 					this.layers.childMaps = !this.layers.childMaps;
@@ -592,7 +593,7 @@ export class MapView extends ItemView {
 		menu.addSeparator();
 
 		menu.addItem((item) => {
-			item.setTitle('Heat map')
+			item.setTitle('热力图')
 				.setChecked(this.layers.heatMap)
 				.onClick(() => {
 					this.layers.heatMap = !this.layers.heatMap;
@@ -603,9 +604,10 @@ export class MapView extends ItemView {
 		// Heat map intensity options
 		if (this.layers.heatMap) {
 			const currentIntensity = this.plugin.settings.heatMapIntensity || 'medium';
+			const intensityLabels: Record<string, string> = { low: '低', medium: '中', high: '高' };
 			for (const level of ['low', 'medium', 'high'] as const) {
 				menu.addItem((item) => {
-					item.setTitle(`  ${level.charAt(0).toUpperCase() + level.slice(1)} intensity`)
+					item.setTitle(`  ${intensityLabels[level]}强度`)
 						.setChecked(currentIntensity === level)
 						.onClick(async () => {
 							this.plugin.settings.heatMapIntensity = level;
@@ -627,13 +629,13 @@ export class MapView extends ItemView {
 		const menu = new Menu();
 
 		menu.addItem((item) => {
-			item.setTitle('Export as GeoJSON overlay')
+			item.setTitle('导出为 GeoJSON 叠加层')
 				.setIcon('file-json')
 				.onClick(() => void this.exportGeoJSON());
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Export as SVG overlay')
+			item.setTitle('导出为 SVG 叠加层')
 				.setIcon('image')
 				.onClick(() => void this.exportSVG());
 		});
@@ -648,13 +650,13 @@ export class MapView extends ItemView {
 		const menu = new Menu();
 
 		menu.addItem((item) => {
-			item.setTitle('Split horizontally')
+			item.setTitle('水平拆分')
 				.setIcon('separator-horizontal')
 				.onClick(() => this.splitView('horizontal'));
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Split vertically')
+			item.setTitle('垂直拆分')
 				.setIcon('separator-vertical')
 				.onClick(() => this.splitView('vertical'));
 		});
@@ -662,7 +664,7 @@ export class MapView extends ItemView {
 		menu.addSeparator();
 
 		menu.addItem((item) => {
-			item.setTitle('Open in new tab')
+			item.setTitle('在新标签页中打开')
 				.setIcon('tab')
 				.onClick(() => this.openNewMapTab());
 		});
@@ -690,7 +692,7 @@ export class MapView extends ItemView {
 		const menu = new Menu();
 
 		menu.addItem((item) => {
-			item.setTitle('Create place here')
+			item.setTitle('在此创建地点')
 				.setIcon('map-pin')
 				.onClick(() => {
 					this.createPlaceAtCoordinates(coords);
@@ -698,7 +700,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Link existing place here')
+			item.setTitle('在此链接现有地点')
 				.setIcon('link')
 				.onClick(() => {
 					this.linkExistingPlaceToCoordinates(coords);
@@ -787,13 +789,13 @@ export class MapView extends ItemView {
 							});
 						}
 
-						new Notice(`Updated coordinates for "${selectedPlace.name}"`);
+						new Notice(`已更新“${selectedPlace.name}”的坐标`);
 
 						// Refresh the map to show the updated marker
 						void this.refreshData(true);
 					} catch (error) {
 						logger.error('link-place-failed', `Failed to update coordinates: ${error}`);
-						new Notice(`Failed to update coordinates: ${error instanceof Error ? error.message : 'Unknown error'}`);
+						new Notice(`更新坐标失败：${error instanceof Error ? error.message : '未知错误'}`);
 					}
 				})();
 			},
@@ -913,10 +915,10 @@ export class MapView extends ItemView {
 				});
 			} catch (error) {
 				logger.error('universe-sync', `Failed to update frontmatter: ${error}`);
-				new Notice(`Failed to add universe: ${error instanceof Error ? error.message : 'Unknown error'}`);
+				new Notice(`添加宇宙失败：${error instanceof Error ? error.message : '未知错误'}`);
 				return true; // Still proceed with linking
 			}
-			new Notice(`Added "${selectedPlace.name}" to universe "${mapUniverse}"`);
+			new Notice(`已将“${selectedPlace.name}”添加到宇宙“${mapUniverse}”`);
 			return true;
 		}
 
@@ -943,7 +945,7 @@ export class MapView extends ItemView {
 						: frontmatter.universe ? [frontmatter.universe] : [];
 					frontmatter.universe = [...currentUniverses, mapUniverse];
 				});
-				new Notice(`Added universe "${mapUniverse}" to "${selectedPlace.name}"`);
+				new Notice(`已将宇宙“${mapUniverse}”添加到“${selectedPlace.name}”`);
 				return true;
 
 			case 'replace':
@@ -951,7 +953,7 @@ export class MapView extends ItemView {
 				await this.app.fileManager.processFrontMatter(selectedPlace.file, (frontmatter) => {
 					frontmatter.universe = mapUniverse;
 				});
-				new Notice(`Replaced universe for "${selectedPlace.name}" with "${mapUniverse}"`);
+				new Notice(`已将“${selectedPlace.name}”的宇宙替换为“${mapUniverse}”`);
 				return true;
 
 			case 'cancel':
@@ -967,7 +969,7 @@ export class MapView extends ItemView {
 		const menu = new Menu();
 
 		menu.addItem((item) => {
-			item.setTitle('Edit place')
+			item.setTitle('编辑地点')
 				.setIcon('pencil')
 				.onClick(() => {
 					void this.editPlace(placeId);
@@ -975,7 +977,7 @@ export class MapView extends ItemView {
 		});
 
 		menu.addItem((item) => {
-			item.setTitle('Open note')
+			item.setTitle('打开笔记')
 				.setIcon('file-text')
 				.onClick(() => {
 					void this.openPlaceNote(placeId);
@@ -985,7 +987,7 @@ export class MapView extends ItemView {
 		menu.addSeparator();
 
 		menu.addItem((item) => {
-			item.setTitle('Copy coordinates')
+			item.setTitle('复制坐标')
 				.setIcon('copy')
 				.onClick(() => {
 					void this.copyPlaceCoordinates(placeId);
@@ -1010,7 +1012,7 @@ export class MapView extends ItemView {
 
 		const place = placeGraph.getPlaceByCrId(placeId);
 		if (!place) {
-			new Notice(`Place not found: ${placeId}`);
+			new Notice(`未找到地点：${placeId}`);
 			return;
 		}
 
@@ -1021,7 +1023,7 @@ export class MapView extends ItemView {
 		});
 
 		if (!file) {
-			new Notice(`Place file not found for: ${place.name}`);
+			new Notice(`未找到该地点的文件：${place.name}`);
 			return;
 		}
 
@@ -1052,7 +1054,7 @@ export class MapView extends ItemView {
 		if (file) {
 			await this.app.workspace.openLinkText(file.path, '', false);
 		} else {
-			new Notice(`Place file not found: ${placeId}`);
+			new Notice(`未找到地点文件：${placeId}`);
 		}
 	}
 
@@ -1072,7 +1074,7 @@ export class MapView extends ItemView {
 		});
 
 		if (!file) {
-			new Notice(`Place file not found: ${placeName}`);
+			new Notice(`未找到地点文件：${placeName}`);
 			return;
 		}
 
@@ -1148,10 +1150,10 @@ export class MapView extends ItemView {
 
 			// Show toast with undo option
 			const fragment = activeDocument.createDocumentFragment();
-			fragment.appendText(`Moved "${placeName}" to ${coordText} `);
+			fragment.appendText(`已将“${placeName}”移动到 ${coordText} `);
 
 			const undoLink = activeDocument.createElement('a');
-			undoLink.textContent = 'Undo';
+			undoLink.textContent = '撤销';
 			undoLink.href = '#';
 			undoLink.addClass('crc-undo-link');
 			undoLink.addEventListener('click', (e) => {
@@ -1163,7 +1165,7 @@ export class MapView extends ItemView {
 			new Notice(fragment, 8000);
 		} catch (error) {
 			logger.error('drag-update-error', `Failed to update coordinates for ${placeName}`, { error });
-			new Notice(`Failed to update coordinates for ${placeName}`);
+			new Notice(`更新 ${placeName} 的坐标失败`);
 			// Refresh map to restore marker to original position
 			void this.refreshData(true);
 		}
@@ -1204,12 +1206,12 @@ export class MapView extends ItemView {
 				}
 			});
 
-			new Notice(`Restored "${placeName}" to original position`);
+			new Notice(`已将“${placeName}”还原到原始位置`);
 			// Refresh map to show restored position
 			void this.refreshData(true);
 		} catch (error) {
 			logger.error('undo-error', `Failed to undo move for ${placeName}`, { error });
-			new Notice(`Failed to undo move for ${placeName}`);
+			new Notice(`无法撤销对 ${placeName} 的移动`);
 		}
 	}
 
@@ -1226,7 +1228,7 @@ export class MapView extends ItemView {
 
 		const place = placeGraph.getPlaceByCrId(placeId);
 		if (!place) {
-			new Notice(`Place not found: ${placeId}`);
+			new Notice(`未找到地点：${placeId}`);
 			return;
 		}
 
@@ -1236,12 +1238,12 @@ export class MapView extends ItemView {
 		} else if (place.customCoordinates) {
 			coordText = `${place.customCoordinates.x}, ${place.customCoordinates.y}`;
 		} else {
-			new Notice('No coordinates found for this place');
+			new Notice('未找到该地点的坐标');
 			return;
 		}
 
 		await navigator.clipboard.writeText(coordText);
-		new Notice(`Coordinates copied: ${coordText}`);
+		new Notice(`已复制坐标：${coordText}`);
 	}
 
 	/**
@@ -1309,7 +1311,7 @@ export class MapView extends ItemView {
 				min: '1800',
 				max: '2000',
 				value: String(this.timeSlider.currentYear),
-				'aria-label': 'Select year'
+				'aria-label': '选择年份'
 			}
 		});
 
@@ -1329,21 +1331,21 @@ export class MapView extends ItemView {
 		// Play/Pause button
 		const playBtn = controlsRow.createEl('button', {
 			cls: 'cr-map-btn cr-map-time-play',
-			attr: { 'aria-label': 'Play animation' }
+			attr: { 'aria-label': '播放动画' }
 		});
 		playBtn.createSpan({ text: '▶' });
 		playBtn.addEventListener('click', () => this.toggleAnimation());
 
 		// Speed selector
-		controlsRow.createSpan({ cls: 'cr-map-time-speed-label', text: 'Speed:' });
+		controlsRow.createSpan({ cls: 'cr-map-time-speed-label', text: '速度：' });
 		const speedSelect = controlsRow.createEl('select', {
 			cls: 'cr-map-select cr-map-time-speed',
-			attr: { 'aria-label': 'Animation speed' }
+			attr: { 'aria-label': '动画速度' }
 		});
-		speedSelect.createEl('option', { value: '1000', text: 'Slow' });
-		speedSelect.createEl('option', { value: '500', text: 'Normal', attr: { selected: 'selected' } });
-		speedSelect.createEl('option', { value: '200', text: 'Fast' });
-		speedSelect.createEl('option', { value: '50', text: 'Very fast' });
+		speedSelect.createEl('option', { value: '1000', text: '慢' });
+		speedSelect.createEl('option', { value: '500', text: '正常', attr: { selected: 'selected' } });
+		speedSelect.createEl('option', { value: '200', text: '快' });
+		speedSelect.createEl('option', { value: '50', text: '非常快' });
 		speedSelect.value = String(this.timeSlider.speed);
 		speedSelect.addEventListener('change', () => {
 			this.timeSlider.speed = parseInt(speedSelect.value);
@@ -1355,13 +1357,13 @@ export class MapView extends ItemView {
 		});
 
 		// Mode toggle (snapshot vs cumulative)
-		controlsRow.createSpan({ cls: 'cr-map-time-mode-label', text: 'Mode:' });
+		controlsRow.createSpan({ cls: 'cr-map-time-mode-label', text: '模式：' });
 		const modeSelect = controlsRow.createEl('select', {
 			cls: 'cr-map-select cr-map-time-mode',
-			attr: { 'aria-label': 'Display mode' }
+			attr: { 'aria-label': '显示模式' }
 		});
-		modeSelect.createEl('option', { value: 'snapshot', text: 'Alive in year' });
-		modeSelect.createEl('option', { value: 'cumulative', text: 'Born by year' });
+		modeSelect.createEl('option', { value: 'snapshot', text: '该年存活' });
+		modeSelect.createEl('option', { value: 'cumulative', text: '截至该年出生' });
 		modeSelect.value = this.timeSlider.snapshotMode ? 'snapshot' : 'cumulative';
 		modeSelect.addEventListener('change', () => {
 			this.timeSlider.snapshotMode = modeSelect.value === 'snapshot';
@@ -1389,7 +1391,7 @@ export class MapView extends ItemView {
 		this.journeyMode.currentStep = 0;
 
 		// Highlight the journey button
-		const journeyBtn = this.toolbarEl?.querySelector('[aria-label="Journey mode"]') as HTMLButtonElement;
+		const journeyBtn = this.toolbarEl?.querySelector('[aria-label="旅程模式"]') as HTMLButtonElement;
 		if (journeyBtn) journeyBtn.classList.add('cr-map-btn-active');
 
 		this.showJourneyPersonIndicator(personName);
@@ -1518,7 +1520,7 @@ export class MapView extends ItemView {
 			text: '\u00D7'
 		});
 		clearBtn.addEventListener('click', () => {
-			const journeyBtn = this.toolbarEl?.querySelector('[aria-label="Journey mode"]') as HTMLButtonElement;
+			const journeyBtn = this.toolbarEl?.querySelector('[aria-label="旅程模式"]') as HTMLButtonElement;
 			if (journeyBtn) this.exitJourneyMode(journeyBtn);
 		});
 	}
@@ -1615,7 +1617,7 @@ export class MapView extends ItemView {
 		// Previous button
 		const prevBtn = this.journeyControlsEl.createEl('button', {
 			cls: 'cr-map-journey-btn',
-			attr: { 'aria-label': 'Previous waypoint' }
+			attr: { 'aria-label': '上一个途经点' }
 		});
 		setIcon(prevBtn, 'skip-back');
 		prevBtn.addEventListener('click', () => this.journeyStep(-1, waypoints, journey));
@@ -1623,7 +1625,7 @@ export class MapView extends ItemView {
 		// Play/Pause button
 		const playBtn = this.journeyControlsEl.createEl('button', {
 			cls: 'cr-map-journey-btn cr-map-journey-btn--play',
-			attr: { 'aria-label': 'Play' }
+			attr: { 'aria-label': '播放' }
 		});
 		setIcon(playBtn, 'play');
 		playBtn.addEventListener('click', () => this.toggleJourneyPlayback(playBtn, waypoints, journey));
@@ -1631,7 +1633,7 @@ export class MapView extends ItemView {
 		// Next button
 		const nextBtn = this.journeyControlsEl.createEl('button', {
 			cls: 'cr-map-journey-btn',
-			attr: { 'aria-label': 'Next waypoint' }
+			attr: { 'aria-label': '下一个途经点' }
 		});
 		setIcon(nextBtn, 'skip-forward');
 		nextBtn.addEventListener('click', () => this.journeyStep(1, waypoints, journey));
@@ -1660,8 +1662,8 @@ export class MapView extends ItemView {
 			cls: 'cr-map-journey-speed',
 			text: dwellLabels[currentDwellIdx]
 		});
-		dwellBtn.setAttribute('aria-label', 'Popup dwell time per step');
-		dwellBtn.setAttribute('title', 'Popup dwell time per step (click to cycle)');
+		dwellBtn.setAttribute('aria-label', '每步弹窗停留时间');
+		dwellBtn.setAttribute('title', '每步弹窗停留时间（点击切换）');
 		dwellBtn.addEventListener('click', () => {
 			const idx = dwellLevels.indexOf(this.journeyMode.dwellMs);
 			const nextIdx = (idx + 1) % dwellLevels.length;
@@ -1690,10 +1692,10 @@ export class MapView extends ItemView {
 			cls: 'cr-map-journey-controls cr-map-journey-controls--empty'
 		});
 
-		const subject = personName ? `${personName} needs` : 'This person needs';
+		const subject = personName ? `${personName} 需要` : '此人需要';
 		this.journeyControlsEl.createDiv({
 			cls: 'cr-map-journey-empty-message',
-			text: `${subject} at least 2 places with valid coordinates to build a journey path.`
+			text: `${subject}至少2个具有有效坐标的地点，才能构建旅程路径。`
 		});
 	}
 
@@ -1765,9 +1767,10 @@ export class MapView extends ItemView {
 		// Label
 		const label = this.journeyControlsEl.querySelector('[data-id="journey-label"]') as HTMLElement;
 		if (label) {
-			const eventType = getJourneyWaypointEventLabel(waypoint) || 'Event';
+			const rawEventLabel = getJourneyWaypointEventLabel(waypoint);
+			const eventType = EVENT_TYPE_LABELS[rawEventLabel] || rawEventLabel || '事件';
 			const place = waypoint.name || '';
-			label.textContent = place ? `${eventType} in ${place}` : eventType;
+			label.textContent = place ? `${place} · ${eventType}` : eventType;
 		}
 
 		// Counter
@@ -1844,14 +1847,15 @@ export class MapView extends ItemView {
 
 		// Header with event type
 		const header = container.createDiv({ cls: 'cr-journey-rich-popup__header' });
-		const eventLabel = capitalize(getJourneyWaypointEventLabel(waypoint));
+		const rawEventLabel = getJourneyWaypointEventLabel(waypoint);
+		const eventLabel = EVENT_TYPE_LABELS[rawEventLabel] || capitalize(rawEventLabel);
 		header.createSpan({ text: eventLabel, cls: 'cr-journey-rich-popup__type' });
 
 		if (allWaypoints) {
 			const stepIndex = allWaypoints.indexOf(waypoint);
 			if (stepIndex >= 0) {
 				header.createSpan({
-					text: `${stepIndex + 1} of ${allWaypoints.length}`,
+					text: `第 ${stepIndex + 1} / ${allWaypoints.length} 步`,
 					cls: 'cr-journey-rich-popup__step'
 				});
 			}
@@ -1862,18 +1866,18 @@ export class MapView extends ItemView {
 
 		// Date
 		if (waypoint.date) {
-			this.addPopupRow(body, 'Date', waypoint.date);
+			this.addPopupRow(body, '日期', waypoint.date);
 		}
 
 		// Place
 		if (waypoint.name) {
-			this.addPopupRow(body, 'Place', waypoint.name);
+			this.addPopupRow(body, '地点', waypoint.name);
 		}
 
 		// Partner — surfaced for marriage waypoints so a journey carries the
 		// relationship context (#501).
 		if (waypoint.eventType === 'marriage' && waypoint.spouseName) {
-			this.addPopupRow(body, 'Partner', waypoint.spouseName);
+			this.addPopupRow(body, '伴侣', waypoint.spouseName);
 		}
 
 		// Age — use DateService so fictional calendars (eras counting down, era-crossing) are handled correctly
@@ -1882,7 +1886,7 @@ export class MapView extends ItemView {
 			? dateService.calculateAge(journey.birthDate, waypoint.date, journey.universe)?.years
 			: (journey?.birthYear && waypoint.year ? waypoint.year - journey.birthYear : undefined);
 		if (age !== undefined && age >= 0) {
-			this.addPopupRow(body, 'Age', `${age} years old`);
+			this.addPopupRow(body, '年龄', `${age} 岁`);
 		}
 
 		// Partner's age — paired with the focal person's age on marriage
@@ -1895,7 +1899,7 @@ export class MapView extends ItemView {
 				journey?.universe
 			)?.years;
 			if (partnerAge !== undefined && partnerAge >= 0) {
-				this.addPopupRow(body, "Partner's age", `${partnerAge} years old`);
+				this.addPopupRow(body, '伴侣年龄', `${partnerAge} 岁`);
 			}
 		}
 
@@ -1908,14 +1912,14 @@ export class MapView extends ItemView {
 					? dateService.calculateAge(waypoint.date, nextWp.date, journey?.universe)?.years
 					: (waypoint.year && nextWp.year ? nextWp.year - waypoint.year : undefined);
 				if (duration !== undefined && duration > 0) {
-					this.addPopupRow(body, 'Duration at location', `${duration} year${duration !== 1 ? 's' : ''}`);
+					this.addPopupRow(body, '停留时长', `${duration} 年`);
 				}
 			}
 		}
 
 		// Description
 		if (waypoint.description) {
-			this.addPopupRow(body, 'Details', waypoint.description);
+			this.addPopupRow(body, '详情', waypoint.description);
 		}
 
 		return container;
@@ -1943,6 +1947,15 @@ export class MapView extends ItemView {
 		child: '#10b981',    // emerald
 	};
 
+	/** Display labels for family overlay relationship types */
+	private static readonly FAMILY_RELATIONSHIP_LABELS: Record<string, string> = {
+		father: '父亲',
+		mother: '母亲',
+		parent: '父母',
+		spouse: '配偶',
+		child: '子女'
+	};
+
 	/**
 	 * Show or update the family overlay toggle in the journey controls area
 	 */
@@ -1958,7 +1971,7 @@ export class MapView extends ItemView {
 		// Create toggle button in the controls bar
 		this.familyToggleEl = this.journeyControlsEl.createEl('button', {
 			cls: 'cr-map-journey-btn cr-map-journey-family-toggle',
-			attr: { 'aria-label': 'Show family journeys' }
+			attr: { 'aria-label': '显示家族旅程' }
 		});
 		if (this.journeyMode.familyOverlay) {
 			this.familyToggleEl.classList.add('cr-map-btn-active');
@@ -2021,7 +2034,7 @@ export class MapView extends ItemView {
 				color: MapView.FAMILY_COLORS[relationship] || '#94a3b8',
 				weight: 1.5,
 				opacity: 0.4,
-				relationshipLabel: capitalize(relationship)
+				relationshipLabel: MapView.FAMILY_RELATIONSHIP_LABELS[relationship] || capitalize(relationship)
 			});
 		}
 
@@ -2152,12 +2165,12 @@ export class MapView extends ItemView {
 		const total = this.currentMapData.personLifeSpans.length;
 
 		if (yearLabel) {
-			yearLabel.textContent = this.timeSlider.snapshotMode ? '' : ' (cumulative)';
+			yearLabel.textContent = this.timeSlider.snapshotMode ? '' : '（累计）';
 		}
 
 		if (countDisplay) {
-			const label = this.timeSlider.snapshotMode ? 'alive' : 'born';
-			countDisplay.textContent = `${count} of ${total} ${label}`;
+			const label = this.timeSlider.snapshotMode ? '存活' : '出生';
+			countDisplay.textContent = `${count} / ${total} ${label}`;
 		}
 	}
 
@@ -2372,7 +2385,7 @@ export class MapView extends ItemView {
 
 			// Register corners saved callback
 			this.mapController.onCornersSaved(() => {
-				new Notice('Map alignment saved to frontmatter');
+				new Notice('地图对齐已保存到 frontmatter');
 			});
 
 			// Register place marker context menu callback
@@ -2402,7 +2415,7 @@ export class MapView extends ItemView {
 				containerWidth: rect.width,
 				containerHeight: rect.height
 			});
-			this.showError(`Failed to initialize map: ${errorMessage}`);
+			this.showError(`初始化地图失败：${errorMessage}`);
 		}
 	}
 
@@ -2462,7 +2475,7 @@ export class MapView extends ItemView {
 				message: errorMessage,
 				stack: errorStack
 			});
-			this.showError(`Failed to load map data: ${errorMessage}`);
+			this.showError(`加载地图数据失败：${errorMessage}`);
 		}
 	}
 
@@ -2476,10 +2489,10 @@ export class MapView extends ItemView {
 
 		if (markerCount !== undefined && pathCount !== undefined) {
 			this.statusBarEl.createSpan({
-				text: `${markerCount} locations • ${pathCount} migration paths`
+				text: `${markerCount} 个地点 • ${pathCount} 条迁移路径`
 			});
 		} else {
-			this.statusBarEl.createSpan({ text: 'Loading...' });
+			this.statusBarEl.createSpan({ text: '加载中…' });
 		}
 
 		// Attribution
@@ -2503,7 +2516,7 @@ export class MapView extends ItemView {
 
 		// Clear and repopulate
 		select.empty();
-		select.createEl('option', { value: '', text: 'All collections' });
+		select.createEl('option', { value: '', text: '全部合集' });
 
 		for (const collection of collections.sort()) {
 			select.createEl('option', { value: collection, text: collection });
@@ -2533,7 +2546,7 @@ export class MapView extends ItemView {
 			if (this.customMaps.length > 0) {
 				const separator = this.mapSelectEl.createEl('option', {
 					value: '',
-					text: '── Custom maps ──',
+					text: '── 自定义地图 ──',
 					attr: { disabled: 'true' }
 				});
 				separator.disabled = true;
@@ -2541,7 +2554,7 @@ export class MapView extends ItemView {
 				// Add custom maps grouped by universe
 				const byUniverse = new Map<string, CustomMapConfig[]>();
 				for (const map of this.customMaps) {
-					const universe = map.universe || 'Other';
+					const universe = map.universe || '其他';
 					if (!byUniverse.has(universe)) {
 						byUniverse.set(universe, []);
 					}
@@ -2578,7 +2591,7 @@ export class MapView extends ItemView {
 			logger.info('export-geojson', 'GeoJSON exported', { filename });
 		} catch (error) {
 			logger.error('export-error', 'Failed to export GeoJSON', { error });
-			this.showError('Failed to export GeoJSON');
+			this.showError('导出 GeoJSON 失败');
 		}
 	}
 
@@ -2838,11 +2851,11 @@ export class MapView extends ItemView {
 			if (this.editModeEnabled && !this.movePlacesModeEnabled) {
 				this.editBtn.addClass('active');
 				const span = this.editBtn.querySelector('span');
-				if (span) span.textContent = 'Exit edit';
+				if (span) span.textContent = '退出编辑';
 			} else {
 				this.editBtn.removeClass('active');
 				const span = this.editBtn.querySelector('span');
-				if (span) span.textContent = 'Edit';
+				if (span) span.textContent = '编辑';
 			}
 		}
 
@@ -2851,11 +2864,11 @@ export class MapView extends ItemView {
 			if (this.movePlacesModeEnabled) {
 				this.movePlacesBtn.addClass('active');
 				const span = this.movePlacesBtn.querySelector('span');
-				if (span) span.textContent = 'Done moving';
+				if (span) span.textContent = '完成移动';
 			} else {
 				this.movePlacesBtn.removeClass('active');
 				const span = this.movePlacesBtn.querySelector('span');
-				if (span) span.textContent = 'Move places';
+				if (span) span.textContent = '移动地点';
 			}
 		}
 
@@ -2893,8 +2906,8 @@ export class MapView extends ItemView {
 
 		// Banner text
 		const textEl = this.editBannerEl.createDiv({ cls: 'cr-map-edit-banner-text' });
-		textEl.createEl('strong', { text: 'Edit mode:' });
-		textEl.appendText(' Drag corners to align the map image, or drag place markers to reposition them.');
+		textEl.createEl('strong', { text: '编辑模式：' });
+		textEl.appendText(' 拖动角点以对齐地图图片，或拖动地点标记以重新定位。');
 
 		// Button container
 		const btnContainer = this.editBannerEl.createDiv({ cls: 'cr-map-edit-controls' });
@@ -2902,28 +2915,28 @@ export class MapView extends ItemView {
 		// Save button
 		const saveBtn = btnContainer.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-edit cr-map-btn-save',
-			text: 'Save alignment'
+			text: '保存对齐'
 		});
 		saveBtn.addEventListener('click', () => void this.saveEditedCorners());
 
 		// Restore button (undo unsaved changes)
 		const restoreBtn = btnContainer.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-edit cr-map-btn-restore',
-			text: 'Undo changes'
+			text: '撤销更改'
 		});
 		restoreBtn.addEventListener('click', () => this.mapController?.restoreOverlay());
 
 		// Reset button (clear saved alignment)
 		const resetBtn = btnContainer.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-edit cr-map-btn-reset',
-			text: 'Reset to default'
+			text: '重置为默认'
 		});
 		resetBtn.addEventListener('click', () => void this.resetAlignment());
 
 		// Cancel button
 		const cancelBtn = btnContainer.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-edit',
-			text: 'Cancel'
+			text: '取消'
 		});
 		cancelBtn.addEventListener('click', () => void this.disableEditMode());
 
@@ -2964,8 +2977,8 @@ export class MapView extends ItemView {
 
 		// Banner text
 		const textEl = this.editBannerEl.createDiv({ cls: 'cr-map-edit-banner-text' });
-		textEl.createEl('strong', { text: 'Move places:' });
-		textEl.appendText(' Drag place markers to reposition them. Changes are saved automatically.');
+		textEl.createEl('strong', { text: '移动地点：' });
+		textEl.appendText(' 拖动地点标记以重新定位。更改会自动保存。');
 
 		// Button container
 		const btnContainer = this.editBannerEl.createDiv({ cls: 'cr-map-edit-controls' });
@@ -2973,7 +2986,7 @@ export class MapView extends ItemView {
 		// Done button
 		const doneBtn = btnContainer.createEl('button', {
 			cls: 'cr-map-btn cr-map-btn-edit',
-			text: 'Done'
+			text: '完成'
 		});
 		doneBtn.addEventListener('click', () => void this.disableMovePlacesMode());
 
@@ -2993,9 +3006,9 @@ export class MapView extends ItemView {
 
 		const success = await this.mapController.saveEditedCorners();
 		if (success) {
-			new Notice('Map alignment saved');
+			new Notice('地图对齐已保存');
 		} else {
-			new Notice('Failed to save map alignment');
+			new Notice('保存地图对齐失败');
 		}
 	}
 
@@ -3007,10 +3020,10 @@ export class MapView extends ItemView {
 
 		const success = await this.mapController.resetAlignment();
 		if (success) {
-			new Notice('Map alignment reset to default');
+			new Notice('地图对齐已重置为默认');
 			this.hideEditBanner();
 		} else {
-			new Notice('Failed to reset map alignment');
+			new Notice('重置地图对齐失败');
 		}
 	}
 

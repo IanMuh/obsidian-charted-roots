@@ -33,7 +33,7 @@ export function renderMapPreviewSection(
 		node.coordinates.lat !== undefined &&
 		node.coordinates.long !== undefined;
 
-	let summary = 'No coordinates';
+	let summary = '无坐标';
 	let lat = 0;
 	let lon = 0;
 	if (hasCoords) {
@@ -44,7 +44,7 @@ export function renderMapPreviewSection(
 
 	renderProfileSection(parent, {
 		sectionId: 'map-preview',
-		title: 'Map',
+		title: '地图',
 		summary,
 		expanded: options.sectionStates['map-preview'] ?? false,
 		onToggle: options.onToggle,
@@ -53,7 +53,7 @@ export function renderMapPreviewSection(
 			if (!hasCoords) {
 				content.createDiv({
 					cls: 'cr-profile__section-empty',
-					text: 'No location data. Add latitude and longitude to the place note.'
+					text: '无位置数据。请在地点笔记中添加纬度和经度。'
 				});
 				return;
 			}
@@ -104,7 +104,7 @@ export function renderMapPreviewSection(
 			// "Open in Geo Map" button
 			const openBtn = content.createEl('button', {
 				cls: 'mod-cta cr-profile__map-open-btn',
-				text: 'Open in Geo Map'
+					text: '在地图视图中打开'
 			});
 			openBtn.addEventListener('click', () => {
 				void options.plugin.activateMapView(undefined, false, undefined, {

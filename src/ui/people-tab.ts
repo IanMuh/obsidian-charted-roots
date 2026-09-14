@@ -14,7 +14,6 @@ import { openManageMediaModal } from '../plugin/context-menu-helpers';
 import type { LucideIconName } from './lucide-icons';
 import { createLucideIcon } from './lucide-icons';
 import { createStatItem } from './shared/card-component';
-import { pluralize } from '../utils/format-utils';
 import { shouldUseSubmenu } from '../utils/platform-utils';
 import { extractPlaceInfo } from './person-picker';
 import type { PlaceInfo } from './person-picker';
@@ -146,7 +145,7 @@ export function renderPeopleList(options: PeopleListOptions): void {
 
 	if (people.length === 0) {
 		container.createEl('p', {
-			text: 'No person notes found. Create person notes with a cr_id in frontmatter.',
+			text: '未找到人物笔记。请创建 frontmatter 中含有 cr_id 的人物笔记。',
 			cls: 'crc-text--muted'
 		});
 		return;
@@ -187,11 +186,11 @@ export function renderPeopleList(options: PeopleListOptions): void {
 	// Filter dropdown
 	const filterSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 	const filterOptions: { value: PersonListFilter; label: string }[] = [
-		{ value: 'all', label: 'All people' },
-		{ value: 'has-dates', label: 'Has dates' },
-		{ value: 'missing-dates', label: 'Missing dates' },
-		{ value: 'unlinked-places', label: 'Unlinked places' },
-		{ value: 'living', label: 'Living (no death)' }
+		{ value: 'all', label: '全部人物' },
+		{ value: 'has-dates', label: '有日期' },
+		{ value: 'missing-dates', label: '缺少日期' },
+		{ value: 'unlinked-places', label: '未关联地点' },
+		{ value: 'living', label: '在世（无去世日期）' }
 	];
 	for (const opt of filterOptions) {
 		filterSelect.createEl('option', { text: opt.label, value: opt.value });
@@ -201,12 +200,12 @@ export function renderPeopleList(options: PeopleListOptions): void {
 	// Sort dropdown
 	const sortSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 	const sortOptions: { value: PersonListSort; label: string }[] = [
-		{ value: 'name-asc', label: 'Name (A\u2013Z)' },
-		{ value: 'name-desc', label: 'Name (Z\u2013A)' },
-		{ value: 'birth-asc', label: 'Birth (oldest)' },
-		{ value: 'birth-desc', label: 'Birth (newest)' },
-		{ value: 'death-asc', label: 'Death (oldest)' },
-		{ value: 'death-desc', label: 'Death (newest)' }
+		{ value: 'name-asc', label: '姓名（A\u2013Z）' },
+		{ value: 'name-desc', label: '姓名（Z\u2013A）' },
+		{ value: 'birth-asc', label: '出生（最早）' },
+		{ value: 'birth-desc', label: '出生（最晚）' },
+		{ value: 'death-asc', label: '去世（最早）' },
+		{ value: 'death-desc', label: '去世（最晚）' }
 	];
 	for (const opt of sortOptions) {
 		sortSelect.createEl('option', { text: opt.label, value: opt.value });
@@ -218,7 +217,7 @@ export function renderPeopleList(options: PeopleListOptions): void {
 		cls: 'crc-filter-input',
 		attr: {
 			type: 'text',
-			placeholder: `Search ${items.length} people...`
+			placeholder: `搜索 ${items.length} 位人物…`
 		}
 	});
 	if (currentSearch) {
@@ -288,7 +287,7 @@ export function renderPeopleList(options: PeopleListOptions): void {
 
 		if (people.length === 0) {
 			target.createEl('p', {
-				text: 'No matching people found.',
+				text: '未找到匹配的人物。',
 				cls: 'crc-text--muted'
 			});
 			return;
@@ -297,10 +296,10 @@ export function renderPeopleList(options: PeopleListOptions): void {
 		const table = target.createEl('table', { cls: 'crc-person-table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name', cls: 'crc-person-table__th' });
-		headerRow.createEl('th', { text: 'Born', cls: 'crc-person-table__th' });
-		headerRow.createEl('th', { text: 'Died', cls: 'crc-person-table__th' });
-		headerRow.createEl('th', { text: 'Media', cls: 'crc-person-table__th crc-person-table__th--center' });
+		headerRow.createEl('th', { text: '姓名', cls: 'crc-person-table__th' });
+		headerRow.createEl('th', { text: '出生', cls: 'crc-person-table__th' });
+		headerRow.createEl('th', { text: '去世', cls: 'crc-person-table__th' });
+		headerRow.createEl('th', { text: '媒体', cls: 'crc-person-table__th crc-person-table__th--center' });
 		headerRow.createEl('th', { text: '', cls: 'crc-person-table__th crc-person-table__th--icon' });
 
 		const tbody = table.createEl('tbody');
@@ -320,7 +319,7 @@ export function renderPeopleList(options: PeopleListOptions): void {
 		if (renderedCount < people.length) {
 			const loadMoreContainer = target.createDiv({ cls: 'crc-load-more-container' });
 			const loadMoreBtn = new ButtonComponent(loadMoreContainer)
-				.setButtonText(`Load more (${renderedCount} of ${people.length} shown)`)
+				.setButtonText(`加载更多（已显示 ${renderedCount} / ${people.length}）`)
 				.onClick(() => {
 					const newRendered = renderBatch(renderedCount, PERSON_LIST_PAGE_SIZE);
 					renderedCount += newRendered;
@@ -328,7 +327,7 @@ export function renderPeopleList(options: PeopleListOptions): void {
 					if (renderedCount >= people.length) {
 						loadMoreContainer.remove();
 					} else {
-						loadMoreBtn.setButtonText(`Load more (${renderedCount} of ${people.length} shown)`);
+						loadMoreBtn.setButtonText(`加载更多（已显示 ${renderedCount} / ${people.length}）`);
 					}
 				});
 		}
@@ -363,7 +362,7 @@ export function renderPeopleList(options: PeopleListOptions): void {
 		if (person.mediaCount > 0) {
 			const mediaBadge = mediaCell.createEl('span', {
 				cls: 'crc-person-list-badge crc-person-list-badge--media',
-				attr: { title: `${person.mediaCount} media file${person.mediaCount !== 1 ? 's' : ''}` }
+				attr: { title: `${person.mediaCount} 个媒体文件` }
 			});
 			const mediaIcon = createLucideIcon('image', 12);
 			mediaBadge.appendChild(mediaIcon);
@@ -376,7 +375,7 @@ export function renderPeopleList(options: PeopleListOptions): void {
 		const actionsCell = row.createEl('td', { cls: 'crc-person-table__td crc-person-table__td--actions' });
 		const openBtn = actionsCell.createEl('button', {
 			cls: 'crc-person-table__open-btn clickable-icon',
-			attr: { 'aria-label': 'Open note' }
+			attr: { 'aria-label': '打开笔记' }
 		});
 		const fileIcon = createLucideIcon('file-text', 14);
 		openBtn.appendChild(fileIcon);
@@ -394,7 +393,7 @@ export function renderPeopleList(options: PeopleListOptions): void {
 			const menu = new Menu();
 
 			menu.addItem((item) => {
-				item.setTitle('Open note')
+				item.setTitle('打开笔记')
 					.setIcon('file')
 					.onClick(() => {
 						void (async () => {
@@ -405,7 +404,7 @@ export function renderPeopleList(options: PeopleListOptions): void {
 			});
 
 			menu.addItem((item) => {
-				item.setTitle('Open in new tab')
+				item.setTitle('在新标签页中打开')
 					.setIcon('file-plus')
 					.onClick(() => {
 						void (async () => {
@@ -416,7 +415,7 @@ export function renderPeopleList(options: PeopleListOptions): void {
 			});
 
 			menu.addItem((item) => {
-				item.setTitle('Open in new window')
+				item.setTitle('在新窗口中打开')
 					.setIcon('picture-in-picture-2')
 					.onClick(() => {
 						void (async () => {
@@ -463,7 +462,7 @@ function addPeopleDockButton(card: HTMLElement, plugin: CanvasRootsPlugin): void
 
 	const dockBtn = activeDocument.createElement('button');
 	dockBtn.className = 'crc-card__dock-btn clickable-icon';
-	dockBtn.setAttribute('aria-label', 'Open in sidebar');
+	dockBtn.setAttribute('aria-label', '在侧边栏中打开');
 	setIcon(dockBtn, 'panel-right');
 	dockBtn.addEventListener('click', (e) => {
 		e.stopPropagation();
@@ -484,18 +483,18 @@ export function renderPeopleTab(options: PeopleTabOptions): void {
 
 	// Actions Card
 	const actionsCard = createCard({
-		title: 'Actions',
+		title: '操作',
 		icon: 'plus',
-		subtitle: 'Create and manage person notes'
+		subtitle: '创建和管理人物笔记'
 	});
 
 	const actionsContent = actionsCard.querySelector('.crc-card__content') as HTMLElement;
 
 	new Setting(actionsContent)
-		.setName('Create new person note')
-		.setDesc('Create a new person note with family relationships')
+		.setName('创建新人物笔记')
+		.setDesc('创建带有家族关系的新人物笔记')
 		.addButton(button => button
-			.setButtonText('Create person')
+			.setButtonText('创建人物')
 			.setCta()
 			.onClick(() => {
 				const familyGraph = options.getCachedFamilyGraph();
@@ -517,10 +516,10 @@ export function renderPeopleTab(options: PeopleTabOptions): void {
 			}));
 
 	new Setting(actionsContent)
-		.setName('Create family group')
-		.setDesc('Use the wizard to create multiple family members at once')
+		.setName('创建家族群组')
+		.setDesc('使用向导一次创建多位家族成员')
 		.addButton(button => button
-			.setButtonText('Create family')
+			.setButtonText('创建家族')
 			.onClick(() => {
 				void import('./family-creation-wizard').then(({ FamilyCreationWizardModal }) => {
 					new FamilyCreationWizardModal(app, plugin).open();
@@ -528,28 +527,28 @@ export function renderPeopleTab(options: PeopleTabOptions): void {
 			}));
 
 	new Setting(actionsContent)
-		.setName('Templater templates')
-		.setDesc('Copy ready-to-use templates for Templater integration')
+		.setName('Templater 模板')
+		.setDesc('复制即用模板以集成 Templater')
 		.addButton(button => button
-			.setButtonText('View templates')
+			.setButtonText('查看模板')
 			.onClick(() => {
 				new TemplateSnippetsModal(app, undefined, plugin.settings.propertyAliases).open();
 			}));
 
 	new Setting(actionsContent)
-		.setName('Create People base')
-		.setDesc('Create an Obsidian base for managing People notes. After creating, click "Properties" to enable columns like Name, Parents, Spouse, Children, Birth, and Death.')
+		.setName('创建 People base')
+		.setDesc('为管理人物笔记创建 Obsidian base。创建后点击"属性"以启用姓名、父母、配偶、子女、出生和去世等列。')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.onClick(() => {
 				app.commands.executeCommandById('charted-roots:create-base-template');
 			}));
 
 	new Setting(actionsContent)
-		.setName('Link media')
-		.setDesc('Open the Media Manager to browse, link, and organize media files for person notes')
+		.setName('关联媒体')
+		.setDesc('打开媒体管理器，浏览、关联并整理人物笔记的媒体文件')
 		.addButton(button => button
-			.setButtonText('Open Media Manager')
+			.setButtonText('打开媒体管理器')
 			.onClick(() => {
 				new MediaManagerModal(app, plugin).open();
 			}));
@@ -559,20 +558,20 @@ export function renderPeopleTab(options: PeopleTabOptions): void {
 	const clipperIcon = clipperNote.createSpan({ cls: 'cr-info-box-icon' });
 	setIcon(clipperIcon, 'globe');
 	const clipperText = clipperNote.createSpan();
-	clipperText.appendText('Import people from the web using ');
+	clipperText.appendText('使用 ');
 	clipperText.createEl('a', {
-		text: 'Web Clipper templates',
+		text: 'Web Clipper 模板',
 		href: 'https://github.com/banisterious/obsidian-charted-roots/wiki/Web-Clipper-Integration#ready-to-use-templates'
 	});
-	clipperText.appendText(' (FamilySearch, Wikipedia biographies, and more).');
+	clipperText.appendText(' 从网络导入人物（FamilySearch、维基百科传记等）。');
 
 	container.appendChild(actionsCard);
 
 	// Batch Operations Card
 	const batchCard = createCard({
-		title: 'Batch operations',
+		title: '批量操作',
 		icon: 'zap',
-		subtitle: 'Fix common data issues across person notes'
+		subtitle: '修复人物笔记中的常见数据问题'
 	});
 
 	const batchContent = batchCard.querySelector('.crc-card__content') as HTMLElement;
@@ -580,10 +579,10 @@ export function renderPeopleTab(options: PeopleTabOptions): void {
 	// Navigation guidance
 	const navInfo = batchContent.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'These operations work on all person notes in your vault. For comprehensive data quality analysis across all entities, see the '
+		text: '这些操作会作用于库中所有人物笔记。如需对所有实体进行全面的数据质量分析，请参阅 '
 	});
 	const dataQualityLink = navInfo.createEl('a', {
-		text: 'Data Quality tab',
+		text: '数据质量标签页',
 		href: '#',
 		cls: 'crc-text-link'
 	});
@@ -594,100 +593,100 @@ export function renderPeopleTab(options: PeopleTabOptions): void {
 	navInfo.appendText('.');
 
 	new Setting(batchContent)
-		.setName('Remove duplicate relationships')
-		.setDesc('Clean up duplicate entries in spouse and children arrays')
+		.setName('移除重复关系')
+		.setDesc('清理配偶和子女数组中的重复条目')
 		.addButton(button => button
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => {
 				void options.previewRemoveDuplicateRelationships();
 			}))
 		.addButton(button => button
-			.setButtonText('Apply')
+			.setButtonText('应用')
 			.setCta()
 			.onClick(() => {
 				void options.removeDuplicateRelationships();
 			}));
 
 	new Setting(batchContent)
-		.setName('Remove placeholder values')
-		.setDesc('Clean up placeholder text like "Unknown", "N/A", "???", and malformed wikilinks')
+		.setName('移除占位符值')
+		.setDesc('清理"Unknown"、"N/A"、"???"等占位文本以及格式错误的 wikilink')
 		.addButton(button => button
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => {
 				void options.previewRemovePlaceholders();
 			}))
 		.addButton(button => button
-			.setButtonText('Apply')
+			.setButtonText('应用')
 			.setCta()
 			.onClick(() => {
 				void options.removePlaceholders();
 			}));
 
 	new Setting(batchContent)
-		.setName('Add cr_type property to person notes')
-		.setDesc('Add cr_type: person to all person notes that don\'t have it (recommended for better compatibility)')
+		.setName('为人物笔记添加 cr_type 属性')
+		.setDesc('为所有缺少该属性的人物笔记添加 cr_type: person（推荐，以获得更好的兼容性）')
 		.addButton(button => button
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => {
 				void options.previewAddPersonType();
 			}))
 		.addButton(button => button
-			.setButtonText('Apply')
+			.setButtonText('应用')
 			.setCta()
 			.onClick(() => {
 				void options.addPersonType();
 			}));
 
 	new Setting(batchContent)
-		.setName('Normalize name formatting')
-		.setDesc('Standardize name capitalization: "JOHN SMITH" \u2192 "John Smith", handle prefixes like van, de, Mac')
+		.setName('规范化姓名格式')
+		.setDesc('统一姓名大小写："JOHN SMITH" \u2192 "John Smith"，并处理 van、de、Mac 等前缀')
 		.addButton(button => button
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => {
 				void options.previewNormalizeNames();
 			}))
 		.addButton(button => button
-			.setButtonText('Apply')
+			.setButtonText('应用')
 			.setCta()
 			.onClick(() => {
 				void options.normalizeNames();
 			}));
 
 	new Setting(batchContent)
-		.setName('Fix bidirectional relationship inconsistencies')
-		.setDesc('Add missing reciprocal relationship links (parent\u2194child, spouse\u2194spouse)')
+		.setName('修复双向关系不一致')
+		.setDesc('补充缺失的互惠关系链接（父母\u2194子女、配偶\u2194配偶）')
 		.addButton(button => button
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => {
 				void options.previewFixBidirectionalRelationships();
 			}))
 		.addButton(button => button
-			.setButtonText('Apply')
+			.setButtonText('应用')
 			.setCta()
 			.onClick(() => {
 				void options.fixBidirectionalRelationships();
 			}));
 
 	new Setting(batchContent)
-		.setName('Validate date formats')
-		.setDesc('Check all date fields (born, died, birth_date, death_date) for format issues based on your date validation preferences')
+		.setName('验证日期格式')
+		.setDesc('根据你的日期验证偏好检查所有日期字段（born、died、birth_date、death_date）的格式问题')
 		.addButton(button => button
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => {
 				void options.previewValidateDates();
 			}))
 		.addButton(button => button
-			.setButtonText('Apply')
+			.setButtonText('应用')
 			.setCta()
 			.onClick(() => {
 				void options.validateDates();
 			}));
 
 	new Setting(batchContent)
-		.setName('Detect impossible dates')
-		.setDesc('Find logical date errors (birth after death, unrealistic lifespans, parent-child date conflicts)')
+		.setName('检测不可能的日期')
+		.setDesc('查找逻辑日期错误（出生晚于去世、不合理的寿命、父母子女日期冲突）')
 		.addButton(button => button
-			.setButtonText('Preview')
+			.setButtonText('预览')
 			.onClick(() => {
 				void options.previewDetectImpossibleDates();
 			}));
@@ -696,13 +695,13 @@ export function renderPeopleTab(options: PeopleTabOptions): void {
 
 	// Parent Claim Conflicts Card
 	const conflictsCard = createCard({
-		title: 'Parent claim conflicts',
+		title: '父母声明冲突',
 		icon: 'alert-triangle',
-		subtitle: 'Children claimed by multiple parents'
+		subtitle: '被多位父母声明的子女'
 	});
 	const conflictsContent = conflictsCard.querySelector('.crc-card__content') as HTMLElement;
 	conflictsContent.createEl('p', {
-		text: 'Scanning for conflicts...',
+		text: '正在扫描冲突…',
 		cls: 'crc-text--muted'
 	});
 	container.appendChild(conflictsCard);
@@ -712,14 +711,14 @@ export function renderPeopleTab(options: PeopleTabOptions): void {
 
 	// Statistics Card
 	const statsCard = createCard({
-		title: 'Person statistics',
+		title: '人物统计',
 		icon: 'users',
-		subtitle: 'Overview of person notes in your vault'
+		subtitle: '库中人物笔记概览'
 	});
 
 	const statsContent = statsCard.querySelector('.crc-card__content') as HTMLElement;
 	statsContent.createEl('p', {
-		text: 'Loading statistics...',
+		text: '正在加载统计…',
 		cls: 'crc-text--muted'
 	});
 
@@ -730,16 +729,16 @@ export function renderPeopleTab(options: PeopleTabOptions): void {
 
 	// Person List Card
 	const listCard = createCard({
-		title: 'Person notes',
+		title: '人物笔记',
 		icon: 'user',
-		subtitle: 'All person notes in your vault'
+		subtitle: '库中所有人物笔记'
 	});
 
 	addPeopleDockButton(listCard, plugin);
 
 	const listContent = listCard.querySelector('.crc-card__content') as HTMLElement;
 	listContent.createEl('p', {
-		text: 'Loading people...',
+		text: '正在加载人物…',
 		cls: 'crc-text--muted'
 	});
 
@@ -768,11 +767,11 @@ function loadPersonStatistics(container: HTMLElement, options: PeopleTabOptions)
 	if (stats.people.totalPeople === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No person notes found in your vault.',
+			text: '库中未找到人物笔记。',
 			cls: 'crc-text--muted'
 		});
 		emptyState.createEl('p', {
-			text: 'Person notes require a cr_id property in their frontmatter. Create person notes to start building your family tree.',
+			text: '人物笔记需要在 frontmatter 中包含 cr_id 属性。创建人物笔记即可开始构建家谱。',
 			cls: 'crc-text--muted crc-text--small'
 		});
 		return;
@@ -782,23 +781,23 @@ function loadPersonStatistics(container: HTMLElement, options: PeopleTabOptions)
 	const statsGrid = container.createDiv({ cls: 'crc-stats-grid' });
 
 	// Total people
-	createStatItem(statsGrid, 'Total people', stats.people.totalPeople.toString(), 'users');
+	createStatItem(statsGrid, '总人数', stats.people.totalPeople.toString(), 'users');
 
 	// With birth date
 	const birthPercent = stats.people.totalPeople > 0
 		? Math.round((stats.people.peopleWithBirthDate / stats.people.totalPeople) * 100)
 		: 0;
-	createStatItem(statsGrid, 'With birth date', `${stats.people.peopleWithBirthDate} (${birthPercent}%)`, 'calendar');
+	createStatItem(statsGrid, '有出生日期', `${stats.people.peopleWithBirthDate} (${birthPercent}%)`, 'calendar');
 
 	// Living people
-	createStatItem(statsGrid, 'Living', stats.people.livingPeople.toString(), 'heart');
+	createStatItem(statsGrid, '在世', stats.people.livingPeople.toString(), 'heart');
 
 	// Orphaned (no relationships)
-	createStatItem(statsGrid, 'No relationships', stats.people.orphanedPeople.toString(), 'user-minus');
+	createStatItem(statsGrid, '无关系', stats.people.orphanedPeople.toString(), 'user-minus');
 
 	// Relationship statistics section
 	const relSection = container.createDiv({ cls: 'crc-mt-4' });
-	relSection.createEl('h4', { text: 'Relationships', cls: 'crc-section-title' });
+	relSection.createEl('h4', { text: '关系', cls: 'crc-section-title' });
 
 	const relGrid = relSection.createDiv({ cls: 'crc-stats-grid crc-stats-grid--compact' });
 
@@ -806,26 +805,26 @@ function loadPersonStatistics(container: HTMLElement, options: PeopleTabOptions)
 	const fatherPercent = stats.people.totalPeople > 0
 		? Math.round((stats.people.peopleWithFather / stats.people.totalPeople) * 100)
 		: 0;
-	createStatItem(relGrid, 'With father', `${stats.people.peopleWithFather} (${fatherPercent}%)`);
+	createStatItem(relGrid, '有父亲', `${stats.people.peopleWithFather} (${fatherPercent}%)`);
 
 	// With mother
 	const motherPercent = stats.people.totalPeople > 0
 		? Math.round((stats.people.peopleWithMother / stats.people.totalPeople) * 100)
 		: 0;
-	createStatItem(relGrid, 'With mother', `${stats.people.peopleWithMother} (${motherPercent}%)`);
+	createStatItem(relGrid, '有母亲', `${stats.people.peopleWithMother} (${motherPercent}%)`);
 
 	// With spouse
 	const spousePercent = stats.people.totalPeople > 0
 		? Math.round((stats.people.peopleWithSpouse / stats.people.totalPeople) * 100)
 		: 0;
-	createStatItem(relGrid, `With ${getSpouseLabel(plugin.settings, { lowercase: true })}`, `${stats.people.peopleWithSpouse} (${spousePercent}%)`);
+	createStatItem(relGrid, `有${getSpouseLabel(plugin.settings, { lowercase: true })}`, `${stats.people.peopleWithSpouse} (${spousePercent}%)`);
 
 	// Total relationships
-	createStatItem(relGrid, 'Total relationships', stats.relationships.totalRelationships.toString());
+	createStatItem(relGrid, '关系总数', stats.relationships.totalRelationships.toString());
 
 	// View full statistics link
 	const statsLink = container.createDiv({ cls: 'cr-stats-link' });
-	const link = statsLink.createEl('a', { text: 'View full statistics \u2192', cls: 'crc-text-muted' });
+	const link = statsLink.createEl('a', { text: '查看完整统计 \u2192', cls: 'crc-text-muted' });
 	link.addEventListener('click', (e) => {
 		e.preventDefault();
 		closeModal();
@@ -867,11 +866,11 @@ function loadParentClaimConflicts(container: HTMLElement, options: PeopleTabOpti
 	if (conflicts.length === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No parent claim conflicts found.',
+			text: '未发现父母声明冲突。',
 			cls: 'crc-text--muted'
 		});
 		emptyState.createEl('p', {
-			text: 'Conflicts occur when multiple people list the same child in their children_id field.',
+			text: '当多个人在各自的 children_id 字段中列出的同一位子女时，就会出现冲突。',
 			cls: 'crc-text--muted crc-text--small'
 		});
 		return;
@@ -880,7 +879,7 @@ function loadParentClaimConflicts(container: HTMLElement, options: PeopleTabOpti
 	// Explanation
 	const explanation = container.createDiv({ cls: 'crc-info-callout crc-mb-3' });
 	explanation.createEl('p', {
-		text: `Found ${conflicts.length} ${pluralize(conflicts.length, 'conflict')} where multiple people claim the same child. Review each and choose which parent is correct.`,
+		text: `发现 ${conflicts.length} 处多人声明同一位子女的冲突。请逐一审查并选择正确的父母。`,
 		cls: 'crc-text--small'
 	});
 
@@ -890,11 +889,11 @@ function loadParentClaimConflicts(container: HTMLElement, options: PeopleTabOpti
 
 	const thead = table.createEl('thead');
 	const headerRow = thead.createEl('tr');
-	headerRow.createEl('th', { text: 'Child' });
-	headerRow.createEl('th', { text: 'Type' });
-	headerRow.createEl('th', { text: 'Claimant 1' });
-	headerRow.createEl('th', { text: 'Claimant 2' });
-	headerRow.createEl('th', { text: 'Actions' });
+	headerRow.createEl('th', { text: '子女' });
+	headerRow.createEl('th', { text: '类型' });
+	headerRow.createEl('th', { text: '声明者1' });
+	headerRow.createEl('th', { text: '声明者2' });
+	headerRow.createEl('th', { text: '操作' });
 
 	const tbody = table.createEl('tbody');
 
@@ -923,7 +922,7 @@ function loadParentClaimConflicts(container: HTMLElement, options: PeopleTabOpti
 		});
 
 		// Conflict type
-		row.createEl('td', { text: conflict.conflictType === 'father' ? 'Father' : 'Mother' });
+		row.createEl('td', { text: conflict.conflictType === 'father' ? '父亲' : '母亲' });
 
 		// Claimant 1 cell - show name and cr_id for disambiguation
 		const claimant1Cell = row.createEl('td');
@@ -968,9 +967,9 @@ function loadParentClaimConflicts(container: HTMLElement, options: PeopleTabOpti
 
 		// Keep Claimant 1 button
 		const keepBtn1 = actionsCell.createEl('button', {
-			text: 'Keep 1',
+			text: '保留1',
 			cls: 'crc-btn-small',
-			attr: { title: `Keep ${claimant1.name || claimant1.file.basename} as ${conflict.conflictType}` }
+			attr: { title: `保留${claimant1.name || claimant1.file.basename}为${conflict.conflictType === 'father' ? '父亲' : '母亲'}` }
 		});
 		keepBtn1.addEventListener('click', () => {
 			void (async () => {
@@ -982,9 +981,9 @@ function loadParentClaimConflicts(container: HTMLElement, options: PeopleTabOpti
 
 		// Keep Claimant 2 button
 		const keepBtn2 = actionsCell.createEl('button', {
-			text: 'Keep 2',
+			text: '保留2',
 			cls: 'crc-btn-small',
-			attr: { title: `Keep ${claimant2.name || claimant2.file.basename} as ${conflict.conflictType}` }
+			attr: { title: `保留${claimant2.name || claimant2.file.basename}为${conflict.conflictType === 'father' ? '父亲' : '母亲'}` }
 		});
 		keepBtn2.addEventListener('click', () => {
 			void (async () => {
@@ -998,7 +997,7 @@ function loadParentClaimConflicts(container: HTMLElement, options: PeopleTabOpti
 	// Count display
 	const countDiv = container.createDiv({ cls: 'crc-conflicts-count crc-mt-2' });
 	countDiv.createSpan({
-		text: `${conflicts.length} ${pluralize(conflicts.length, 'conflict')} to resolve`,
+		text: `${conflicts.length} 处冲突待解决`,
 		cls: 'crc-text--muted'
 	});
 }
@@ -1028,7 +1027,7 @@ async function resolveParentConflict(
 			// Keep claimant1: remove child from claimant2's children_id
 			await removeChildFromParent(claimant2.file, child.crId, app);
 			modifiedFiles.push(claimant2.file);
-			new Notice(`Removed ${child.name || child.file.basename} from ${claimant2.name || claimant2.file.basename}'s children`);
+			new Notice(`已从${claimant2.name || claimant2.file.basename}的子女中移除${child.name || child.file.basename}`);
 		} else {
 			// Keep claimant2: update child's parent field and remove from claimant1's children_id
 			await app.fileManager.processFrontMatter(child.file, (fm) => {
@@ -1037,7 +1036,7 @@ async function resolveParentConflict(
 			});
 			await removeChildFromParent(claimant1.file, child.crId, app);
 			modifiedFiles.push(child.file, claimant1.file);
-			new Notice(`Changed ${child.name || child.file.basename}'s ${conflictType} to ${claimant2.name || claimant2.file.basename}`);
+			new Notice(`已将${child.name || child.file.basename}的${conflictType === 'father' ? '父亲' : '母亲'}改为${claimant2.name || claimant2.file.basename}`);
 		}
 
 		// Reload cache
@@ -1081,11 +1080,11 @@ function updateConflictCardCount(container: HTMLElement, tbody: HTMLElement): vo
 		container.empty();
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'All parent claim conflicts have been resolved!',
+			text: '所有父母声明冲突均已解决！',
 			cls: 'crc-text--muted'
 		});
 	} else if (countEl) {
-		countEl.textContent = `${remainingRows} ${pluralize(remainingRows, 'conflict')} to resolve`;
+		countEl.textContent = `${remainingRows} 处冲突待解决`;
 	}
 }
 
@@ -1106,7 +1105,7 @@ function loadPersonList(container: HTMLElement, options: PeopleTabOptions): void
 
 	if (people.length === 0) {
 		container.createEl('p', {
-			text: 'No person notes found. Create person notes with a cr_id in frontmatter.',
+			text: '未找到人物笔记。请创建 frontmatter 中含有 cr_id 的人物笔记。',
 			cls: 'crc-text--muted'
 		});
 		return;
@@ -1139,11 +1138,11 @@ function loadPersonList(container: HTMLElement, options: PeopleTabOptions): void
 		cls: 'dropdown'
 	});
 	const filterOptions = [
-		{ value: 'all', label: 'All people' },
-		{ value: 'has-dates', label: 'Has dates' },
-		{ value: 'missing-dates', label: 'Missing dates' },
-		{ value: 'unlinked-places', label: 'Unlinked places' },
-		{ value: 'living', label: 'Living (no death)' }
+		{ value: 'all', label: '全部人物' },
+		{ value: 'has-dates', label: '有日期' },
+		{ value: 'missing-dates', label: '缺少日期' },
+		{ value: 'unlinked-places', label: '未关联地点' },
+		{ value: 'living', label: '在世（无去世日期）' }
 	];
 	filterOptions.forEach(opt => {
 		const option = filterSelect.createEl('option', { text: opt.label, value: opt.value });
@@ -1155,12 +1154,12 @@ function loadPersonList(container: HTMLElement, options: PeopleTabOptions): void
 		cls: 'dropdown'
 	});
 	const sortOptions = [
-		{ value: 'name-asc', label: 'Name (A\u2013Z)' },
-		{ value: 'name-desc', label: 'Name (Z\u2013A)' },
-		{ value: 'birth-asc', label: 'Birth (oldest)' },
-		{ value: 'birth-desc', label: 'Birth (newest)' },
-		{ value: 'death-asc', label: 'Death (oldest)' },
-		{ value: 'death-desc', label: 'Death (newest)' }
+		{ value: 'name-asc', label: '姓名（A\u2013Z）' },
+		{ value: 'name-desc', label: '姓名（Z\u2013A）' },
+		{ value: 'birth-asc', label: '出生（最早）' },
+		{ value: 'birth-desc', label: '出生（最晚）' },
+		{ value: 'death-asc', label: '去世（最早）' },
+		{ value: 'death-desc', label: '去世（最晚）' }
 	];
 	sortOptions.forEach(opt => {
 		const option = sortSelect.createEl('option', { text: opt.label, value: opt.value });
@@ -1172,7 +1171,7 @@ function loadPersonList(container: HTMLElement, options: PeopleTabOptions): void
 		cls: 'crc-filter-input',
 		attr: {
 			type: 'text',
-			placeholder: `Search ${personListItems.length} people...`
+			placeholder: `搜索 ${personListItems.length} 位人物…`
 		}
 	});
 
@@ -1180,12 +1179,12 @@ function loadPersonList(container: HTMLElement, options: PeopleTabOptions): void
 	const hint = container.createEl('p', {
 		cls: 'crc-text-muted crc-text-small crc-mb-2'
 	});
-	hint.appendText('Click a row to edit. ');
+	hint.appendText('点击行即可编辑。 ');
 	// File icon for "open note"
 	const fileIconHint = createLucideIcon('file-text', 12);
 	fileIconHint.addClass('crc-icon-inline');
 	hint.appendChild(fileIconHint);
-	hint.appendText(' opens the note. ');
+	hint.appendText(' 打开笔记。 ');
 	// Unlinked places badge
 	const exampleBadge = hint.createEl('span', {
 		cls: 'crc-person-list-badge crc-person-list-badge--unlinked crc-person-list-badge--hint'
@@ -1193,7 +1192,7 @@ function loadPersonList(container: HTMLElement, options: PeopleTabOptions): void
 	const badgeIcon = createLucideIcon('map-pin', 10);
 	exampleBadge.appendChild(badgeIcon);
 	exampleBadge.appendText('1');
-	hint.appendText(' creates place notes.');
+	hint.appendText(' 创建地点笔记。');
 
 	// List container
 	const listContainer = container.createDiv({ cls: 'crc-person-list' });
@@ -1283,26 +1282,26 @@ function renderPersonListItems(
 	container.empty();
 
 	if (people.length === 0) {
-		container.createEl('p', {
-			text: 'No matching people found.',
-			cls: 'crc-text--muted'
-		});
-		return;
-	}
+	container.createEl('p', {
+		text: '未找到匹配的人物。',
+		cls: 'crc-text--muted'
+	});
+	return;
+}
 
-	// For large lists, show count and paginate
-	const totalCount = people.length;
-	const needsPagination = totalCount > PERSON_LIST_PAGE_SIZE;
-	let renderedCount = 0;
+// For large lists, show count and paginate
+const totalCount = people.length;
+const needsPagination = totalCount > PERSON_LIST_PAGE_SIZE;
+let renderedCount = 0;
 
-	// Create table structure
-	const table = container.createEl('table', { cls: 'crc-person-table' });
-	const thead = table.createEl('thead');
-	const headerRow = thead.createEl('tr');
-	headerRow.createEl('th', { text: 'Name', cls: 'crc-person-table__th' });
-	headerRow.createEl('th', { text: 'Born', cls: 'crc-person-table__th' });
-	headerRow.createEl('th', { text: 'Died', cls: 'crc-person-table__th' });
-	headerRow.createEl('th', { text: 'Media', cls: 'crc-person-table__th crc-person-table__th--center' });
+// Create table structure
+const table = container.createEl('table', { cls: 'crc-person-table' });
+const thead = table.createEl('thead');
+const headerRow = thead.createEl('tr');
+headerRow.createEl('th', { text: '姓名', cls: 'crc-person-table__th' });
+headerRow.createEl('th', { text: '出生', cls: 'crc-person-table__th' });
+headerRow.createEl('th', { text: '去世', cls: 'crc-person-table__th' });
+headerRow.createEl('th', { text: '媒体', cls: 'crc-person-table__th crc-person-table__th--center' });
 	headerRow.createEl('th', { text: '', cls: 'crc-person-table__th crc-person-table__th--icon' }); // For badges
 
 	const tbody = table.createEl('tbody');
@@ -1323,7 +1322,7 @@ function renderPersonListItems(
 	if (needsPagination && renderedCount < totalCount) {
 		const loadMoreContainer = container.createDiv({ cls: 'crc-load-more-container' });
 		const loadMoreBtn = new ButtonComponent(loadMoreContainer)
-			.setButtonText(`Load more (${renderedCount} of ${totalCount} shown)`)
+			.setButtonText(`加载更多（已显示 ${renderedCount} / ${totalCount}）`)
 			.onClick(() => {
 				const newRendered = renderBatch(renderedCount, PERSON_LIST_PAGE_SIZE);
 				renderedCount += newRendered;
@@ -1331,7 +1330,7 @@ function renderPersonListItems(
 				if (renderedCount >= totalCount) {
 					loadMoreContainer.remove();
 				} else {
-					loadMoreBtn.setButtonText(`Load more (${renderedCount} of ${totalCount} shown)`);
+					loadMoreBtn.setButtonText(`加载更多（已显示 ${renderedCount} / ${totalCount}）`);
 				}
 			});
 	}
@@ -1373,7 +1372,7 @@ function renderPersonTableRow(
 	if (person.mediaCount > 0) {
 		const mediaBadge = mediaCell.createEl('span', {
 			cls: 'crc-person-list-badge crc-person-list-badge--media',
-			attr: { title: `${person.mediaCount} media file${person.mediaCount !== 1 ? 's' : ''}` }
+			attr: { title: `${person.mediaCount} 个媒体文件` }
 		});
 		const mediaIcon = createLucideIcon('image', 12);
 		mediaBadge.appendChild(mediaIcon);
@@ -1403,8 +1402,8 @@ function renderPersonTableRow(
 				cls: 'crc-person-list-badge crc-person-list-badge--timeline',
 				attr: {
 					title: summary.dateRange
-						? `${summary.count} events (${summary.dateRange})`
-						: `${summary.count} events`
+						? `${summary.count} 个事件（${summary.dateRange}）`
+						: `${summary.count} 个事件`
 				}
 			});
 			const calendarIcon = createLucideIcon('calendar', 12);
@@ -1428,8 +1427,8 @@ function renderPersonTableRow(
 				cls: 'crc-person-list-badge crc-person-list-badge--family-timeline',
 				attr: {
 					title: familySummary.dateRange
-						? `Family: ${familySummary.totalEvents} events, ${familySummary.memberCount} members (${familySummary.dateRange})`
-						: `Family: ${familySummary.totalEvents} events, ${familySummary.memberCount} members`
+						? `家族：${familySummary.totalEvents} 个事件，${familySummary.memberCount} 位成员（${familySummary.dateRange}）`
+						: `家族：${familySummary.totalEvents} 个事件，${familySummary.memberCount} 位成员`
 				}
 			});
 			const usersIcon = createLucideIcon('users', 12);
@@ -1459,7 +1458,7 @@ function renderPersonTableRow(
 		const badge = actionsCell.createEl('span', {
 			cls: 'crc-person-list-badge crc-person-list-badge--unlinked',
 			attr: {
-				title: `${unlinkedPlaces.length} unlinked place${unlinkedPlaces.length !== 1 ? 's' : ''}: ${unlinkedPlaces.map(p => p.info.placeName).join(', ')}`
+				title: `${unlinkedPlaces.length} 个未关联地点：${unlinkedPlaces.map(p => p.info.placeName).join('、')}`
 			}
 		});
 		const mapIcon = createLucideIcon('map-pin', 12);
@@ -1492,7 +1491,7 @@ function renderPersonTableRow(
 			const coverageBadge = actionsCell.createEl('span', {
 				cls: badgeClass,
 				attr: {
-					title: `Research coverage: ${coverage.coveragePercent}% (${coverage.sourcedFactCount}/${coverage.totalFactCount} facts sourced)`
+					title: `研究覆盖率：${coverage.coveragePercent}%（已溯源 ${coverage.sourcedFactCount}/${coverage.totalFactCount} 项事实）`
 				}
 			});
 			const bookIcon = createLucideIcon('book-open', 12);
@@ -1504,7 +1503,7 @@ function renderPersonTableRow(
 	// Open note button
 	const openBtn = actionsCell.createEl('button', {
 		cls: 'crc-person-table__open-btn clickable-icon',
-		attr: { 'aria-label': 'Open note' }
+		attr: { 'aria-label': '打开笔记' }
 	});
 	const fileIcon = createLucideIcon('file-text', 14);
 	openBtn.appendChild(fileIcon);
@@ -1557,7 +1556,7 @@ function renderPersonTableRow(
 
 				spouseMetadata.push({
 					crId: crId || '',
-					name: name || crId || `Spouse ${i}`,
+					name: name || crId || `配偶${i}`,
 					marriageDate: fm[`spouse${i}_marriage_date`] as string | undefined,
 					marriageLocation: normalizeMarriageLocation(fm[`spouse${i}_marriage_location`]),
 					marriageStatus: fm[`spouse${i}_marriage_status`] as SpouseMetadata['marriageStatus'],
@@ -1729,7 +1728,7 @@ function showUnlinkedPlacesMenu(
 	for (const { type, info } of unlinkedPlaces) {
 		menu.addItem((item) => {
 			item
-				.setTitle(`Create "${info.placeName}" (${type.toLowerCase()})`)
+				.setTitle(`创建"${info.placeName}"（${type === 'Birth' ? '出生' : type === 'Death' ? '去世' : '安葬'}）`)
 				.setIcon('map-pin')
 				.onClick(() => {
 					void options.showQuickCreatePlaceModal(info.placeName);
@@ -1764,7 +1763,7 @@ function showPersonContextMenu(
 	// Open actions
 	menu.addItem((item) => {
 		item
-			.setTitle('Open note')
+			.setTitle('打开笔记')
 			.setIcon('file')
 			.onClick(async () => {
 				await plugin.trackRecentFile(person.file, 'person');
@@ -1774,7 +1773,7 @@ function showPersonContextMenu(
 
 	menu.addItem((item) => {
 		item
-			.setTitle('Open in new tab')
+			.setTitle('在新标签页中打开')
 			.setIcon('file-plus')
 			.onClick(async () => {
 				await plugin.trackRecentFile(person.file, 'person');
@@ -1784,7 +1783,7 @@ function showPersonContextMenu(
 
 	menu.addItem((item) => {
 		item
-			.setTitle('Show in Family Chart')
+			.setTitle('在家族图表中显示')
 			.setIcon('git-fork')
 			.onClick(() => {
 				closeModal();
@@ -1798,13 +1797,13 @@ function showPersonContextMenu(
 	if (useSubmenu) {
 		menu.addItem((item) => {
 			item
-				.setTitle('Events')
+				.setTitle('事件')
 				.setIcon('calendar');
 			const submenu = item.setSubmenu();
 
 			submenu.addItem((subitem) => {
 				subitem
-					.setTitle('Create event for this person')
+					.setTitle('为此人物创建事件')
 					.setIcon('calendar-plus')
 					.onClick(() => {
 						const eventService = plugin.getEventService();
@@ -1824,7 +1823,7 @@ function showPersonContextMenu(
 
 			submenu.addItem((subitem) => {
 				subitem
-					.setTitle('Export timeline to Canvas')
+					.setTitle('将时间轴导出为 Canvas')
 					.setIcon('layout')
 					.onClick(() => {
 						void exportPersonTimeline(person, 'canvas', options);
@@ -1833,7 +1832,7 @@ function showPersonContextMenu(
 
 			submenu.addItem((subitem) => {
 				subitem
-					.setTitle('Export timeline to Excalidraw')
+					.setTitle('将时间轴导出为 Excalidraw')
 					.setIcon('edit')
 					.onClick(() => {
 						void exportPersonTimeline(person, 'excalidraw', options);
@@ -1844,7 +1843,7 @@ function showPersonContextMenu(
 		// Mobile: flat menu with descriptive titles
 		menu.addItem((item) => {
 			item
-				.setTitle('Create event for this person')
+				.setTitle('为此人物创建事件')
 				.setIcon('calendar-plus')
 				.onClick(() => {
 					const eventService = plugin.getEventService();
@@ -1864,7 +1863,7 @@ function showPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Export timeline to Canvas')
+				.setTitle('将时间轴导出为 Canvas')
 				.setIcon('layout')
 				.onClick(() => {
 					void exportPersonTimeline(person, 'canvas', options);
@@ -1873,7 +1872,7 @@ function showPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Export timeline to Excalidraw')
+				.setTitle('将时间轴导出为 Excalidraw')
 				.setIcon('edit')
 				.onClick(() => {
 					void exportPersonTimeline(person, 'excalidraw', options);
@@ -1885,13 +1884,13 @@ function showPersonContextMenu(
 	if (useSubmenu) {
 		menu.addItem((item) => {
 			item
-				.setTitle('Media')
+				.setTitle('媒体')
 				.setIcon('image');
 			const submenu = item.setSubmenu();
 
 			submenu.addItem((subitem) => {
 				subitem
-					.setTitle('Link media...')
+					.setTitle('关联媒体…')
 					.setIcon('image-plus')
 					.onClick(() => {
 						plugin.openLinkMediaModal(person.file, 'person', person.name);
@@ -1900,7 +1899,7 @@ function showPersonContextMenu(
 
 			submenu.addItem((subitem) => {
 				subitem
-					.setTitle('Manage media...')
+					.setTitle('管理媒体…')
 					.setIcon('images')
 					.onClick(() => {
 						openManageMediaModal(plugin, person.file, 'person', person.name);
@@ -1911,7 +1910,7 @@ function showPersonContextMenu(
 		// Mobile: flat menu with descriptive titles
 		menu.addItem((item) => {
 			item
-				.setTitle('Link media...')
+				.setTitle('关联媒体…')
 				.setIcon('image-plus')
 				.onClick(() => {
 					plugin.openLinkMediaModal(person.file, 'person', person.name);
@@ -1920,7 +1919,7 @@ function showPersonContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Manage media...')
+				.setTitle('管理媒体…')
 				.setIcon('images')
 				.onClick(() => {
 					openManageMediaModal(plugin, person.file, 'person', person.name);
@@ -1940,7 +1939,7 @@ function showPersonLinkContextMenu(file: TFile, event: MouseEvent, options: Peop
 
 	menu.addItem((item) => {
 		item
-			.setTitle('Open')
+			.setTitle('打开')
 			.setIcon('file')
 			.onClick(async () => {
 				await plugin.trackRecentFile(file, 'person');
@@ -1950,7 +1949,7 @@ function showPersonLinkContextMenu(file: TFile, event: MouseEvent, options: Peop
 
 	menu.addItem((item) => {
 		item
-			.setTitle('Open in new tab')
+			.setTitle('在新标签页中打开')
 			.setIcon('file-plus')
 			.onClick(async () => {
 				await plugin.trackRecentFile(file, 'person');
@@ -1960,7 +1959,7 @@ function showPersonLinkContextMenu(file: TFile, event: MouseEvent, options: Peop
 
 	menu.addItem((item) => {
 		item
-			.setTitle('Open in new window')
+			.setTitle('在新窗口中打开')
 			.setIcon('external-link')
 			.onClick(async () => {
 				await plugin.trackRecentFile(file, 'person');
@@ -1990,7 +1989,7 @@ async function exportPersonTimeline(
 	const { app, plugin } = options;
 	const eventService = plugin.getEventService();
 	if (!eventService) {
-		new Notice('Event service not available');
+		new Notice('事件服务不可用');
 		return;
 	}
 
@@ -2007,7 +2006,7 @@ async function exportPersonTimeline(
 	});
 
 	if (personEvents.length === 0) {
-		new Notice(`No events found for ${person.name}`);
+		new Notice(`未找到${person.name}的事件`);
 		return;
 	}
 
@@ -2031,7 +2030,7 @@ async function exportPersonTimeline(
 
 				const canvasFile = app.vault.getAbstractFileByPath(result.path);
 				if (!(canvasFile instanceof TFile)) {
-					throw new Error('Canvas file not found after export');
+					throw new Error('导出后未找到画布文件');
 				}
 
 				const excalidrawResult = await excalidrawExporter.exportToExcalidraw({
@@ -2043,27 +2042,27 @@ async function exportPersonTimeline(
 				if (excalidrawResult.success && excalidrawResult.excalidrawContent) {
 					const excalidrawPath = result.path.replace('.canvas', '.excalidraw.md');
 					await app.vault.create(excalidrawPath, excalidrawResult.excalidrawContent);
-					new Notice(`Timeline exported to ${excalidrawPath}`);
+					new Notice(`时间轴已导出至 ${excalidrawPath}`);
 					const file = app.vault.getAbstractFileByPath(excalidrawPath);
 					if (file instanceof TFile) {
 						void app.workspace.getLeaf(false).openFile(file);
 					}
 				} else {
-					new Notice(`Excalidraw export failed: ${excalidrawResult.errors?.join(', ') || 'Unknown error'}`);
+					new Notice(`Excalidraw 导出失败：${excalidrawResult.errors?.join('、') || '未知错误'}`);
 				}
 			} else {
-				new Notice(`Timeline exported to ${result.path}`);
+				new Notice(`时间轴已导出至 ${result.path}`);
 				const file = app.vault.getAbstractFileByPath(result.path);
 				if (file instanceof TFile) {
 					void app.workspace.getLeaf(false).openFile(file);
 				}
 			}
 		} else {
-			new Notice(`Export failed: ${result.error || 'Unknown error'}`);
+			new Notice(`导出失败：${result.error || '未知错误'}`);
 		}
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
-		new Notice(`Export failed: ${message}`);
+		new Notice(`导出失败：${message}`);
 	}
 }
 

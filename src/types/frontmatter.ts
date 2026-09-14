@@ -27,13 +27,13 @@ export type ResearchLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
  * Research level metadata for display purposes
  */
 export const RESEARCH_LEVELS: Record<ResearchLevel, { name: string; description: string }> = {
-	0: { name: 'Unidentified', description: 'Ancestor exists but no name established' },
-	1: { name: 'Name Only', description: 'Name known, appears in others\' records' },
-	2: { name: 'Vital Statistics', description: 'Birth, marriage, death dates researched' },
-	3: { name: 'Life Events', description: 'Occupations, residences, children documented' },
-	4: { name: 'Extended Records', description: 'Property, military, legal records researched' },
-	5: { name: 'GPS Complete', description: 'Exhaustive research, written proof summary' },
-	6: { name: 'Biography', description: 'Full narrative with historical context' }
+	0: { name: '未识别', description: '祖先存在但尚未确定姓名' },
+	1: { name: '仅有姓名', description: '已知姓名，出现在他人记录中' },
+	2: { name: '重要统计', description: '已研究生卒与婚姻日期' },
+	3: { name: '生平事件', description: '已记录职业、居所、子女' },
+	4: { name: '扩展记录', description: '已研究财产、军事、法律记录' },
+	5: { name: 'GPS 完整', description: '研究详尽，有书面证明摘要' },
+	6: { name: '传记', description: '含历史背景的完整叙事' }
 };
 
 /**

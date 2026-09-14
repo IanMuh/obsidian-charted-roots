@@ -37,29 +37,29 @@ export type HighlightColor =
 	| 'orange' | 'pink' | 'cyan' | 'indigo' | 'lime' | 'brown';
 
 export const HIGHLIGHT_FIELDS: { value: HighlightField; label: string }[] = [
-	{ value: 'sex', label: 'Sex' },
-	{ value: 'occupation', label: 'Occupation' },
-	{ value: 'title', label: 'Title' },
-	{ value: 'religion', label: 'Religion' },
-	{ value: 'caste', label: 'Caste' },
-	{ value: 'nationality', label: 'Nationality' },
-	{ value: 'universe', label: 'Universe' },
-	{ value: 'group_name', label: 'Collection' }
+	{ value: 'sex', label: '性别' },
+	{ value: 'occupation', label: '职业' },
+	{ value: 'title', label: '头衔' },
+	{ value: 'religion', label: '宗教' },
+	{ value: 'caste', label: '种姓' },
+	{ value: 'nationality', label: '国籍' },
+	{ value: 'universe', label: '宇宙' },
+	{ value: 'group_name', label: '合集' }
 ];
 
 export const HIGHLIGHT_COLORS: { value: HighlightColor; label: string; hex: string }[] = [
-	{ value: 'gold', label: 'Gold', hex: '#d4a017' },
-	{ value: 'orange', label: 'Orange', hex: '#f97316' },
-	{ value: 'red', label: 'Red', hex: '#ef4444' },
-	{ value: 'pink', label: 'Pink', hex: '#ec4899' },
-	{ value: 'purple', label: 'Purple', hex: '#a855f7' },
-	{ value: 'indigo', label: 'Indigo', hex: '#6366f1' },
-	{ value: 'blue', label: 'Blue', hex: '#3b82f6' },
-	{ value: 'cyan', label: 'Cyan', hex: '#06b6d4' },
-	{ value: 'teal', label: 'Teal', hex: '#14b8a6' },
-	{ value: 'green', label: 'Green', hex: '#22c55e' },
-	{ value: 'lime', label: 'Lime', hex: '#84cc16' },
-	{ value: 'brown', label: 'Brown', hex: '#a16207' }
+	{ value: 'gold', label: '金色', hex: '#d4a017' },
+	{ value: 'orange', label: '橙色', hex: '#f97316' },
+	{ value: 'red', label: '红色', hex: '#ef4444' },
+	{ value: 'pink', label: '粉色', hex: '#ec4899' },
+	{ value: 'purple', label: '紫色', hex: '#a855f7' },
+	{ value: 'indigo', label: '靛蓝', hex: '#6366f1' },
+	{ value: 'blue', label: '蓝色', hex: '#3b82f6' },
+	{ value: 'cyan', label: '青色', hex: '#06b6d4' },
+	{ value: 'teal', label: '蓝绿色', hex: '#14b8a6' },
+	{ value: 'green', label: '绿色', hex: '#22c55e' },
+	{ value: 'lime', label: '黄绿色', hex: '#84cc16' },
+	{ value: 'brown', label: '棕色', hex: '#a16207' }
 ];
 
 export const MAX_HIGHLIGHT_GROUPS = 3;

@@ -42,9 +42,9 @@ export interface CycleEventNote {
  * events involved (#721).
  */
 export function formatCycleEvents(titles: string[], max = 5): string {
-	const shown = titles.slice(0, max).map(t => `"${t}"`).join(', ');
+	const shown = titles.slice(0, max).map(t => `"${t}"`).join('、');
 	const extra = titles.length - max;
-	return extra > 0 ? `${shown}, and ${extra} more` : shown;
+	return extra > 0 ? `${shown} 等另外 ${extra} 个` : shown;
 }
 
 /**
@@ -246,7 +246,7 @@ export async function computeSortOrder(
 				result.updatedCount++;
 			} catch (error) {
 				const errorMsg = error instanceof Error ? error.message : String(error);
-				result.errors.push(`Failed to update ${event.title}: ${errorMsg}`);
+				result.errors.push(`更新 ${event.title} 失败：${errorMsg}`);
 				logger.error('computeSortOrder', `Failed to update ${event.filePath}`, error);
 			}
 		}

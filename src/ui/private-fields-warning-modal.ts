@@ -8,7 +8,6 @@
 import { App, Modal } from 'obsidian';
 import { createLucideIcon } from './lucide-icons';
 import type { PrivateFieldSummary } from '../core/privacy-service';
-import { pluralize } from '../utils/format-utils';
 
 /**
  * User decision for handling private fields in export
@@ -40,13 +39,13 @@ export class PrivateFieldsWarningModal extends Modal {
 		iconContainer.appendChild(warningIcon);
 
 		header.createEl('h2', {
-			text: 'Export contains private fields',
+			text: '导出内容包含私密字段',
 			cls: 'cr-private-fields-warning__title'
 		});
 
 		// Description
 		contentEl.createEl('p', {
-			text: 'The following fields are marked as private and will be included in this export:',
+			text: '以下字段被标记为私密，将包含在本次导出中：',
 			cls: 'cr-private-fields-warning__description'
 		});
 
@@ -64,7 +63,7 @@ export class PrivateFieldsWarningModal extends Modal {
 			});
 
 			row.createEl('span', {
-				text: `(${item.peopleCount} ${pluralize(item.peopleCount, 'person', 'people')})`,
+				text: `（${item.peopleCount} 位人物）`,
 				cls: 'cr-private-fields-warning__count'
 			});
 		}
@@ -74,7 +73,7 @@ export class PrivateFieldsWarningModal extends Modal {
 		const infoIcon = createLucideIcon('info', 16);
 		infoNote.appendChild(infoIcon);
 		infoNote.createEl('span', {
-			text: 'Private fields may contain sensitive information like previous names, medical notes, or personal details.'
+			text: '私密字段可能包含敏感信息，如曾用名、医疗记录或个人详情。'
 		});
 
 		// Button container
@@ -82,7 +81,7 @@ export class PrivateFieldsWarningModal extends Modal {
 
 		// Include button (primary warning)
 		const includeBtn = buttonContainer.createEl('button', {
-			text: 'Include private fields',
+			text: '包含私密字段',
 			cls: 'mod-warning'
 		});
 		includeBtn.addEventListener('click', () => {
@@ -91,7 +90,7 @@ export class PrivateFieldsWarningModal extends Modal {
 
 		// Exclude button (primary safe)
 		const excludeBtn = buttonContainer.createEl('button', {
-			text: 'Exclude private fields',
+			text: '排除私密字段',
 			cls: 'mod-cta'
 		});
 		excludeBtn.addEventListener('click', () => {
@@ -100,7 +99,7 @@ export class PrivateFieldsWarningModal extends Modal {
 
 		// Cancel button
 		const cancelBtn = buttonContainer.createEl('button', {
-			text: 'Cancel export'
+			text: '取消导出'
 		});
 		cancelBtn.addEventListener('click', () => {
 			this.resolve('cancel');

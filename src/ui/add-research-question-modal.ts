@@ -19,15 +19,15 @@ export class AddResearchQuestionModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass('crc-add-research-question-modal');
 
-		contentEl.createEl('h2', { text: 'Add research question' });
+		contentEl.createEl('h2', { text: '添加研究问题' });
 
 		const form = contentEl.createDiv({ cls: 'crc-form' });
 
 		new Setting(form)
-			.setName('Research question')
-			.setDesc('What needs to be researched for this entity?')
+			.setName('研究问题')
+			.setDesc('需要为该实体研究什么？')
 			.addText(text => {
-				text.setPlaceholder('e.g., Find birth certificate');
+				text.setPlaceholder('例如：查找出生证明');
 				this.inputEl = text.inputEl;
 				// Focus and handle Enter key
 				text.inputEl.addEventListener('keydown', (e: KeyboardEvent) => {
@@ -40,7 +40,7 @@ export class AddResearchQuestionModal extends Modal {
 
 		new Setting(form)
 			.addButton(btn => btn
-				.setButtonText('Add question')
+				.setButtonText('添加问题')
 				.setCta()
 				.onClick(() => void this.submit()));
 

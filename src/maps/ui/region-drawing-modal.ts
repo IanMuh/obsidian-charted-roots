@@ -67,9 +67,9 @@ export class RegionDrawingModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass('cr-region-drawing-modal');
 
-		contentEl.createEl('h2', { text: 'Draw child map region' });
+		contentEl.createEl('h2', { text: '绘制子地图区域' });
 		contentEl.createEl('p', {
-			text: `Draw the region on "${this.parentMapConfig.name}" where "${this.childMapName}" is located. Click and drag to draw a rectangle, or adjust the existing one.`,
+			text: `在“${this.parentMapConfig.name}”上绘制“${this.childMapName}”所在的区域。点击并拖动以绘制矩形，或调整现有矩形。`,
 			cls: 'cr-region-drawing-modal__desc'
 		});
 
@@ -85,7 +85,7 @@ export class RegionDrawingModal extends Modal {
 		// Buttons
 		const footer = contentEl.createDiv({ cls: 'cr-region-drawing-modal__footer' });
 
-		const clearBtn = footer.createEl('button', { text: 'Clear region' });
+		const clearBtn = footer.createEl('button', { text: '清除区域' });
 		clearBtn.addEventListener('click', () => {
 			this.initDefaultRect();
 			this.renderCanvas();
@@ -94,10 +94,10 @@ export class RegionDrawingModal extends Modal {
 
 		const btnGroup = footer.createDiv({ cls: 'cr-region-drawing-modal__buttons' });
 
-		const cancelBtn = btnGroup.createEl('button', { text: 'Cancel' });
+		const cancelBtn = btnGroup.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
-		const saveBtn = btnGroup.createEl('button', { text: 'Save region', cls: 'mod-cta' });
+		const saveBtn = btnGroup.createEl('button', { text: '保存区域', cls: 'mod-cta' });
 		saveBtn.addEventListener('click', () => {
 			this.saveRegion();
 		});
@@ -107,7 +107,7 @@ export class RegionDrawingModal extends Modal {
 		const imageUrl = await resolveImageToUrl(this.app, this.parentMapConfig.imagePath);
 		if (!imageUrl) {
 			container.createEl('p', {
-				text: 'Failed to load parent map image',
+				text: '加载父地图图片失败',
 				cls: 'cr-region-drawing-modal__error'
 			});
 			return;
@@ -163,7 +163,7 @@ export class RegionDrawingModal extends Modal {
 
 		img.onerror = () => {
 			container.createEl('p', {
-				text: 'Failed to load parent map image',
+				text: '加载父地图图片失败',
 				cls: 'cr-region-drawing-modal__error'
 			});
 		};
@@ -346,7 +346,7 @@ export class RegionDrawingModal extends Modal {
 		if (!this.coordDisplay) return;
 		const r = this.regionRect;
 		this.coordDisplay.setText(
-			`Region: x=${r.x}, y=${r.y}, w=${r.w}, h=${r.h}`
+			`区域：x=${r.x}, y=${r.y}, w=${r.w}, h=${r.h}`
 		);
 	}
 
@@ -379,7 +379,7 @@ export class RegionDrawingModal extends Modal {
 		const result = this.imageToBoundsCoords(this.regionRect);
 
 		this.onSave(result);
-		new Notice('Child map region saved');
+		new Notice('子地图区域已保存');
 		this.close();
 	}
 

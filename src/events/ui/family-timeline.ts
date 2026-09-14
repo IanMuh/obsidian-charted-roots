@@ -91,7 +91,7 @@ function sortEventsChronologically(events: FamilyEvent[]): FamilyEvent[] {
  */
 function formatDateForDisplay(event: EventNote): string {
 	if (!event.date) {
-		return 'Date unknown';
+		return '日期未知';
 	}
 
 	let dateStr = formatDisplayDate(event.date);
@@ -106,8 +106,8 @@ function formatDateForDisplay(event: EventNote): string {
 	const hasQualifier = /^(c\.|before|after|\d{4}–\d{4})/.test(dateStr);
 	if (!hasQualifier && event.datePrecision && event.datePrecision !== 'exact') {
 		const precisionLabel = DATE_PRECISION_LABELS[event.datePrecision];
-		if (precisionLabel && precisionLabel !== 'Exact date') {
-			dateStr += ` (${precisionLabel.toLowerCase()})`;
+		if (precisionLabel && precisionLabel !== '精确日期') {
+			dateStr += `（${precisionLabel}）`;
 		}
 	}
 
@@ -122,9 +122,9 @@ function getRelationshipLabel(relationship: 'self' | 'spouse' | 'child', personN
 		case 'self':
 			return personName;
 		case 'spouse':
-			return `${personName} (spouse)`;
+			return `${personName}（配偶）`;
 		case 'child':
-			return `${personName} (child)`;
+			return `${personName}（子女）`;
 	}
 }
 
@@ -165,7 +165,7 @@ export function renderFamilyTimeline(
 
 	if (!focalPerson) {
 		if (options?.showEmptyState !== false) {
-			renderEmptyState(container, 'Person not found in family graph.');
+			renderEmptyState(container, '家族关系图中未找到该人物。');
 		}
 		return;
 	}
@@ -233,7 +233,7 @@ export function renderFamilyTimeline(
 	// Empty state
 	if (displayEvents.length === 0) {
 		if (options?.showEmptyState !== false) {
-			renderEmptyState(container, 'No family events recorded.');
+			renderEmptyState(container, '未记录家族事件。');
 		}
 		return;
 	}
@@ -259,7 +259,7 @@ export function renderFamilyTimeline(
 	if (options?.maxEvents && sortedEvents.length > options.maxEvents) {
 		const moreIndicator = container.createDiv({ cls: 'crc-family-timeline__more' });
 		moreIndicator.createEl('span', {
-			text: `+ ${sortedEvents.length - options.maxEvents} more events`,
+			text: `另有 ${sortedEvents.length - options.maxEvents} 个事件`,
 			cls: 'crc-text--muted'
 		});
 	}
@@ -423,7 +423,7 @@ function renderFamilyTimelineEvent(
 
 	if (event.sources && event.sources.length > 0) {
 		const sourceCount = event.sources.length;
-		details.push(`${sourceCount} source${sourceCount !== 1 ? 's' : ''}`);
+		details.push(`${sourceCount} 个来源`);
 	}
 
 	if (details.length > 0) {
@@ -439,7 +439,7 @@ function renderFamilyTimelineEvent(
 		const warningRow = content.createDiv({ cls: 'crc-family-timeline-event__warning' });
 		const warningIcon = createLucideIcon('alert-triangle', 12);
 		warningRow.appendChild(warningIcon);
-		warningRow.appendText(event.confidence === 'low' ? 'Low confidence' : 'Confidence unknown');
+		warningRow.appendText(event.confidence === 'low' ? '低置信度' : '置信度未知');
 	}
 }
 

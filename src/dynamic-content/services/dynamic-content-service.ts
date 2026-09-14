@@ -541,7 +541,7 @@ export class DynamicContentService {
 
 			const matches = content.match(blockPattern);
 			if (!matches || matches.length === 0) {
-				new Notice(`Could not find ${blockType} block in file`);
+				new Notice(`文件中未找到 ${blockType} 块`);
 				return false;
 			}
 
@@ -549,16 +549,16 @@ export class DynamicContentService {
 			const newContent = content.replace(blockPattern, markdown);
 
 			if (newContent === content) {
-				new Notice('No changes made');
+				new Notice('未做任何更改');
 				return false;
 			}
 
 			await this.plugin.app.vault.modify(file, newContent);
-			new Notice('Block frozen to Markdown');
+			new Notice('块已冻结为 Markdown');
 			return true;
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			new Notice(`Failed to freeze block: ${message}`);
+			new Notice(`冻结块失败：${message}`);
 			return false;
 		}
 	}

@@ -113,7 +113,7 @@ export class CreateOrganizationModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass('cr-create-org-modal');
 
-		contentEl.createEl('h2', { text: this.editMode ? 'Edit organization' : 'Create organization' });
+		contentEl.createEl('h2', { text: this.editMode ? '编辑组织' : '创建组织' });
 
 		// Check for persisted state (only in create mode)
 		if (this.persistence && !this.editMode) {
@@ -144,18 +144,18 @@ export class CreateOrganizationModal extends Modal {
 
 		// Name
 		new Setting(contentEl)
-			.setName('Name')
-			.setDesc('Display name for the organization')
+			.setName('名称')
+			.setDesc('组织的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., House Stark')
+				.setPlaceholder('例如：史塔克家族')
 				.setValue(this.name)
 				.onChange(value => this.name = value));
 
 		// Organization type
 		const allOrgTypes = getAllOrganizationTypes(this.plugin.settings.customOrganizationTypes || []);
 		new Setting(contentEl)
-			.setName('Type')
-			.setDesc('Category of organization')
+			.setName('类型')
+			.setDesc('组织的分类')
 			.addDropdown(dropdown => {
 				for (const typeDef of allOrgTypes) {
 					dropdown.addOption(typeDef.id, typeDef.name);
@@ -184,12 +184,12 @@ export class CreateOrganizationModal extends Modal {
 			rolesContainer.empty();
 
 			const roleSetting = new Setting(rolesContainer)
-				.setName('Roles')
-				.setDesc('Define valid roles for members (in display order)');
+				.setName('角色')
+				.setDesc('定义成员的可用角色（按显示顺序）');
 
 			let addInput: HTMLInputElement | null = null;
 			roleSetting.addText(text => {
-				text.setPlaceholder('Add a role...');
+				text.setPlaceholder('添加角色…');
 				addInput = text.inputEl;
 				text.inputEl.addEventListener('keydown', (e: KeyboardEvent) => {
 					if (e.key === 'Enter') {
@@ -205,7 +205,7 @@ export class CreateOrganizationModal extends Modal {
 			});
 			roleSetting.addButton(btn => btn
 				.setIcon('plus')
-				.setTooltip('Add role')
+				.setTooltip('添加角色')
 				.onClick(() => {
 					if (!addInput) return;
 					const value = addInput.value.trim();
@@ -223,7 +223,7 @@ export class CreateOrganizationModal extends Modal {
 					chip.createSpan({ text: this.roles[i] });
 					const removeBtn = chip.createEl('button', {
 						cls: 'cr-roles-chip__remove',
-						attr: { 'aria-label': `Remove ${this.roles[i]}` }
+						attr: { 'aria-label': `移除 ${this.roles[i]}` }
 					});
 					removeBtn.textContent = '\u00d7';
 					const idx = i;
@@ -243,68 +243,68 @@ export class CreateOrganizationModal extends Modal {
 		// `updateOrganization` re-canonicalizes via createSmartWikilink on
 		// save (idempotent when already canonical).
 		new Setting(contentEl)
-			.setName('Parent organization')
-			.setDesc('Optional parent in the hierarchy (wikilink)')
+			.setName('上级组织')
+			.setDesc('层级中的可选上级（wikilink）')
 			.addText(text => text
-				.setPlaceholder('[[Parent Org]]')
+				.setPlaceholder('[[上级组织]]')
 				.setValue(extractDisplayLabel(this.parentOrg))
 				.onChange(value => this.parentOrg = value));
 
 		// Universe
 		new Setting(contentEl)
-			.setName('Universe')
-			.setDesc('Optional universe scope (e.g., Westeros, Middle-earth)')
+			.setName('宇宙')
+			.setDesc('可选的宇宙范围（例如：维斯特洛、中土世界）')
 			.addText(text => text
-				.setPlaceholder('e.g., Westeros')
+				.setPlaceholder('例如：维斯特洛')
 				.setValue(this.universe)
 				.onChange(value => this.universe = value));
 
 		// Collapsible optional details
 		const detailsEl = contentEl.createEl('details', { cls: 'cr-create-org-details' });
-		detailsEl.createEl('summary', { text: 'Optional details' });
+		detailsEl.createEl('summary', { text: '可选详情' });
 
 		// Founded
 		new Setting(detailsEl)
-			.setName('Founded')
-			.setDesc('Founding date (supports fictional dates)')
+			.setName('成立')
+			.setDesc('成立日期（支持虚构日期）')
 			.addText(text => text
-				.setPlaceholder('e.g., Age of Heroes, TA 2000')
+				.setPlaceholder('例如：英雄纪元、TA 2000')
 				.setValue(this.founded)
 				.onChange(value => this.founded = value));
 
 		// Dissolved
 		new Setting(detailsEl)
-			.setName('Dissolved')
-			.setDesc('Date the organization dissolved (supports fictional dates)')
+			.setName('解散')
+			.setDesc('组织解散的日期（支持虚构日期）')
 			.addText(text => text
-				.setPlaceholder('e.g., TA 2050')
+				.setPlaceholder('例如：TA 2050')
 				.setValue(this.dissolved)
 				.onChange(value => this.dissolved = value));
 
 		// Motto
 		new Setting(detailsEl)
-			.setName('Motto')
-			.setDesc('Organization motto or slogan')
+			.setName('格言')
+			.setDesc('组织的格言或口号')
 			.addText(text => text
-				.setPlaceholder('e.g., Winter is Coming')
+				.setPlaceholder('例如：凛冬将至')
 				.setValue(this.motto)
 				.onChange(value => this.motto = value));
 
 		// Seat. Same display-cleanup + writer-rewrap pattern as parent_org
 		// above (#549).
 		new Setting(detailsEl)
-			.setName('Seat')
-			.setDesc('Primary location (wikilink to place note)')
+			.setName('驻地')
+			.setDesc('主要地点（指向地点笔记的 wikilink）')
 			.addText(text => text
-				.setPlaceholder('[[Winterfell]]')
+				.setPlaceholder('[[临冬城]]')
 				.setValue(extractDisplayLabel(this.seat))
 				.onChange(value => this.seat = value));
 
 		// Folder (only in create mode)
 		if (!this.editMode) {
 			new Setting(detailsEl)
-				.setName('Folder')
-				.setDesc('Folder to create the note in')
+				.setName('文件夹')
+				.setDesc('创建笔记所在的文件夹')
 				.addText(text => text
 					.setPlaceholder('Charted Roots/Organizations')
 					.setValue(this.folder)
@@ -314,11 +314,11 @@ export class CreateOrganizationModal extends Modal {
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-modal-buttons' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const submitBtn = buttonContainer.createEl('button', {
-			text: this.editMode ? 'Save' : 'Create',
+			text: this.editMode ? '保存' : '创建',
 			cls: 'mod-cta'
 		});
 		submitBtn.addEventListener('click', () => {
@@ -382,7 +382,7 @@ export class CreateOrganizationModal extends Modal {
 
 	private async createOrganization(): Promise<void> {
 		if (!this.name.trim()) {
-			new Notice('Please enter an organization name');
+			new Notice('请输入组织名称');
 			return;
 		}
 
@@ -408,18 +408,18 @@ export class CreateOrganizationModal extends Modal {
 			this.close();
 			this.onSuccess();
 		} catch (error) {
-			new Notice(`Failed to create organization: ${error}`);
+			new Notice(`创建组织失败：${error}`);
 		}
 	}
 
 	private async updateOrganization(): Promise<void> {
 		if (!this.name.trim()) {
-			new Notice('Please enter an organization name');
+			new Notice('请输入组织名称');
 			return;
 		}
 
 		if (!this.editingFile) {
-			new Notice('No file to update');
+			new Notice('没有可更新的文件');
 			return;
 		}
 
@@ -440,7 +440,7 @@ export class CreateOrganizationModal extends Modal {
 			this.close();
 			this.onSuccess();
 		} catch (error) {
-			new Notice(`Failed to update organization: ${error}`);
+			new Notice(`更新组织失败：${error}`);
 		}
 	}
 }

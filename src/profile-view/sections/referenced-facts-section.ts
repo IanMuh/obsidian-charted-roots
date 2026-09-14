@@ -8,6 +8,7 @@
 import type { App } from 'obsidian';
 import type { ReferencedFactGroup, SectionToggleFn, EntityLinkClickFn, SectionState } from '../profile-types';
 import { renderProfileSection } from './section-base';
+import { FACT_KEY_LABELS, type FactKey } from '../../sources/types/source-types';
 
 interface ReferencedFactsSectionOptions {
 	sectionStates: SectionState;
@@ -24,12 +25,12 @@ export function renderReferencedFactsSection(
 	const totalFacts = factGroups.reduce((sum, g) => sum + g.facts.length, 0);
 	const entityCount = factGroups.length;
 	const summary = totalFacts > 0
-		? `${totalFacts} fact${totalFacts !== 1 ? 's' : ''} across ${entityCount} entit${entityCount !== 1 ? 'ies' : 'y'}`
-		: 'No references found';
+		? `共 ${totalFacts} 项事实，涉及 ${entityCount} 个实体`
+		: '未找到引用';
 
 	const content = renderProfileSection(parent, {
 		sectionId: 'referenced-facts',
-		title: 'Referenced facts',
+		title: '被引用的事实',
 		summary,
 		expanded: options.sectionStates['referenced-facts'] ?? true,
 		onToggle: options.onToggle,
@@ -38,7 +39,7 @@ export function renderReferencedFactsSection(
 	if (!content) return;
 
 	if (factGroups.length === 0) {
-		content.createDiv({ cls: 'cr-profile__section-empty', text: 'No entities reference this source' });
+		content.createDiv({ cls: 'cr-profile__section-empty', text: '没有实体引用此来源' });
 		return;
 	}
 
@@ -68,7 +69,7 @@ export function renderReferencedFactsSection(
 		for (const fact of group.facts) {
 			const factRow = factList.createDiv({ cls: 'cr-profile__fact-row' });
 			factRow.createSpan({
-				text: fact.factKey.replace(/_/g, ' '),
+				text: FACT_KEY_LABELS[fact.factKey as FactKey] ?? fact.factKey.replace(/_/g, ' '),
 				cls: 'cr-profile__fact-key'
 			});
 			factRow.createSpan({

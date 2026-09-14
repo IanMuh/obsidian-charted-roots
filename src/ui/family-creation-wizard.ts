@@ -238,7 +238,7 @@ export class FamilyCreationWizardModal extends Modal {
 	/**
 	 * Render header
 	 */
-	private renderHeader(title: string = 'Create Family'): void {
+	private renderHeader(title: string = '创建家族'): void {
 		const { contentEl } = this;
 
 		const header = contentEl.createDiv({ cls: 'crc-modal-header' });
@@ -256,11 +256,11 @@ export class FamilyCreationWizardModal extends Modal {
 		const indicator = contentEl.createDiv({ cls: 'crc-wizard-step-indicator' });
 
 		const steps = [
-			{ num: 1, label: 'Self' },
+			{ num: 1, label: '本人' },
 			{ num: 2, label: getSpouseLabel(this.plugin.settings) },
-			{ num: 3, label: 'Children' },
-			{ num: 4, label: 'Parents' },
-			{ num: 5, label: 'Review' }
+			{ num: 3, label: '子女' },
+			{ num: 4, label: '父母' },
+			{ num: 5, label: '确认' }
 		];
 
 		steps.forEach((step, index) => {
@@ -301,7 +301,7 @@ export class FamilyCreationWizardModal extends Modal {
 
 		if (options.onBack) {
 			new ButtonComponent(footer)
-				.setButtonText(options.backLabel || 'Back')
+				.setButtonText(options.backLabel || '上一步')
 				.onClick(options.onBack);
 		} else {
 			// Spacer
@@ -312,13 +312,13 @@ export class FamilyCreationWizardModal extends Modal {
 
 		if (options.showSkip && options.onSkip) {
 			new ButtonComponent(rightButtons)
-				.setButtonText('Skip')
+				.setButtonText('跳过')
 				.onClick(options.onSkip);
 		}
 
 		if (options.onNext) {
 			const nextBtn = new ButtonComponent(rightButtons)
-				.setButtonText(options.nextLabel || 'Next')
+				.setButtonText(options.nextLabel || '下一步')
 				.setCta()
 				.onClick(options.onNext);
 			if (options.nextDisabled) {
@@ -343,12 +343,12 @@ export class FamilyCreationWizardModal extends Modal {
 		const calloutIcon = callout.createDiv({ cls: 'crc-fw-info-callout-icon' });
 		setIcon(calloutIcon, 'info');
 		callout.createDiv({ cls: 'crc-fw-info-callout-text' }).setText(
-			'This wizard helps you create multiple family members at once and automatically links them together.'
+			'此向导可帮助你一次性创建多位家族成员，并自动将它们链接在一起。'
 		);
 
 		// Mode selection
 		const modeTitle = content.createEl('h3', { cls: 'crc-wizard-section-title' });
-		modeTitle.setText('How would you like to build your family?');
+		modeTitle.setText('你想如何构建家族？');
 
 		const modeCards = content.createDiv({ cls: 'crc-wizard-mode-cards' });
 
@@ -359,9 +359,9 @@ export class FamilyCreationWizardModal extends Modal {
 		}
 		const scratchIcon = scratchCard.createDiv({ cls: 'crc-wizard-mode-card-icon' });
 		setIcon(scratchIcon, 'user-plus');
-		scratchCard.createDiv({ cls: 'crc-wizard-mode-card-title' }).setText('Start from Scratch');
+		scratchCard.createDiv({ cls: 'crc-wizard-mode-card-title' }).setText('从零开始');
 		scratchCard.createDiv({ cls: 'crc-wizard-mode-card-desc' }).setText(
-			'Create yourself first, then add family members step by step'
+			'先创建你自己，然后逐步添加家族成员'
 		);
 		scratchCard.addEventListener('click', () => {
 			this.state.mode = 'scratch';
@@ -376,9 +376,9 @@ export class FamilyCreationWizardModal extends Modal {
 		}
 		const existingIcon = existingCard.createDiv({ cls: 'crc-wizard-mode-card-icon' });
 		setIcon(existingIcon, 'user');
-		existingCard.createDiv({ cls: 'crc-wizard-mode-card-title' }).setText('Build Around Person');
+		existingCard.createDiv({ cls: 'crc-wizard-mode-card-title' }).setText('围绕某人物构建');
 		existingCard.createDiv({ cls: 'crc-wizard-mode-card-desc' }).setText(
-			'Select an existing person to add family members around'
+			'选择一位现有的人物，围绕其添加家族成员'
 		);
 		existingCard.addEventListener('click', () => {
 			this.state.mode = 'existing';
@@ -389,7 +389,7 @@ export class FamilyCreationWizardModal extends Modal {
 		if (this.state.mode === 'existing') {
 			const pickerSection = content.createDiv({ cls: 'crc-wizard-picker-section' });
 			const pickerLabel = pickerSection.createDiv({ cls: 'crc-wizard-picker-label' });
-			pickerLabel.setText('Selected person:');
+			pickerLabel.setText('已选人物：');
 
 			if (this.state.existingCentralPerson) {
 				const personCard = pickerSection.createDiv({ cls: 'crc-wizard-person-card' });
@@ -403,16 +403,16 @@ export class FamilyCreationWizardModal extends Modal {
 
 				const personInfo = personCard.createDiv({ cls: 'crc-wizard-person-card-info' });
 				personInfo.createDiv({ cls: 'crc-wizard-person-card-name' }).setText(
-					this.state.existingCentralPerson.name || 'Unnamed'
+					this.state.existingCentralPerson.name || '未命名'
 				);
 				if (this.state.existingCentralPerson.birthDate) {
 					personInfo.createDiv({ cls: 'crc-wizard-person-card-meta' }).setText(
-						`Born: ${this.state.existingCentralPerson.birthDate}`
+						`出生：${this.state.existingCentralPerson.birthDate}`
 					);
 				}
 
 				const changeBtn = personCard.createEl('button', {
-					text: 'Change',
+					text: '更改',
 					cls: 'crc-btn crc-btn--small'
 				});
 				changeBtn.addEventListener('click', () => {
@@ -424,7 +424,7 @@ export class FamilyCreationWizardModal extends Modal {
 				});
 				const btnIcon = selectBtn.createSpan();
 				setIcon(btnIcon, 'search');
-				selectBtn.appendText(' Select existing person');
+				selectBtn.appendText(' 选择现有的人物');
 				selectBtn.addEventListener('click', () => {
 					this.openPersonPicker();
 				});
@@ -434,11 +434,11 @@ export class FamilyCreationWizardModal extends Modal {
 		// Footer
 		const footer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 		new ButtonComponent(footer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => this.close());
 
 		const startBtn = new ButtonComponent(footer)
-			.setButtonText('Get Started')
+			.setButtonText('开始')
 			.setCta()
 			.onClick(() => {
 				if (this.state.mode === 'existing' && this.state.existingCentralPerson) {
@@ -464,8 +464,8 @@ export class FamilyCreationWizardModal extends Modal {
 				this.render();
 			},
 			{
-				title: 'Select person',
-				subtitle: 'Choose the person to build a family around',
+				title: '选择人物',
+				subtitle: '选择要围绕其构建家族的人物',
 				plugin: this.plugin
 			}
 		);
@@ -485,11 +485,11 @@ export class FamilyCreationWizardModal extends Modal {
 		const content = contentEl.createDiv({ cls: 'crc-wizard-content' });
 
 		const sectionTitle = content.createEl('h3', { cls: 'crc-wizard-section-title' });
-		sectionTitle.setText('Who is the central person?');
+		sectionTitle.setText('谁是核心人物？');
 
 		const sectionDesc = content.createEl('p', { cls: 'crc-wizard-section-desc' });
 		sectionDesc.setText(
-			'This person will be at the center of the family tree. Usually this is yourself or the main subject of your research.'
+			'此人物将位于家谱的中心。通常是你自己或你研究的主要对象。'
 		);
 
 		// Initialize central person if not set
@@ -506,11 +506,11 @@ export class FamilyCreationWizardModal extends Modal {
 
 		// Name
 		new Setting(form)
-			.setName('Full name')
-			.setDesc('Required')
+			.setName('全名')
+			.setDesc('必填')
 			.addText(text => {
 				text
-					.setPlaceholder('e.g., John Robert Smith')
+					.setPlaceholder('例如：John Robert Smith')
 					.setValue(this.state.centralPerson?.name || '')
 					.onChange(value => {
 						if (this.state.centralPerson) {
@@ -523,10 +523,10 @@ export class FamilyCreationWizardModal extends Modal {
 
 		// Nickname
 		new Setting(form)
-			.setName('Nickname')
-			.setDesc('Optional informal name or alias')
+			.setName('昵称')
+			.setDesc('可选的日常称呼或别名')
 			.addText(text => text
-				.setPlaceholder('e.g., Bobby, JR')
+				.setPlaceholder('例如：Bobby、JR')
 				.setValue(this.state.centralPerson?.nickname || '')
 				.onChange(value => {
 					if (this.state.centralPerson) {
@@ -538,12 +538,12 @@ export class FamilyCreationWizardModal extends Modal {
 		const rowContainer = form.createDiv({ cls: 'crc-form-row-inline' });
 
 		new Setting(rowContainer)
-			.setName('Sex')
+			.setName('性别')
 			.addDropdown(dropdown => dropdown
-				.addOption('', 'Unknown')
-				.addOption('male', 'Male')
-				.addOption('female', 'Female')
-				.addOption('nonbinary', 'Non-binary')
+				.addOption('', '未知')
+				.addOption('male', '男')
+				.addOption('female', '女')
+				.addOption('nonbinary', '非二元')
 				.setValue(this.state.centralPerson?.sex || '')
 				.onChange(value => {
 					if (this.state.centralPerson) {
@@ -552,7 +552,7 @@ export class FamilyCreationWizardModal extends Modal {
 				}));
 
 		new Setting(rowContainer)
-			.setName('Birth date')
+			.setName('出生日期')
 			.addText(text => text
 				.setPlaceholder('YYYY-MM-DD')
 				.setValue(this.state.centralPerson?.birthDate || '')
@@ -570,13 +570,13 @@ export class FamilyCreationWizardModal extends Modal {
 			},
 			onNext: () => {
 				if (!this.state.centralPerson?.name.trim()) {
-					new Notice('Please enter a name for the central person');
+					new Notice('请输入核心人物的姓名');
 					return;
 				}
 				this.currentStep = 'step2';
 				this.render();
 			},
-			nextLabel: `Next: Add ${getSpouseLabel(this.plugin.settings)}`
+			nextLabel: `下一步：添加${getSpouseLabel(this.plugin.settings)}`
 		});
 	}
 
@@ -595,10 +595,10 @@ export class FamilyCreationWizardModal extends Modal {
 		const centralName = this.getCentralPersonName();
 
 		const sectionTitle = content.createEl('h3', { cls: 'crc-wizard-section-title' });
-		sectionTitle.setText(`Add ${getSpouseLabel(this.plugin.settings, { lowercase: true })}(s) for ${centralName}`);
+		sectionTitle.setText(`为 ${centralName} 添加${getSpouseLabel(this.plugin.settings, { lowercase: true })}`);
 
 		const sectionDesc = content.createEl('p', { cls: 'crc-wizard-section-desc' });
-		sectionDesc.setText(`You can add multiple ${getSpouseLabel(this.plugin.settings, { plural: true, lowercase: true })} if applicable. Skip this step if there are no ${getSpouseLabel(this.plugin.settings, { plural: true, lowercase: true })} to add.`);
+		sectionDesc.setText(`如适用，你可以添加多位${getSpouseLabel(this.plugin.settings, { plural: true, lowercase: true })}。如果没有${getSpouseLabel(this.plugin.settings, { plural: true, lowercase: true })}可添加，请跳过此步骤。`);
 
 		// Spouse list
 		const list = content.createDiv({ cls: 'crc-wizard-person-list' });
@@ -624,7 +624,7 @@ export class FamilyCreationWizardModal extends Modal {
 		const createBtn = addBtns.createEl('button', { cls: 'crc-wizard-add-btn' });
 		const createIcon = createBtn.createSpan();
 		setIcon(createIcon, 'user-plus');
-		createBtn.appendText(` Create new ${getSpouseLabel(this.plugin.settings, { lowercase: true })}`);
+		createBtn.appendText(` 创建新${getSpouseLabel(this.plugin.settings, { lowercase: true })}`);
 		createBtn.addEventListener('click', () => {
 			const newSpouse: PendingPerson = {
 				id: generateCrId(),
@@ -644,7 +644,7 @@ export class FamilyCreationWizardModal extends Modal {
 		const pickBtn = addBtns.createEl('button', { cls: 'crc-wizard-add-btn crc-wizard-add-btn--secondary' });
 		const pickIcon = pickBtn.createSpan();
 		setIcon(pickIcon, 'user');
-		pickBtn.appendText(' Pick existing person');
+		pickBtn.appendText(' 选择现有的人物');
 		pickBtn.addEventListener('click', () => {
 			this.openExistingPersonPicker('spouse');
 		});
@@ -663,7 +663,7 @@ export class FamilyCreationWizardModal extends Modal {
 				this.currentStep = 'step3';
 				this.render();
 			},
-			nextLabel: 'Next: Add Children',
+			nextLabel: '下一步：添加子女',
 			showSkip: this.state.spouses.length === 0,
 			onSkip: () => {
 				this.currentStep = 'step3';
@@ -687,16 +687,16 @@ export class FamilyCreationWizardModal extends Modal {
 		const centralName = this.getCentralPersonName();
 
 		const sectionTitle = content.createEl('h3', { cls: 'crc-wizard-section-title' });
-		sectionTitle.setText(`Add children for ${centralName}`);
+		sectionTitle.setText(`为 ${centralName} 添加子女`);
 
 		const sectionDesc = content.createEl('p', { cls: 'crc-wizard-section-desc' });
-		sectionDesc.setText('Add any children. Skip this step if there are no children to add.');
+		sectionDesc.setText('添加任意子女。如果没有子女可添加，请跳过此步骤。');
 
 		// Children list
 		const list = content.createDiv({ cls: 'crc-wizard-person-list' });
 
 		this.state.children.forEach((child, index) => {
-			this.renderPersonCard(list, child, 'Child', () => {
+			this.renderPersonCard(list, child, '子女', () => {
 				// Edit
 				this.openPersonEditor(child, (updated) => {
 					this.state.children[index] = updated;
@@ -716,7 +716,7 @@ export class FamilyCreationWizardModal extends Modal {
 		const createBtn = addBtns.createEl('button', { cls: 'crc-wizard-add-btn' });
 		const createIcon = createBtn.createSpan();
 		setIcon(createIcon, 'user-plus');
-		createBtn.appendText(' Create new child');
+		createBtn.appendText(' 创建新子女');
 		createBtn.addEventListener('click', () => {
 			const newChild: PendingPerson = {
 				id: generateCrId(),
@@ -736,7 +736,7 @@ export class FamilyCreationWizardModal extends Modal {
 		const pickBtn = addBtns.createEl('button', { cls: 'crc-wizard-add-btn crc-wizard-add-btn--secondary' });
 		const pickIcon = pickBtn.createSpan();
 		setIcon(pickIcon, 'user');
-		pickBtn.appendText(' Pick existing person');
+		pickBtn.appendText(' 选择现有的人物');
 		pickBtn.addEventListener('click', () => {
 			this.openExistingPersonPicker('child');
 		});
@@ -751,7 +751,7 @@ export class FamilyCreationWizardModal extends Modal {
 				this.currentStep = 'step4';
 				this.render();
 			},
-			nextLabel: 'Next: Add Parents',
+			nextLabel: '下一步：添加父母',
 			showSkip: this.state.children.length === 0,
 			onSkip: () => {
 				this.currentStep = 'step4';
@@ -775,20 +775,20 @@ export class FamilyCreationWizardModal extends Modal {
 		const centralName = this.getCentralPersonName();
 
 		const sectionTitle = content.createEl('h3', { cls: 'crc-wizard-section-title' });
-		sectionTitle.setText(`Add parents for ${centralName}`);
+		sectionTitle.setText(`为 ${centralName} 添加父母`);
 
 		const sectionDesc = content.createEl('p', { cls: 'crc-wizard-section-desc' });
-		sectionDesc.setText('Add the father and/or mother. Skip this step if there are no parents to add.');
+		sectionDesc.setText('添加父亲和/或母亲。如果没有父母可添加，请跳过此步骤。');
 
 		// Parents list
 		const list = content.createDiv({ cls: 'crc-wizard-person-list' });
 
 		// Father section
 		const fatherSection = list.createDiv({ cls: 'crc-wizard-parent-section' });
-		fatherSection.createEl('h4', { cls: 'crc-wizard-parent-label', text: 'Father' });
+		fatherSection.createEl('h4', { cls: 'crc-wizard-parent-label', text: '父亲' });
 
 		if (this.state.father) {
-			this.renderPersonCard(fatherSection, this.state.father, 'Father', () => {
+			this.renderPersonCard(fatherSection, this.state.father, '父亲', () => {
 				// Only allow editing if not an existing person
 				if (!this.state.father?.file) {
 					this.openPersonEditor(this.state.father!, (updated) => {
@@ -806,7 +806,7 @@ export class FamilyCreationWizardModal extends Modal {
 			const createFatherBtn = fatherBtns.createEl('button', { cls: 'crc-wizard-add-btn' });
 			const createFatherIcon = createFatherBtn.createSpan();
 			setIcon(createFatherIcon, 'user-plus');
-			createFatherBtn.appendText(' Create new');
+			createFatherBtn.appendText(' 创建新人物');
 			createFatherBtn.addEventListener('click', () => {
 				const newFather: PendingPerson = {
 					id: generateCrId(),
@@ -825,7 +825,7 @@ export class FamilyCreationWizardModal extends Modal {
 			const pickFatherBtn = fatherBtns.createEl('button', { cls: 'crc-wizard-add-btn crc-wizard-add-btn--secondary' });
 			const pickFatherIcon = pickFatherBtn.createSpan();
 			setIcon(pickFatherIcon, 'user');
-			pickFatherBtn.appendText(' Pick existing');
+			pickFatherBtn.appendText(' 选择现有的人物');
 			pickFatherBtn.addEventListener('click', () => {
 				this.openExistingPersonPicker('father');
 			});
@@ -833,10 +833,10 @@ export class FamilyCreationWizardModal extends Modal {
 
 		// Mother section
 		const motherSection = list.createDiv({ cls: 'crc-wizard-parent-section' });
-		motherSection.createEl('h4', { cls: 'crc-wizard-parent-label', text: 'Mother' });
+		motherSection.createEl('h4', { cls: 'crc-wizard-parent-label', text: '母亲' });
 
 		if (this.state.mother) {
-			this.renderPersonCard(motherSection, this.state.mother, 'Mother', () => {
+			this.renderPersonCard(motherSection, this.state.mother, '母亲', () => {
 				// Only allow editing if not an existing person
 				if (!this.state.mother?.file) {
 					this.openPersonEditor(this.state.mother!, (updated) => {
@@ -854,7 +854,7 @@ export class FamilyCreationWizardModal extends Modal {
 			const createMotherBtn = motherBtns.createEl('button', { cls: 'crc-wizard-add-btn' });
 			const createMotherIcon = createMotherBtn.createSpan();
 			setIcon(createMotherIcon, 'user-plus');
-			createMotherBtn.appendText(' Create new');
+			createMotherBtn.appendText(' 创建新人物');
 			createMotherBtn.addEventListener('click', () => {
 				const newMother: PendingPerson = {
 					id: generateCrId(),
@@ -873,7 +873,7 @@ export class FamilyCreationWizardModal extends Modal {
 			const pickMotherBtn = motherBtns.createEl('button', { cls: 'crc-wizard-add-btn crc-wizard-add-btn--secondary' });
 			const pickMotherIcon = pickMotherBtn.createSpan();
 			setIcon(pickMotherIcon, 'user');
-			pickMotherBtn.appendText(' Pick existing');
+			pickMotherBtn.appendText(' 选择现有的人物');
 			pickMotherBtn.addEventListener('click', () => {
 				this.openExistingPersonPicker('mother');
 			});
@@ -889,7 +889,7 @@ export class FamilyCreationWizardModal extends Modal {
 				this.currentStep = 'step5';
 				this.render();
 			},
-			nextLabel: 'Review Family',
+			nextLabel: '确认家族',
 			showSkip: !this.state.father && !this.state.mother,
 			onSkip: () => {
 				this.currentStep = 'step5';
@@ -911,10 +911,10 @@ export class FamilyCreationWizardModal extends Modal {
 		const content = contentEl.createDiv({ cls: 'crc-wizard-content' });
 
 		const sectionTitle = content.createEl('h3', { cls: 'crc-wizard-section-title' });
-		sectionTitle.setText('Review your family');
+		sectionTitle.setText('确认你的家族');
 
 		const sectionDesc = content.createEl('p', { cls: 'crc-wizard-section-desc' });
-		sectionDesc.setText('Review the family members before creating the notes.');
+		sectionDesc.setText('创建笔记前，请确认家族成员。');
 
 		// Stats summary
 		const stats = content.createDiv({ cls: 'crc-wizard-stats-summary' });
@@ -924,7 +924,7 @@ export class FamilyCreationWizardModal extends Modal {
 
 		const totalStat = stats.createDiv({ cls: 'crc-wizard-stat-card' });
 		totalStat.createDiv({ cls: 'crc-wizard-stat-value' }).setText(String(totalPeople));
-		totalStat.createDiv({ cls: 'crc-wizard-stat-label' }).setText('People');
+		totalStat.createDiv({ cls: 'crc-wizard-stat-label' }).setText('人物');
 
 		const spouseCount = this.state.spouses.length;
 		const spouseStat = stats.createDiv({ cls: 'crc-wizard-stat-card' });
@@ -934,19 +934,19 @@ export class FamilyCreationWizardModal extends Modal {
 		const childCount = this.state.children.length;
 		const childStat = stats.createDiv({ cls: 'crc-wizard-stat-card' });
 		childStat.createDiv({ cls: 'crc-wizard-stat-value' }).setText(String(childCount));
-		childStat.createDiv({ cls: 'crc-wizard-stat-label' }).setText('Children');
+		childStat.createDiv({ cls: 'crc-wizard-stat-label' }).setText('子女');
 
 		const parentCount = (this.state.father ? 1 : 0) + (this.state.mother ? 1 : 0);
 		const parentStat = stats.createDiv({ cls: 'crc-wizard-stat-card' });
 		parentStat.createDiv({ cls: 'crc-wizard-stat-value' }).setText(String(parentCount));
-		parentStat.createDiv({ cls: 'crc-wizard-stat-label' }).setText('Parents');
+		parentStat.createDiv({ cls: 'crc-wizard-stat-label' }).setText('父母');
 
 		// Family tree preview
 		const preview = content.createDiv({ cls: 'crc-wizard-tree-preview' });
 		const previewTitle = preview.createDiv({ cls: 'crc-wizard-tree-preview-title' });
 		const previewIcon = previewTitle.createSpan();
 		setIcon(previewIcon, 'git-branch');
-		previewTitle.appendText(' Family tree preview');
+		previewTitle.appendText(' 家谱预览');
 
 		this.renderFamilyTreePreview(preview);
 
@@ -954,7 +954,7 @@ export class FamilyCreationWizardModal extends Modal {
 		if (peopleToCreate.length > 0) {
 			const createSection = content.createDiv({ cls: 'crc-wizard-people-list-section' });
 			const createTitle = createSection.createEl('h4');
-			createTitle.setText(`New notes to create (${peopleToCreate.length}):`);
+			createTitle.setText(`待创建的新笔记（${peopleToCreate.length}）：`);
 
 			const createList = createSection.createDiv({ cls: 'crc-wizard-person-list' });
 
@@ -967,7 +967,7 @@ export class FamilyCreationWizardModal extends Modal {
 		if (existingPeople.length > 0) {
 			const linkSection = content.createDiv({ cls: 'crc-wizard-people-list-section' });
 			const linkTitle = linkSection.createEl('h4');
-			linkTitle.setText(`Existing notes to link (${existingPeople.length}):`);
+			linkTitle.setText(`待链接的现有笔记（${existingPeople.length}）：`);
 
 			const linkList = linkSection.createDiv({ cls: 'crc-wizard-person-list' });
 
@@ -979,11 +979,11 @@ export class FamilyCreationWizardModal extends Modal {
 		// Footer with appropriate button label
 		let nextLabel: string;
 		if (peopleToCreate.length > 0 && existingPeople.length > 0) {
-			nextLabel = `Create ${peopleToCreate.length} & Link ${existingPeople.length}`;
+			nextLabel = `创建 ${peopleToCreate.length} 位并链接 ${existingPeople.length} 位`;
 		} else if (peopleToCreate.length > 0) {
-			nextLabel = `Create ${peopleToCreate.length} People`;
+			nextLabel = `创建 ${peopleToCreate.length} 位人物`;
 		} else {
-			nextLabel = `Link ${existingPeople.length} People`;
+			nextLabel = `链接 ${existingPeople.length} 位人物`;
 		}
 
 		this.renderFooter({
@@ -1016,15 +1016,15 @@ export class FamilyCreationWizardModal extends Modal {
 		setIcon(cardIcon, isExisting ? 'link' : 'user');
 
 		const cardInfo = card.createDiv({ cls: 'crc-wizard-person-card-info' });
-		cardInfo.createDiv({ cls: 'crc-wizard-person-card-name' }).setText(person.name || 'Unnamed');
+		cardInfo.createDiv({ cls: 'crc-wizard-person-card-name' }).setText(person.name || '未命名');
 		if (person.birthDate) {
 			cardInfo.createDiv({ cls: 'crc-wizard-person-card-meta' }).setText(
-				`Born: ${person.birthDate}`
+				`出生：${person.birthDate}`
 			);
 		}
 		if (isExisting) {
 			cardInfo.createDiv({ cls: 'crc-wizard-person-card-meta crc-text--muted' }).setText(
-				'Existing note'
+				'现有笔记'
 			);
 		}
 	}
@@ -1042,13 +1042,13 @@ export class FamilyCreationWizardModal extends Modal {
 			if (this.state.father) {
 				this.renderTreeNode(parentsRow, this.state.father.name, 'male', false);
 			} else {
-				this.renderPlaceholderNode(parentsRow, 'Father');
+					this.renderPlaceholderNode(parentsRow, '父亲');
 			}
 
 			if (this.state.mother) {
 				this.renderTreeNode(parentsRow, this.state.mother.name, 'female', false);
 			} else {
-				this.renderPlaceholderNode(parentsRow, 'Mother');
+					this.renderPlaceholderNode(parentsRow, '母亲');
 			}
 
 			// Connector down
@@ -1104,7 +1104,7 @@ export class FamilyCreationWizardModal extends Modal {
 		circle.setText(initials || '?');
 
 		const label = node.createDiv({ cls: 'crc-wizard-tree-node-label' });
-		label.setText(name.split(' ')[0] || 'Unknown');
+		label.setText(name.split(' ')[0] || '未知');
 	}
 
 	private renderPlaceholderNode(container: HTMLElement, label: string): void {
@@ -1128,9 +1128,9 @@ export class FamilyCreationWizardModal extends Modal {
 		const successIcon = content.createDiv({ cls: 'crc-wizard-completion-icon' });
 		setIcon(successIcon, 'check-circle');
 
-		content.createEl('h2', { cls: 'crc-wizard-completion-title' }).setText('Family created!');
+		content.createEl('h2', { cls: 'crc-wizard-completion-title' }).setText('家族已创建！');
 		content.createEl('p', { cls: 'crc-wizard-completion-message' }).setText(
-			'All family members have been created and linked together.'
+			'所有家族成员均已创建并链接在一起。'
 		);
 
 		// Stats
@@ -1139,17 +1139,17 @@ export class FamilyCreationWizardModal extends Modal {
 		const notesCreated = this.state.createdFiles.length;
 		const notesStat = stats.createDiv({ cls: 'crc-wizard-completion-stat' });
 		notesStat.createDiv({ cls: 'crc-wizard-completion-stat-value' }).setText(String(notesCreated));
-		notesStat.createDiv({ cls: 'crc-wizard-completion-stat-label' }).setText('Notes created');
+		notesStat.createDiv({ cls: 'crc-wizard-completion-stat-label' }).setText('已创建笔记');
 
 		const relationshipCount = this.calculateRelationshipCount();
 		const relStat = stats.createDiv({ cls: 'crc-wizard-completion-stat' });
 		relStat.createDiv({ cls: 'crc-wizard-completion-stat-value' }).setText(String(relationshipCount));
-		relStat.createDiv({ cls: 'crc-wizard-completion-stat-label' }).setText('Relationships linked');
+		relStat.createDiv({ cls: 'crc-wizard-completion-stat-label' }).setText('已链接关系');
 
 		// Created notes list
 		if (this.state.createdFiles.length > 0) {
 			const listSection = content.createDiv({ cls: 'crc-wizard-created-notes-list' });
-			listSection.createEl('h5').setText('Created notes:');
+			listSection.createEl('h5').setText('已创建的笔记：');
 
 			this.state.createdFiles.forEach(file => {
 				const item = listSection.createDiv({ cls: 'crc-wizard-created-note-item' });
@@ -1158,7 +1158,7 @@ export class FamilyCreationWizardModal extends Modal {
 				item.createDiv({ cls: 'crc-wizard-created-note-name' }).setText(file.basename);
 
 				const openLink = item.createEl('span', { cls: 'crc-wizard-created-note-link' });
-				openLink.setText('Open');
+				openLink.setText('打开');
 				openLink.addEventListener('click', () => {
 					void this.app.workspace.openLinkText(file.path, '', false);
 				});
@@ -1169,7 +1169,7 @@ export class FamilyCreationWizardModal extends Modal {
 		const footer = contentEl.createDiv({ cls: 'crc-modal-buttons crc-modal-buttons--center' });
 
 		const doneBtn = footer.createEl('button', {
-			text: 'Done',
+			text: '完成',
 			cls: 'crc-btn crc-btn--primary crc-btn--success'
 		});
 		doneBtn.addEventListener('click', () => this.close());
@@ -1183,7 +1183,7 @@ export class FamilyCreationWizardModal extends Modal {
 		if (this.state.mode === 'existing' && this.state.existingCentralPerson) {
 			return this.state.existingCentralPerson.name;
 		}
-		return this.state.centralPerson?.name || 'Unknown';
+		return this.state.centralPerson?.name || '未知';
 	}
 
 	private getCentralPersonSex(): string {
@@ -1288,11 +1288,11 @@ export class FamilyCreationWizardModal extends Modal {
 		setIcon(cardIcon, 'user');
 
 		const cardInfo = card.createDiv({ cls: 'crc-wizard-person-card-info' });
-		cardInfo.createDiv({ cls: 'crc-wizard-person-card-name' }).setText(person.name || 'Unnamed');
+		cardInfo.createDiv({ cls: 'crc-wizard-person-card-name' }).setText(person.name || '未命名');
 
 		const meta: string[] = [];
 		if (roleLabel) meta.push(roleLabel);
-		if (person.birthDate) meta.push(`Born: ${person.birthDate}`);
+		if (person.birthDate) meta.push(`出生：${person.birthDate}`);
 		if (meta.length > 0) {
 			cardInfo.createDiv({ cls: 'crc-wizard-person-card-meta' }).setText(meta.join(' · '));
 		}
@@ -1301,12 +1301,12 @@ export class FamilyCreationWizardModal extends Modal {
 
 		const editBtn = actions.createEl('button', { cls: 'crc-wizard-person-card-btn' });
 		setIcon(editBtn, 'edit');
-		editBtn.setAttribute('aria-label', 'Edit');
+		editBtn.setAttribute('aria-label', '编辑');
 		editBtn.addEventListener('click', onEdit);
 
 		const removeBtn = actions.createEl('button', { cls: 'crc-wizard-person-card-btn crc-wizard-person-card-btn--delete' });
 		setIcon(removeBtn, 'trash');
-		removeBtn.setAttribute('aria-label', 'Remove');
+		removeBtn.setAttribute('aria-label', '移除');
 		removeBtn.addEventListener('click', onRemove);
 	}
 
@@ -1338,10 +1338,10 @@ export class FamilyCreationWizardModal extends Modal {
 		if (this.state.mother?.crId) excludeIds.add(this.state.mother.crId);
 
 		const roleLabels: Record<typeof role, string> = {
-			spouse: `Select ${getSpouseLabel(this.plugin.settings, { lowercase: true })}`,
-			child: 'Select child',
-			father: 'Select father',
-			mother: 'Select mother'
+			spouse: `选择${getSpouseLabel(this.plugin.settings, { lowercase: true })}`,
+			child: '选择子女',
+			father: '选择父亲',
+			mother: '选择母亲'
 		};
 
 		const modal = new PersonPickerModal(
@@ -1349,7 +1349,7 @@ export class FamilyCreationWizardModal extends Modal {
 			(person: PersonInfo) => {
 				// Skip if already selected
 				if (excludeIds.has(person.crId)) {
-					new Notice('This person is already in the family');
+					new Notice('此人物已在家族中');
 					return;
 				}
 
@@ -1378,7 +1378,7 @@ export class FamilyCreationWizardModal extends Modal {
 			},
 			{
 				title: roleLabels[role],
-				subtitle: 'Choose an existing person from your vault',
+				subtitle: '从你的库中选择一位现有的人物',
 				plugin: this.plugin
 			}
 		);
@@ -1394,7 +1394,7 @@ export class FamilyCreationWizardModal extends Modal {
 
 		// Check if there's anything to do
 		if (peopleToCreate.length === 0 && existingPeople.length === 0) {
-			new Notice('No people to create or link');
+			new Notice('没有可创建或链接的人物');
 			return;
 		}
 
@@ -1469,7 +1469,7 @@ export class FamilyCreationWizardModal extends Modal {
 
 		} catch (error) {
 			logger.error('create-family', 'Failed to create family', { error });
-			new Notice(`Failed to create family: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建家族失败：${error instanceof Error ? error.message : '未知错误'}`);
 		} finally {
 			// Resume bidirectional linker if we suspended it
 			if (this.plugin.bidirectionalLinker && !wasSuspended) {
@@ -1891,17 +1891,17 @@ class PersonEditorModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('user', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText(this.person.name ? 'Edit person' : 'Add person');
+		titleContainer.appendText(this.person.name ? '编辑人物' : '添加人物');
 
 		const form = contentEl.createDiv({ cls: 'crc-form' });
 
 		// Name
 		new Setting(form)
-			.setName('Full name')
-			.setDesc('Required')
+			.setName('全名')
+			.setDesc('必填')
 			.addText(text => {
 				text
-					.setPlaceholder('e.g., Jane Doe')
+					.setPlaceholder('例如：Jane Doe')
 					.setValue(this.person.name)
 					.onChange(value => {
 						this.person.name = value;
@@ -1911,10 +1911,10 @@ class PersonEditorModal extends Modal {
 
 		// Nickname
 		new Setting(form)
-			.setName('Nickname')
-			.setDesc('Optional')
+			.setName('昵称')
+			.setDesc('可选')
 			.addText(text => text
-				.setPlaceholder('e.g., Janie')
+				.setPlaceholder('例如：Janie')
 				.setValue(this.person.nickname || '')
 				.onChange(value => {
 					this.person.nickname = value;
@@ -1922,12 +1922,12 @@ class PersonEditorModal extends Modal {
 
 		// Sex
 		new Setting(form)
-			.setName('Sex')
+			.setName('性别')
 			.addDropdown(dropdown => dropdown
-				.addOption('', 'Unknown')
-				.addOption('male', 'Male')
-				.addOption('female', 'Female')
-				.addOption('nonbinary', 'Non-binary')
+				.addOption('', '未知')
+				.addOption('male', '男')
+				.addOption('female', '女')
+				.addOption('nonbinary', '非二元')
 				.setValue(this.person.sex || '')
 				.onChange(value => {
 					this.person.sex = value as 'male' | 'female' | 'nonbinary' | '';
@@ -1935,7 +1935,7 @@ class PersonEditorModal extends Modal {
 
 		// Birth date
 		new Setting(form)
-			.setName('Birth date')
+			.setName('出生日期')
 			.addText(text => text
 				.setPlaceholder('YYYY-MM-DD')
 				.setValue(this.person.birthDate || '')
@@ -1947,11 +1947,11 @@ class PersonEditorModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => this.close());
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Save')
+			.setButtonText('保存')
 			.setCta()
 			.onClick(() => {
 				this.onSave(this.person);

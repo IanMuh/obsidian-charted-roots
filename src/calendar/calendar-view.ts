@@ -11,6 +11,7 @@ import type { CalendarEvent, CalendarFilter, CalendarViewState } from './types/c
 import { DEFAULT_EVENT_TYPES, EVENT_TYPE_COLORS } from './types/calendar-types';
 import { CalendarDataService } from './calendar-data-service';
 import { capitalize } from '../utils/format-utils';
+import { EVENT_TYPE_LABELS } from '../events/types/event-types';
 import { getLogger } from '../core/logging';
 import { CreateEventModal } from '../events/ui/create-event-modal';
 
@@ -19,11 +20,11 @@ const logger = getLogger('CalendarView');
 export const VIEW_TYPE_CALENDAR = 'canvas-roots-calendar';
 
 const MONTH_NAMES = [
-	'January', 'February', 'March', 'April', 'May', 'June',
-	'July', 'August', 'September', 'October', 'November', 'December'
+	'一月', '二月', '三月', '四月', '五月', '六月',
+	'七月', '八月', '九月', '十月', '十一月', '十二月'
 ];
 
-const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
 export class CalendarView extends ItemView {
 	plugin: CanvasRootsPlugin;
@@ -73,7 +74,7 @@ export class CalendarView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Calendar';
+		return '日历';
 	}
 
 	getIcon(): string {
@@ -208,7 +209,7 @@ export class CalendarView extends ItemView {
 		// Previous month
 		const prevBtn = nav.createEl('button', {
 			cls: 'cr-calendar-nav-btn clickable-icon',
-			attr: { 'aria-label': 'Previous month' }
+			attr: { 'aria-label': '上个月' }
 		});
 		setIcon(prevBtn, 'chevron-left');
 		prevBtn.addEventListener('click', () => this.navigateMonth(-1));
@@ -237,7 +238,7 @@ export class CalendarView extends ItemView {
 		const yearInput = nav.createEl('input', {
 			type: 'text',
 			cls: 'cr-calendar-year-input',
-			attr: { 'aria-label': 'Year (accepts plain numbers or era-suffixed input like "82 BBY")' }
+			attr: { 'aria-label': '年（可输入纯数字或带纪元后缀的值，如 "82 BBY"）' }
 		});
 		yearInput.value = this.formatCurrentYear();
 		yearInput.addEventListener('change', () => {
@@ -276,7 +277,7 @@ export class CalendarView extends ItemView {
 		// Next month
 		const nextBtn = nav.createEl('button', {
 			cls: 'cr-calendar-nav-btn clickable-icon',
-			attr: { 'aria-label': 'Next month' }
+			attr: { 'aria-label': '下个月' }
 		});
 		setIcon(nextBtn, 'chevron-right');
 		nextBtn.addEventListener('click', () => this.navigateMonth(1));
@@ -285,14 +286,14 @@ export class CalendarView extends ItemView {
 		const actions = this.headerEl.createDiv({ cls: 'cr-calendar-actions' });
 		const todayBtn = actions.createEl('button', {
 			cls: 'cr-calendar-today-btn',
-			text: 'Today'
+			text: '今天'
 		});
 		todayBtn.addEventListener('click', () => this.goToToday());
 
 		// Labels toggle
 		const labelsBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Show labels' }
+			attr: { 'aria-label': '显示标签' }
 		});
 		setIcon(labelsBtn, 'tag');
 		if (this.showLabels) labelsBtn.classList.add('is-active');
@@ -306,7 +307,7 @@ export class CalendarView extends ItemView {
 		// Filter button
 		const filterBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Filter events' }
+			attr: { 'aria-label': '筛选事件' }
 		});
 		setIcon(filterBtn, 'filter');
 		filterBtn.addEventListener('click', (e) => this.showFilterMenu(e));
@@ -314,7 +315,7 @@ export class CalendarView extends ItemView {
 		// Refresh button
 		const refreshBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.renderCalendar());
@@ -327,7 +328,7 @@ export class CalendarView extends ItemView {
 
 		// Event type toggles
 		menu.addItem((item) => {
-			item.setTitle('Event types')
+			item.setTitle('事件类型')
 				.setIsLabel(true);
 		});
 
@@ -337,7 +338,7 @@ export class CalendarView extends ItemView {
 		for (const type of allEventTypes) {
 			const isActive = this.filter.eventTypes.includes(type);
 			menu.addItem((item) => {
-				item.setTitle(capitalize(type))
+				item.setTitle(EVENT_TYPE_LABELS[type] ?? capitalize(type))
 					.setChecked(isActive)
 					.onClick(() => {
 						if (isActive) {
@@ -354,13 +355,19 @@ export class CalendarView extends ItemView {
 
 		// Living status
 		menu.addItem((item) => {
-			item.setTitle('Status')
+			item.setTitle('状态')
 				.setIsLabel(true);
 		});
 
+		const livingStatusLabels: Record<string, string> = {
+			all: '全部',
+			living: '在世',
+			deceased: '已故'
+		};
+
 		for (const status of ['all', 'living', 'deceased'] as const) {
 			menu.addItem((item) => {
-				item.setTitle(capitalize(status))
+				item.setTitle(livingStatusLabels[status])
 					.setChecked(this.filter.livingStatus === status)
 					.onClick(() => {
 						this.filter.livingStatus = status;
@@ -439,7 +446,7 @@ export class CalendarView extends ItemView {
 					if (events.length > maxLabels) {
 						labelsEl.createSpan({
 							cls: 'cr-calendar-label-more',
-							text: `+${events.length - maxLabels} more`
+							text: `另 ${events.length - maxLabels} 项`
 						});
 					}
 				} else {
@@ -472,7 +479,7 @@ export class CalendarView extends ItemView {
 				const dateStr = `${this.currentYear}-${String(this.currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 				const menu = new Menu();
 				menu.addItem((item) => {
-					item.setTitle(`Create event on ${MONTH_NAMES[this.currentMonth]} ${day}, ${this.currentYear}`)
+					item.setTitle(`在${MONTH_NAMES[this.currentMonth]}${day}日，${this.currentYear} 创建事件`)
 						.setIcon('calendar-plus')
 						.onClick(() => {
 							const eventService = (this.plugin as unknown as { getEventService: () => unknown }).getEventService?.() as import('../events/services/event-service').EventService | null;
@@ -506,18 +513,18 @@ export class CalendarView extends ItemView {
 		if (events.length === 0) {
 			this.detailEl.createDiv({
 				cls: 'cr-calendar-detail-empty',
-				text: `No events on ${MONTH_NAMES[this.currentMonth]} ${this.selectedDay}`
+				text: `${MONTH_NAMES[this.currentMonth]}${this.selectedDay}日无事件`
 			});
 			return;
 		}
 
 		const heading = this.detailEl.createDiv({ cls: 'cr-calendar-detail-heading' });
 		heading.createSpan({
-			text: `${MONTH_NAMES[this.currentMonth]} ${this.selectedDay}`
+			text: `${MONTH_NAMES[this.currentMonth]}${this.selectedDay}日`
 		});
 		heading.createSpan({
 			cls: 'cr-calendar-detail-count',
-			text: `${events.length} event${events.length !== 1 ? 's' : ''}`
+			text: `${events.length} 个事件`
 		});
 
 		for (const event of events) {
@@ -538,7 +545,7 @@ export class CalendarView extends ItemView {
 		if (impreciseEvents.length === 0) return;
 
 		const header = this.impreciseEl.createDiv({ cls: 'cr-calendar-imprecise-header' });
-		header.createSpan({ text: 'This month, day unknown' });
+		header.createSpan({ text: '本月，日期不详' });
 		header.createSpan({
 			cls: 'cr-calendar-detail-count',
 			text: String(impreciseEvents.length)
@@ -571,14 +578,14 @@ export class CalendarView extends ItemView {
 		// Event type
 		row.createSpan({
 			cls: 'cr-calendar-event-type',
-			text: capitalize(event.eventType)
+			text: EVENT_TYPE_LABELS[event.eventType] ?? capitalize(event.eventType)
 		});
 
 		// Year and years ago
-		const yearText = event.isApproximate ? `c. ${event.year}` : String(event.year);
+		const yearText = event.isApproximate ? `约 ${event.year}` : String(event.year);
 		row.createSpan({
 			cls: 'cr-calendar-event-year',
-			text: `${yearText} (${event.yearsAgo} year${event.yearsAgo !== 1 ? 's' : ''} ago)`
+			text: `${yearText}（${event.yearsAgo} 年前）`
 		});
 
 		// Place

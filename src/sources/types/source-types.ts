@@ -87,16 +87,16 @@ export const FACT_KEYS: FactKey[] = [
  * Human-readable labels for fact keys
  */
 export const FACT_KEY_LABELS: Record<FactKey, string> = {
-	birth_date: 'Birth date',
-	birth_place: 'Birth place',
-	death_date: 'Death date',
-	death_place: 'Death place',
-	parents: 'Parents',
-	marriage_date: 'Marriage date',
-	marriage_place: 'Marriage place',
-	spouse: 'Spouse',
-	occupation: 'Occupation',
-	residence: 'Residence'
+	birth_date: '出生日期',
+	birth_place: '出生地点',
+	death_date: '去世日期',
+	death_place: '去世地点',
+	parents: '父母',
+	marriage_date: '结婚日期',
+	marriage_place: '结婚地点',
+	spouse: '配偶',
+	occupation: '职业',
+	residence: '居住地'
 };
 
 /**
@@ -275,26 +275,26 @@ export const PERSON_ROLE_PROPERTIES: PersonRoleProperty[] = [
  * Human-readable labels for person role properties
  */
 export const PERSON_ROLE_LABELS: Record<PersonRoleProperty, string> = {
-	principals: 'Principals',
-	witnesses: 'Witnesses',
-	informants: 'Informants',
-	officials: 'Officials',
-	enslaved_individuals: 'Enslaved individuals',
-	family: 'Family',
-	others: 'Others'
+	principals: '当事人',
+	witnesses: '证人',
+	informants: '告密者',
+	officials: '官员',
+	enslaved_individuals: '被奴役者',
+	family: '家族',
+	others: '其他'
 };
 
 /**
  * Descriptions for person role properties
  */
 export const PERSON_ROLE_DESCRIPTIONS: Record<PersonRoleProperty, string> = {
-	principals: 'Subject(s) of the document (deceased, testator, groom/bride)',
-	witnesses: 'Named witnesses to events or document signing',
-	informants: 'Person providing information (affects quality assessment)',
-	officials: 'Clerks, judges, officiants, physicians, undertakers',
-	enslaved_individuals: 'Persons listed as property in wills, inventories',
-	family: 'Family members named in relation to principals',
-	others: 'Any role not fitting above categories'
+	principals: '文件的主体（逝者、立遗嘱人、新郎/新娘）',
+	witnesses: '事件或文件签署的具名见证人',
+	informants: '提供信息的人（影响质量评估）',
+	officials: '书记员、法官、主婚人、医生、殡葬承办人',
+	enslaved_individuals: '在遗嘱、财产清单中被列为财产的人',
+	family: '与当事人相关的具名家族成员',
+	others: '不符合以上分类的任何角色'
 };
 
 /**
@@ -395,8 +395,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	// Vital Records
 	{
 		id: 'vital_record',
-		name: 'Vital record',
-		description: 'Birth, death, marriage certificates',
+		name: '重要记录',
+		description: '出生、死亡、婚姻证书',
 		icon: 'file-text',
 		color: '#4a90d9',
 		category: 'vital',
@@ -404,8 +404,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	},
 	{
 		id: 'obituary',
-		name: 'Obituary',
-		description: 'Death notices, memorial articles',
+		name: '讣告',
+		description: '死亡通告、纪念文章',
 		icon: 'bookmark',
 		color: '#7c7c7c',
 		category: 'vital',
@@ -415,8 +415,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	// Census
 	{
 		id: 'census',
-		name: 'Census',
-		description: 'Population census records',
+		name: '人口普查',
+		description: '人口普查记录',
 		icon: 'users',
 		color: '#5ba55b',
 		category: 'census',
@@ -426,8 +426,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	// Church Records
 	{
 		id: 'church_record',
-		name: 'Church record',
-		description: 'Baptism, marriage, burial records',
+		name: '教会记录',
+		description: '洗礼、婚姻、安葬记录',
 		icon: 'church',
 		color: '#9b59b6',
 		category: 'church',
@@ -437,8 +437,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	// Legal
 	{
 		id: 'court_record',
-		name: 'Court record',
-		description: 'Legal proceedings, divorces',
+		name: '法院记录',
+		description: '法律诉讼、离婚',
 		icon: 'gavel',
 		color: '#8b4513',
 		category: 'legal',
@@ -446,8 +446,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	},
 	{
 		id: 'land_deed',
-		name: 'Land deed',
-		description: 'Property records, deeds',
+		name: '土地契约',
+		description: '财产记录、契约',
 		icon: 'map',
 		color: '#228b22',
 		category: 'legal',
@@ -455,8 +455,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	},
 	{
 		id: 'probate',
-		name: 'Probate',
-		description: 'Wills, estate inventories',
+		name: '遗嘱认证',
+		description: '遗嘱、遗产清单',
 		icon: 'scroll',
 		color: '#daa520',
 		category: 'legal',
@@ -466,8 +466,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	// Military
 	{
 		id: 'military',
-		name: 'Military record',
-		description: 'Service records, draft cards, pensions',
+		name: '军事记录',
+		description: '服役记录、征兵卡、抚恤金',
 		icon: 'shield',
 		color: '#2e8b57',
 		category: 'military',
@@ -477,8 +477,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	// Immigration
 	{
 		id: 'immigration',
-		name: 'Immigration record',
-		description: 'Ship manifests, naturalization, passports',
+		name: '移民记录',
+		description: '船舶舱单、入籍、护照',
 		icon: 'ship',
 		color: '#4169e1',
 		category: 'other',
@@ -488,8 +488,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	// Media & Correspondence
 	{
 		id: 'photo',
-		name: 'Photo',
-		description: 'Photographs and portraits',
+		name: '照片',
+		description: '照片与肖像',
 		icon: 'image',
 		color: '#ff6b6b',
 		category: 'media',
@@ -497,8 +497,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	},
 	{
 		id: 'correspondence',
-		name: 'Correspondence',
-		description: 'Letters, emails, postcards',
+		name: '通信',
+		description: '信件、电子邮件、明信片',
 		icon: 'mail',
 		color: '#ff8c00',
 		category: 'media',
@@ -506,8 +506,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	},
 	{
 		id: 'newspaper',
-		name: 'Newspaper',
-		description: 'Newspaper articles',
+		name: '报纸',
+		description: '报纸文章',
 		icon: 'newspaper',
 		color: '#696969',
 		category: 'media',
@@ -515,8 +515,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	},
 	{
 		id: 'oral_history',
-		name: 'Oral history',
-		description: 'Interviews, recordings',
+		name: '口述历史',
+		description: '访谈、录音',
 		icon: 'mic',
 		color: '#e91e63',
 		category: 'media',
@@ -526,8 +526,8 @@ export const BUILT_IN_SOURCE_TYPES: SourceTypeDefinition[] = [
 	// Other
 	{
 		id: 'custom',
-		name: 'Custom',
-		description: 'User-defined source type',
+		name: '自定义',
+		description: '用户定义的来源类型',
 		icon: 'file',
 		color: '#808080',
 		category: 'other',
@@ -597,13 +597,13 @@ export function getSourceTypesByCategory(
  * Category display names
  */
 export const SOURCE_CATEGORY_NAMES: Record<string, string> = {
-	vital: 'Vital records',
-	census: 'Census',
-	church: 'Church records',
-	legal: 'Legal & property',
-	military: 'Military',
-	media: 'Media & correspondence',
-	other: 'Other'
+	vital: '重要记录',
+	census: '人口普查',
+	church: '教会记录',
+	legal: '法律与财产',
+	military: '军事',
+	media: '媒体与通信',
+	other: '其他'
 };
 
 /**
@@ -657,16 +657,16 @@ export function getDefaultSourceQuality(sourceType: string): SourceQuality {
  */
 export const SOURCE_QUALITY_LABELS: Record<SourceQuality, { label: string; description: string }> = {
 	primary: {
-		label: 'Original record',
-		description: 'Created at the time of the event by a participant or witness'
+		label: '原始记录',
+		description: '在事件发生时由参与者或见证人创建'
 	},
 	secondary: {
-		label: 'Later account',
-		description: 'Created later from memory or hearsay'
+		label: '事后记述',
+		description: '事后根据记忆或传闻创建'
 	},
 	derivative: {
-		label: 'Copy/transcription',
-		description: 'Copies, transcriptions, or abstracts of other sources'
+		label: '副本/转录',
+		description: '其他来源的副本、转录或摘要'
 	}
 };
 
@@ -675,16 +675,16 @@ export const SOURCE_QUALITY_LABELS: Record<SourceQuality, { label: string; descr
  */
 export const SOURCE_CLASSIFICATION_LABELS: Record<SourceClassification, { label: string; description: string }> = {
 	original: {
-		label: 'Original',
-		description: 'First recording of information, or an image of the original'
+		label: '原始',
+		description: '信息的最初记录，或原始件的图像'
 	},
 	derivative: {
-		label: 'Derivative',
-		description: 'A copy, transcription, abstract, or extract of another source'
+		label: '衍生',
+		description: '另一来源的副本、转录、摘要或摘录'
 	},
 	authored_narrative: {
-		label: 'Authored narrative',
-		description: 'An interpretive or synthesized work (e.g., published genealogy)'
+		label: '著述叙述',
+		description: '解释性或综合性的作品（例如已出版的家谱）'
 	}
 };
 
@@ -693,16 +693,16 @@ export const SOURCE_CLASSIFICATION_LABELS: Record<SourceClassification, { label:
  */
 export const INFORMATION_CLASSIFICATION_LABELS: Record<InformationClassification, { label: string; description: string }> = {
 	primary: {
-		label: 'Primary',
-		description: 'Informant was a participant in or witness to the event'
+		label: '一手',
+		description: '信息提供者是事件的参与者或见证人'
 	},
 	secondary: {
-		label: 'Secondary',
-		description: 'Informant learned of the event from memory, hearsay, or oral tradition'
+		label: '二手',
+		description: '信息提供者从记忆、传闻或口述传统中得知该事件'
 	},
 	undetermined: {
-		label: 'Undetermined',
-		description: "Basis for the informant's knowledge is unknown"
+		label: '未确定',
+		description: '信息提供者知识的依据未知'
 	}
 };
 
@@ -711,16 +711,16 @@ export const INFORMATION_CLASSIFICATION_LABELS: Record<InformationClassification
  */
 export const EVIDENCE_CLASSIFICATION_LABELS: Record<EvidenceClassification, { label: string; description: string }> = {
 	direct: {
-		label: 'Direct',
-		description: 'Answers the research question explicitly, on its face'
+		label: '直接',
+		description: '在字面上直接回答研究问题'
 	},
 	indirect: {
-		label: 'Indirect',
-		description: 'Requires interpretation or combination with other evidence'
+		label: '间接',
+		description: '需要解释或与其他证据结合'
 	},
 	negative: {
-		label: 'Negative',
-		description: 'Absence of expected information is itself meaningful evidence'
+		label: '否定',
+		description: '预期信息的缺失本身就是有意义的证据'
 	}
 };
 
@@ -756,13 +756,13 @@ export interface SourceCategoryDefinition {
  * Built-in source type categories
  */
 export const BUILT_IN_SOURCE_CATEGORIES: SourceCategoryDefinition[] = [
-	{ id: 'vital', name: 'Vital records', sortOrder: 0 },
-	{ id: 'census', name: 'Census', sortOrder: 1 },
-	{ id: 'church', name: 'Church records', sortOrder: 2 },
-	{ id: 'legal', name: 'Legal & property', sortOrder: 3 },
-	{ id: 'military', name: 'Military', sortOrder: 4 },
-	{ id: 'media', name: 'Media & correspondence', sortOrder: 5 },
-	{ id: 'other', name: 'Other', sortOrder: 6 }
+	{ id: 'vital', name: '重要记录', sortOrder: 0 },
+	{ id: 'census', name: '人口普查', sortOrder: 1 },
+	{ id: 'church', name: '教会记录', sortOrder: 2 },
+	{ id: 'legal', name: '法律与财产', sortOrder: 3 },
+	{ id: 'military', name: '军事', sortOrder: 4 },
+	{ id: 'media', name: '媒体与通信', sortOrder: 5 },
+	{ id: 'other', name: '其他', sortOrder: 6 }
 ];
 
 /**

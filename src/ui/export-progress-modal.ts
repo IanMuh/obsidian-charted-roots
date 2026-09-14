@@ -29,15 +29,15 @@ export interface ExportProgress {
  * Phase display configuration
  */
 const PHASE_CONFIG: Record<ExportPhase, { label: string; icon: LucideIconName }> = {
-	loading: { label: 'Loading data', icon: 'folder' },
-	filtering: { label: 'Filtering records', icon: 'search' },
-	privacy: { label: 'Applying privacy settings', icon: 'shield' },
-	events: { label: 'Loading events', icon: 'calendar' },
-	sources: { label: 'Loading sources', icon: 'book-open' },
-	places: { label: 'Loading places', icon: 'map-pin' },
-	generating: { label: 'Generating export', icon: 'file-code' },
-	writing: { label: 'Saving file', icon: 'download' },
-	complete: { label: 'Complete', icon: 'check' }
+	loading: { label: '正在加载数据', icon: 'folder' },
+	filtering: { label: '正在筛选记录', icon: 'search' },
+	privacy: { label: '正在应用隐私设置', icon: 'shield' },
+	events: { label: '正在加载事件', icon: 'calendar' },
+	sources: { label: '正在加载来源', icon: 'book-open' },
+	places: { label: '正在加载地点', icon: 'map-pin' },
+	generating: { label: '正在生成导出', icon: 'file-code' },
+	writing: { label: '正在保存文件', icon: 'download' },
+	complete: { label: '完成', icon: 'check' }
 };
 
 /**
@@ -75,7 +75,7 @@ export class ExportProgressModal extends Modal {
 
 		// Title
 		contentEl.createEl('h2', {
-			text: `Exporting ${this.formatName}`,
+			text: `正在导出 ${this.formatName}`,
 			cls: 'crc-modal-title'
 		});
 
@@ -84,7 +84,7 @@ export class ExportProgressModal extends Modal {
 		this.phaseIcon = phaseContainer.createDiv({ cls: 'cr-export-phase__icon' });
 		this.phaseLabel = phaseContainer.createEl('span', {
 			cls: 'cr-export-phase__label',
-			text: 'Loading data…'
+			text: '正在加载数据…'
 		});
 
 		// Progress bar container
@@ -96,7 +96,7 @@ export class ExportProgressModal extends Modal {
 		// Progress text
 		this.progressText = contentEl.createDiv({
 			cls: 'cr-export-progress__text',
-			text: 'Starting…'
+			text: '正在开始…'
 		});
 
 		// Stats container (shows running totals)
@@ -136,9 +136,9 @@ export class ExportProgressModal extends Modal {
 		if (progress.message) {
 			this.progressText.textContent = progress.message;
 		} else if (progress.total > 0) {
-			this.progressText.textContent = `${progress.current} of ${progress.total}`;
+			this.progressText.textContent = `第 ${progress.current} / ${progress.total}`;
 		} else {
-			this.progressText.textContent = 'Processing…';
+			this.progressText.textContent = '正在处理…';
 		}
 	}
 
@@ -157,10 +157,10 @@ export class ExportProgressModal extends Modal {
 		if (!this.progressBar || !this.progressText || !this.phaseLabel) return;
 
 		this.currentPhase = 'complete';
-		this.phaseLabel.textContent = 'Export complete';
+		this.phaseLabel.textContent = '导出完成';
 		this.updatePhaseIcon('complete');
 		this.progressBar.setCssProps({ '--progress-width': '100%' });
-		this.progressText.textContent = 'Done!';
+		this.progressText.textContent = '完成！';
 	}
 
 	/**
@@ -189,19 +189,19 @@ export class ExportProgressModal extends Modal {
 		const items: { label: string; value: number; icon: LucideIconName }[] = [];
 
 		if (this.stats.people > 0) {
-			items.push({ label: 'People', value: this.stats.people, icon: 'users' });
+			items.push({ label: '人物', value: this.stats.people, icon: 'users' });
 		}
 		if (this.stats.events > 0) {
-			items.push({ label: 'Events', value: this.stats.events, icon: 'calendar' });
+			items.push({ label: '事件', value: this.stats.events, icon: 'calendar' });
 		}
 		if (this.stats.sources > 0) {
-			items.push({ label: 'Sources', value: this.stats.sources, icon: 'book-open' });
+			items.push({ label: '来源', value: this.stats.sources, icon: 'book-open' });
 		}
 		if (this.stats.places > 0) {
-			items.push({ label: 'Places', value: this.stats.places, icon: 'map-pin' });
+			items.push({ label: '地点', value: this.stats.places, icon: 'map-pin' });
 		}
 		if (this.stats.relationships > 0) {
-			items.push({ label: 'Relationships', value: this.stats.relationships, icon: 'git-branch' });
+			items.push({ label: '关系', value: this.stats.relationships, icon: 'git-branch' });
 		}
 
 		for (const item of items) {

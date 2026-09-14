@@ -85,18 +85,18 @@ export interface PersonFrontmatter {
  * Fields that can be merged
  */
 const MERGEABLE_FIELDS: { field: string; label: string; isArray: boolean }[] = [
-	{ field: 'name', label: 'Name', isArray: false },
-	{ field: 'born', label: 'Birth date', isArray: false },
-	{ field: 'died', label: 'Death date', isArray: false },
-	{ field: 'birth_place', label: 'Birth place', isArray: false },
-	{ field: 'death_place', label: 'Death place', isArray: false },
-	{ field: 'occupation', label: 'Occupation', isArray: false },
-	{ field: 'sex', label: 'Sex', isArray: false },
-	{ field: 'father', label: 'Father', isArray: false },
-	{ field: 'mother', label: 'Mother', isArray: false },
-	{ field: 'spouse', label: 'Spouse(s)', isArray: true },
-	{ field: 'child', label: 'Children', isArray: true },
-	{ field: 'collection', label: 'Collection', isArray: false }
+	{ field: 'name', label: '名称', isArray: false },
+	{ field: 'born', label: '出生日期', isArray: false },
+	{ field: 'died', label: '去世日期', isArray: false },
+	{ field: 'birth_place', label: '出生地点', isArray: false },
+	{ field: 'death_place', label: '去世地点', isArray: false },
+	{ field: 'occupation', label: '职业', isArray: false },
+	{ field: 'sex', label: '生理性别', isArray: false },
+	{ field: 'father', label: '父亲', isArray: false },
+	{ field: 'mother', label: '母亲', isArray: false },
+	{ field: 'spouse', label: '配偶', isArray: true },
+	{ field: 'child', label: '子女', isArray: true },
+	{ field: 'collection', label: '合集', isArray: false }
 ];
 
 /**

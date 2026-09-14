@@ -1,6 +1,5 @@
 import { App, Modal, TFile } from 'obsidian';
 import { createLucideIcon } from './lucide-icons';
-import { pluralize } from '../utils/format-utils';
 
 /**
  * Preview modal for adding cr_type property to person notes
@@ -34,12 +33,12 @@ export class AddPersonTypePreviewModal extends Modal {
 		// Add modal class for sizing
 		this.modalEl.addClass('crc-batch-preview-modal');
 
-		titleEl.setText('Preview: Add cr_type property to person notes');
+		titleEl.setText('预览：为人物笔记添加 cr_type 属性');
 
 		// Description
 		const description = contentEl.createDiv({ cls: 'crc-batch-description' });
 		description.createEl('p', {
-			text: 'This operation will add "cr_type: person" to all person notes that don\'t already have it. This is recommended for better compatibility and ensures all batch operations can find your person notes reliably.'
+			text: '此操作将为所有尚未包含 "cr_type: person" 的人物笔记添加该属性。推荐这样做以获得更好的兼容性，并确保所有批量操作都能可靠地找到你的人物笔记。'
 		});
 
 		// Count display
@@ -52,7 +51,7 @@ export class AddPersonTypePreviewModal extends Modal {
 		const searchContainer = controlsRow.createDiv({ cls: 'crc-batch-search' });
 		const searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search by name...',
+			placeholder: '按姓名搜索…',
 			cls: 'crc-batch-search-input'
 		});
 		searchInput.addEventListener('input', () => {
@@ -79,8 +78,8 @@ export class AddPersonTypePreviewModal extends Modal {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Person' });
-		headerRow.createEl('th', { text: 'Action' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '操作' });
 
 		this.tbody = table.createEl('tbody');
 
@@ -92,20 +91,20 @@ export class AddPersonTypePreviewModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+			text: ' 继续操作前请先备份你的库。此操作会修改现有笔记。'
 		});
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelButton = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelButton.addEventListener('click', () => this.close());
 
 		const applyButton = buttonContainer.createEl('button', {
-			text: `Apply to ${this.allChanges.length} ${pluralize(this.allChanges.length, 'note')}`,
+			text: `应用到 ${this.allChanges.length} 条笔记`,
 			cls: 'mod-cta'
 		});
 		applyButton.addEventListener('click', () => {
@@ -113,7 +112,7 @@ export class AddPersonTypePreviewModal extends Modal {
 				// Disable buttons during operation
 				applyButton.disabled = true;
 				cancelButton.disabled = true;
-				applyButton.textContent = 'Applying changes...';
+				applyButton.textContent = '正在应用更改…';
 
 				// Run the operation
 				await this.onApply();
@@ -146,7 +145,7 @@ export class AddPersonTypePreviewModal extends Modal {
 
 		// Update count
 		if (this.countEl) {
-			this.countEl.textContent = `Found ${this.filteredChanges.length} of ${this.allChanges.length} person ${pluralize(this.allChanges.length, 'note')} needing cr_type property`;
+			this.countEl.textContent = `共 ${this.allChanges.length} 条需要 cr_type 属性的人物笔记，显示 ${this.filteredChanges.length} 条`;
 		}
 
 		// Render table
@@ -170,7 +169,7 @@ export class AddPersonTypePreviewModal extends Modal {
 
 			// Action description
 			row.createEl('td', {
-				text: 'Add cr_type: person',
+				text: '添加 cr_type: person',
 				cls: 'crc-batch-value'
 			});
 		}
@@ -183,7 +182,7 @@ export class AddPersonTypePreviewModal extends Modal {
 				cls: 'crc-batch-empty'
 			});
 			emptyCell.createEl('p', {
-				text: 'No person notes match the search'
+				text: '没有匹配搜索的人物笔记'
 			});
 		}
 	}

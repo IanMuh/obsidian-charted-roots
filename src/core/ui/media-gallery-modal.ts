@@ -220,7 +220,7 @@ export class MediaGalleryModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'crc-media-gallery-header' });
 		const headerIcon = header.createDiv({ cls: 'crc-media-gallery-header-icon' });
 		setIcon(headerIcon, 'layout-grid');
-		header.createEl('h2', { text: 'Linked Media Gallery' });
+		header.createEl('h2', { text: '已链接媒体图库' });
 
 		// Search and filters
 		const controls = contentEl.createDiv({ cls: 'crc-media-gallery-controls' });
@@ -231,7 +231,7 @@ export class MediaGalleryModal extends Modal {
 		setIcon(searchIcon, 'search');
 		this.searchInput = searchWrapper.createEl('input', {
 			type: 'text',
-			placeholder: 'Search media files...',
+			placeholder: '搜索媒体文件…',
 			cls: 'crc-media-gallery-search-input'
 		});
 		this.searchInput.addEventListener('input', () => {
@@ -242,12 +242,12 @@ export class MediaGalleryModal extends Modal {
 		// Filter buttons
 		const filters = controls.createDiv({ cls: 'crc-media-gallery-filters' });
 		const filterOptions: Array<{ value: EntityFilter; label: string }> = [
-			{ value: 'all', label: 'All' },
-			{ value: 'person', label: 'People' },
-			{ value: 'event', label: 'Events' },
-			{ value: 'place', label: 'Places' },
-			{ value: 'organization', label: 'Orgs' },
-			{ value: 'source', label: 'Sources' }
+			{ value: 'all', label: '全部' },
+			{ value: 'person', label: '人物' },
+			{ value: 'event', label: '事件' },
+			{ value: 'place', label: '地点' },
+			{ value: 'organization', label: '组织' },
+			{ value: 'source', label: '来源' }
 		];
 
 		for (const opt of filterOptions) {
@@ -318,9 +318,9 @@ export class MediaGalleryModal extends Modal {
 		const showing = this.filteredItems.length;
 		const total = this.allItems.length;
 		if (showing === total) {
-			this.countEl.textContent = `${total} media files`;
+			this.countEl.textContent = `${total} 个媒体文件`;
 		} else {
-			this.countEl.textContent = `Showing ${showing} of ${total} files`;
+			this.countEl.textContent = `显示 ${showing} / ${total} 个文件`;
 		}
 	}
 
@@ -349,15 +349,15 @@ export class MediaGalleryModal extends Modal {
 		setIcon(emptyIcon, 'image-off');
 
 		if (this.allItems.length === 0) {
-			empty.createEl('p', { text: 'No media files linked yet' });
+			empty.createEl('p', { text: '尚未链接媒体文件' });
 			empty.createEl('p', {
-				text: 'Use "Link media" from the context menu to add media to entities',
+				text: '使用上下文菜单中的「链接媒体」为实体添加媒体',
 				cls: 'crc-text-muted'
 			});
 		} else {
-			empty.createEl('p', { text: 'No matching files' });
+			empty.createEl('p', { text: '没有匹配的文件' });
 			empty.createEl('p', {
-				text: 'Try a different search term or filter',
+				text: '请尝试其他搜索词或筛选条件',
 				cls: 'crc-text-muted'
 			});
 		}
@@ -450,11 +450,11 @@ export class MediaGalleryModal extends Modal {
 	 */
 	private getEntityLabel(type: EntityFilter): string {
 		switch (type) {
-			case 'person': return 'Person';
-			case 'event': return 'Event';
-			case 'place': return 'Place';
-			case 'organization': return 'Org';
-			case 'source': return 'Source';
+			case 'person': return '人物';
+			case 'event': return '事件';
+			case 'place': return '地点';
+			case 'organization': return '组织';
+			case 'source': return '来源';
 			default: return '';
 		}
 	}
@@ -475,7 +475,7 @@ export class MediaGalleryModal extends Modal {
 
 		menu.addItem((menuItem) => {
 			menuItem
-				.setTitle('Open media file')
+				.setTitle('打开媒体文件')
 				.setIcon('file')
 				.onClick(() => {
 					this.openMediaFile(item);
@@ -484,7 +484,7 @@ export class MediaGalleryModal extends Modal {
 
 		menu.addItem((menuItem) => {
 			menuItem
-				.setTitle(`Open ${item.entityType} note`)
+				.setTitle(`打开${this.getEntityLabel(item.entityType)}笔记`)
 				.setIcon(this.getEntityIcon(item.entityType))
 				.onClick(() => {
 					this.close();
@@ -496,7 +496,7 @@ export class MediaGalleryModal extends Modal {
 
 		menu.addItem((menuItem) => {
 			menuItem
-				.setTitle('Manage entity media...')
+				.setTitle('管理实体媒体…')
 				.setIcon('images')
 				.onClick(() => {
 					this.close();
@@ -512,7 +512,7 @@ export class MediaGalleryModal extends Modal {
 
 		menu.addItem((menuItem) => {
 			menuItem
-				.setTitle('Reveal in file explorer')
+				.setTitle('在文件浏览器中显示')
 				.setIcon('folder')
 				.onClick(() => {
 					// @ts-expect-error - showInFolder is available
@@ -522,7 +522,7 @@ export class MediaGalleryModal extends Modal {
 
 		menu.addItem((menuItem) => {
 			menuItem
-				.setTitle('Copy file path')
+				.setTitle('复制文件路径')
 				.setIcon('copy')
 				.onClick(() => {
 					void navigator.clipboard.writeText(item.file.path);
@@ -590,19 +590,19 @@ export class MediaGalleryModal extends Modal {
 		// Label
 		toggleWrapper.createSpan({
 			cls: 'crc-media-folder-filter-label',
-			text: 'Media folders only'
+			text: '仅媒体文件夹'
 		});
 
 		// Tooltip/hint for no folders configured
 		if (!hasFolders) {
 			toggleWrapper.addClass('crc-media-folder-filter-toggle--disabled');
-			toggleWrapper.setAttribute('aria-label', 'No media folders configured. Set up in Preferences > Folder locations.');
-			toggleWrapper.setAttribute('title', 'No media folders configured. Set up in Preferences > Folder locations.');
+			toggleWrapper.setAttribute('aria-label', '未配置媒体文件夹。请在「设置 > 文件夹位置」中配置。');
+			toggleWrapper.setAttribute('title', '未配置媒体文件夹。请在「设置 > 文件夹位置」中配置。');
 		} else {
 			const folderList = mediaFolders.length === 1
 				? mediaFolders[0]
-				: `${mediaFolders.length} folders`;
-			toggleWrapper.setAttribute('title', `Filter to: ${folderList}`);
+				: `${mediaFolders.length} 个文件夹`;
+			toggleWrapper.setAttribute('title', `筛选范围：${folderList}`);
 		}
 
 		// Handle toggle change

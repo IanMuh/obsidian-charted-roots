@@ -46,14 +46,14 @@ export class AddRelationshipModal extends Modal {
 		const sourceCrId = sourceCache?.frontmatter?.cr_id;
 
 		if (!sourceCrId) {
-			new Notice('Source person does not have a cr_id');
+			new Notice('来源人物缺少 cr_id');
 			this.close();
 			return;
 		}
 
-		contentEl.createEl('h2', { text: 'Add relationship' });
+		contentEl.createEl('h2', { text: '添加关系' });
 		contentEl.createEl('p', {
-			text: `Adding relationship from: ${sourceName}`,
+			text: `从以下人物添加关系：${sourceName}`,
 			cls: 'crc-text-muted'
 		});
 
@@ -68,10 +68,10 @@ export class AddRelationshipModal extends Modal {
 		}
 
 		new Setting(contentEl)
-			.setName('Relationship type')
-			.setDesc('Select the type of relationship')
+			.setName('关系类型')
+			.setDesc('选择关系的类型')
 			.addDropdown(dropdown => {
-				dropdown.addOption('', 'Select a type...');
+				dropdown.addOption('', '选择类型…');
 
 				// Group by category
 				for (const [category, categoryTypes] of typesByCategory) {
@@ -89,14 +89,14 @@ export class AddRelationshipModal extends Modal {
 
 		// Target person selector
 		const targetSetting = new Setting(contentEl)
-			.setName('Target person')
-			.setDesc('Select the person this relationship points to');
+			.setName('目标人物')
+			.setDesc('选择此关系指向的人物');
 
 		const targetDisplay = targetSetting.controlEl.createDiv({ cls: 'cr-target-display' });
-		targetDisplay.createSpan({ text: 'None selected', cls: 'crc-text-muted' });
+		targetDisplay.createSpan({ text: '未选择', cls: 'crc-text-muted' });
 
 		targetSetting.addButton(btn => btn
-			.setButtonText('Select person')
+			.setButtonText('选择人物')
 			.onClick(() => {
 				// Build context for inline creation
 				const cache = this.app.metadataCache.getFileCache(this.sourceFile);
@@ -119,7 +119,7 @@ export class AddRelationshipModal extends Modal {
 					targetDisplay.createSpan({ text: selected.name });
 					this.updateAddButton();
 				}, {
-					title: 'Select person',
+					title: '选择人物',
 					createContext: createContext,
 					onCreateNew: () => {
 						// Callback signals inline creation support
@@ -133,10 +133,10 @@ export class AddRelationshipModal extends Modal {
 
 		// Optional notes
 		new Setting(contentEl)
-			.setName('Notes (optional)')
-			.setDesc('Additional notes about this relationship')
+			.setName('备注（可选）')
+			.setDesc('关于此关系的补充备注')
 			.addTextArea(text => text
-				.setPlaceholder('e.g., "Became godparent in 1920"')
+				.setPlaceholder('例如："1920年成为教父"')
 				.onChange(value => {
 					this.notes = value;
 				})
@@ -146,7 +146,7 @@ export class AddRelationshipModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-modal-buttons' });
 
 		const addBtn = buttonContainer.createEl('button', {
-			text: 'Add relationship',
+			text: '添加关系',
 			cls: 'mod-cta'
 		});
 		addBtn.disabled = true;
@@ -155,7 +155,7 @@ export class AddRelationshipModal extends Modal {
 		// Store reference for enabling/disabling
 		(this as { addButton?: HTMLButtonElement }).addButton = addBtn;
 
-		buttonContainer.createEl('button', { text: 'Cancel' })
+		buttonContainer.createEl('button', { text: '取消' })
 			.addEventListener('click', () => this.close());
 	}
 
@@ -168,7 +168,7 @@ export class AddRelationshipModal extends Modal {
 
 	private async addRelationship() {
 		if (!this.selectedType || !this.selectedTarget) {
-			new Notice('Please select a relationship type and target person');
+			new Notice('请选择关系类型和目标人物');
 			return;
 		}
 
@@ -180,7 +180,7 @@ export class AddRelationshipModal extends Modal {
 		const targetName = targetCache?.frontmatter?.name || this.selectedTarget.file.basename;
 
 		if (!sourceCrId || !targetCrId) {
-			new Notice('Both people must have cr_id fields');
+			new Notice('双方人物都必须有 cr_id 字段');
 			return;
 		}
 
@@ -280,7 +280,7 @@ export class AddRelationshipModal extends Modal {
 
 			if (wrote) {
 				const typeName = this.selectedType.name;
-				new Notice(`Added ${typeName} relationship to ${targetName}`);
+				new Notice(`已为 ${targetName} 添加 ${typeName} 关系`);
 
 				// Refresh the relationship service cache
 				this.relationshipService.refreshCache();
@@ -288,8 +288,8 @@ export class AddRelationshipModal extends Modal {
 
 			this.close();
 		} catch (error) {
-			const msg = error instanceof Error ? error.message : 'Unknown error';
-			new Notice(`Failed to add relationship: ${msg}`);
+			const msg = error instanceof Error ? error.message : '未知错误';
+			new Notice(`添加关系失败：${msg}`);
 		}
 	}
 
@@ -314,7 +314,7 @@ export class AddRelationshipModal extends Modal {
 				...this.normalizeToArray(frontmatter.adoptive_parent_ids)
 			].filter((v): v is string => typeof v === 'string' && v.length > 0);
 			if (existingIds.includes(targetCrId)) {
-				throw new Error('This relationship already exists');
+				throw new Error('该关系已存在');
 			}
 
 			if (isFemale) {
@@ -358,7 +358,7 @@ export class AddRelationshipModal extends Modal {
 		await this.app.fileManager.processFrontMatter(this.sourceFile, (frontmatter) => {
 			const result = addFlatRelationship(frontmatter, typeId, targetWikilink, targetCrId, { notes });
 			if (result === 'duplicate') {
-				throw new Error('This relationship already exists');
+				throw new Error('该关系已存在');
 			}
 		});
 
@@ -395,8 +395,8 @@ export class AddRelationshipModal extends Modal {
 				addFlatRelationship(frontmatter, typeId, sourceWikilink, sourceCrId, { notes });
 			});
 		} catch (err) {
-			const msg = err instanceof Error ? err.message : 'Unknown error';
-			new Notice(`Added on ${this.sourceFile.basename}, but failed to mirror on ${targetFile.basename}: ${msg}`);
+			const msg = err instanceof Error ? err.message : '未知错误';
+			new Notice(`已在 ${this.sourceFile.basename} 上添加，但在 ${targetFile.basename} 上镜像失败：${msg}`);
 		}
 	}
 

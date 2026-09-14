@@ -115,24 +115,24 @@ export class MigrationNoticeView extends ItemView {
 		const header = container.createDiv({ cls: 'cr-migration-header' });
 		const iconEl = header.createSpan({ cls: 'cr-migration-icon' });
 		setIcon(iconEl, 'sparkles');
-		header.createEl('h2', { text: "What's New in v0.18.0" });
+		header.createEl('h2', { text: 'v0.18.0 新功能' });
 
 		// Content
 		const content = container.createDiv({ cls: 'cr-migration-content' });
 
 		// Event person format change section
 		const section = content.createDiv({ cls: 'cr-migration-section' });
-		section.createEl('h3', { text: 'Event Person Property Consolidation' });
+		section.createEl('h3', { text: '事件人物属性整合' });
 
 		section.createEl('p', {
-			text: 'Event notes now use a single "persons" array property instead of separate "person" and "persons" properties. This simplifies data management and enables multi-person events for all event types.'
+			text: '事件笔记现在使用单个"persons"数组属性，而不再分别使用"person"和"persons"属性。这简化了数据管理，并让所有事件类型都支持多人事件。'
 		});
 
 		// Code comparison
 		const codeBlock = section.createDiv({ cls: 'cr-migration-code' });
 
 		const oldCode = codeBlock.createDiv({ cls: 'cr-code-example cr-code-old' });
-		oldCode.createEl('div', { cls: 'cr-code-label', text: 'Old format (deprecated)' });
+		oldCode.createEl('div', { cls: 'cr-code-label', text: '旧格式（已弃用）' });
 		oldCode.createEl('pre', {
 			text: `# Single-person event
 person: "[[John Smith]]"
@@ -144,7 +144,7 @@ persons:
 		});
 
 		const newCode = codeBlock.createDiv({ cls: 'cr-code-example cr-code-new' });
-		newCode.createEl('div', { cls: 'cr-code-label', text: 'New format (all events)' });
+		newCode.createEl('div', { cls: 'cr-code-label', text: '新格式（所有事件）' });
 		newCode.createEl('pre', {
 			text: `persons:
   - "[[John Smith]]"
@@ -157,18 +157,18 @@ persons:
 
 		// Benefits section
 		const benefitsSection = content.createDiv({ cls: 'cr-migration-section' });
-		benefitsSection.createEl('h3', { text: 'Benefits' });
+		benefitsSection.createEl('h3', { text: '优势' });
 
 		const benefitsList = benefitsSection.createEl('ul');
-		benefitsList.createEl('li', { text: 'Consistent property name across all event types' });
-		benefitsList.createEl('li', { text: 'Any event can have multiple participants without schema changes' });
-		benefitsList.createEl('li', { text: 'Simpler queries in Obsidian Bases and Dataview' });
+		benefitsList.createEl('li', { text: '所有事件类型使用一致的属性名' });
+		benefitsList.createEl('li', { text: '任何事件都可包含多名参与者，无需更改结构' });
+		benefitsList.createEl('li', { text: '在 Obsidian Bases 和 Dataview 中查询更简单' });
 
 		// Action section
 		const actionSection = content.createDiv({ cls: 'cr-migration-section' });
-		actionSection.createEl('h3', { text: 'Action Recommended' });
+		actionSection.createEl('h3', { text: '建议操作' });
 		actionSection.createEl('p', {
-			text: 'If you have event notes using the old "person" property, run the Cleanup Wizard to migrate them automatically. New imports will use the array format.'
+			text: '如果你的事件笔记使用了旧的"person"属性，请运行清理向导自动迁移。新导入将使用数组格式。'
 		});
 
 		// Buttons
@@ -183,7 +183,7 @@ persons:
 		const header = container.createDiv({ cls: 'cr-migration-header' });
 		const iconEl = header.createSpan({ cls: 'cr-migration-icon' });
 		setIcon(iconEl, 'sparkles');
-		header.createEl('h2', { text: "What's New in v0.18.9" });
+		header.createEl('h2', { text: 'v0.18.9 新功能' });
 
 		// Content
 		const content = container.createDiv({ cls: 'cr-migration-content' });
@@ -191,7 +191,7 @@ persons:
 		// Introduction
 		const introSection = content.createDiv({ cls: 'cr-migration-section' });
 		introSection.createEl('p', {
-			text: 'This version fixes compatibility issues with Obsidian\'s Properties panel. Two features have been redesigned to use flat property formats that work seamlessly with Obsidian.'
+			text: '此版本修复了与 Obsidian 属性面板的兼容性问题。两个功能已改为使用扁平属性格式，可无缝配合 Obsidian 使用。'
 		});
 
 		// Get migration status
@@ -206,17 +206,17 @@ persons:
 			const checkIcon = evidenceHeader.createSpan({ cls: 'cr-migration-check' });
 			setIcon(checkIcon, 'check-circle');
 		}
-		evidenceHeader.createEl('h3', { text: 'Evidence Tracking Property Format' });
+		evidenceHeader.createEl('h3', { text: '证据追踪属性格式' });
 
 		evidenceSection.createEl('p', {
-			text: 'The nested sourced_facts object is replaced with individual flat properties for each fact type.'
+			text: '嵌套的 sourced_facts 对象已替换为每种事实类型对应的独立扁平属性。'
 		});
 
 		// Code comparison for sourced_facts
 		const evidenceCode = evidenceSection.createDiv({ cls: 'cr-migration-code' });
 
 		const oldEvidenceCode = evidenceCode.createDiv({ cls: 'cr-code-example cr-code-old' });
-		oldEvidenceCode.createEl('div', { cls: 'cr-code-label', text: 'Old format (nested object)' });
+		oldEvidenceCode.createEl('div', { cls: 'cr-code-label', text: '旧格式（嵌套对象）' });
 		oldEvidenceCode.createEl('pre', {
 			text: `sourced_facts:
   birth_date:
@@ -228,7 +228,7 @@ persons:
 		});
 
 		const newEvidenceCode = evidenceCode.createDiv({ cls: 'cr-code-example cr-code-new' });
-		newEvidenceCode.createEl('div', { cls: 'cr-code-label', text: 'New format (flat properties)' });
+		newEvidenceCode.createEl('div', { cls: 'cr-code-label', text: '新格式（扁平属性）' });
 		newEvidenceCode.createEl('pre', {
 			text: `sourced_birth_date:
   - "[[Census 1870]]"
@@ -243,17 +243,17 @@ sourced_death_date:
 			const checkIcon = eventsHeader.createSpan({ cls: 'cr-migration-check' });
 			setIcon(checkIcon, 'check-circle');
 		}
-		eventsHeader.createEl('h3', { text: 'Life Events Property Format' });
+		eventsHeader.createEl('h3', { text: '人生事件属性格式' });
 
 		eventsSection.createEl('p', {
-			text: 'Inline events arrays are replaced with links to separate event note files.'
+			text: '内联的事件数组已替换为指向独立事件笔记文件的链接。'
 		});
 
 		// Code comparison for events
 		const eventsCode = eventsSection.createDiv({ cls: 'cr-migration-code' });
 
 		const oldEventsCode = eventsCode.createDiv({ cls: 'cr-code-example cr-code-old' });
-		oldEventsCode.createEl('div', { cls: 'cr-code-label', text: 'Old format (inline array)' });
+		oldEventsCode.createEl('div', { cls: 'cr-code-label', text: '旧格式（内联数组）' });
 		oldEventsCode.createEl('pre', {
 			text: `events:
   - event_type: residence
@@ -262,7 +262,7 @@ sourced_death_date:
 		});
 
 		const newEventsCode = eventsCode.createDiv({ cls: 'cr-code-example cr-code-new' });
-		newEventsCode.createEl('div', { cls: 'cr-code-label', text: 'New format (event note links)' });
+		newEventsCode.createEl('div', { cls: 'cr-code-label', text: '新格式（事件笔记链接）' });
 		newEventsCode.createEl('pre', {
 			text: `life_events:
   - "[[Events/John Smith - Residence 1920]]"`
@@ -270,19 +270,19 @@ sourced_death_date:
 
 		// Benefits section
 		const benefitsSection = content.createDiv({ cls: 'cr-migration-section' });
-		benefitsSection.createEl('h3', { text: 'Benefits' });
+		benefitsSection.createEl('h3', { text: '优势' });
 
 		const benefitsList = benefitsSection.createEl('ul');
-		benefitsList.createEl('li', { text: 'No more "Type mismatch" warnings in Properties panel' });
-		benefitsList.createEl('li', { text: 'Safe to edit properties without data corruption' });
-		benefitsList.createEl('li', { text: 'Better Dataview and Bases compatibility' });
-		benefitsList.createEl('li', { text: 'Each event as a note enables linking, tags, and attachments' });
+		benefitsList.createEl('li', { text: '属性面板中不再出现"类型不匹配"警告' });
+		benefitsList.createEl('li', { text: '可安全编辑属性而不会损坏数据' });
+		benefitsList.createEl('li', { text: '更好地兼容 Dataview 和 Bases' });
+		benefitsList.createEl('li', { text: '每个事件作为独立笔记，支持链接、标签和附件' });
 
 		// Action section
 		const actionSection = content.createDiv({ cls: 'cr-migration-section' });
-		actionSection.createEl('h3', { text: 'Action Recommended' });
+		actionSection.createEl('h3', { text: '建议操作' });
 		actionSection.createEl('p', {
-			text: 'Use the Cleanup Wizard to migrate existing data. The plugin reads both old and new formats, so migration can be done at your convenience.'
+			text: '使用清理向导迁移现有数据。插件同时读取新旧两种格式，因此你可以在方便时再迁移。'
 		});
 
 		// Buttons with multi-action aware dismiss
@@ -297,7 +297,7 @@ sourced_death_date:
 
 		const wizardBtn = buttons.createEl('button', {
 			cls: 'mod-cta',
-			text: 'Open Cleanup Wizard'
+			text: '打开清理向导'
 		});
 		wizardBtn.addEventListener('click', () => {
 			this.leaf.detach();
@@ -309,7 +309,7 @@ sourced_death_date:
 		const canDismiss = (sourcedFactsComplete && eventsComplete);
 		const dismissBtn = buttons.createEl('button', {
 			cls: 'cr-migration-dismiss',
-			text: canDismiss ? 'Dismiss' : 'Complete migrations to dismiss'
+			text: canDismiss ? '关闭' : '完成迁移后可关闭'
 		});
 		dismissBtn.disabled = !canDismiss;
 		if (canDismiss) {
@@ -322,7 +322,7 @@ sourced_death_date:
 		// Add skip button for users who want to dismiss without migrating
 		const skipBtn = buttons.createEl('button', {
 			cls: 'cr-migration-skip',
-			text: 'Skip for now'
+			text: '暂时跳过'
 		});
 		skipBtn.addEventListener('click', () => {
 			void this.markAsSeen();
@@ -339,7 +339,7 @@ sourced_death_date:
 		const header = container.createDiv({ cls: 'cr-migration-header' });
 		const iconEl = header.createSpan({ cls: 'cr-migration-icon' });
 		setIcon(iconEl, 'folder-cog');
-		header.createEl('h2', { text: 'Plugin Renamed to Charted Roots' });
+		header.createEl('h2', { text: '插件已更名为 Charted Roots' });
 
 		// Content
 		const content = container.createDiv({ cls: 'cr-migration-content' });
@@ -347,22 +347,22 @@ sourced_death_date:
 		// Introduction
 		const introSection = content.createDiv({ cls: 'cr-migration-section' });
 		introSection.createEl('p', {
-			text: 'Canvas Roots has been renamed to Charted Roots. Your canvas files and code blocks have been automatically migrated.'
+			text: 'Canvas Roots 已更名为 Charted Roots。你的画布文件和代码块已自动迁移。'
 		});
 
 		// Folder settings warning
 		const warningSection = content.createDiv({ cls: 'cr-migration-section' });
-		warningSection.createEl('h3', { text: 'Check your folder settings' });
+		warningSection.createEl('h3', { text: '检查你的文件夹设置' });
 
 		warningSection.createEl('p', {
-			text: 'The default folder paths have changed from "Canvas Roots/..." to "Charted Roots/...". If you were using the default folders, your settings may now point to a different location than your existing files.'
+			text: '默认文件夹路径已从"Canvas Roots/..."变为"Charted Roots/..."。如果你此前使用默认文件夹，你的设置现在可能指向与现有文件不同的位置。'
 		});
 
 		// Code comparison showing old vs new defaults
 		const codeBlock = warningSection.createDiv({ cls: 'cr-migration-code' });
 
 		const oldCode = codeBlock.createDiv({ cls: 'cr-code-example cr-code-old' });
-		oldCode.createEl('div', { cls: 'cr-code-label', text: 'Previous defaults' });
+		oldCode.createEl('div', { cls: 'cr-code-label', text: '先前的默认值' });
 		oldCode.createEl('pre', {
 			text: `People folder: Canvas Roots/People
 Places folder: Canvas Roots/Places
@@ -371,7 +371,7 @@ Sources folder: Canvas Roots/Sources`
 		});
 
 		const newCode = codeBlock.createDiv({ cls: 'cr-code-example cr-code-new' });
-		newCode.createEl('div', { cls: 'cr-code-label', text: 'New defaults' });
+		newCode.createEl('div', { cls: 'cr-code-label', text: '新的默认值' });
 		newCode.createEl('pre', {
 			text: `People folder: Charted Roots/People
 Places folder: Charted Roots/Places
@@ -381,15 +381,15 @@ Sources folder: Charted Roots/Sources`
 
 		// Action section
 		const actionSection = content.createDiv({ cls: 'cr-migration-section' });
-		actionSection.createEl('h3', { text: 'Action recommended' });
+		actionSection.createEl('h3', { text: '建议操作' });
 
 		const actionList = actionSection.createEl('ol');
-		actionList.createEl('li', { text: 'Open Settings → Charted Roots → Folders' });
-		actionList.createEl('li', { text: 'Check that each folder path points to your existing data' });
-		actionList.createEl('li', { text: 'If you see a new empty "Charted Roots" folder, update settings to use your existing "Canvas Roots" folders instead' });
+		actionList.createEl('li', { text: '打开 设置 → Charted Roots → 文件夹' });
+		actionList.createEl('li', { text: '检查每个文件夹路径是否指向你的现有数据' });
+		actionList.createEl('li', { text: '如果你看到一个新的空"Charted Roots"文件夹，请将设置改为使用你现有的"Canvas Roots"文件夹' });
 
 		actionSection.createEl('p', {
-			text: 'If you\'re starting fresh or already use custom folder paths, no action is needed.'
+			text: '如果你从零开始，或已使用自定义文件夹路径，则无需任何操作。'
 		});
 
 		// Buttons - simple dismiss since no automated migration is available
@@ -397,7 +397,7 @@ Sources folder: Charted Roots/Sources`
 
 		const settingsBtn = buttons.createEl('button', {
 			cls: 'mod-cta',
-			text: 'Open folder settings'
+			text: '打开文件夹设置'
 		});
 		settingsBtn.addEventListener('click', () => {
 			void this.markAsSeen();
@@ -410,7 +410,7 @@ Sources folder: Charted Roots/Sources`
 
 		const dismissBtn = buttons.createEl('button', {
 			cls: 'cr-migration-dismiss',
-			text: 'Dismiss'
+			text: '关闭'
 		});
 		dismissBtn.addEventListener('click', () => {
 			void this.markAsSeen();
@@ -426,31 +426,31 @@ Sources folder: Charted Roots/Sources`
 		const header = container.createDiv({ cls: 'cr-migration-header' });
 		const iconEl = header.createSpan({ cls: 'cr-migration-icon' });
 		setIcon(iconEl, 'sparkles');
-		header.createEl('h2', { text: "What's New in v0.17.0" });
+		header.createEl('h2', { text: 'v0.17.0 新功能' });
 
 		// Content
 		const content = container.createDiv({ cls: 'cr-migration-content' });
 
 		// Source format change section
 		const section = content.createDiv({ cls: 'cr-migration-section' });
-		section.createEl('h3', { text: 'Source Property Format Change' });
+		section.createEl('h3', { text: '来源属性格式变更' });
 
 		section.createEl('p', {
-			text: 'The indexed source format (source, source_2, source_3...) is now deprecated in favor of a YAML array format:'
+			text: '带索引的来源格式（source、source_2、source_3…）现已弃用，改用 YAML 数组格式：'
 		});
 
 		// Code comparison
 		const codeBlock = section.createDiv({ cls: 'cr-migration-code' });
 
 		const oldCode = codeBlock.createDiv({ cls: 'cr-code-example cr-code-old' });
-		oldCode.createEl('div', { cls: 'cr-code-label', text: 'Old format (deprecated)' });
+		oldCode.createEl('div', { cls: 'cr-code-label', text: '旧格式（已弃用）' });
 		oldCode.createEl('pre', {
 			text: `source: "[[Census 1900]]"
 source_2: "[[Birth Certificate]]"`
 		});
 
 		const newCode = codeBlock.createDiv({ cls: 'cr-code-example cr-code-new' });
-		newCode.createEl('div', { cls: 'cr-code-label', text: 'New format' });
+		newCode.createEl('div', { cls: 'cr-code-label', text: '新格式' });
 		newCode.createEl('pre', {
 			text: `sources:
   - "[[Census 1900]]"
@@ -459,9 +459,9 @@ source_2: "[[Birth Certificate]]"`
 
 		// Action section
 		const actionSection = content.createDiv({ cls: 'cr-migration-section' });
-		actionSection.createEl('h3', { text: 'Action Required' });
+		actionSection.createEl('h3', { text: '必须操作' });
 		actionSection.createEl('p', {
-			text: 'If you have notes using the old format, run the Cleanup Wizard to migrate them automatically.'
+			text: '如果你有使用旧格式的笔记，请运行清理向导自动迁移。'
 		});
 
 		// Buttons
@@ -476,7 +476,7 @@ source_2: "[[Birth Certificate]]"`
 
 		const wizardBtn = buttons.createEl('button', {
 			cls: 'mod-cta',
-			text: 'Open Cleanup Wizard'
+			text: '打开清理向导'
 		});
 		wizardBtn.addEventListener('click', () => {
 			// Mark as seen and close
@@ -488,7 +488,7 @@ source_2: "[[Birth Certificate]]"`
 
 		const dismissBtn = buttons.createEl('button', {
 			cls: 'cr-migration-dismiss',
-			text: 'Dismiss'
+			text: '关闭'
 		});
 		dismissBtn.addEventListener('click', () => {
 			void this.markAsSeen();

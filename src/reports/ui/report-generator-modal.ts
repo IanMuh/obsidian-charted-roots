@@ -284,14 +284,14 @@ export class ReportGeneratorModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'cr-report-modal__header' });
 		const icon = createLucideIcon('file-text', 24);
 		header.appendChild(icon);
-		header.createEl('h2', { text: 'Generate report' });
+		header.createEl('h2', { text: '生成报告' });
 
 		// Category filter
 		new Setting(contentEl)
-			.setName('Category')
-			.setDesc('Filter reports by category')
+			.setName('分类')
+			.setDesc('按分类筛选报告')
 			.addDropdown(dropdown => {
-				dropdown.addOption('all', 'All categories');
+				dropdown.addOption('all', '全部分类');
 				for (const [category, metadata] of Object.entries(REPORT_CATEGORY_METADATA)) {
 					dropdown.addOption(category, metadata.name);
 				}
@@ -304,8 +304,8 @@ export class ReportGeneratorModal extends Modal {
 
 		// Report type selector
 		new Setting(contentEl)
-			.setName('Report type')
-			.setDesc('Select the type of report to generate')
+			.setName('报告类型')
+			.setDesc('选择要生成的报告类型')
 			.addDropdown(dropdown => {
 				this.reportTypeDropdown = dropdown.selectEl;
 				this.populateReportTypes(dropdown.selectEl);
@@ -322,15 +322,15 @@ export class ReportGeneratorModal extends Modal {
 
 		// Output section
 		const outputSection = contentEl.createDiv({ cls: 'cr-report-modal__output' });
-		outputSection.createEl('h3', { text: 'Output' });
+		outputSection.createEl('h3', { text: '输出' });
 
 		new Setting(outputSection)
-			.setName('Output method')
+			.setName('输出方式')
 			.addDropdown(dropdown => {
-				dropdown.addOption('vault', 'Save to vault');
-				dropdown.addOption('pdf', 'Download as PDF');
-				dropdown.addOption('odt', 'Download as ODT');
-				dropdown.addOption('download', 'Download as MD');
+				dropdown.addOption('vault', '保存到库');
+				dropdown.addOption('pdf', '下载为 PDF');
+				dropdown.addOption('odt', '下载为 ODT');
+				dropdown.addOption('download', '下载为 MD');
 				dropdown.setValue(this.outputMethod);
 				dropdown.onChange(value => {
 					this.outputMethod = value as 'vault' | 'download' | 'pdf' | 'odt';
@@ -344,8 +344,8 @@ export class ReportGeneratorModal extends Modal {
 		const messageText = this.privacyMessageEl.createSpan();
 		messageText.setText(
 			this.outputMethod === 'pdf'
-				? 'PDF is generated locally on your device. No internet connection required. Downloads to your system\'s Downloads folder.'
-				: 'File is generated locally on your device. No internet connection required. Downloads to your system\'s Downloads folder.'
+				? 'PDF 将在你的设备本地生成，无需联网。文件会下载到系统的下载文件夹。'
+				: '文件将在你的设备本地生成，无需联网。文件会下载到系统的下载文件夹。'
 		);
 
 		// PDF-specific options (shown only when PDF output is selected)
@@ -353,8 +353,8 @@ export class ReportGeneratorModal extends Modal {
 		this.renderPdfOptions();
 
 		this.outputFolderSetting = new Setting(outputSection)
-			.setName('Output folder')
-			.setDesc('Folder to save report (configured in Preferences → Folder locations)')
+			.setName('输出文件夹')
+			.setDesc('保存报告的文件夹（在"设置 → 文件夹位置"中配置）')
 			.addText(text => {
 				text.setPlaceholder('Charted Roots/Reports')
 					.setValue(this.outputFolder)
@@ -369,11 +369,11 @@ export class ReportGeneratorModal extends Modal {
 		// Actions
 		const actionsContainer = contentEl.createDiv({ cls: 'cr-report-modal__actions' });
 
-		const cancelBtn = actionsContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = actionsContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const generateBtn = actionsContainer.createEl('button', {
-			text: 'Generate report',
+			text: '生成报告',
 			cls: 'mod-cta'
 		});
 		generateBtn.addEventListener('click', () => void this.generateReport());
@@ -436,11 +436,11 @@ export class ReportGeneratorModal extends Modal {
 			const messageSpan = this.privacyMessageEl.querySelector('span:last-child');
 			if (messageSpan) {
 				if (isPdf) {
-					messageSpan.textContent = 'PDF is generated locally on your device. No internet connection required. Downloads to your system\'s Downloads folder.';
+					messageSpan.textContent = 'PDF 将在你的设备本地生成，无需联网。文件会下载到系统的下载文件夹。';
 				} else if (this.outputMethod === 'odt') {
-					messageSpan.textContent = 'ODT is generated locally on your device. No internet connection required. Downloads to your system\'s Downloads folder.';
+					messageSpan.textContent = 'ODT 将在你的设备本地生成，无需联网。文件会下载到系统的下载文件夹。';
 				} else {
-					messageSpan.textContent = 'File is generated locally on your device. No internet connection required. Downloads to your system\'s Downloads folder.';
+					messageSpan.textContent = '文件将在你的设备本地生成，无需联网。文件会下载到系统的下载文件夹。';
 				}
 			}
 		}
@@ -468,7 +468,7 @@ export class ReportGeneratorModal extends Modal {
 
 		// Page size
 		new Setting(this.pdfOptionsContainer)
-			.setName('Page size')
+			.setName('页面大小')
 			.addDropdown(dropdown => {
 				dropdown.addOption('A4', 'A4');
 				dropdown.addOption('LETTER', 'Letter');
@@ -488,12 +488,12 @@ export class ReportGeneratorModal extends Modal {
 		const ymdExample = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
 		new Setting(this.pdfOptionsContainer)
-			.setName('Date format')
-			.setDesc('Format for generated date display')
+			.setName('日期格式')
+			.setDesc('生成日期的显示格式')
 			.addDropdown(dropdown => {
-				dropdown.addOption('mdy', `${mdyExample} (US)`);
-				dropdown.addOption('dmy', `${dmyExample} (UK/EU)`);
-				dropdown.addOption('ymd', `${ymdExample} (ISO)`);
+				dropdown.addOption('mdy', `${mdyExample}（美式）`);
+				dropdown.addOption('dmy', `${dmyExample}（英式/欧式）`);
+				dropdown.addOption('ymd', `${ymdExample}（ISO）`);
 				dropdown.setValue(this.pdfOptions.dateFormat);
 				dropdown.onChange(value => {
 					this.pdfOptions.dateFormat = value as 'mdy' | 'dmy' | 'ymd';
@@ -502,10 +502,10 @@ export class ReportGeneratorModal extends Modal {
 
 		// Custom title (always visible - affects headers even without cover page)
 		new Setting(this.pdfOptionsContainer)
-			.setName('Custom title')
-			.setDesc('Override the default report title')
+			.setName('自定义标题')
+			.setDesc('覆盖默认报告标题')
 			.addText(text => {
-				text.setPlaceholder('Leave blank for default')
+				text.setPlaceholder('留空使用默认')
 					.setValue(this.pdfOptions.customTitle)
 					.onChange(value => {
 						this.pdfOptions.customTitle = value;
@@ -515,8 +515,8 @@ export class ReportGeneratorModal extends Modal {
 		// Title scope (always visible - controls where custom title appears)
 		// Options change based on whether cover page is enabled
 		new Setting(this.pdfOptionsContainer)
-			.setName('Apply custom title to')
-			.setDesc('Choose where the custom title appears')
+			.setName('应用自定义标题到')
+			.setDesc('选择自定义标题的显示位置')
 			.addDropdown(dropdown => {
 				this.titleScopeDropdown = dropdown.selectEl;
 				this.updateTitleScopeOptions();
@@ -527,8 +527,8 @@ export class ReportGeneratorModal extends Modal {
 
 		// Cover page toggle
 		new Setting(this.pdfOptionsContainer)
-			.setName('Include cover page')
-			.setDesc('Add a title page with report name and generation date')
+			.setName('包含封面')
+			.setDesc('添加含报告名称与生成日期的标题页')
 			.addToggle(toggle => {
 				toggle.setValue(this.pdfOptions.includeCoverPage);
 				toggle.onChange(value => {
@@ -556,14 +556,14 @@ export class ReportGeneratorModal extends Modal {
 
 		if (this.pdfOptions.includeCoverPage) {
 			// Cover page enabled: show all options
-			this.titleScopeDropdown.createEl('option', { value: 'both', text: 'Cover and headers' });
-			this.titleScopeDropdown.createEl('option', { value: 'cover', text: 'Cover page only' });
-			this.titleScopeDropdown.createEl('option', { value: 'headers', text: 'Page headers only' });
+			this.titleScopeDropdown.createEl('option', { value: 'both', text: '封面与页眉' });
+			this.titleScopeDropdown.createEl('option', { value: 'cover', text: '仅封面' });
+			this.titleScopeDropdown.createEl('option', { value: 'headers', text: '仅页眉' });
 			// Preserve current value if valid
 			this.titleScopeDropdown.value = currentValue;
 		} else {
 			// Cover page disabled: only headers option makes sense
-			this.titleScopeDropdown.createEl('option', { value: 'headers', text: 'Page headers' });
+			this.titleScopeDropdown.createEl('option', { value: 'headers', text: '页眉' });
 			// Force to headers since cover options don't apply
 			this.pdfOptions.customTitleScope = 'headers';
 			this.titleScopeDropdown.value = 'headers';
@@ -580,13 +580,13 @@ export class ReportGeneratorModal extends Modal {
 		const logoContainer = this.pdfOptionsContainer.createDiv({ cls: 'cr-report-modal__logo-setting' });
 
 		const logoSetting = new Setting(logoContainer)
-			.setName('Logo or crest')
-			.setDesc(this.pdfOptions.logoDataUrl ? 'Image selected' : 'Optional image to display on cover page');
+			.setName('徽标或纹章')
+			.setDesc(this.pdfOptions.logoDataUrl ? '已选择图片' : '封面显示的图片（可选）');
 
 		// Add file input button
 		logoSetting.addButton(button => {
 			button
-				.setButtonText(this.pdfOptions.logoDataUrl ? 'Change...' : 'Select image...')
+				.setButtonText(this.pdfOptions.logoDataUrl ? '更改…' : '选择图片…')
 				.onClick(() => {
 					const input = activeDocument.createElement('input');
 					input.type = 'file';
@@ -597,12 +597,12 @@ export class ReportGeneratorModal extends Modal {
 							try {
 								const dataUrl = await this.fileToDataUrl(file);
 								this.pdfOptions.logoDataUrl = dataUrl;
-								button.setButtonText('Change...');
-								logoSetting.setDesc('Image selected');
+								button.setButtonText('更改…');
+								logoSetting.setDesc('已选择图片');
 								// Add remove button if not already present
 								this.renderPdfOptions();
 							} catch (error) {
-								new Notice('Failed to load image');
+								new Notice('加载图片失败');
 								console.error('Logo load error:', error);
 							}
 						}
@@ -615,7 +615,7 @@ export class ReportGeneratorModal extends Modal {
 		if (this.pdfOptions.logoDataUrl) {
 			logoSetting.addButton(button => {
 				button
-					.setButtonText('Remove')
+					.setButtonText('移除')
 					.onClick(() => {
 						this.pdfOptions.logoDataUrl = undefined;
 						this.renderPdfOptions();
@@ -638,10 +638,10 @@ export class ReportGeneratorModal extends Modal {
 
 		// Custom subtitle (cover page only)
 		new Setting(coverFieldsContainer)
-			.setName('Custom subtitle')
-			.setDesc('Override the auto-generated subject line')
+			.setName('自定义副标题')
+			.setDesc('覆盖自动生成的主题行')
 			.addText(text => {
-				text.setPlaceholder('Leave blank for default')
+				text.setPlaceholder('留空使用默认')
 					.setValue(this.pdfOptions.customSubtitle)
 					.onChange(value => {
 						this.pdfOptions.customSubtitle = value;
@@ -650,14 +650,14 @@ export class ReportGeneratorModal extends Modal {
 
 		// Cover notes (textarea)
 		const notesSetting = new Setting(coverFieldsContainer)
-			.setName('Cover notes')
-			.setDesc('Additional preface or dedication text (supports multiple paragraphs)');
+			.setName('封面说明')
+			.setDesc('额外的序言或献词文本（支持多段）');
 
 		// Create textarea manually since Setting doesn't have addTextArea
 		const notesTextarea = notesSetting.controlEl.createEl('textarea', {
 			cls: 'cr-report-modal__cover-notes-textarea',
 			attr: {
-				placeholder: 'Optional dedication, preface, or notes...',
+				placeholder: '可选的献词、序言或说明…',
 				rows: '3'
 			}
 		});
@@ -809,11 +809,11 @@ export class ReportGeneratorModal extends Modal {
 		const personContainer = this.optionsContainer.createDiv({ cls: 'cr-report-modal__person' });
 
 		this.personPickerSetting = new Setting(personContainer)
-			.setName('Select person')
-			.setDesc(this.selectedPersonName || 'Click to select a person')
+			.setName('选择人物')
+			.setDesc(this.selectedPersonName || '点击选择人物')
 			.addButton(button => {
 				button
-					.setButtonText(this.selectedPersonName || 'Select...')
+					.setButtonText(this.selectedPersonName || '选择…')
 					.onClick(() => {
 						const folderFilter = this.plugin.settings.folderFilterMode !== 'disabled'
 							? new FolderFilterService(this.plugin.settings)
@@ -826,7 +826,7 @@ export class ReportGeneratorModal extends Modal {
 								this.selectedPersonName = person.name;
 								button.setButtonText(person.name);
 								if (this.personPickerSetting) {
-									this.personPickerSetting.setDesc(`Selected: ${person.name}`);
+									this.personPickerSetting.setDesc(`已选择：${person.name}`);
 								}
 							},
 							folderFilter
@@ -843,7 +843,7 @@ export class ReportGeneratorModal extends Modal {
 		if (!this.optionsContainer) return;
 
 		new Setting(this.optionsContainer)
-			.setName('Include children')
+			.setName('包含子女')
 			.addToggle(toggle => {
 				toggle.setValue(this.familyGroupOptions.includeChildren)
 					.onChange(value => {
@@ -852,8 +852,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include events')
-			.setDesc('Include marriage and other family events')
+			.setName('包含事件')
+			.setDesc('包含婚姻及其他家族事件')
 			.addToggle(toggle => {
 				toggle.setValue(this.familyGroupOptions.includeEvents)
 					.onChange(value => {
@@ -862,7 +862,7 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include sources')
+			.setName('包含来源')
 			.addToggle(toggle => {
 				toggle.setValue(this.familyGroupOptions.includeSources)
 					.onChange(value => {
@@ -878,8 +878,8 @@ export class ReportGeneratorModal extends Modal {
 		if (!this.optionsContainer) return;
 
 		new Setting(this.optionsContainer)
-			.setName('Include events')
-			.setDesc('Include life events timeline')
+			.setName('包含事件')
+			.setDesc('包含生平事件时间轴')
 			.addToggle(toggle => {
 				toggle.setValue(this.individualSummaryOptions.includeEvents)
 					.onChange(value => {
@@ -888,8 +888,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include family')
-			.setDesc('Include parents, spouses, and children')
+			.setName('包含家族')
+			.setDesc('包含父母、配偶和子女')
 			.addToggle(toggle => {
 				toggle.setValue(this.individualSummaryOptions.includeFamily)
 					.onChange(value => {
@@ -898,8 +898,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include attributes')
-			.setDesc('Include occupation and other attributes')
+			.setName('包含属性')
+			.setDesc('包含职业及其他属性')
 			.addToggle(toggle => {
 				toggle.setValue(this.individualSummaryOptions.includeAttributes)
 					.onChange(value => {
@@ -908,7 +908,7 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include sources')
+			.setName('包含来源')
 			.addToggle(toggle => {
 				toggle.setValue(this.individualSummaryOptions.includeSources)
 					.onChange(value => {
@@ -924,8 +924,8 @@ export class ReportGeneratorModal extends Modal {
 		if (!this.optionsContainer) return;
 
 		new Setting(this.optionsContainer)
-			.setName('Maximum generations')
-			.setDesc('How many generations to trace back')
+			.setName('最大世代数')
+			.setDesc('追溯的世代数')
 			.addSlider(slider => {
 				slider
 					.setLimits(2, 10, 1)
@@ -936,8 +936,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include details')
-			.setDesc('Include birth/death dates and places')
+			.setName('包含详细信息')
+			.setDesc('包含出生/去世日期与地点')
 			.addToggle(toggle => {
 				toggle.setValue(this.ahnentafelOptions.includeDetails)
 					.onChange(value => {
@@ -953,10 +953,10 @@ export class ReportGeneratorModal extends Modal {
 		if (!this.optionsContainer) return;
 
 		new Setting(this.optionsContainer)
-			.setName('Scope')
+			.setName('范围')
 			.addDropdown(dropdown => {
-				dropdown.addOption('all', 'All people');
-				dropdown.addOption('collection', 'Specific folder');
+				dropdown.addOption('all', '全部人物');
+				dropdown.addOption('collection', '指定文件夹');
 				dropdown.setValue(this.gapsReportOptions.scope);
 				dropdown.onChange(value => {
 					this.gapsReportOptions.scope = value as 'all' | 'collection';
@@ -964,7 +964,7 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Check missing birth dates')
+			.setName('检查缺失的出生日期')
 			.addToggle(toggle => {
 				toggle.setValue(this.gapsReportOptions.fieldsToCheck.birthDate)
 					.onChange(value => {
@@ -973,7 +973,7 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Check missing death dates')
+			.setName('检查缺失的去世日期')
 			.addToggle(toggle => {
 				toggle.setValue(this.gapsReportOptions.fieldsToCheck.deathDate)
 					.onChange(value => {
@@ -982,7 +982,7 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Check missing parents')
+			.setName('检查缺失的父母')
 			.addToggle(toggle => {
 				toggle.setValue(this.gapsReportOptions.fieldsToCheck.parents)
 					.onChange(value => {
@@ -991,7 +991,7 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Check unsourced people')
+			.setName('检查无来源的人物')
 			.addToggle(toggle => {
 				toggle.setValue(this.gapsReportOptions.fieldsToCheck.sources)
 					.onChange(value => {
@@ -1000,7 +1000,7 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Max items per category')
+			.setName('每类最大条目数')
 			.addSlider(slider => {
 				slider
 					.setLimits(10, 200, 10)
@@ -1013,18 +1013,18 @@ export class ReportGeneratorModal extends Modal {
 		// Research level section (only shown when Research Tools are enabled)
 		if (this.plugin.settings.trackFactSourcing) {
 			new Setting(this.optionsContainer)
-				.setName('Research level filter')
+				.setName('研究等级筛选')
 				.setHeading();
 
 			new Setting(this.optionsContainer)
-				.setName('Maximum research level')
-				.setDesc('Only include people at or below this level (empty = all)')
+				.setName('最大研究等级')
+				.setDesc('仅包含此等级及以下的人物（留空 = 全部）')
 				.addDropdown(dropdown => {
-					dropdown.addOption('', 'All levels');
-					dropdown.addOption('2', 'Level 0-2 (Needs work)');
-					dropdown.addOption('4', 'Level 0-4 (Not yet complete)');
-					dropdown.addOption('0', 'Level 0 only (Unidentified)');
-					dropdown.addOption('1', 'Level 0-1 (Minimal info)');
+					dropdown.addOption('', '全部等级');
+					dropdown.addOption('2', '等级 0-2（需完善）');
+					dropdown.addOption('4', '等级 0-4（尚未完成）');
+					dropdown.addOption('0', '仅等级 0（未识别）');
+					dropdown.addOption('1', '等级 0-1（信息极少）');
 					dropdown.setValue(this.gapsReportOptions.researchLevelMax?.toString() ?? '');
 					dropdown.onChange(value => {
 						this.gapsReportOptions.researchLevelMax = value ? parseInt(value) : undefined;
@@ -1032,8 +1032,8 @@ export class ReportGeneratorModal extends Modal {
 				});
 
 			new Setting(this.optionsContainer)
-				.setName('Include unassessed')
-				.setDesc('Include people without a research level set')
+				.setName('包含未评估者')
+				.setDesc('包含未设置研究等级的人物')
 				.addToggle(toggle => {
 					toggle.setValue(this.gapsReportOptions.includeUnassessed)
 						.onChange(value => {
@@ -1042,8 +1042,8 @@ export class ReportGeneratorModal extends Modal {
 				});
 
 			new Setting(this.optionsContainer)
-				.setName('Sort by research level')
-				.setDesc('Show people with lowest research level first')
+				.setName('按研究等级排序')
+				.setDesc('优先显示研究等级最低的人物')
 				.addToggle(toggle => {
 					toggle.setValue(this.gapsReportOptions.sortByResearchLevel)
 						.onChange(value => {
@@ -1060,8 +1060,8 @@ export class ReportGeneratorModal extends Modal {
 		if (!this.optionsContainer) return;
 
 		new Setting(this.optionsContainer)
-			.setName('Maximum generations')
-			.setDesc('How many generations of descendants to include')
+			.setName('最大世代数')
+			.setDesc('包含的后代世代数')
 			.addSlider(slider => {
 				slider
 					.setLimits(2, 10, 1)
@@ -1072,8 +1072,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include details')
-			.setDesc('Include birth/death dates and places')
+			.setName('包含详细信息')
+			.setDesc('包含出生/去世日期与地点')
 			.addToggle(toggle => {
 				toggle.setValue(this.registerReportOptions.includeDetails)
 					.onChange(value => {
@@ -1082,8 +1082,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include spouses')
-			.setDesc('Include spouse information for each person')
+			.setName('包含配偶')
+			.setDesc('包含每个人物的配偶信息')
 			.addToggle(toggle => {
 				toggle.setValue(this.registerReportOptions.includeSpouses)
 					.onChange(value => {
@@ -1099,8 +1099,8 @@ export class ReportGeneratorModal extends Modal {
 		if (!this.optionsContainer) return;
 
 		new Setting(this.optionsContainer)
-			.setName('Maximum generations')
-			.setDesc('How many generations of ancestors to include')
+			.setName('最大世代数')
+			.setDesc('包含的祖先世代数')
 			.addSlider(slider => {
 				slider
 					.setLimits(2, 10, 1)
@@ -1111,8 +1111,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include details')
-			.setDesc('Include birth/death dates and places')
+			.setName('包含详细信息')
+			.setDesc('包含出生/去世日期与地点')
 			.addToggle(toggle => {
 				toggle.setValue(this.pedigreeChartOptions.includeDetails)
 					.onChange(value => {
@@ -1128,8 +1128,8 @@ export class ReportGeneratorModal extends Modal {
 		if (!this.optionsContainer) return;
 
 		new Setting(this.optionsContainer)
-			.setName('Maximum generations')
-			.setDesc('How many generations of descendants to include')
+			.setName('最大世代数')
+			.setDesc('包含的后代世代数')
 			.addSlider(slider => {
 				slider
 					.setLimits(2, 10, 1)
@@ -1140,8 +1140,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include details')
-			.setDesc('Include birth/death dates and places')
+			.setName('包含详细信息')
+			.setDesc('包含出生/去世日期与地点')
 			.addToggle(toggle => {
 				toggle.setValue(this.descendantChartOptions.includeDetails)
 					.onChange(value => {
@@ -1150,8 +1150,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include spouses')
-			.setDesc('Include spouse information for each person')
+			.setName('包含配偶')
+			.setDesc('包含每个人物的配偶信息')
 			.addToggle(toggle => {
 				toggle.setValue(this.descendantChartOptions.includeSpouses)
 					.onChange(value => {
@@ -1167,8 +1167,8 @@ export class ReportGeneratorModal extends Modal {
 		if (!this.optionsContainer) return;
 
 		new Setting(this.optionsContainer)
-			.setName('Include children\'s sources')
-			.setDesc('Include sources from children\'s records')
+			.setName('包含子女的来源')
+			.setDesc('包含子女记录中的来源')
 			.addToggle(toggle => {
 				toggle.setValue(this.sourceSummaryOptions.includeChildrenSources)
 					.onChange(value => {
@@ -1177,8 +1177,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show quality ratings')
-			.setDesc('Display primary/secondary/derivative classification')
+			.setName('显示质量评级')
+			.setDesc('显示原始/二手/派生分类')
 			.addToggle(toggle => {
 				toggle.setValue(this.sourceSummaryOptions.showQualityRatings)
 					.onChange(value => {
@@ -1187,8 +1187,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Highlight research gaps')
-			.setDesc('Show unsourced facts as research opportunities')
+			.setName('高亮研究缺口')
+			.setDesc('将无来源事实显示为研究机会')
 			.addToggle(toggle => {
 				toggle.setValue(this.sourceSummaryOptions.highlightGaps)
 					.onChange(value => {
@@ -1197,8 +1197,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show repository info')
-			.setDesc('Include repository summary')
+			.setName('显示保管机构信息')
+			.setDesc('包含保管机构摘要')
 			.addToggle(toggle => {
 				toggle.setValue(this.sourceSummaryOptions.showRepositoryInfo)
 					.onChange(value => {
@@ -1214,14 +1214,14 @@ export class ReportGeneratorModal extends Modal {
 		if (!this.optionsContainer) return;
 
 		new Setting(this.optionsContainer)
-			.setName('Grouping')
-			.setDesc('How to group events in the report')
+			.setName('分组')
+			.setDesc('报告中事件的归组方式')
 			.addDropdown(dropdown => {
-				dropdown.addOption('none', 'No grouping (chronological)');
-				dropdown.addOption('by_year', 'By year');
-				dropdown.addOption('by_decade', 'By decade');
-				dropdown.addOption('by_person', 'By person');
-				dropdown.addOption('by_place', 'By place');
+				dropdown.addOption('none', '不分组（按时间顺序）');
+				dropdown.addOption('by_year', '按年');
+				dropdown.addOption('by_decade', '按年代');
+				dropdown.addOption('by_person', '按人物');
+				dropdown.addOption('by_place', '按地点');
 				dropdown.setValue(this.timelineReportOptions.grouping);
 				dropdown.onChange(value => {
 					this.timelineReportOptions.grouping = value as typeof this.timelineReportOptions.grouping;
@@ -1229,8 +1229,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include descriptions')
-			.setDesc('Include event descriptions in the report')
+			.setName('包含描述')
+			.setDesc('在报告中包含事件描述')
 			.addToggle(toggle => {
 				toggle.setValue(this.timelineReportOptions.includeDescriptions)
 					.onChange(value => {
@@ -1249,8 +1249,8 @@ export class ReportGeneratorModal extends Modal {
 		this.renderPlacePicker();
 
 		new Setting(this.optionsContainer)
-			.setName('Include child places')
-			.setDesc('Include events from subordinate locations')
+			.setName('包含下级地点')
+			.setDesc('包含下级地点的事件')
 			.addToggle(toggle => {
 				toggle.setValue(this.placeSummaryOptions.includeChildPlaces)
 					.onChange(value => {
@@ -1259,8 +1259,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show hierarchy')
-			.setDesc('Display place hierarchy path')
+			.setName('显示层级')
+			.setDesc('显示地点层级路径')
 			.addToggle(toggle => {
 				toggle.setValue(this.placeSummaryOptions.showHierarchy)
 					.onChange(value => {
@@ -1269,8 +1269,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show coordinates')
-			.setDesc('Display geographic coordinates if available')
+			.setName('显示坐标')
+			.setDesc('显示可用的地理坐标')
 			.addToggle(toggle => {
 				toggle.setValue(this.placeSummaryOptions.showCoordinates)
 					.onChange(value => {
@@ -1288,11 +1288,11 @@ export class ReportGeneratorModal extends Modal {
 		const placeContainer = this.optionsContainer.createDiv({ cls: 'cr-report-modal__place' });
 
 		const placeSetting = new Setting(placeContainer)
-			.setName('Select place')
-			.setDesc(this.selectedPlaceName || 'Click to select a place')
+			.setName('选择地点')
+			.setDesc(this.selectedPlaceName || '点击选择地点')
 			.addButton(button => {
 				button
-					.setButtonText(this.selectedPlaceName || 'Select...')
+					.setButtonText(this.selectedPlaceName || '选择…')
 					.onClick(() => {
 						const folderFilter = this.plugin.settings.folderFilterMode !== 'disabled'
 							? new FolderFilterService(this.plugin.settings)
@@ -1304,7 +1304,7 @@ export class ReportGeneratorModal extends Modal {
 								this.selectedPlaceCrId = place.crId;
 								this.selectedPlaceName = place.name;
 								button.setButtonText(place.name);
-								placeSetting.setDesc(`Selected: ${place.name}`);
+								placeSetting.setDesc(`已选择：${place.name}`);
 							},
 							{ folderFilter, plugin: this.plugin }
 						);
@@ -1320,12 +1320,12 @@ export class ReportGeneratorModal extends Modal {
 		if (!this.optionsContainer) return;
 
 		new Setting(this.optionsContainer)
-			.setName('Scope')
-			.setDesc('Which media files to include')
+			.setName('范围')
+			.setDesc('包含哪些媒体文件')
 			.addDropdown(dropdown => {
-				dropdown.addOption('all', 'All media files');
-				dropdown.addOption('sources_only', 'Source-linked only');
-				dropdown.addOption('by_folder', 'Specific folder');
+				dropdown.addOption('all', '全部媒体文件');
+				dropdown.addOption('sources_only', '仅关联来源的');
+				dropdown.addOption('by_folder', '指定文件夹');
 				dropdown.setValue(this.mediaInventoryOptions.scope);
 				dropdown.onChange(value => {
 					this.mediaInventoryOptions.scope = value as typeof this.mediaInventoryOptions.scope;
@@ -1333,12 +1333,12 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Group by')
-			.setDesc('How to organize the inventory')
+			.setName('分组方式')
+			.setDesc('清单的组织方式')
 			.addDropdown(dropdown => {
-				dropdown.addOption('entity_type', 'Entity type');
-				dropdown.addOption('folder', 'Folder');
-				dropdown.addOption('file_type', 'File type');
+				dropdown.addOption('entity_type', '实体类型');
+				dropdown.addOption('folder', '文件夹');
+				dropdown.addOption('file_type', '文件类型');
 				dropdown.setValue(this.mediaInventoryOptions.groupBy);
 				dropdown.onChange(value => {
 					this.mediaInventoryOptions.groupBy = value as typeof this.mediaInventoryOptions.groupBy;
@@ -1346,8 +1346,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show orphaned files')
-			.setDesc('Include files not linked to any entity')
+			.setName('显示孤立文件')
+			.setDesc('包含未关联任何实体的文件')
 			.addToggle(toggle => {
 				toggle.setValue(this.mediaInventoryOptions.showOrphanedFiles)
 					.onChange(value => {
@@ -1356,8 +1356,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include file sizes')
-			.setDesc('Show file size information')
+			.setName('包含文件大小')
+			.setDesc('显示文件大小信息')
 			.addToggle(toggle => {
 				toggle.setValue(this.mediaInventoryOptions.includeFileSizes)
 					.onChange(value => {
@@ -1376,8 +1376,8 @@ export class ReportGeneratorModal extends Modal {
 		this.renderUniversePicker();
 
 		new Setting(this.optionsContainer)
-			.setName('Include entity list')
-			.setDesc('Show lists of entities by type')
+			.setName('包含实体列表')
+			.setDesc('按类型显示实体列表')
 			.addToggle(toggle => {
 				toggle.setValue(this.universeOverviewOptions.includeEntityList)
 					.onChange(value => {
@@ -1386,8 +1386,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show geographic summary')
-			.setDesc('Include place coordinate coverage')
+			.setName('显示地理摘要')
+			.setDesc('包含地点坐标覆盖情况')
 			.addToggle(toggle => {
 				toggle.setValue(this.universeOverviewOptions.showGeographicSummary)
 					.onChange(value => {
@@ -1396,8 +1396,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show date systems')
-			.setDesc('List calendar systems used in this universe')
+			.setName('显示日期系统')
+			.setDesc('列出该宇宙使用的历法系统')
 			.addToggle(toggle => {
 				toggle.setValue(this.universeOverviewOptions.showDateSystems)
 					.onChange(value => {
@@ -1406,8 +1406,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show recent activity')
-			.setDesc('List recently modified entities')
+			.setName('显示近期活动')
+			.setDesc('列出最近修改的实体')
 			.addToggle(toggle => {
 				toggle.setValue(this.universeOverviewOptions.showRecentActivity)
 					.onChange(value => {
@@ -1416,8 +1416,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Max entities per type')
-			.setDesc('Limit for entity lists')
+			.setName('每类最大实体数')
+			.setDesc('实体列表的上限')
 			.addSlider(slider => {
 				slider
 					.setLimits(5, 50, 5)
@@ -1437,10 +1437,10 @@ export class ReportGeneratorModal extends Modal {
 		const universeContainer = this.optionsContainer.createDiv({ cls: 'cr-report-modal__universe' });
 
 		new Setting(universeContainer)
-			.setName('Select universe')
-			.setDesc(this.selectedUniverseName || 'Enter universe name or CR ID')
+			.setName('选择宇宙')
+			.setDesc(this.selectedUniverseName || '输入宇宙名称或 CR ID')
 			.addText(text => {
-				text.setPlaceholder('Universe name or CR ID')
+				text.setPlaceholder('宇宙名称或 CR ID')
 					.setValue(this.selectedUniverseName || this.selectedUniverseCrId)
 					.onChange(value => {
 						this.selectedUniverseCrId = value;
@@ -1459,11 +1459,11 @@ export class ReportGeneratorModal extends Modal {
 		this.renderCollectionPicker();
 
 		new Setting(this.optionsContainer)
-			.setName('Collection type')
-			.setDesc('Type of collection to analyze')
+			.setName('合集类型')
+			.setDesc('要分析的合集类型')
 			.addDropdown(dropdown => {
-				dropdown.addOption('component', 'Auto-detected family group');
-				dropdown.addOption('user', 'User-defined collection');
+				dropdown.addOption('component', '自动检测的家族群组');
+				dropdown.addOption('user', '用户定义的合集');
 				dropdown.setValue(this.collectionOverviewOptions.collectionType);
 				dropdown.onChange(value => {
 					this.collectionOverviewOptions.collectionType = value as 'user' | 'component';
@@ -1471,8 +1471,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Include member list')
-			.setDesc('Show list of all collection members')
+			.setName('包含成员列表')
+			.setDesc('显示所有合集成员')
 			.addToggle(toggle => {
 				toggle.setValue(this.collectionOverviewOptions.includeMemberList)
 					.onChange(value => {
@@ -1481,8 +1481,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show generation analysis')
-			.setDesc('Analyze generation depth and distribution')
+			.setName('显示世代分析')
+			.setDesc('分析世代深度与分布')
 			.addToggle(toggle => {
 				toggle.setValue(this.collectionOverviewOptions.showGenerationAnalysis)
 					.onChange(value => {
@@ -1491,8 +1491,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show surname distribution')
-			.setDesc('Analyze surname frequency')
+			.setName('显示姓氏分布')
+			.setDesc('分析姓氏频率')
 			.addToggle(toggle => {
 				toggle.setValue(this.collectionOverviewOptions.showSurnameDistribution)
 					.onChange(value => {
@@ -1501,8 +1501,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Show geographic distribution')
-			.setDesc('Analyze location frequency')
+			.setName('显示地理分布')
+			.setDesc('分析地点频率')
 			.addToggle(toggle => {
 				toggle.setValue(this.collectionOverviewOptions.showGeographicDistribution)
 					.onChange(value => {
@@ -1511,11 +1511,11 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Sort members by')
+			.setName('成员排序方式')
 			.addDropdown(dropdown => {
-				dropdown.addOption('birth_date', 'Birth date');
-				dropdown.addOption('name', 'Name');
-				dropdown.addOption('death_date', 'Death date');
+				dropdown.addOption('birth_date', '出生日期');
+				dropdown.addOption('name', '名称');
+				dropdown.addOption('death_date', '去世日期');
 				dropdown.setValue(this.collectionOverviewOptions.sortMembersBy);
 				dropdown.onChange(value => {
 					this.collectionOverviewOptions.sortMembersBy = value as typeof this.collectionOverviewOptions.sortMembersBy;
@@ -1523,8 +1523,8 @@ export class ReportGeneratorModal extends Modal {
 			});
 
 		new Setting(this.optionsContainer)
-			.setName('Max members')
-			.setDesc('Limit for member list')
+			.setName('最大成员数')
+			.setDesc('成员列表的上限')
 			.addSlider(slider => {
 				slider
 					.setLimits(10, 200, 10)
@@ -1544,10 +1544,10 @@ export class ReportGeneratorModal extends Modal {
 		const collectionContainer = this.optionsContainer.createDiv({ cls: 'cr-report-modal__collection' });
 
 		new Setting(collectionContainer)
-			.setName('Select collection')
-			.setDesc(this.selectedCollectionName || 'Enter collection name or representative CR ID')
+			.setName('选择合集')
+			.setDesc(this.selectedCollectionName || '输入合集名称或代表性 CR ID')
 			.addText(text => {
-				text.setPlaceholder('Collection name or CR ID')
+				text.setPlaceholder('合集名称或 CR ID')
 					.setValue(this.selectedCollectionName || this.selectedCollectionId)
 					.onChange(value => {
 						this.selectedCollectionId = value;
@@ -1570,21 +1570,21 @@ export class ReportGeneratorModal extends Modal {
 
 		// Validate person selection for person-based reports
 		if (metadata.requiresPerson && !this.selectedPersonCrId) {
-			new Notice('Please select a person first');
+			new Notice('请先选择人物');
 			return;
 		}
 
 		// Validate entity selection based on report type
 		if (metadata.entityType === 'place' && !this.selectedPlaceCrId) {
-			new Notice('Please select a place first');
+			new Notice('请先选择地点');
 			return;
 		}
 		if (metadata.entityType === 'universe' && !this.selectedUniverseCrId) {
-			new Notice('Please select a universe first');
+			new Notice('请先选择宇宙');
 			return;
 		}
 		if (metadata.entityType === 'collection' && !this.selectedCollectionId) {
-			new Notice('Please select a collection first');
+			new Notice('请先选择合集');
 			return;
 		}
 
@@ -1771,17 +1771,17 @@ export class ReportGeneratorModal extends Modal {
 			default:
 				// Visual tree types are handled above and return early
 				// This should never be reached
-				new Notice(`Unsupported report type: ${this.selectedReportType}`);
+				new Notice(`不支持的报告类型：${this.selectedReportType}`);
 				return;
 		}
 
 		try {
-			new Notice('Generating report...');
+			new Notice('正在生成报告…');
 
 			const result = await this.reportService.generateReport(this.selectedReportType, options);
 
 			if (!result.success) {
-				new Notice(`Report generation failed: ${result.error}`);
+				new Notice(`报告生成失败：${result.error}`);
 				return;
 			}
 
@@ -1796,14 +1796,14 @@ export class ReportGeneratorModal extends Modal {
 				await this.generateOdtFromResult(specificResult);
 			} else if (this.outputMethod === 'download') {
 				this.reportService.downloadReport(result.content, result.suggestedFilename);
-				new Notice('Report downloaded');
+				new Notice('报告已下载');
 			} else {
-				new Notice(`Report saved: ${result.suggestedFilename}`);
+				new Notice(`报告已保存：${result.suggestedFilename}`);
 			}
 
 			// Show warnings if any
 			if (result.warnings.length > 0) {
-				new Notice(`Warnings: ${result.warnings.join(', ')}`);
+				new Notice(`警告：${result.warnings.join(', ')}`);
 			}
 
 			// Only close modal when saving to vault; keep open for downloads
@@ -1814,7 +1814,7 @@ export class ReportGeneratorModal extends Modal {
 
 		} catch (error) {
 			console.error('Report generation error:', error);
-			new Notice('Report generation failed. Check console for details.');
+			new Notice('报告生成失败。请查看控制台了解详情。');
 		}
 	}
 
@@ -1898,7 +1898,7 @@ export class ReportGeneratorModal extends Modal {
 
 		const blob = await this.odtGenerator.generate(result.content, odtOptions);
 		OdtGenerator.download(blob, result.suggestedFilename);
-		new Notice('ODT report downloaded');
+		new Notice('ODT 报告已下载');
 	}
 
 	/**

@@ -72,7 +72,7 @@ export class ExtractionsRenderer {
 		if (totalCount === 0) {
 			contentEl.createDiv({
 				cls: 'cr-dynamic-block__empty',
-				text: 'No entities reference this source.'
+				text: '没有实体引用此来源。'
 			});
 			return;
 		}
@@ -94,7 +94,7 @@ export class ExtractionsRenderer {
 	private renderHeader(container: HTMLElement, count: number, config: DynamicBlockConfig): void {
 		const header = container.createDiv({ cls: 'cr-dynamic-block__header' });
 
-		const titleText = config.title as string || 'Extractions';
+		const titleText = config.title as string || '提取项';
 		const titleWithCount = count > 0 ? `${titleText} (${count})` : titleText;
 
 		const titleEl = header.createSpan({ cls: 'cr-dynamic-block__title' });
@@ -108,7 +108,7 @@ export class ExtractionsRenderer {
 
 		const freezeBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Freeze to Markdown' }
+			attr: { 'aria-label': '冻结为 Markdown' }
 		});
 		freezeBtn.textContent = '❄️';
 		freezeBtn.addEventListener('click', () => {
@@ -127,15 +127,15 @@ export class ExtractionsRenderer {
 	): Promise<void> {
 		const section = contentEl.createDiv({ cls: 'cr-extractions__section' });
 		section.createEl('h4', {
-			text: `Persons (${persons.length})`,
+			text: `人物（${persons.length}）`,
 			cls: 'cr-extractions__section-title'
 		});
 
 		const table = section.createEl('table', { cls: 'cr-sources__table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name' });
-		headerRow.createEl('th', { text: 'Facts cited' });
+		headerRow.createEl('th', { text: '名称' });
+		headerRow.createEl('th', { text: '引用的事实' });
 
 		const tbody = table.createEl('tbody');
 		for (const person of persons) {
@@ -173,18 +173,18 @@ export class ExtractionsRenderer {
 	): Promise<void> {
 		const section = contentEl.createDiv({ cls: 'cr-extractions__section' });
 		section.createEl('h4', {
-			text: `Events (${events.length})`,
+			text: `事件（${events.length}）`,
 			cls: 'cr-extractions__section-title'
 		});
 
 		const table = section.createEl('table', { cls: 'cr-sources__table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Type' });
-		headerRow.createEl('th', { text: 'Title' });
-		headerRow.createEl('th', { text: 'Date' });
-		headerRow.createEl('th', { text: 'Person(s)' });
-		headerRow.createEl('th', { text: 'Place' });
+		headerRow.createEl('th', { text: '类型' });
+		headerRow.createEl('th', { text: '标题' });
+		headerRow.createEl('th', { text: '日期' });
+		headerRow.createEl('th', { text: '人物' });
+		headerRow.createEl('th', { text: '地点' });
 
 		const tbody = table.createEl('tbody');
 		for (const event of events) {
@@ -263,7 +263,7 @@ export class ExtractionsRenderer {
 	): Promise<void> {
 		const section = contentEl.createDiv({ cls: 'cr-extractions__section' });
 		section.createEl('h4', {
-			text: `Places (${places.length})`,
+			text: `地点（${places.length}）`,
 			cls: 'cr-extractions__section-title'
 		});
 
@@ -278,8 +278,8 @@ export class ExtractionsRenderer {
 		const table = section.createEl('table', { cls: 'cr-sources__table' });
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Place' });
-		headerRow.createEl('th', { text: 'Events' });
+		headerRow.createEl('th', { text: '地点' });
+		headerRow.createEl('th', { text: '事件' });
 
 		const tbody = table.createEl('tbody');
 		for (const place of places) {
@@ -321,19 +321,19 @@ export class ExtractionsRenderer {
 	private generateMarkdown(): string {
 		if (!this.currentData || !this.currentConfig) return '';
 
-		const title = this.currentConfig.title as string || 'Extractions';
+		const title = this.currentConfig.title as string || '提取项';
 		const lines: string[] = [`## ${title}`, ''];
 		const { persons, events, places } = this.currentData;
 
 		if (persons.length === 0 && events.length === 0 && places.length === 0) {
-			lines.push('*No entities reference this source.*');
+			lines.push('*没有实体引用此来源。*');
 			return lines.join('\n');
 		}
 
 		// Persons
 		if (persons.length > 0) {
-			lines.push(`### Persons (${persons.length})`, '');
-			lines.push('| Name | Facts cited |');
+			lines.push(`### 人物（${persons.length}）`, '');
+			lines.push('| 名称 | 引用的事实 |');
 			lines.push('|------|------------|');
 			for (const person of persons) {
 				const basename = person.filePath.replace(/\.md$/, '').split('/').pop() || person.name;
@@ -349,8 +349,8 @@ export class ExtractionsRenderer {
 
 		// Events
 		if (events.length > 0) {
-			lines.push(`### Events (${events.length})`, '');
-			lines.push('| Type | Title | Date | Person(s) | Place |');
+			lines.push(`### 事件（${events.length}）`, '');
+			lines.push('| 类型 | 标题 | 日期 | 人物 | 地点 |');
 			lines.push('|------|-------|------|-----------|-------|');
 			for (const event of events) {
 				const typeDef = getEventType(event.eventType, [], true);
@@ -378,8 +378,8 @@ export class ExtractionsRenderer {
 				}
 			}
 
-			lines.push(`### Places (${places.length})`, '');
-			lines.push('| Place | Events |');
+			lines.push(`### 地点（${places.length}）`, '');
+			lines.push('| 地点 | 事件 |');
 			lines.push('|-------|--------|');
 			for (const place of places) {
 				const count = placeCounts.get(place) || 0;

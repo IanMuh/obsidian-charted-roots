@@ -233,7 +233,7 @@ export class UnlinkedMediaModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'crc-unlinked-media-header' });
 		const headerIcon = header.createDiv({ cls: 'crc-unlinked-media-header-icon' });
 		setIcon(headerIcon, 'unlink');
-		header.createEl('h2', { text: 'Unlinked Media' });
+		header.createEl('h2', { text: '未链接媒体' });
 
 		// Search and filters
 		const controls = contentEl.createDiv({ cls: 'crc-unlinked-media-controls' });
@@ -244,7 +244,7 @@ export class UnlinkedMediaModal extends Modal {
 		setIcon(searchIcon, 'search');
 		this.searchInput = searchWrapper.createEl('input', {
 			type: 'text',
-			placeholder: 'Search files...',
+			placeholder: '搜索文件…',
 			cls: 'crc-unlinked-media-search-input'
 		});
 		this.searchInput.addEventListener('input', () => {
@@ -255,11 +255,11 @@ export class UnlinkedMediaModal extends Modal {
 		// Filter buttons
 		const filters = controls.createDiv({ cls: 'crc-unlinked-media-filters' });
 		const filterOptions: Array<{ value: MediaFilter; label: string }> = [
-			{ value: 'all', label: 'All' },
-			{ value: 'image', label: 'Images' },
-			{ value: 'video', label: 'Video' },
-			{ value: 'audio', label: 'Audio' },
-			{ value: 'document', label: 'Docs' }
+			{ value: 'all', label: '全部' },
+			{ value: 'image', label: '图片' },
+			{ value: 'video', label: '视频' },
+			{ value: 'audio', label: '音频' },
+			{ value: 'document', label: '文档' }
 		];
 
 		for (const opt of filterOptions) {
@@ -288,7 +288,7 @@ export class UnlinkedMediaModal extends Modal {
 			type: 'checkbox',
 			cls: 'crc-unlinked-media-checkbox'
 		});
-		selectAllWrapper.createSpan({ text: 'Select all' });
+		selectAllWrapper.createSpan({ text: '全选' });
 		this.selectAllCheckbox.addEventListener('change', () => {
 			this.toggleSelectAll(this.selectAllCheckbox.checked);
 		});
@@ -298,7 +298,7 @@ export class UnlinkedMediaModal extends Modal {
 
 		const linkSelectedBtn = bulkActions.createEl('button', {
 			cls: 'crc-unlinked-media-bulk-btn',
-			text: 'Link selected'
+			text: '链接所选'
 		});
 		const linkIcon = linkSelectedBtn.createSpan({ cls: 'crc-unlinked-media-bulk-icon' });
 		setIcon(linkIcon, 'link');
@@ -350,7 +350,7 @@ export class UnlinkedMediaModal extends Modal {
 	 */
 	private updateCount(): void {
 		if (this.isLoading) {
-			this.countEl.textContent = 'Loading...';
+			this.countEl.textContent = '加载中…';
 			return;
 		}
 
@@ -359,11 +359,11 @@ export class UnlinkedMediaModal extends Modal {
 		const total = this.allItems.length;
 
 		if (selected > 0) {
-			this.countEl.textContent = `${selected} selected`;
+			this.countEl.textContent = `已选择 ${selected} 个`;
 		} else if (showing === total) {
-			this.countEl.textContent = `${total} unlinked files`;
+			this.countEl.textContent = `${total} 个未链接文件`;
 		} else {
-			this.countEl.textContent = `Showing ${showing} of ${total}`;
+			this.countEl.textContent = `显示 ${showing} / ${total}`;
 		}
 	}
 
@@ -374,7 +374,7 @@ export class UnlinkedMediaModal extends Modal {
 		this.gridContainer.empty();
 		const loading = this.gridContainer.createDiv({ cls: 'crc-unlinked-media-loading' });
 		loading.createDiv({ cls: 'crc-unlinked-media-spinner' });
-		loading.createEl('p', { text: 'Scanning vault...' });
+		loading.createEl('p', { text: '正在扫描库…' });
 	}
 
 	/**
@@ -402,15 +402,15 @@ export class UnlinkedMediaModal extends Modal {
 		setIcon(emptyIcon, 'check-circle');
 
 		if (this.allItems.length === 0) {
-			empty.createEl('p', { text: 'All media files are linked!' });
+			empty.createEl('p', { text: '所有媒体文件均已链接！' });
 			empty.createEl('p', {
-				text: 'Every media file in your vault is connected to an entity.',
+				text: '你库中的每个媒体文件都已连接到某个实体。',
 				cls: 'crc-text-muted'
 			});
 		} else {
-			empty.createEl('p', { text: 'No matching files' });
+			empty.createEl('p', { text: '没有匹配的文件' });
 			empty.createEl('p', {
-				text: 'Try a different search term or filter',
+				text: '请尝试其他搜索词或筛选条件',
 				cls: 'crc-text-muted'
 			});
 		}
@@ -528,12 +528,12 @@ export class UnlinkedMediaModal extends Modal {
 	 */
 	private getMediaLabel(type: MediaType): string {
 		switch (type) {
-			case 'image': return 'Image';
-			case 'video': return 'Video';
-			case 'audio': return 'Audio';
+			case 'image': return '图片';
+			case 'video': return '视频';
+			case 'audio': return '音频';
 			case 'pdf': return 'PDF';
-			case 'document': return 'Doc';
-			default: return 'File';
+			case 'document': return '文档';
+			default: return '文件';
 		}
 	}
 
@@ -566,7 +566,7 @@ export class UnlinkedMediaModal extends Modal {
 	private linkSelected(): void {
 		const selected = this.filteredItems.filter(i => i.selected);
 		if (selected.length === 0) {
-			new Notice('No files selected');
+			new Notice('未选择文件');
 			return;
 		}
 
@@ -589,7 +589,7 @@ export class UnlinkedMediaModal extends Modal {
 
 		menu.addItem((menuItem) => {
 			menuItem
-				.setTitle('Open file')
+				.setTitle('打开文件')
 				.setIcon('file')
 				.onClick(() => {
 					this.close();
@@ -599,7 +599,7 @@ export class UnlinkedMediaModal extends Modal {
 
 		menu.addItem((menuItem) => {
 			menuItem
-				.setTitle('Link to entity...')
+				.setTitle('链接到实体…')
 				.setIcon('link')
 				.onClick(() => {
 					// Select only this item and link
@@ -614,7 +614,7 @@ export class UnlinkedMediaModal extends Modal {
 
 		menu.addItem((menuItem) => {
 			menuItem
-				.setTitle('Reveal in file explorer')
+				.setTitle('在文件浏览器中显示')
 				.setIcon('folder')
 				.onClick(() => {
 					// @ts-expect-error - showInFolder is available
@@ -624,11 +624,11 @@ export class UnlinkedMediaModal extends Modal {
 
 		menu.addItem((menuItem) => {
 			menuItem
-				.setTitle('Copy file path')
+				.setTitle('复制文件路径')
 				.setIcon('copy')
 				.onClick(() => {
 					void navigator.clipboard.writeText(item.file.path);
-					new Notice('Path copied to clipboard');
+					new Notice('路径已复制到剪贴板');
 				});
 		});
 
@@ -660,19 +660,19 @@ export class UnlinkedMediaModal extends Modal {
 		// Label
 		toggleWrapper.createSpan({
 			cls: 'crc-media-folder-filter-label',
-			text: 'Media folders only'
+			text: '仅媒体文件夹'
 		});
 
 		// Tooltip/hint for no folders configured
 		if (!hasFolders) {
 			toggleWrapper.addClass('crc-media-folder-filter-toggle--disabled');
-			toggleWrapper.setAttribute('aria-label', 'No media folders configured. Set up in Preferences > Folder locations.');
-			toggleWrapper.setAttribute('title', 'No media folders configured. Set up in Preferences > Folder locations.');
+			toggleWrapper.setAttribute('aria-label', '未配置媒体文件夹。请在「设置 > 文件夹位置」中配置。');
+			toggleWrapper.setAttribute('title', '未配置媒体文件夹。请在「设置 > 文件夹位置」中配置。');
 		} else {
 			const folderList = mediaFolders.length === 1
 				? mediaFolders[0]
-				: `${mediaFolders.length} folders`;
-			toggleWrapper.setAttribute('title', `Filter to: ${folderList}`);
+				: `${mediaFolders.length} 个文件夹`;
+			toggleWrapper.setAttribute('title', `筛选范围：${folderList}`);
 		}
 
 		// Handle toggle change

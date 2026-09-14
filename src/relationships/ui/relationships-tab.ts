@@ -80,7 +80,7 @@ function renderRelationshipsOverviewCard(
 	showTab: (tabId: string) => void
 ): void {
 	const card = createCard({
-		title: 'Custom relationships',
+		title: '自定义关系',
 		icon: 'users'
 	});
 
@@ -107,7 +107,7 @@ function addDockButton(card: HTMLElement, plugin: CanvasRootsPlugin): void {
 
 	const dockBtn = activeDocument.createElement('button');
 	dockBtn.className = 'crc-card__dock-btn clickable-icon';
-	dockBtn.setAttribute('aria-label', 'Open in sidebar');
+	dockBtn.setAttribute('aria-label', '在侧边栏中打开');
 	setIcon(dockBtn, 'panel-right');
 	dockBtn.addEventListener('click', (e) => {
 		e.stopPropagation();
@@ -126,7 +126,7 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 
 	// Loading
 	const loading = container.createDiv({ cls: 'crc-loading' });
-	loading.createSpan({ text: 'Loading relationships...' });
+	loading.createSpan({ text: '正在加载关系…' });
 
 	try {
 		const relationships = service.getAllRelationshipsWithInferred();
@@ -137,24 +137,24 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 		if (relationships.length === 0) {
 			const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 			setIcon(emptyState.createSpan({ cls: 'crc-empty-icon' }), 'link-2');
-			emptyState.createEl('p', { text: 'No custom relationships found.' });
+			emptyState.createEl('p', { text: '未找到自定义关系。' });
 			emptyState.createEl('p', {
 				cls: 'crc-text-muted',
-				text: 'Custom relationships (godparent, guardian, mentor, etc.) are defined in person note frontmatter. Standard family links (spouse, parent, child) are handled separately on canvas trees.'
+				text: '自定义关系（教父母、监护人、导师等）在人物笔记的 frontmatter 中定义。标准家族关系（配偶、父母、子女）由画布树单独处理。'
 			});
 		} else {
 			// Summary row
 			const summaryRow = container.createDiv({ cls: 'crc-relationship-summary-row' });
 			summaryRow.createSpan({
-				text: `${stats.totalDefined} defined relationships`,
+				text: `${stats.totalDefined} 条已定义关系`,
 				cls: 'crc-relationship-stat'
 			});
 			summaryRow.createSpan({
-				text: `${stats.totalInferred} inferred`,
+				text: `${stats.totalInferred} 条推断`,
 				cls: 'crc-relationship-stat crc-text-muted'
 			});
 			summaryRow.createSpan({
-				text: `${stats.peopleWithRelationships} people`,
+				text: `${stats.peopleWithRelationships} 人`,
 				cls: 'crc-relationship-stat'
 			});
 
@@ -171,19 +171,19 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 			const filterSelect = filterContainer.createEl('select', { cls: 'dropdown crc-filter-select' });
 
 			// Build filter options
-			filterSelect.createEl('option', { value: 'all', text: 'All relationships' });
+			filterSelect.createEl('option', { value: 'all', text: '全部关系' });
 
 			// Source filter group
-			const sourceGroup = filterSelect.createEl('optgroup', { attr: { label: 'By source' } });
-			sourceGroup.createEl('option', { value: 'defined', text: 'Defined only' });
-			sourceGroup.createEl('option', { value: 'inferred', text: 'Inferred only' });
+			const sourceGroup = filterSelect.createEl('optgroup', { attr: { label: '按来源' } });
+			sourceGroup.createEl('option', { value: 'defined', text: '仅已定义' });
+			sourceGroup.createEl('option', { value: 'inferred', text: '仅推断' });
 
 			// Type-based filters
 			const allTypes = service.getAllRelationshipTypes();
 			const usedTypeIds = new Set(relationships.map(r => r.type.id));
 			const usedTypes = allTypes.filter(t => usedTypeIds.has(t.id));
 			if (usedTypes.length > 0) {
-				const typeGroup = filterSelect.createEl('optgroup', { attr: { label: 'By type' } });
+				const typeGroup = filterSelect.createEl('optgroup', { attr: { label: '按类型' } });
 				for (const t of usedTypes) {
 					typeGroup.createEl('option', { value: `type_${t.id}`, text: t.name });
 				}
@@ -192,7 +192,7 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 			// Category-based filters
 			const usedCategories = new Set(relationships.map(r => r.type.category));
 			if (usedCategories.size > 1) {
-				const catGroup = filterSelect.createEl('optgroup', { attr: { label: 'By category' } });
+				const catGroup = filterSelect.createEl('optgroup', { attr: { label: '按分类' } });
 				for (const cat of usedCategories) {
 					catGroup.createEl('option', {
 						value: `category_${cat}`,
@@ -215,7 +215,7 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 				.sort((a, b) => b[1].count - a[1].count)
 				.slice(0, 10);
 			if (topPeople.length > 0) {
-				const personGroup = filterSelect.createEl('optgroup', { attr: { label: 'By person' } });
+				const personGroup = filterSelect.createEl('optgroup', { attr: { label: '按人物' } });
 				for (const [crId, info] of topPeople) {
 					personGroup.createEl('option', {
 						value: `person_${crId}`,
@@ -230,13 +230,13 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 			// Sort dropdown
 			const sortContainer = controls.createDiv({ cls: 'crc-filter-container' });
 			const sortSelect = sortContainer.createEl('select', { cls: 'dropdown crc-filter-select' });
-			sortSelect.createEl('option', { value: 'from_asc', text: 'From A–Z' });
-			sortSelect.createEl('option', { value: 'from_desc', text: 'From Z–A' });
-			sortSelect.createEl('option', { value: 'to_asc', text: 'To A–Z' });
-			sortSelect.createEl('option', { value: 'to_desc', text: 'To Z–A' });
-			sortSelect.createEl('option', { value: 'type', text: 'Type' });
-			sortSelect.createEl('option', { value: 'date_asc', text: 'Date (oldest)' });
-			sortSelect.createEl('option', { value: 'date_desc', text: 'Date (newest)' });
+			sortSelect.createEl('option', { value: 'from_asc', text: '起点 A–Z' });
+			sortSelect.createEl('option', { value: 'from_desc', text: '起点 Z–A' });
+			sortSelect.createEl('option', { value: 'to_asc', text: '终点 A–Z' });
+			sortSelect.createEl('option', { value: 'to_desc', text: '终点 Z–A' });
+			sortSelect.createEl('option', { value: 'type', text: '类型' });
+			sortSelect.createEl('option', { value: 'date_asc', text: '日期（最早）' });
+			sortSelect.createEl('option', { value: 'date_desc', text: '日期（最新）' });
 
 			// Set initial sort value
 			sortSelect.value = currentSort;
@@ -306,7 +306,7 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 
 				if (filtered.length === 0) {
 					const noResults = tableContainer.createDiv({ cls: 'crc-empty-state' });
-					noResults.createEl('p', { text: 'No relationships match the current filter.' });
+					noResults.createEl('p', { text: '没有符合当前筛选条件的关系。' });
 					return;
 				}
 
@@ -315,10 +315,10 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 				// Header
 				const thead = table.createEl('thead');
 				const headerRow = thead.createEl('tr');
-				headerRow.createEl('th', { text: 'From' });
-				headerRow.createEl('th', { text: 'Type' });
-				headerRow.createEl('th', { text: 'To' });
-				headerRow.createEl('th', { text: 'Dates' });
+				headerRow.createEl('th', { text: '起点' });
+				headerRow.createEl('th', { text: '类型' });
+				headerRow.createEl('th', { text: '终点' });
+				headerRow.createEl('th', { text: '日期' });
 
 				// Body
 				const tbody = table.createEl('tbody');
@@ -330,11 +330,11 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 				if (filtered.length > displayLimit) {
 					const loadMoreContainer = tableContainer.createDiv({ cls: 'crc-load-more-container' });
 					loadMoreContainer.createSpan({
-						text: `Showing ${displayed.length} of ${filtered.length} relationships`,
+						text: `显示 ${filtered.length} 条关系中的 ${displayed.length} 条`,
 						cls: 'crc-text-muted'
 					});
 					const loadMoreBtn = loadMoreContainer.createEl('button', { cls: 'mod-cta' });
-					loadMoreBtn.textContent = 'Load more';
+					loadMoreBtn.textContent = '加载更多';
 					loadMoreBtn.addEventListener('click', () => {
 						displayLimit += 25;
 						renderTable();
@@ -342,7 +342,7 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 				} else if (filtered.length > 0) {
 					const countInfo = tableContainer.createDiv({ cls: 'crc-count-info' });
 					countInfo.createSpan({
-						text: `Showing all ${filtered.length} relationship${filtered.length !== 1 ? 's' : ''}`,
+						text: `已显示全部 ${filtered.length} 条关系`,
 						cls: 'crc-text-muted'
 					});
 				}
@@ -369,7 +369,7 @@ export function renderRelationshipsList(options: RelationshipsListOptions): void
 		loading.remove();
 		container.createEl('p', {
 			cls: 'crc-error',
-			text: `Failed to load relationships: ${error instanceof Error ? error.message : String(error)}`
+			text: `加载关系失败：${error instanceof Error ? error.message : String(error)}`
 		});
 	}
 }
@@ -406,7 +406,7 @@ function renderRelationshipRow(
 	typeBadge.style.setProperty('color', getContrastColor(rel.type.color));
 	typeBadge.textContent = rel.type.name;
 	if (rel.isInferred) {
-		typeCell.createSpan({ text: ' (inferred)', cls: 'crc-text-muted' });
+		typeCell.createSpan({ text: '（推断）', cls: 'crc-text-muted' });
 	}
 
 	// To
@@ -452,7 +452,7 @@ function showRelationshipContextMenu(
 	// Open source person note
 	menu.addItem((item) => {
 		item
-			.setTitle(`Open ${rel.sourceName}`)
+			.setTitle(`打开 ${rel.sourceName}`)
 			.setIcon('file')
 			.onClick(async () => {
 				const file = plugin.app.vault.getAbstractFileByPath(rel.sourceFilePath);
@@ -467,7 +467,7 @@ function showRelationshipContextMenu(
 	if (rel.targetFilePath) {
 		menu.addItem((item) => {
 			item
-				.setTitle(`Open ${rel.targetName}`)
+				.setTitle(`打开 ${rel.targetName}`)
 				.setIcon('file')
 				.onClick(async () => {
 					const file = plugin.app.vault.getAbstractFileByPath(rel.targetFilePath!);
@@ -484,7 +484,7 @@ function showRelationshipContextMenu(
 	// Open source in new tab
 	menu.addItem((item) => {
 		item
-			.setTitle(`Open ${rel.sourceName} in new tab`)
+			.setTitle(`在新标签页中打开 ${rel.sourceName}`)
 			.setIcon('file-plus')
 			.onClick(async () => {
 				const file = plugin.app.vault.getAbstractFileByPath(rel.sourceFilePath);
@@ -498,7 +498,7 @@ function showRelationshipContextMenu(
 	if (rel.targetFilePath) {
 		menu.addItem((item) => {
 			item
-				.setTitle(`Open ${rel.targetName} in new tab`)
+				.setTitle(`在新标签页中打开 ${rel.targetName}`)
 				.setIcon('file-plus')
 				.onClick(async () => {
 					const file = plugin.app.vault.getAbstractFileByPath(rel.targetFilePath!);
@@ -516,7 +516,7 @@ function showRelationshipContextMenu(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('View in People tab')
+				.setTitle('在人物标签页中查看')
 				.setIcon('users')
 				.onClick(() => {
 					showTab('people');
@@ -536,7 +536,7 @@ function renderRelationshipStatsCard(
 	createCard: (options: { title: string; icon?: LucideIconName }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Statistics',
+		title: '统计',
 		icon: 'bar-chart'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
@@ -547,12 +547,12 @@ function renderRelationshipStatsCard(
 		if (stats.totalDefined === 0) {
 			content.createEl('p', {
 				cls: 'crc-text-muted',
-				text: 'No relationship statistics available yet.'
+				text: '暂无关系统计。'
 			});
 		} else {
 			// By Type
 			const byTypeSection = content.createDiv({ cls: 'crc-stats-section' });
-			byTypeSection.createEl('h4', { text: 'By type', cls: 'crc-section-subtitle' });
+			byTypeSection.createEl('h4', { text: '按类型', cls: 'crc-section-subtitle' });
 
 			const typeList = byTypeSection.createDiv({ cls: 'crc-stats-list' });
 			const sortedTypes = Object.entries(stats.byType)
@@ -572,7 +572,7 @@ function renderRelationshipStatsCard(
 
 			// By Category
 			const byCatSection = content.createDiv({ cls: 'crc-stats-section' });
-			byCatSection.createEl('h4', { text: 'By category', cls: 'crc-section-subtitle' });
+			byCatSection.createEl('h4', { text: '按分类', cls: 'crc-section-subtitle' });
 
 			const catList = byCatSection.createDiv({ cls: 'crc-stats-list' });
 			for (const [cat, count] of Object.entries(stats.byCategory)) {
@@ -589,7 +589,7 @@ function renderRelationshipStatsCard(
 	} catch (error) {
 		content.createEl('p', {
 			cls: 'crc-error',
-			text: `Failed to load statistics: ${error instanceof Error ? error.message : String(error)}`
+			text: `加载统计失败：${error instanceof Error ? error.message : String(error)}`
 		});
 	}
 

@@ -8,7 +8,6 @@
 import { App, Modal, Notice, Setting, TFile } from 'obsidian';
 import { createLucideIcon } from './lucide-icons';
 import { detectNoteType } from '../utils/note-type-detection';
-import { pluralize } from '../utils/format-utils';
 import { parseMediaCropFields, applyMediaCropFields } from '../core/media-service';
 import { parseHistoricalNames, toFlatHistoricalNames } from '../models/place';
 
@@ -60,26 +59,26 @@ const NESTED_PROPERTY_DEFINITIONS: NestedPropertyDefinition[] = [
 	{
 		nestedName: 'coordinates',
 		children: ['lat', 'long'],
-		displayName: 'Geographic coordinates',
+		displayName: '地理坐标',
 		description: 'coordinates: { lat, long } → coordinates_lat, coordinates_long'
 	},
 	{
 		nestedName: 'custom_coordinates',
 		children: ['x', 'y', 'map'],
-		displayName: 'Custom map coordinates',
+		displayName: '自定义地图坐标',
 		description: 'custom_coordinates: { x, y, map } → custom_coordinates_x, custom_coordinates_y, custom_coordinates_map'
 	},
 	{
 		nestedName: 'media_crop',
 		children: [],
-		displayName: 'Image crop regions',
+		displayName: '图片裁剪区域',
 		description: 'media_crop: [{ image, x, y, w, h }] → media_crop_image, media_crop_x, media_crop_y, media_crop_w, media_crop_h',
 		kind: 'media-crop'
 	},
 	{
 		nestedName: 'historical_names',
 		children: [],
-		displayName: 'Historical place names',
+		displayName: '历史地点名称',
 		description: 'historical_names: [{ name, period }] → historical_names, historical_name_periods',
 		kind: 'historical-names'
 	}
@@ -125,13 +124,13 @@ export class FlattenNestedPropertiesModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('layers', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Flatten nested properties');
+		titleContainer.appendText('展平嵌套属性');
 
 		// Description
 		const description = contentEl.createDiv({ cls: 'crc-modal-description' });
 		description.createEl('p', {
-			text: 'Scans Charted Roots notes for nested YAML properties and converts them to flat properties. ' +
-				'This ensures compatibility with Obsidian\'s metadata system and Dataview queries.'
+			text: '扫描 Charted Roots 笔记中的嵌套 YAML 属性并将其转换为平铺属性。' +
+				'这能确保与 Obsidian 的元数据系统和 Dataview 查询兼容。'
 		});
 
 		// Content container
@@ -139,7 +138,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 
 		// Property definitions section
 		const propertiesSection = this.contentContainer.createDiv({ cls: 'cr-flatten-properties-section' });
-		propertiesSection.createEl('h3', { text: 'Properties to check' });
+		propertiesSection.createEl('h3', { text: '要检查的属性' });
 
 		for (const def of NESTED_PROPERTY_DEFINITIONS) {
 			new Setting(propertiesSection)
@@ -166,7 +165,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 		// Scan button
 		const scanButtonContainer = this.contentContainer.createDiv({ cls: 'cr-flatten-scan-container' });
 		this.scanButton = scanButtonContainer.createEl('button', {
-			text: 'Scan for nested properties',
+			text: '扫描嵌套属性',
 			cls: 'mod-cta'
 		});
 		this.scanButton.addEventListener('click', () => void this.runScan());
@@ -182,19 +181,19 @@ export class FlattenNestedPropertiesModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+			text: ' 继续操作前请备份你的库。此操作会修改现有笔记。'
 		});
 
 		// Footer with apply button
 		const footer = contentEl.createDiv({ cls: 'crc-modal-footer' });
 		this.applyButton = footer.createEl('button', {
-			text: 'Flatten selected',
+			text: '展平所选',
 			cls: 'mod-cta'
 		});
 		this.applyButton.disabled = true;
 		this.applyButton.addEventListener('click', () => void this.applyFlattening());
 
-		footer.createEl('button', { text: 'Close' })
+		footer.createEl('button', { text: '关闭' })
 			.addEventListener('click', () => this.close());
 	}
 
@@ -218,7 +217,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 		if (this.progressContainer) {
 			this.progressContainer.removeClass('crc-hidden');
 			this.progressContainer.empty();
-			this.progressContainer.createEl('p', { text: 'Scanning notes...' });
+			this.progressContainer.createEl('p', { text: '正在扫描笔记…' });
 		}
 
 		try {
@@ -227,7 +226,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 			this.updateResultsDisplay();
 		} catch (error) {
 			console.error('Error scanning for nested properties:', error);
-			new Notice('Error scanning notes. Check console for details.');
+			new Notice('扫描笔记时出错，详情请查看控制台。');
 		} finally {
 			this.isScanning = false;
 			this.updateButtonStates();
@@ -317,7 +316,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 
 		if (!this.scanSummary) {
 			this.resultsContainer.createEl('p', {
-				text: 'Click "Scan for nested properties" to find notes that need flattening.',
+				text: '点击"扫描嵌套属性"以查找需要展平的笔记。',
 				cls: 'crc-text--muted'
 			});
 			return;
@@ -328,7 +327,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 		// Summary header
 		const summaryHeader = this.resultsContainer.createDiv({ cls: 'cr-flatten-summary-header' });
 		summaryHeader.createEl('p', {
-			text: `Scanned ${totalScanned} Charted Roots notes.`
+			text: `已扫描 ${totalScanned} 篇 Charted Roots 笔记。`
 		});
 
 		// Count total files needing flattening
@@ -343,7 +342,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 			const successMsg = this.resultsContainer.createDiv({ cls: 'crc-success-callout' });
 			const successIcon = createLucideIcon('check-circle', 16);
 			successMsg.appendChild(successIcon);
-			successMsg.appendText(' All notes already use flat properties. No migration needed.');
+			successMsg.appendText(' 所有笔记都已使用平铺属性，无需迁移。');
 			return;
 		}
 
@@ -363,13 +362,13 @@ export class FlattenNestedPropertiesModal extends Modal {
 
 			row.createSpan({ text: `${displayName}: ` });
 			row.createSpan({
-				text: `${files.length} ${pluralize(files.length, 'note')}`,
+				text: `${files.length} 篇笔记`,
 				cls: 'cr-flatten-count'
 			});
 
 			// Preview button to show affected files
 			const previewBtn = row.createEl('button', {
-				text: 'Preview',
+				text: '预览',
 				cls: 'cr-flatten-preview-btn'
 			});
 			previewBtn.addEventListener('click', () => this.showPreview(propName, files));
@@ -378,7 +377,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 		// Total summary
 		const totalSummary = this.resultsContainer.createDiv({ cls: 'cr-flatten-total' });
 		totalSummary.createEl('strong', {
-			text: `Total: ${allFilesSet.size} ${pluralize(allFilesSet.size, 'note')} to flatten`
+			text: `总计：${allFilesSet.size} 篇笔记待展平`
 		});
 
 		this.updateButtonStates();
@@ -401,7 +400,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 		const def = NESTED_PROPERTY_DEFINITIONS.find(d => d.nestedName === propName);
 		const displayName = def?.displayName || propName;
 
-		previewContainer.createEl('h4', { text: `Files with nested ${displayName}` });
+		previewContainer.createEl('h4', { text: `包含嵌套 ${displayName} 的文件` });
 
 		const list = previewContainer.createEl('ul', { cls: 'cr-flatten-file-list' });
 
@@ -423,13 +422,13 @@ export class FlattenNestedPropertiesModal extends Modal {
 
 		if (files.length > maxToShow) {
 			list.createEl('li', {
-				text: `... and ${files.length - maxToShow} more`,
+				text: `… 以及另外 ${files.length - maxToShow} 篇`,
 				cls: 'crc-text--muted'
 			});
 		}
 
 		// Close preview button
-		const closeBtn = previewContainer.createEl('button', { text: 'Close preview' });
+		const closeBtn = previewContainer.createEl('button', { text: '关闭预览' });
 		closeBtn.addEventListener('click', () => previewContainer.remove());
 	}
 
@@ -450,7 +449,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 		}
 
 		if (allFilesMap.size === 0) {
-			new Notice('No files to flatten.');
+			new Notice('没有可展平的笔记。');
 			return;
 		}
 
@@ -473,7 +472,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 				if (this.progressContainer) {
 					this.progressContainer.empty();
 					this.progressContainer.createEl('p', {
-						text: `Flattening ${flattened + 1} of ${total}...`
+						text: `正在展平第 ${flattened + 1} / ${total} 篇…`
 					});
 					const progressBar = this.progressContainer.createDiv({ cls: 'cr-flatten-progress-bar' });
 					const fill = progressBar.createDiv({ cls: 'cr-flatten-progress-fill' });
@@ -491,9 +490,9 @@ export class FlattenNestedPropertiesModal extends Modal {
 
 			// Show completion message
 			if (errors === 0) {
-				new Notice(`Successfully flattened properties in ${flattened} ${pluralize(flattened, 'note')}.`);
+				new Notice(`已成功展平 ${flattened} 篇笔记的属性。`);
 			} else {
-				new Notice(`Flattened ${flattened} ${pluralize(flattened, 'note')} with ${errors} ${pluralize(errors, 'error')}. Check console for details.`);
+				new Notice(`已展平 ${flattened} 篇笔记，出现 ${errors} 个错误。详情请查看控制台。`);
 			}
 
 			// Call completion callback
@@ -583,7 +582,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 	private updateButtonStates(): void {
 		if (this.scanButton) {
 			this.scanButton.disabled = this.isScanning || this.isApplying || this.selectedProperties.size === 0;
-			this.scanButton.textContent = this.isScanning ? 'Scanning...' : 'Scan for nested properties';
+			this.scanButton.textContent = this.isScanning ? '正在扫描…' : '扫描嵌套属性';
 		}
 
 		if (this.applyButton) {
@@ -591,7 +590,7 @@ export class FlattenNestedPropertiesModal extends Modal {
 				Array.from(this.scanSummary.byProperty.values()).some(files => files.length > 0);
 
 			this.applyButton.disabled = this.isScanning || this.isApplying || !hasFilesToFlatten;
-			this.applyButton.textContent = this.isApplying ? 'Flattening...' : 'Flatten selected';
+			this.applyButton.textContent = this.isApplying ? '正在展平…' : '展平所选';
 		}
 	}
 }

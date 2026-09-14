@@ -49,11 +49,11 @@ describe('formatDisplayDate — input coercion', () => {
 		});
 
 		it('ISO date string formats with day + month', () => {
-			expect(formatDisplayDate('1855-03-15')).toBe('15 Mar 1855');
+			expect(formatDisplayDate('1855-03-15')).toBe('1855年3月15日');
 		});
 
-		it('GEDCOM qualifier ABT formats as "c. year"', () => {
-			expect(formatDisplayDate('ABT 1878')).toBe('c. 1878');
+		it('GEDCOM qualifier ABT formats as "约year"', () => {
+			expect(formatDisplayDate('ABT 1878')).toBe('约1878');
 		});
 	});
 });

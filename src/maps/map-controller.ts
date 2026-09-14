@@ -74,7 +74,7 @@ import { setIcon, TFile, Notice } from 'obsidian';
 import type CanvasRootsPlugin from '../../main';
 import { getLogger } from '../core/logging';
 import { capitalize } from '../utils/format-utils';
-import { getEventType } from '../events/types/event-types';
+import { getEventType, EVENT_TYPE_LABELS } from '../events/types/event-types';
 import type {
 	MapData,
 	MapMarker,
@@ -92,6 +92,7 @@ import type {
 } from './types/map-types';
 import { getMarkerColor, isMarkerTypeVisible, formatPopupDateRange, coordsBelongToCRS } from './types/map-types';
 import { ImageMapManager } from './image-map-manager';
+import { getPlaceCategoryLabel } from '../models/place';
 
 const logger = getLogger('MapController');
 
@@ -361,8 +362,8 @@ export class MapController {
 			// leaflet-fullscreen reads `options.title[isFullscreen]`; passing a
 			// flat string yields `undefined` as the tooltip text (#446).
 			title: {
-				'false': 'Enter fullscreen',
-				'true': 'Exit fullscreen'
+				'false': '进入全屏',
+				'true': '退出全屏'
 			}
 		}).addTo(this.map);
 	}
@@ -419,8 +420,8 @@ export class MapController {
 					initial: false,
 					zoom: 12,
 					marker: false,
-					textPlaceholder: 'Search places...',
-					textErr: 'Place not found',
+					textPlaceholder: '搜索地点…',
+					textErr: '未找到地点',
 					collapsed: true,
 					autoCollapse: true,
 					minLength: 2,
@@ -430,7 +431,7 @@ export class MapController {
 						const marker = val.layer as CRMarker;
 						const data = marker.crData;
 						if (data) {
-							return `<a href="#"><b>${data.placeName}</b><br><small>${data.personName} (${data.type})</small></a>`;
+							return `<a href="#"><b>${data.placeName}</b><br><small>${data.personName} (${EVENT_TYPE_LABELS[data.type] || data.type})</small></a>`;
 						}
 						return `<a href="#">${text}</a>`;
 					}
@@ -655,14 +656,14 @@ export class MapController {
 		if (data.category) {
 			container.createEl('div', {
 				cls: 'cr-map-popup-type',
-				text: capitalize(data.category)
+				text: getPlaceCategoryLabel(data.category)
 			});
 		}
 
 		if (data.universe) {
 			container.createEl('div', {
 				cls: 'cr-map-popup-place',
-				text: `Universe: ${data.universe}`
+				text: `宇宙：${data.universe}`
 			});
 		}
 
@@ -673,7 +674,7 @@ export class MapController {
 
 		const openPlaceBtn = btnContainer.createEl('button', {
 			cls: 'cr-map-popup-btn',
-			text: 'Open place'
+			text: '打开地点'
 		});
 		openPlaceBtn.addEventListener('click', () => {
 			this.openNoteById(data.placeId);
@@ -685,7 +686,7 @@ export class MapController {
 			const mapName = mapConfig?.name || data.linkedMap;
 			const openMapBtn = btnContainer.createEl('button', {
 				cls: 'cr-map-popup-btn cr-map-popup-btn--secondary',
-				text: `Open ${mapName} ↗`
+				text: `打开 ${mapName} ↗`
 			});
 			openMapBtn.addEventListener('click', () => {
 				void this.setActiveMap(data.linkedMap!);
@@ -926,7 +927,7 @@ export class MapController {
 			if (others.length > 0) {
 				const list = container.createEl('div', { cls: 'cr-map-popup-participants' });
 				list.createEl('span', {
-					text: 'with ',
+					text: '与 ',
 					cls: 'cr-map-popup-participants-prefix'
 				});
 				const dateService = this.plugin.getDateService();
@@ -944,12 +945,12 @@ export class MapController {
 							data.universe
 						);
 						if (age && !age.error && age.years >= 0) {
-							entryText = `${p.personName} (age ${age.years})`;
+							entryText = `${p.personName}（${age.years} 岁）`;
 						}
 					}
 					list.createEl('span', { text: entryText, cls: 'cr-map-popup-participant' });
 					if (idx < others.length - 1) {
-						list.createEl('span', { text: ', ' });
+						list.createEl('span', { text: '、' });
 					}
 				});
 			}
@@ -991,7 +992,7 @@ export class MapController {
 			const dateService = this.plugin.getDateService();
 			const age = dateService?.calculateAge(data.birthDate, data.date, data.universe);
 			if (age && !age.error && age.years >= 0) {
-				ageSuffix = ` (age ${age.years})`;
+				ageSuffix = `（${age.years} 岁）`;
 			}
 		}
 		const dateText = dateRange ? `: ${dateRange}${ageSuffix}` : '';
@@ -1001,7 +1002,7 @@ export class MapController {
 			// the popup carries category context (#466).
 			const typeLabel = data.type === 'custom' && data.customLabel
 				? capitalize(data.customLabel)
-				: capitalize(data.type);
+				: (eventType?.name ?? capitalize(data.type));
 			typeRow.createEl('span', {
 				text: `${typeLabel}${dateText}`
 			});
@@ -1025,7 +1026,7 @@ export class MapController {
 		// Open person note button
 		const openPersonBtn = btnContainer.createEl('button', {
 			cls: 'cr-map-popup-btn',
-			text: 'Open person'
+			text: '打开人物'
 		});
 		openPersonBtn.addEventListener('click', () => {
 			this.openNoteById(data.personId);
@@ -1035,7 +1036,7 @@ export class MapController {
 		if (data.placeId) {
 			const openPlaceBtn = btnContainer.createEl('button', {
 				cls: 'cr-map-popup-btn cr-map-popup-btn--secondary',
-				text: 'Open place'
+				text: '打开地点'
 			});
 			openPlaceBtn.addEventListener('click', () => {
 				this.openNoteById(data.placeId!);
@@ -1328,7 +1329,7 @@ export class MapController {
 		const lastWp = journey.waypoints[journey.waypoints.length - 1];
 		container.createEl('div', {
 			cls: 'cr-map-popup-migration',
-			text: `${journey.waypoints.length} locations: ${firstWp.name} → ... → ${lastWp.name}`
+			text: `${journey.waypoints.length} 个地点：${firstWp.name} → ... → ${lastWp.name}`
 		});
 
 		// Show years if available
@@ -1336,8 +1337,8 @@ export class MapController {
 			const yearText = journey.birthYear && journey.deathYear
 				? `${journey.birthYear} – ${journey.deathYear}`
 				: journey.birthYear
-					? `Born ${journey.birthYear}`
-					: `Died ${journey.deathYear}`;
+					? `出生于 ${journey.birthYear}`
+					: `逝世于 ${journey.deathYear}`;
 			container.createEl('div', {
 				cls: 'cr-map-popup-years',
 				text: yearText
@@ -1354,7 +1355,7 @@ export class MapController {
 				cls: 'cr-journey-waypoint'
 			});
 
-			const eventLabel = capitalize(wp.eventType);
+			const eventLabel = EVENT_TYPE_LABELS[wp.eventType] || capitalize(wp.eventType);
 			const dateText = wp.year ? ` (${wp.year})` : '';
 			wpEl.createEl('span', {
 				cls: 'cr-journey-waypoint-event',
@@ -1369,7 +1370,7 @@ export class MapController {
 		// Button to open person note
 		const openBtn = container.createEl('button', {
 			cls: 'cr-map-popup-btn',
-			text: 'Open person'
+			text: '打开人物'
 		});
 		openBtn.addEventListener('click', () => {
 			this.openNoteById(journey.personId);
@@ -1379,7 +1380,7 @@ export class MapController {
 		if (journey.relationshipLabel) {
 			const switchBtn = container.createEl('button', {
 				cls: 'cr-map-popup-btn cr-map-popup-btn--switch',
-				text: `Switch to ${journey.personName}'s journey`
+				text: `切换到 ${journey.personName} 的旅程`
 			});
 			switchBtn.addEventListener('click', () => {
 				container.dispatchEvent(new CustomEvent('cr-switch-journey', {
@@ -1565,15 +1566,15 @@ export class MapController {
 			const popupContent = activeDocument.createElement('div');
 			popupContent.className = 'cr-map-popup';
 			popupContent.createEl('div', { cls: 'cr-map-popup-name', text: config.name });
-			popupContent.createEl('div', { cls: 'cr-map-popup-type', text: 'Child map' });
+			popupContent.createEl('div', { cls: 'cr-map-popup-type', text: '子地图' });
 			const btnContainer = popupContent.createDiv({ cls: 'cr-map-popup-buttons' });
-			const openBtn = btnContainer.createEl('button', { cls: 'cr-map-popup-btn', text: 'Open map' });
+			const openBtn = btnContainer.createEl('button', { cls: 'cr-map-popup-btn', text: '打开地图' });
 			openBtn.addEventListener('click', () => {
 				void this.setActiveMap(config.id);
 			});
 			const regionBtn = btnContainer.createEl('button', {
 				cls: 'cr-map-popup-btn cr-map-popup-btn--secondary',
-				text: config.parentRegion ? 'Edit region' : 'Draw region'
+				text: config.parentRegion ? '编辑区域' : '绘制区域'
 			});
 			regionBtn.addEventListener('click', () => {
 				this.map?.closePopup();
@@ -1724,14 +1725,14 @@ export class MapController {
 		// Find the child map's file
 		const sourcePath = this.regionEditConfig.sourcePath;
 		if (!sourcePath) {
-			new Notice('Cannot save: child map file path not found');
+			new Notice('无法保存：未找到子地图文件路径');
 			this.exitRegionEditMode();
 			return;
 		}
 
 		const file = this.plugin.app.vault.getAbstractFileByPath(sourcePath);
 		if (!(file instanceof TFile)) {
-			new Notice('Cannot save: child map file not found');
+			new Notice('无法保存：未找到子地图文件');
 			this.exitRegionEditMode();
 			return;
 		}
@@ -1749,7 +1750,7 @@ export class MapController {
 		// Reload map configs BEFORE exiting edit mode so the re-render picks up the new region
 		this.imageMapManager.loadMapConfigs();
 
-		new Notice(`Region saved for "${childName}"`);
+		new Notice(`已保存“${childName}”的区域`);
 		this.exitRegionEditMode();
 	}
 
@@ -1967,14 +1968,14 @@ export class MapController {
 
 		toolbar.createEl('span', {
 			cls: 'cr-region-edit-toolbar__label',
-			text: `Editing region for "${childMapName}"`
+			text: `正在编辑“${childMapName}”的区域`
 		});
 
 		const btnGroup = toolbar.createDiv({ cls: 'cr-region-edit-toolbar__buttons' });
 
 		const cancelBtn = btnGroup.createEl('button', {
 			cls: 'cr-region-edit-toolbar__btn',
-			text: 'Cancel'
+			text: '取消'
 		});
 		cancelBtn.addEventListener('click', () => {
 			this.exitRegionEditMode();
@@ -1982,7 +1983,7 @@ export class MapController {
 
 		const saveBtn = btnGroup.createEl('button', {
 			cls: 'cr-region-edit-toolbar__btn cr-region-edit-toolbar__btn--save',
-			text: 'Save region'
+			text: '保存区域'
 		});
 		saveBtn.addEventListener('click', () => {
 			void this.saveRegionEdit();
@@ -2946,7 +2947,7 @@ export class MapController {
 		const { width, height, includeLabels, includeLegend, includeCoordinates, title } = options;
 
 		if (!this.currentData || !this.map) {
-			return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><text x="50%" y="50%" text-anchor="middle">No data</text></svg>`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><text x="50%" y="50%" text-anchor="middle">无数据</text></svg>`;
 		}
 
 		const bounds = this.map.getBounds();
@@ -3013,9 +3014,9 @@ export class MapController {
 		if (includeLegend) {
 			const legendY = height - 30;
 			svg += `  <g transform="translate(50, ${legendY})">\n`;
-			svg += `    <circle cx="10" cy="0" r="5" fill="${this.settings.birthMarkerColor}"/><text x="20" y="4" font-size="10">Birth</text>\n`;
-			svg += `    <circle cx="80" cy="0" r="5" fill="${this.settings.deathMarkerColor}"/><text x="90" y="4" font-size="10">Death</text>\n`;
-			svg += `    <line x1="150" y1="0" x2="170" y2="0" stroke="${this.settings.pathColor}" stroke-width="2"/><text x="175" y="4" font-size="10">Migration</text>\n`;
+			svg += `    <circle cx="10" cy="0" r="5" fill="${this.settings.birthMarkerColor}"/><text x="20" y="4" font-size="10">出生</text>\n`;
+			svg += `    <circle cx="80" cy="0" r="5" fill="${this.settings.deathMarkerColor}"/><text x="90" y="4" font-size="10">去世</text>\n`;
+			svg += `    <line x1="150" y1="0" x2="170" y2="0" stroke="${this.settings.pathColor}" stroke-width="2"/><text x="175" y="4" font-size="10">迁移</text>\n`;
 			svg += `  </g>\n`;
 		}
 

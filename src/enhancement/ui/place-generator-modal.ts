@@ -7,7 +7,6 @@
 
 import { App, Modal, Notice, Setting, TFile } from 'obsidian';
 import { createLucideIcon, setLucideIcon } from '../../ui/lucide-icons';
-import { pluralize } from '../../utils/format-utils';
 import {
 	PlaceGeneratorService,
 	PlaceGeneratorOptions,
@@ -111,13 +110,13 @@ export class PlaceGeneratorModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('map-pin', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Generate place notes');
+		titleContainer.appendText('生成地点笔记');
 
 		// Description
 		const description = contentEl.createDiv({ cls: 'crc-modal-description' });
 		description.createEl('p', {
-			text: 'Scans person and event notes for place strings (not wikilinks) and creates place notes with proper hierarchy. ' +
-				'Optionally updates references to use wikilinks.'
+			text: '扫描人物和事件笔记中的地点字符串（非 wikilink），并创建具有正确层级的地点笔记。' +
+				'可选择更新引用以改用 wikilink。'
 		});
 
 		// Content container
@@ -137,25 +136,25 @@ export class PlaceGeneratorModal extends Modal {
 		const footer = contentEl.createDiv({ cls: 'crc-modal-footer' });
 
 		this.previewButton = footer.createEl('button', {
-			text: 'Preview',
+			text: '预览',
 			cls: 'mod-cta'
 		});
 		this.previewButton.addEventListener('click', () => void this.runPreview());
 
 		this.generateButton = footer.createEl('button', {
-			text: 'Generate',
+			text: '生成',
 			cls: 'mod-warning'
 		});
 		this.generateButton.disabled = true;
 		this.generateButton.addEventListener('click', () => void this.runGenerate());
 
 		this.cancelButton = footer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'cr-place-generator-cancel-btn crc-hidden'
 		});
 		this.cancelButton.addEventListener('click', () => this.cancelGeneration());
 
-		footer.createEl('button', { text: 'Close' })
+		footer.createEl('button', { text: '关闭' })
 			.addEventListener('click', () => this.close());
 	}
 
@@ -171,12 +170,12 @@ export class PlaceGeneratorModal extends Modal {
 		if (!this.contentContainer) return;
 
 		const optionsSection = this.contentContainer.createDiv({ cls: 'cr-place-generator-options' });
-		optionsSection.createEl('h3', { text: 'Options' });
+		optionsSection.createEl('h3', { text: '选项' });
 
 		// Scan person notes
 		new Setting(optionsSection)
-			.setName('Scan person notes')
-			.setDesc('Look for birth_place and death_place properties')
+			.setName('扫描人物笔记')
+			.setDesc('查找 birth_place 和 death_place 属性')
 			.addToggle(toggle => toggle
 				.setValue(this.options.scanPersonNotes)
 				.onChange(value => {
@@ -188,8 +187,8 @@ export class PlaceGeneratorModal extends Modal {
 
 		// Scan event notes
 		new Setting(optionsSection)
-			.setName('Scan event notes')
-			.setDesc('Look for place properties in event notes')
+			.setName('扫描事件笔记')
+			.setDesc('在事件笔记中查找地点属性')
 			.addToggle(toggle => toggle
 				.setValue(this.options.scanEventNotes)
 				.onChange(value => {
@@ -201,8 +200,8 @@ export class PlaceGeneratorModal extends Modal {
 
 		// Parse hierarchy
 		new Setting(optionsSection)
-			.setName('Parse place hierarchy')
-			.setDesc('Create parent places (e.g., "Dublin, Ireland" creates both Dublin and Ireland)')
+			.setName('解析地点层级')
+			.setDesc('创建父地点（例如「都柏林，爱尔兰」将同时创建都柏林和爱尔兰）')
 			.addToggle(toggle => toggle
 				.setValue(this.options.parseHierarchy)
 				.onChange(value => {
@@ -214,8 +213,8 @@ export class PlaceGeneratorModal extends Modal {
 
 		// Update references
 		new Setting(optionsSection)
-			.setName('Update references')
-			.setDesc('Convert place strings to wikilinks after creating notes')
+			.setName('更新引用')
+			.setDesc('创建笔记后将地点字符串转换为 wikilink')
 			.addToggle(toggle => toggle
 				.setValue(this.options.updateReferences)
 				.onChange(value => {
@@ -227,8 +226,8 @@ export class PlaceGeneratorModal extends Modal {
 
 		// Places folder
 		new Setting(optionsSection)
-			.setName('Places folder')
-			.setDesc('Where to create new place notes')
+			.setName('地点文件夹')
+			.setDesc('创建新地点笔记的位置')
 			.addText(text => text
 				.setValue(this.options.placesFolder)
 				.onChange(value => {
@@ -245,7 +244,7 @@ export class PlaceGeneratorModal extends Modal {
 
 		this.resultsContainer.empty();
 		this.resultsContainer.createEl('p', {
-			text: 'Click "Preview" to scan for place strings that can be converted to place notes.',
+			text: '点击「预览」扫描可转换为地点笔记的地点字符串。',
 			cls: 'crc-text--muted'
 		});
 	}
@@ -263,7 +262,7 @@ export class PlaceGeneratorModal extends Modal {
 		if (this.progressContainer) {
 			this.progressContainer.removeClass('crc-hidden');
 			this.progressContainer.empty();
-			this.progressContainer.createEl('p', { text: 'Scanning notes for place strings...' });
+			this.progressContainer.createEl('p', { text: '正在扫描笔记中的地点字符串…' });
 		}
 
 		try {
@@ -271,7 +270,7 @@ export class PlaceGeneratorModal extends Modal {
 			this.renderPreviewResults();
 		} catch (error) {
 			console.error('Error scanning for places:', error);
-			new Notice('Error scanning notes. Check console for details.');
+			new Notice('扫描笔记时出错。请查看控制台了解详情。');
 		} finally {
 			this.isScanning = false;
 			this.updateButtonStates();
@@ -295,27 +294,27 @@ export class PlaceGeneratorModal extends Modal {
 			const successMsg = this.resultsContainer.createDiv({ cls: 'crc-success-callout' });
 			const successIcon = createLucideIcon('check-circle', 16);
 			successMsg.appendChild(successIcon);
-			successMsg.appendText(' No place strings found. All places may already be using wikilinks.');
+			successMsg.appendText(' 未找到地点字符串。所有地点可能已在使用 wikilink。');
 			return;
 		}
 
 		// Summary section
 		const summary = this.resultsContainer.createDiv({ cls: 'cr-place-generator-summary' });
-		summary.createEl('h4', { text: 'Preview summary' });
+		summary.createEl('h4', { text: '预览摘要' });
 
 		const statsGrid = summary.createDiv({ cls: 'cr-place-generator-stats' });
 
-		this.createStatItem(statsGrid, 'map-pin', 'Places found', result.placesFound);
-		this.createStatItem(statsGrid, 'plus-circle', 'New notes to create', result.notesCreated);
-		this.createStatItem(statsGrid, 'check-circle', 'Existing notes matched', result.existingMatched);
+		this.createStatItem(statsGrid, 'map-pin', '找到的地点', result.placesFound);
+		this.createStatItem(statsGrid, 'plus-circle', '待创建的新笔记', result.notesCreated);
+		this.createStatItem(statsGrid, 'check-circle', '匹配的现有笔记', result.existingMatched);
 
 		if (this.options.updateReferences) {
-			this.createStatItem(statsGrid, 'link', 'References to update', result.referencesUpdated);
+			this.createStatItem(statsGrid, 'link', '待更新的引用', result.referencesUpdated);
 		}
 
 		// Place list section
 		const placesSection = this.resultsContainer.createDiv({ cls: 'cr-place-generator-places' });
-		placesSection.createEl('h4', { text: 'Places to create' });
+		placesSection.createEl('h4', { text: '待创建的地点' });
 
 		// Filter to show only places that would be new (have referencing files)
 		this.allPlaces = result.foundPlaces.filter(p => p.referencingFiles.length > 0);
@@ -324,7 +323,7 @@ export class PlaceGeneratorModal extends Modal {
 
 		if (this.allPlaces.length === 0) {
 			placesSection.createEl('p', {
-				text: 'No new place notes needed. All places already exist.',
+				text: '无需创建新的地点笔记。所有地点均已存在。',
 				cls: 'crc-text--muted'
 			});
 		} else {
@@ -338,7 +337,7 @@ export class PlaceGeneratorModal extends Modal {
 			const searchContainer = controlsRow.createDiv({ cls: 'crc-batch-search' });
 			const searchInput = searchContainer.createEl('input', {
 				type: 'text',
-				placeholder: 'Search places...',
+				placeholder: '搜索地点…',
 				cls: 'crc-batch-search-input'
 			});
 			searchInput.addEventListener('input', () => {
@@ -350,8 +349,8 @@ export class PlaceGeneratorModal extends Modal {
 			// Sort dropdown
 			const sortContainer = controlsRow.createDiv({ cls: 'crc-batch-filter' });
 			const sortSelect = sortContainer.createEl('select', { cls: 'crc-batch-filter-select' });
-			sortSelect.createEl('option', { text: 'Sort by name', value: 'name' });
-			sortSelect.createEl('option', { text: 'Sort by references', value: 'refs' });
+			sortSelect.createEl('option', { text: '按名称排序', value: 'name' });
+			sortSelect.createEl('option', { text: '按引用数排序', value: 'refs' });
 			sortSelect.addEventListener('change', () => {
 				this.sortField = sortSelect.value as 'name' | 'refs';
 				this.applyFiltersAndSort();
@@ -374,10 +373,10 @@ export class PlaceGeneratorModal extends Modal {
 			const table = tableContainer.createEl('table', { cls: 'crc-batch-preview-table' });
 			const thead = table.createEl('thead');
 			const headerRow = thead.createEl('tr');
-			headerRow.createEl('th', { text: 'Place' });
-			headerRow.createEl('th', { text: 'References' });
+			headerRow.createEl('th', { text: '地点' });
+			headerRow.createEl('th', { text: '引用' });
 			if (this.options.parseHierarchy) {
-				headerRow.createEl('th', { text: 'Hierarchy' });
+				headerRow.createEl('th', { text: '层级' });
 			}
 			headerRow.createEl('th', { text: '', cls: 'cr-place-generator-action-header' });
 
@@ -395,7 +394,7 @@ export class PlaceGeneratorModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will create new files and modify existing notes.'
+			text: ' 继续前请备份你的库。此操作将创建新文件并修改现有笔记。'
 		});
 
 		this.updateButtonStates();
@@ -427,9 +426,9 @@ export class PlaceGeneratorModal extends Modal {
 		// Update count
 		if (this.placesCountEl) {
 			if (this.filteredPlaces.length === this.allPlaces.length) {
-				this.placesCountEl.textContent = `${this.allPlaces.length} ${pluralize(this.allPlaces.length, 'place')} to create:`;
+				this.placesCountEl.textContent = `待创建 ${this.allPlaces.length} 个地点：`;
 			} else {
-				this.placesCountEl.textContent = `Showing ${this.filteredPlaces.length} of ${this.allPlaces.length} places:`;
+				this.placesCountEl.textContent = `显示 ${this.filteredPlaces.length} / ${this.allPlaces.length} 个地点：`;
 			}
 		}
 
@@ -473,7 +472,7 @@ export class PlaceGeneratorModal extends Modal {
 			// Action button
 			const actionCell = row.createEl('td', { cls: 'cr-place-generator-action-cell' });
 			const createBtn = actionCell.createEl('button', {
-				text: 'Create',
+				text: '创建',
 				cls: 'cr-place-generator-create-btn'
 			});
 			createBtn.addEventListener('click', () => {
@@ -485,7 +484,7 @@ export class PlaceGeneratorModal extends Modal {
 		if (pageItems.length === 0 && this.allPlaces.length > 0) {
 			const row = this.placesTableBody.createEl('tr');
 			const cell = row.createEl('td', {
-				text: 'No matches found',
+				text: '未找到匹配项',
 				cls: 'crc-text--muted crc-text--center'
 			});
 			cell.setAttribute('colspan', this.options.parseHierarchy ? '4' : '3');
@@ -508,7 +507,7 @@ export class PlaceGeneratorModal extends Modal {
 
 		// Previous button
 		const prevBtn = this.paginationContainer.createEl('button', {
-			text: '← Prev',
+			text: '← 上一页',
 			cls: 'cr-place-generator-page-btn'
 		});
 		prevBtn.disabled = this.currentPage === 0;
@@ -524,13 +523,13 @@ export class PlaceGeneratorModal extends Modal {
 		const startItem = this.currentPage * this.pageSize + 1;
 		const endItem = Math.min((this.currentPage + 1) * this.pageSize, this.filteredPlaces.length);
 		this.paginationContainer.createSpan({
-			text: `${startItem}–${endItem} of ${this.filteredPlaces.length}`,
+			text: `${startItem}–${endItem} / ${this.filteredPlaces.length}`,
 			cls: 'cr-place-generator-page-info'
 		});
 
 		// Next button
 		const nextBtn = this.paginationContainer.createEl('button', {
-			text: 'Next →',
+			text: '下一页 →',
 			cls: 'cr-place-generator-page-btn'
 		});
 		nextBtn.disabled = this.currentPage >= totalPages - 1;
@@ -576,21 +575,21 @@ export class PlaceGeneratorModal extends Modal {
 				if (this.placesCountEl && this.previewResult) {
 					this.previewResult.notesCreated--;
 					const remaining = this.allPlaces.length;
-					this.placesCountEl.textContent = `${remaining} ${pluralize(remaining, 'place')} to create:`;
+					this.placesCountEl.textContent = `待创建 ${remaining} 个地点：`;
 				}
 
-				new Notice(`Created place note: ${place.placeString}`);
+				new Notice(`已创建地点笔记：${place.placeString}`);
 			} else {
 				// Show error state
 				button.textContent = '✗';
 				button.addClass('cr-place-generator-create-btn--error');
-				new Notice(`Failed to create ${place.placeString}: ${result.error}`);
+				new Notice(`创建 ${place.placeString} 失败：${result.error}`);
 			}
 		} catch (error) {
 			console.error('Error generating single place:', error);
 			button.textContent = '✗';
 			button.addClass('cr-place-generator-create-btn--error');
-			new Notice(`Error creating ${place.placeString}`);
+				new Notice(`创建 ${place.placeString} 时出错`);
 		}
 	}
 
@@ -618,15 +617,15 @@ export class PlaceGeneratorModal extends Modal {
 
 		// Confirm before proceeding
 		if (this.previewResult.notesCreated > 0 || this.previewResult.referencesUpdated > 0) {
-			const confirmMessage = `This will create ${this.previewResult.notesCreated} place note(s)`;
+			const confirmMessage = `这将创建${this.previewResult.notesCreated}个地点笔记`;
 			const updateMessage = this.options.updateReferences
-				? ` and update ${this.previewResult.referencesUpdated} reference(s)`
+				? `并更新${this.previewResult.referencesUpdated}条引用`
 				: '';
 			const proceed = await new Promise<boolean>(resolve => {
 				const modal = new ConfirmationModal(
 					this.app,
-					'Confirm generation',
-					`${confirmMessage}${updateMessage}. Continue?`,
+					'确认生成',
+					`${confirmMessage}${updateMessage}。是否继续？`,
 					resolve
 				);
 				modal.open();
@@ -672,16 +671,16 @@ export class PlaceGeneratorModal extends Modal {
 
 			// Success notice
 			if (result.cancelled) {
-				new Notice(`Generation cancelled. Created ${result.notesCreated} place note(s).`);
+				new Notice(`生成已取消。创建了 ${result.notesCreated} 个地点笔记。`);
 			} else if (result.errors.length === 0) {
-				new Notice(`Created ${result.notesCreated} place note(s), updated ${result.referencesUpdated} reference(s).`);
+				new Notice(`创建了 ${result.notesCreated} 个地点笔记，更新了 ${result.referencesUpdated} 条引用。`);
 			} else {
-				new Notice(`Completed with ${result.errors.length} error(s). Check console for details.`);
+				new Notice(`完成，有 ${result.errors.length} 个错误。请查看控制台了解详情。`);
 			}
 
 		} catch (error) {
 			console.error('Error generating place notes:', error);
-			new Notice('Error generating place notes. Check console for details.');
+			new Notice('生成地点笔记时出错。请查看控制台了解详情。');
 			if (this.progressContainer) {
 				this.progressContainer.addClass('crc-hidden');
 			}
@@ -707,7 +706,7 @@ export class PlaceGeneratorModal extends Modal {
 		const phaseIcon = phaseContainer.createDiv({ cls: 'cr-place-generator-phase__icon' });
 		setLucideIcon(phaseIcon, 'map-pin', 20);
 		this.progressPhaseEl = phaseContainer.createDiv({ cls: 'cr-place-generator-phase__label' });
-		this.progressPhaseEl.textContent = 'Creating place notes...';
+		this.progressPhaseEl.textContent = '正在创建地点笔记…';
 
 		// Progress bar
 		const barContainer = this.progressContainer.createDiv({ cls: 'cr-place-generator-progress-bar' });
@@ -716,7 +715,7 @@ export class PlaceGeneratorModal extends Modal {
 
 		// Progress text
 		this.progressTextEl = this.progressContainer.createDiv({ cls: 'cr-place-generator-progress-text' });
-		this.progressTextEl.textContent = 'Starting...';
+		this.progressTextEl.textContent = '正在开始…';
 	}
 
 	/**
@@ -730,7 +729,7 @@ export class PlaceGeneratorModal extends Modal {
 		}
 
 		if (this.progressTextEl) {
-			this.progressTextEl.textContent = `Creating ${current} of ${total}: ${placeName}`;
+			this.progressTextEl.textContent = `正在创建 ${current} / ${total}：${placeName}`;
 		}
 	}
 
@@ -742,7 +741,7 @@ export class PlaceGeneratorModal extends Modal {
 			this.isCancelled = true;
 			if (this.cancelButton) {
 				this.cancelButton.disabled = true;
-				this.cancelButton.textContent = 'Cancelling...';
+				this.cancelButton.textContent = '正在取消…';
 			}
 		}
 	}
@@ -759,20 +758,20 @@ export class PlaceGeneratorModal extends Modal {
 		const header = this.resultsContainer.createDiv({ cls: 'cr-place-generator-complete-header' });
 		const successIcon = createLucideIcon(result.cancelled ? 'alert-circle' : 'check-circle', 24);
 		header.appendChild(successIcon);
-		header.createEl('h4', { text: result.cancelled ? 'Generation cancelled' : 'Generation complete' });
+		header.createEl('h4', { text: result.cancelled ? '生成已取消' : '生成完成' });
 
 		// Stats grid
 		const statsGrid = this.resultsContainer.createDiv({ cls: 'cr-place-generator-stats' });
 
-		this.createStatItem(statsGrid, 'plus-circle', 'Notes created', result.notesCreated);
-		this.createStatItem(statsGrid, 'check-circle', 'Existing matched', result.existingMatched);
-		this.createStatItem(statsGrid, 'link', 'References updated', result.referencesUpdated);
-		this.createStatItem(statsGrid, 'file-text', 'Files modified', result.filesModified);
+		this.createStatItem(statsGrid, 'plus-circle', '已创建笔记', result.notesCreated);
+		this.createStatItem(statsGrid, 'check-circle', '匹配现有', result.existingMatched);
+		this.createStatItem(statsGrid, 'link', '已更新引用', result.referencesUpdated);
+		this.createStatItem(statsGrid, 'file-text', '已修改文件', result.filesModified);
 
 		// Errors section
 		if (result.errors.length > 0) {
 			const errorsSection = this.resultsContainer.createDiv({ cls: 'cr-place-generator-errors' });
-			errorsSection.createEl('h4', { text: 'Errors' });
+			errorsSection.createEl('h4', { text: '错误' });
 
 			const errorList = errorsSection.createEl('ul', { cls: 'cr-place-generator-error-list' });
 			for (const error of result.errors.slice(0, 10)) {
@@ -784,7 +783,7 @@ export class PlaceGeneratorModal extends Modal {
 
 			if (result.errors.length > 10) {
 				errorList.createEl('li', {
-					text: `... and ${result.errors.length - 10} more errors`,
+					text: `… 还有 ${result.errors.length - 10} 个错误`,
 					cls: 'crc-text--muted'
 				});
 			}
@@ -793,7 +792,7 @@ export class PlaceGeneratorModal extends Modal {
 		// Created notes section with paginated table
 		if (result.placeNotes.length > 0) {
 			const notesSection = this.resultsContainer.createDiv({ cls: 'cr-place-generator-created-notes' });
-			notesSection.createEl('h4', { text: 'Place notes' });
+			notesSection.createEl('h4', { text: '地点笔记' });
 
 			// Initialize results table state
 			this.resultNotes = result.placeNotes;
@@ -813,8 +812,8 @@ export class PlaceGeneratorModal extends Modal {
 			const table = tableContainer.createEl('table', { cls: 'crc-batch-preview-table' });
 			const thead = table.createEl('thead');
 			const headerRow = thead.createEl('tr');
-			headerRow.createEl('th', { text: 'Place' });
-			headerRow.createEl('th', { text: 'Status' });
+			headerRow.createEl('th', { text: '地点' });
+			headerRow.createEl('th', { text: '状态' });
 			headerRow.createEl('th', { text: '', cls: 'cr-place-generator-action-header' });
 
 			this.resultsTableBody = table.createEl('tbody');
@@ -841,7 +840,7 @@ export class PlaceGeneratorModal extends Modal {
 		const searchContainer = controlsRow.createDiv({ cls: 'crc-batch-search' });
 		const searchInput = searchContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Search created notes...',
+			placeholder: '搜索已创建的笔记…',
 			cls: 'crc-batch-search-input'
 		});
 		searchInput.addEventListener('input', () => {
@@ -853,8 +852,8 @@ export class PlaceGeneratorModal extends Modal {
 		// Sort dropdown
 		const sortContainer = controlsRow.createDiv({ cls: 'crc-batch-filter' });
 		const sortSelect = sortContainer.createEl('select', { cls: 'crc-batch-filter-select' });
-		sortSelect.createEl('option', { text: 'Sort by name', value: 'name' });
-		sortSelect.createEl('option', { text: 'Sort by status', value: 'status' });
+		sortSelect.createEl('option', { text: '按名称排序', value: 'name' });
+		sortSelect.createEl('option', { text: '按状态排序', value: 'status' });
 		sortSelect.addEventListener('change', () => {
 			this.resultsSortField = sortSelect.value as 'name' | 'status';
 			this.applyResultsFiltersAndSort();
@@ -900,9 +899,9 @@ export class PlaceGeneratorModal extends Modal {
 		// Update count
 		if (this.resultsCountEl) {
 			if (this.filteredResultNotes.length === this.resultNotes.length) {
-				this.resultsCountEl.textContent = `${this.resultNotes.length} place ${pluralize(this.resultNotes.length, 'note')}:`;
+				this.resultsCountEl.textContent = `${this.resultNotes.length} 个地点笔记：`;
 			} else {
-				this.resultsCountEl.textContent = `Showing ${this.filteredResultNotes.length} of ${this.resultNotes.length} notes:`;
+				this.resultsCountEl.textContent = `显示 ${this.filteredResultNotes.length} / ${this.resultNotes.length} 条笔记：`;
 			}
 		}
 
@@ -940,13 +939,13 @@ export class PlaceGeneratorModal extends Modal {
 
 			// Status
 			const statusCell = row.createEl('td');
-			statusCell.textContent = note.isNew ? 'Created' : 'Existing';
+			statusCell.textContent = note.isNew ? '已创建' : '已存在';
 			statusCell.addClass(note.isNew ? 'cr-text-success' : 'crc-text--muted');
 
 			// Edit button
 			const actionCell = row.createEl('td', { cls: 'cr-place-generator-action-cell' });
 			const editBtn = actionCell.createEl('button', {
-				text: 'Edit',
+				text: '编辑',
 				cls: 'cr-place-generator-edit-btn'
 			});
 			editBtn.addEventListener('click', () => {
@@ -958,7 +957,7 @@ export class PlaceGeneratorModal extends Modal {
 		if (pageItems.length === 0 && this.resultNotes.length > 0) {
 			const row = this.resultsTableBody.createEl('tr');
 			const cell = row.createEl('td', {
-				text: 'No matches found',
+				text: '未找到匹配项',
 				cls: 'crc-text--muted crc-text--center'
 			});
 			cell.setAttribute('colspan', '3');
@@ -981,7 +980,7 @@ export class PlaceGeneratorModal extends Modal {
 
 		// Previous button
 		const prevBtn = this.resultsPaginationContainer.createEl('button', {
-			text: '← Prev',
+			text: '← 上一页',
 			cls: 'cr-place-generator-page-btn'
 		});
 		prevBtn.disabled = this.resultsCurrentPage === 0;
@@ -997,13 +996,13 @@ export class PlaceGeneratorModal extends Modal {
 		const startItem = this.resultsCurrentPage * this.pageSize + 1;
 		const endItem = Math.min((this.resultsCurrentPage + 1) * this.pageSize, this.filteredResultNotes.length);
 		this.resultsPaginationContainer.createSpan({
-			text: `${startItem}–${endItem} of ${this.filteredResultNotes.length}`,
+			text: `${startItem}–${endItem} / ${this.filteredResultNotes.length}`,
 			cls: 'cr-place-generator-page-info'
 		});
 
 		// Next button
 		const nextBtn = this.resultsPaginationContainer.createEl('button', {
-			text: 'Next →',
+			text: '下一页 →',
 			cls: 'cr-place-generator-page-btn'
 		});
 		nextBtn.disabled = this.resultsCurrentPage >= totalPages - 1;
@@ -1023,7 +1022,7 @@ export class PlaceGeneratorModal extends Modal {
 		// Get the file
 		const file = this.app.vault.getAbstractFileByPath(noteInfo.path);
 		if (!(file instanceof TFile)) {
-			new Notice(`Could not find file: ${noteInfo.path}`);
+			new Notice(`找不到文件：${noteInfo.path}`);
 			return;
 		}
 
@@ -1051,7 +1050,7 @@ export class PlaceGeneratorModal extends Modal {
 			placeGraph: this.placeGraph,
 			settings: this.settings,
 			onUpdated: () => {
-				new Notice(`Updated: ${noteInfo.name}`);
+				new Notice(`已更新：${noteInfo.name}`);
 				void this.placeGraph?.reloadCache();
 			}
 		}).open();
@@ -1070,12 +1069,12 @@ export class PlaceGeneratorModal extends Modal {
 
 		if (this.previewButton) {
 			this.previewButton.disabled = !canScan;
-			this.previewButton.textContent = this.isScanning ? 'Scanning...' : 'Preview';
+			this.previewButton.textContent = this.isScanning ? '正在扫描…' : '预览';
 		}
 
 		if (this.generateButton) {
 			this.generateButton.disabled = !canGenerate;
-			this.generateButton.textContent = this.isGenerating ? 'Generating...' : 'Generate';
+			this.generateButton.textContent = this.isGenerating ? '正在生成…' : '生成';
 			// Hide generate button when generating (cancel button will show)
 			this.generateButton.toggleClass('crc-hidden', this.isGenerating);
 		}
@@ -1084,7 +1083,7 @@ export class PlaceGeneratorModal extends Modal {
 			// Show cancel button only while generating
 			this.cancelButton.toggleClass('crc-hidden', !this.isGenerating);
 			this.cancelButton.disabled = this.isCancelled;
-			this.cancelButton.textContent = this.isCancelled ? 'Cancelling...' : 'Cancel';
+			this.cancelButton.textContent = this.isCancelled ? '正在取消…' : '取消';
 		}
 	}
 }
@@ -1113,7 +1112,7 @@ class ConfirmationModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelBtn = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelBtn.addEventListener('click', () => {
@@ -1122,7 +1121,7 @@ class ConfirmationModal extends Modal {
 		});
 
 		const confirmBtn = buttonContainer.createEl('button', {
-			text: 'Continue',
+			text: '继续',
 			cls: 'mod-warning'
 		});
 		confirmBtn.addEventListener('click', () => {

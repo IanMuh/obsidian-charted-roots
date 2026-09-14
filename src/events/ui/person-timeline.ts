@@ -59,7 +59,7 @@ function sortEventsChronologically(events: EventNote[]): EventNote[] {
  */
 function formatDateForDisplay(event: EventNote): string {
 	if (!event.date) {
-		return 'Date unknown';
+		return '日期未知';
 	}
 
 	let dateStr = formatDisplayDate(event.date);
@@ -74,8 +74,8 @@ function formatDateForDisplay(event: EventNote): string {
 	const hasQualifier = /^(c\.|before|after|\d{4}–\d{4})/.test(dateStr);
 	if (!hasQualifier && event.datePrecision && event.datePrecision !== 'exact') {
 		const precisionLabel = DATE_PRECISION_LABELS[event.datePrecision];
-		if (precisionLabel && precisionLabel !== 'Exact date') {
-			dateStr += ` (${precisionLabel.toLowerCase()})`;
+		if (precisionLabel && precisionLabel !== '精确日期') {
+			dateStr += `（${precisionLabel}）`;
 		}
 	}
 
@@ -110,7 +110,7 @@ export function renderPersonTimeline(
 		if (options?.showEmptyState !== false) {
 			const emptyState = container.createDiv({ cls: 'crc-person-timeline__empty' });
 			emptyState.createEl('p', {
-				text: 'No events recorded.',
+				text: '未记录事件。',
 				cls: 'crc-text--muted'
 			});
 		}
@@ -147,8 +147,8 @@ export function renderPersonTimeline(
 			const emptyState = container.createDiv({ cls: 'crc-person-timeline__list' });
 			emptyState.createEl('p', {
 				text: selectedCalendar
-					? `No events found for calendar "${selectedCalendar}".`
-					: 'No events recorded.',
+					? `未找到历法"${selectedCalendar}"的事件。`
+					: '未记录事件。',
 				cls: 'crc-text--muted'
 			});
 			return;
@@ -166,7 +166,7 @@ export function renderPersonTimeline(
 		if (options?.maxEvents && sortedEvents.length > options.maxEvents) {
 			const moreIndicator = container.createDiv({ cls: 'crc-person-timeline__more' });
 			moreIndicator.createEl('span', {
-				text: `+ ${sortedEvents.length - options.maxEvents} more events`,
+				text: `另有 ${sortedEvents.length - options.maxEvents} 个事件`,
 				cls: 'crc-text--muted'
 			});
 		}
@@ -181,10 +181,10 @@ export function renderPersonTimeline(
 		});
 		const calendarIcon = createLucideIcon('calendar', 14);
 		filterLabel.appendChild(calendarIcon);
-		filterLabel.appendText(' Calendar:');
+		filterLabel.appendText(' 历法：');
 
 		const filterSelect = filterContainer.createEl('select', { cls: 'crc-timeline-filter' });
-		filterSelect.createEl('option', { text: 'All calendars', attr: { value: '' } });
+		filterSelect.createEl('option', { text: '全部历法', attr: { value: '' } });
 
 		// Resolve each calendar id to its display name so the dropdown shows the
 		// calendar's name rather than its raw id (#766). User systems take
@@ -307,7 +307,7 @@ function renderTimelineEvent(
 
 	if (event.sources && event.sources.length > 0) {
 		const sourceCount = event.sources.length;
-		details.push(`${sourceCount} source${sourceCount !== 1 ? 's' : ''}`);
+		details.push(`${sourceCount} 个来源`);
 	}
 
 	if (details.length > 0) {
@@ -323,7 +323,7 @@ function renderTimelineEvent(
 		const warningRow = content.createDiv({ cls: 'crc-timeline-event__warning' });
 		const warningIcon = createLucideIcon('alert-triangle', 12);
 		warningRow.appendChild(warningIcon);
-		warningRow.appendText(event.confidence === 'low' ? 'Low confidence' : 'Confidence unknown');
+		warningRow.appendText(event.confidence === 'low' ? '低置信度' : '置信度未知');
 	}
 
 	// No sources warning
@@ -331,7 +331,7 @@ function renderTimelineEvent(
 		const noSourceRow = content.createDiv({ cls: 'crc-timeline-event__warning' });
 		const infoIcon = createLucideIcon('info', 12);
 		noSourceRow.appendChild(infoIcon);
-		noSourceRow.appendText('No sources');
+		noSourceRow.appendText('无来源');
 	}
 }
 

@@ -1,7 +1,6 @@
 import { App, ButtonComponent, Modal, Notice } from 'obsidian';
 import { CanvasSearchResult, CanvasFinder } from '../core/canvas-finder';
 import { createLucideIcon } from './lucide-icons';
-import { pluralize } from '../utils/format-utils';
 
 /**
  * Modal to display canvases containing a specific person
@@ -28,14 +27,14 @@ export class FindOnCanvasModal extends Modal {
 
 		// Title
 		contentEl.createEl('h2', {
-			text: `Find "${this.personName}" on canvas`,
+			text: `在画布中查找「${this.personName}」`,
 			cls: 'crc-modal-title'
 		});
 
 		// Search for canvases
 		const loadingEl = contentEl.createDiv({ cls: 'cr-find-loading' });
 		loadingEl.createEl('p', {
-			text: 'Searching canvases...',
+			text: '正在搜索画布…',
 			cls: 'cr-text-muted'
 		});
 
@@ -51,7 +50,7 @@ export class FindOnCanvasModal extends Modal {
 		} catch (error: unknown) {
 			loadingEl.remove();
 			contentEl.createEl('p', {
-				text: 'Error searching canvases',
+				text: '搜索画布出错',
 				cls: 'cr-text-error'
 			});
 			console.error('Canvas search error:', error);
@@ -66,19 +65,19 @@ export class FindOnCanvasModal extends Modal {
 		emptyState.appendChild(icon);
 
 		emptyState.createEl('p', {
-			text: 'Not found on any canvas',
+			text: '未在任何画布中找到',
 			cls: 'cr-find-empty__title'
 		});
 
 		emptyState.createEl('p', {
-			text: 'This person does not appear on any family tree canvases.',
+			text: '此人未出现在任何家谱画布中。',
 			cls: 'cr-find-empty__description'
 		});
 
 		// Close button
 		const buttonContainer = container.createDiv({ cls: 'cr-modal-buttons' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.setCta()
 			.onClick(() => {
 				this.close();
@@ -89,7 +88,7 @@ export class FindOnCanvasModal extends Modal {
 		// Summary
 		const summary = container.createDiv({ cls: 'cr-find-summary' });
 		summary.createEl('p', {
-			text: `Found on ${this.results.length} ${pluralize(this.results.length, 'canvas', 'canvases')}`,
+			text: `在 ${this.results.length} 个画布中找到`,
 			cls: 'cr-find-summary__text'
 		});
 
@@ -114,7 +113,7 @@ export class FindOnCanvasModal extends Modal {
 
 			// Node count badge
 			resultMeta.createEl('span', {
-				text: `${result.nodeCount} people`,
+				text: `${result.nodeCount} 位人物`,
 				cls: 'cr-find-result__badge'
 			});
 
@@ -129,7 +128,7 @@ export class FindOnCanvasModal extends Modal {
 			// Root person if available
 			if (result.rootPerson) {
 				resultMeta.createEl('span', {
-					text: `Root: ${result.rootPerson}`,
+					text: `根人物：${result.rootPerson}`,
 					cls: 'cr-find-result__root'
 				});
 			}
@@ -140,7 +139,7 @@ export class FindOnCanvasModal extends Modal {
 				void (async () => {
 					await this.finder.openCanvas(result.canvasFile);
 					this.close();
-					new Notice(`Opened ${result.canvasFile.basename}`);
+					new Notice(`已打开 ${result.canvasFile.basename}`);
 				})();
 			});
 		});
@@ -148,7 +147,7 @@ export class FindOnCanvasModal extends Modal {
 		// Close button
 		const buttonContainer = container.createDiv({ cls: 'cr-modal-buttons' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.onClick(() => {
 				this.close();
 			});

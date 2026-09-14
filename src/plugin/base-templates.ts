@@ -37,21 +37,21 @@ function isBasesAvailable(plugin: CanvasRootsPlugin): boolean {
 function confirmBaseCreation(plugin: CanvasRootsPlugin): Promise<boolean> {
 	return new Promise((resolve) => {
 		const modal = new Modal(plugin.app);
-		modal.titleEl.setText('Bases plugin not detected');
+		modal.titleEl.setText('未检测到 Bases 插件');
 
 		modal.contentEl.createEl('p', {
-			text: 'The Obsidian Bases plugin does not appear to be installed. The .base file will be created, but you\'ll need to install the Bases plugin to use it.'
+			text: '似乎未安装 Obsidian Bases 插件。将创建 .base 文件，但你需要安装 Bases 插件才能使用它。'
 		});
 
 		modal.contentEl.createEl('p', {
-			text: 'Would you like to create the template anyway?',
+			text: '仍要创建该模板吗？',
 			cls: 'cr-confirm-text'
 		});
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'cr-prompt-buttons' });
 
 		const createBtn = buttonContainer.createEl('button', {
-			text: 'Create anyway',
+			text: '仍然创建',
 			cls: 'mod-cta'
 		});
 		createBtn.addEventListener('click', () => {
@@ -60,7 +60,7 @@ function confirmBaseCreation(plugin: CanvasRootsPlugin): Promise<boolean> {
 		});
 
 		const cancelBtn = buttonContainer.createEl('button', {
-			text: 'Cancel'
+			text: '取消'
 		});
 		cancelBtn.addEventListener('click', () => {
 			modal.close();
@@ -118,14 +118,14 @@ async function createBaseFile(
 		if (!resolved) return;
 
 		if (resolved.existing) {
-			new Notice(`${displayName} base template already exists at ${resolved.path}`);
+			new Notice(`${displayName} base 模板已存在于 ${resolved.path}`);
 			const leaf = plugin.app.workspace.getLeaf(false);
 			await leaf.openFile(resolved.existing);
 			return;
 		}
 
 		const file = await plugin.app.vault.create(resolved.path, templateContent);
-		new Notice(`${displayName} base template created with ${viewCount} pre-configured views!`);
+		new Notice(`${displayName} base 模板已创建，包含 ${viewCount} 个预配置视图！`);
 		logger.info('base-template', `Created ${displayName.toLowerCase()} base template at ${resolved.path}`);
 
 		const leaf = plugin.app.workspace.getLeaf(false);
@@ -135,13 +135,13 @@ async function createBaseFile(
 		logger.error('base-template', `Failed to create ${displayName.toLowerCase()} base template`, error);
 
 		if (errorMsg.includes('already exists')) {
-			new Notice('A file with this name already exists.');
+			new Notice('已存在同名文件。');
 		} else if (errorMsg.includes('permission') || errorMsg.includes('EACCES')) {
-			new Notice('Permission denied. Check file system permissions.');
+			new Notice('权限被拒绝。请检查文件系统权限。');
 		} else if (errorMsg.includes('ENOSPC')) {
-			new Notice('Disk full. Free up space and try again.');
+			new Notice('磁盘已满。请释放空间后重试。');
 		} else {
-			new Notice(`Failed to create ${displayName} base template: ${errorMsg}`);
+			new Notice(`创建 ${displayName} base 模板失败：${errorMsg}`);
 		}
 	}
 }
@@ -151,37 +151,37 @@ export async function createBaseTemplate(plugin: CanvasRootsPlugin, folder?: TFo
 		aliases: plugin.settings.propertyAliases,
 		maxLivingAge: plugin.settings.livingPersonAgeThreshold
 	});
-	await createBaseFile(plugin, 'people.base', templateContent, 'Base', '22', folder);
+	await createBaseFile(plugin, 'people.base', templateContent, '人物', '22', folder);
 }
 
 export async function createPlacesBaseTemplate(plugin: CanvasRootsPlugin, folder?: TFolder): Promise<void> {
 	const templateContent = generatePlacesBaseTemplate(plugin.settings.propertyAliases);
-	await createBaseFile(plugin, 'places.base', templateContent, 'Places', '14', folder);
+	await createBaseFile(plugin, 'places.base', templateContent, '地点', '14', folder);
 }
 
 export async function createOrganizationsBaseTemplate(plugin: CanvasRootsPlugin, folder?: TFolder): Promise<void> {
-	await createBaseFile(plugin, 'organizations.base', ORGANIZATIONS_BASE_TEMPLATE, 'Organizations', '17', folder);
+	await createBaseFile(plugin, 'organizations.base', ORGANIZATIONS_BASE_TEMPLATE, '组织', '17', folder);
 }
 
 export async function createSourcesBaseTemplate(plugin: CanvasRootsPlugin, folder?: TFolder): Promise<void> {
-	await createBaseFile(plugin, 'sources.base', SOURCES_BASE_TEMPLATE, 'Sources', '18', folder);
+	await createBaseFile(plugin, 'sources.base', SOURCES_BASE_TEMPLATE, '来源', '18', folder);
 }
 
 export async function createUniversesBaseTemplate(plugin: CanvasRootsPlugin, folder?: TFolder): Promise<void> {
-	await createBaseFile(plugin, 'universes.base', UNIVERSES_BASE_TEMPLATE, 'Universes', '12', folder);
+	await createBaseFile(plugin, 'universes.base', UNIVERSES_BASE_TEMPLATE, '宇宙', '12', folder);
 }
 
 export async function createNotesBaseTemplate(plugin: CanvasRootsPlugin, folder?: TFolder): Promise<void> {
-	await createBaseFile(plugin, 'notes.base', NOTES_BASE_TEMPLATE, 'Notes', '11', folder);
+	await createBaseFile(plugin, 'notes.base', NOTES_BASE_TEMPLATE, '笔记', '11', folder);
 }
 
 export async function createResearchBaseTemplate(plugin: CanvasRootsPlugin, folder?: TFolder): Promise<void> {
-	await createBaseFile(plugin, 'research.base', RESEARCH_BASE_TEMPLATE, 'Research', '12', folder);
+	await createBaseFile(plugin, 'research.base', RESEARCH_BASE_TEMPLATE, '研究', '12', folder);
 }
 
 export async function createEventsBaseTemplate(plugin: CanvasRootsPlugin, folder?: TFolder): Promise<void> {
 	const templateContent = generateEventsBaseTemplate(plugin.settings.propertyAliases);
-	await createBaseFile(plugin, 'events.base', templateContent, 'Events', '20', folder);
+	await createBaseFile(plugin, 'events.base', templateContent, '事件', '20', folder);
 }
 
 /**
@@ -241,10 +241,10 @@ export async function createAllBases(
 
 	if (!silent) {
 		if (created.length > 0) {
-			new Notice(`Created ${created.length} base${created.length > 1 ? 's' : ''}: ${created.join(', ')}`);
+			new Notice(`已创建 ${created.length} 个 base：${created.join(', ')}`);
 		}
 		if (skipped.length > 0 && created.length === 0) {
-			new Notice('All bases already exist');
+			new Notice('所有 base 均已存在');
 		}
 	}
 

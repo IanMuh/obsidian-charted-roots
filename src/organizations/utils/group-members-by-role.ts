@@ -8,7 +8,7 @@
  */
 
 /** Default heading used when an item has no role assigned. */
-export const NO_ROLE_HEADING = 'Members';
+export const NO_ROLE_HEADING = '成员';
 
 /**
  * Anything that has a (possibly empty) `role` field can be grouped.

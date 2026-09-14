@@ -21,12 +21,12 @@ import type { EventNote } from '../events/types/event-types';
  * Standard note types from Gramps
  */
 export const NOTE_TYPES = [
-	{ id: 'Research', label: 'Research', description: 'Research findings and notes' },
-	{ id: 'Person Note', label: 'Person Note', description: 'Biographical information' },
-	{ id: 'Transcript', label: 'Transcript', description: 'Document transcriptions' },
-	{ id: 'Source text', label: 'Source text', description: 'Extracted source content' },
-	{ id: 'General', label: 'General', description: 'General purpose notes' },
-	{ id: 'Custom', label: 'Custom', description: 'User-defined type' }
+	{ id: 'Research', label: '研究', description: '研究发现与笔记' },
+	{ id: 'Person Note', label: '人物笔记', description: '传记信息' },
+	{ id: 'Transcript', label: '转录稿', description: '文档转录' },
+	{ id: 'Source text', label: '来源文本', description: '提取的来源内容' },
+	{ id: 'General', label: '通用', description: '通用笔记' },
+	{ id: 'Custom', label: '自定义', description: '用户自定义类型' }
 ] as const;
 
 type NoteType = typeof NOTE_TYPES[number]['id'];
@@ -95,7 +95,7 @@ export class CreateNoteModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass('cr-create-note-modal');
 
-		contentEl.createEl('h2', { text: 'Create note' });
+		contentEl.createEl('h2', { text: '创建笔记' });
 
 		// Check for persisted state
 		const existingState = this.persistence.getValidState();
@@ -124,17 +124,17 @@ export class CreateNoteModal extends Modal {
 
 		// Title (required)
 		new Setting(contentEl)
-			.setName('Title')
-			.setDesc('Note title (used as filename)')
+			.setName('标题')
+			.setDesc('笔记标题（用作文件名）')
 			.addText(text => text
-				.setPlaceholder('e.g., Research on Smith family origins')
+				.setPlaceholder('例如：Smith 家族起源研究')
 				.setValue(this.title)
 				.onChange(value => this.title = value));
 
 		// Note type
 		new Setting(contentEl)
-			.setName('Note type')
-			.setDesc('Classification of this note')
+			.setName('笔记类型')
+			.setDesc('此笔记的分类')
 			.addDropdown(dropdown => {
 				for (const type of NOTE_TYPES) {
 					dropdown.addOption(type.id, type.label);
@@ -149,10 +149,10 @@ export class CreateNoteModal extends Modal {
 
 		// Custom type (shown only when "Custom" is selected)
 		const customTypeSetting = new Setting(contentEl)
-			.setName('Custom type')
-			.setDesc('Enter your custom note type')
+			.setName('自定义类型')
+			.setDesc('输入你的自定义笔记类型')
 			.addText(text => text
-				.setPlaceholder('e.g., Interview Notes')
+				.setPlaceholder('例如：访谈笔记')
 				.setValue(this.customType)
 				.onChange(value => this.customType = value));
 		customTypeSetting.settingEl.addClass('cr-custom-type-setting');
@@ -162,8 +162,8 @@ export class CreateNoteModal extends Modal {
 
 		// Privacy toggle
 		new Setting(contentEl)
-			.setName('Private')
-			.setDesc('Mark this note as private')
+			.setName('私密')
+			.setDesc('将此笔记标记为私密')
 			.addToggle(toggle => toggle
 				.setValue(this.isPrivate)
 				.onChange(value => this.isPrivate = value));
@@ -173,7 +173,7 @@ export class CreateNoteModal extends Modal {
 
 		// Header with label and button
 		const header = linkedSection.createDiv({ cls: 'crc-linked-entities-field__header' });
-		header.createSpan({ cls: 'crc-linked-entities-field__label', text: 'Linked entities' });
+		header.createSpan({ cls: 'crc-linked-entities-field__label', text: '关联实体' });
 
 		// Add entity button
 		const addBtn = header.createEl('button', {
@@ -181,7 +181,7 @@ export class CreateNoteModal extends Modal {
 		});
 		const addIcon = createLucideIcon('plus', 14);
 		addBtn.appendChild(addIcon);
-		addBtn.appendText(' Add entity');
+		addBtn.appendText(' 添加实体');
 		addBtn.addEventListener('click', (e) => this.showEntityPicker(e));
 
 		// Linked entities list
@@ -190,11 +190,11 @@ export class CreateNoteModal extends Modal {
 
 		// Content (optional initial content)
 		const initialContentSetting = new Setting(contentEl)
-			.setName('Initial content')
-			.setDesc('Optional starting content for the note')
+			.setName('初始内容')
+			.setDesc('笔记的可选起始内容')
 			.addTextArea(textArea => {
 				textArea
-					.setPlaceholder('Enter note content...')
+					.setPlaceholder('输入笔记内容…')
 					.setValue(this.content)
 					.onChange(value => this.content = value);
 				textArea.inputEl.rows = 6;
@@ -204,11 +204,11 @@ export class CreateNoteModal extends Modal {
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-modal-buttons' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const createBtn = buttonContainer.createEl('button', {
-			text: 'Create note',
+			text: '创建笔记',
 			cls: 'mod-cta'
 		});
 		createBtn.addEventListener('click', () => void this.createNote());
@@ -251,7 +251,7 @@ export class CreateNoteModal extends Modal {
 		// Person option
 		menu.addItem(item => {
 			item
-				.setTitle('Person')
+				.setTitle('人物')
 				.setIcon('user')
 				.onClick(() => this.openPersonPicker());
 		});
@@ -259,7 +259,7 @@ export class CreateNoteModal extends Modal {
 		// Event option
 		menu.addItem(item => {
 			item
-				.setTitle('Event')
+				.setTitle('事件')
 				.setIcon('calendar')
 				.onClick(() => this.openEventPicker());
 		});
@@ -267,7 +267,7 @@ export class CreateNoteModal extends Modal {
 		// Place option
 		menu.addItem(item => {
 			item
-				.setTitle('Place')
+				.setTitle('地点')
 				.setIcon('map-pin')
 				.onClick(() => this.openPlacePicker());
 		});
@@ -275,7 +275,7 @@ export class CreateNoteModal extends Modal {
 		// Source option
 		menu.addItem(item => {
 			item
-				.setTitle('Source')
+				.setTitle('来源')
 				.setIcon('book-open')
 				.onClick(() => this.openSourcePicker());
 		});
@@ -293,7 +293,7 @@ export class CreateNoteModal extends Modal {
 				this.addLinkedEntity(person.name, person.file.basename);
 			},
 			{
-				title: 'Link person to note',
+				title: '将人物关联到笔记',
 				plugin: this.plugin
 			}
 		);
@@ -373,7 +373,7 @@ export class CreateNoteModal extends Modal {
 
 		if (this.linkedEntities.length === 0) {
 			const emptyState = this.linkedEntitiesContainer.createDiv({ cls: 'crc-linked-entities-field__empty' });
-			emptyState.setText('No entities linked');
+			emptyState.setText('未关联任何实体');
 			return;
 		}
 
@@ -390,7 +390,7 @@ export class CreateNoteModal extends Modal {
 			// Remove button (styled like Sources field)
 			const removeBtn = item.createEl('button', {
 				cls: 'crc-btn crc-btn--icon crc-btn--danger',
-				attr: { 'aria-label': `Remove ${displayName}` }
+				attr: { 'aria-label': `移除 ${displayName}` }
 			});
 			const removeIcon = createLucideIcon('x', 14);
 			removeBtn.appendChild(removeIcon);
@@ -445,7 +445,7 @@ export class CreateNoteModal extends Modal {
 	 */
 	private async createNote(): Promise<void> {
 		if (!this.title.trim()) {
-			new Notice('Please enter a title');
+			new Notice('请输入标题');
 			return;
 		}
 
@@ -519,11 +519,11 @@ export class CreateNoteModal extends Modal {
 			// Open the newly created file
 			await this.app.workspace.openLinkText(file.path, '');
 
-			new Notice(`Note created: ${filename}`);
+			new Notice(`笔记已创建：${filename}`);
 			this.close();
 			this.onSuccess(file);
 		} catch (error) {
-			new Notice(`Failed to create note: ${error}`);
+			new Notice(`创建笔记失败：${error}`);
 		}
 	}
 }

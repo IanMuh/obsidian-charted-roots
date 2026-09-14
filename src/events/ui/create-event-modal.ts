@@ -253,7 +253,7 @@ export class CreateEventModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('calendar', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText(this.editMode ? 'Edit event note' : 'Create event note');
+		titleContainer.appendText(this.editMode ? '编辑事件笔记' : '创建事件笔记');
 
 		// Check for persisted state (only in create mode)
 		if (this.persistence && !this.editMode) {
@@ -287,10 +287,10 @@ export class CreateEventModal extends Modal {
 
 		// Title (required)
 		new Setting(form)
-			.setName('Title')
-			.setDesc('Descriptive title for this event')
+			.setName('标题')
+			.setDesc('此事件的描述性标题')
 			.addText(text => text
-				.setPlaceholder('e.g., Birth of John Smith')
+				.setPlaceholder('例如：约翰·史密斯的出生')
 				.setValue(this.title)
 				.onChange(value => {
 					this.title = value;
@@ -301,12 +301,12 @@ export class CreateEventModal extends Modal {
 
 		// Date section
 		const dateSection = form.createDiv({ cls: 'crc-event-date-section' });
-		dateSection.createEl('h4', { text: 'Date information', cls: 'crc-section-header' });
+		dateSection.createEl('h4', { text: '日期信息', cls: 'crc-section-header' });
 
 		// Date precision
 		new Setting(dateSection)
-			.setName('Date precision')
-			.setDesc('How precise is the date information?')
+			.setName('日期精度')
+			.setDesc('日期信息有多精确？')
 			.addDropdown(dropdown => {
 				for (const [key, label] of Object.entries(DATE_PRECISION_LABELS)) {
 					dropdown.addOption(key, label);
@@ -319,10 +319,10 @@ export class CreateEventModal extends Modal {
 
 		// Date
 		new Setting(dateSection)
-			.setName('Date')
-			.setDesc('Event date (YYYY-MM-DD format or fictional calendar format)')
+			.setName('日期')
+			.setDesc('事件日期（YYYY-MM-DD 格式或虚构历法格式）')
 			.addText(text => text
-				.setPlaceholder('e.g., 1888-05-15 or 3019 T.A.')
+				.setPlaceholder('例如：1888-05-15 或 3019 T.A.')
 				.setValue(this.date)
 				.onChange(value => {
 					this.date = value;
@@ -330,10 +330,10 @@ export class CreateEventModal extends Modal {
 
 		// End date (for ranges)
 		new Setting(dateSection)
-			.setName('End date')
-			.setDesc('For date ranges only (e.g., residence periods)')
+			.setName('结束日期')
+			.setDesc('仅用于日期范围（如居住时段）')
 			.addText(text => text
-				.setPlaceholder('e.g., 1895-12-31')
+				.setPlaceholder('例如：1895-12-31')
 				.setValue(this.dateEnd)
 				.onChange(value => {
 					this.dateEnd = value;
@@ -342,7 +342,7 @@ export class CreateEventModal extends Modal {
 		// Fictional date system (if enabled)
 		if (this.settings.enableFictionalDates) {
 			const availableSystems: { id: string; name: string }[] = [
-				{ id: '', name: '(Real world dates)' }
+				{ id: '', name: '（现实世界日期）' }
 			];
 
 			// Add built-in date systems
@@ -369,8 +369,8 @@ export class CreateEventModal extends Modal {
 			}
 
 			new Setting(dateSection)
-				.setName('Date system')
-				.setDesc('Fictional calendar system (for worldbuilders)')
+				.setName('历法系统')
+				.setDesc('虚构历法系统（用于世界构建）')
 				.addDropdown(dropdown => {
 					for (const sys of availableSystems) {
 						dropdown.addOption(sys.id, sys.name);
@@ -384,24 +384,24 @@ export class CreateEventModal extends Modal {
 
 		// People section
 		const peopleSection = form.createDiv({ cls: 'crc-event-people-section' });
-		peopleSection.createEl('h4', { text: 'People involved', cls: 'crc-section-header' });
+		peopleSection.createEl('h4', { text: '涉及人物', cls: 'crc-section-header' });
 
 		// Primary person
-		this.createPersonField(peopleSection, 'Primary person', 'The main person this event is about');
+		this.createPersonField(peopleSection, '主要人物', '此事件主要涉及的人物');
 
 		// Additional people (for marriages, group events, etc.) (#366)
 		const additionalPeopleContainer = peopleSection.createDiv({ cls: 'crc-additional-people' });
 		this.renderAdditionalPeople(additionalPeopleContainer);
 
 		// Place
-		this.createPlaceField(form, 'Place', 'Where did this event occur?');
+		this.createPlaceField(form, '地点', '此事件发生在哪里？');
 
 		// Timeline
 		new Setting(form)
-			.setName('Timeline')
-			.setDesc('Parent timeline note (wikilink, optional)')
+			.setName('时间轴')
+			.setDesc('父级时间轴笔记（wikilink，可选）')
 			.addText(text => text
-				.setPlaceholder('e.g., [[Smith Family Timeline]]')
+				.setPlaceholder('例如：[[史密斯家族时间轴]]')
 				.setValue(extractDisplayLabel(this.timeline))
 				.onChange(value => {
 					this.timeline = value;
@@ -410,10 +410,10 @@ export class CreateEventModal extends Modal {
 		// Organizations — comma-separated org notes; surfaces the event on each
 		// org's profile "Events" section (#659).
 		new Setting(form)
-			.setName('Organizations')
-			.setDesc('Organization notes involved (comma-separated, optional)')
+			.setName('组织')
+			.setDesc('涉及的组织笔记（逗号分隔，可选）')
 			.addText(text => text
-				.setPlaceholder('e.g., Jedi Order, Galactic Senate')
+				.setPlaceholder('例如：绝地武士团、银河议会')
 				.setValue(this.organizations)
 				.onChange(value => {
 					this.organizations = value;
@@ -421,8 +421,8 @@ export class CreateEventModal extends Modal {
 
 		// Confidence
 		new Setting(form)
-			.setName('Confidence')
-			.setDesc('How confident are you in this event data?')
+			.setName('置信度')
+			.setDesc('你对这个事件数据的置信度如何？')
 			.addDropdown(dropdown => {
 				for (const [key, label] of Object.entries(CONFIDENCE_LABELS)) {
 					dropdown.addOption(key, label);
@@ -435,12 +435,12 @@ export class CreateEventModal extends Modal {
 
 		// Description
 		new Setting(form)
-			.setName('Description')
-			.setDesc('Additional details about this event')
+			.setName('描述')
+			.setDesc('此事件的补充细节')
 			.addTextArea(textArea => {
 				textArea.inputEl.rows = 3;
 				textArea
-					.setPlaceholder('Enter any additional details...')
+					.setPlaceholder('输入任何补充细节…')
 					.setValue(this.description)
 					.onChange(value => {
 						this.description = value;
@@ -453,10 +453,10 @@ export class CreateEventModal extends Modal {
 		// residences, immigrations) had no way to set their universe via
 		// this modal (#507).
 		new Setting(form)
-			.setName('Universe')
-			.setDesc('Fictional universe this event belongs to')
+			.setName('宇宙')
+			.setDesc('此事件所属的虚构宇宙')
 			.addText(text => text
-				.setPlaceholder('e.g., Middle-earth')
+				.setPlaceholder('例如：中土世界')
 				.setValue(this.universe)
 				.onChange(value => {
 					this.universe = value;
@@ -470,11 +470,11 @@ export class CreateEventModal extends Modal {
 		// after opening the modal reveals the section without requiring a
 		// save+reopen (#507 follow-up).
 		const worldSection = form.createDiv({ cls: 'crc-event-world-section' });
-		worldSection.createEl('h4', { text: 'Worldbuilding options', cls: 'crc-section-header' });
+		worldSection.createEl('h4', { text: '世界构建选项', cls: 'crc-section-header' });
 
 		new Setting(worldSection)
-			.setName('Canonical event')
-			.setDesc('Mark this as authoritative truth in your world')
+			.setName('正典事件')
+			.setDesc('将其标记为你世界中的权威事实')
 			.addToggle(toggle => toggle
 				.setValue(this.isCanonical)
 				.onChange(value => {
@@ -488,9 +488,9 @@ export class CreateEventModal extends Modal {
 		// respects these constraints when dates are unknown or imprecise.
 		if (this.plugin) {
 			const orderingSection = form.createDiv({ cls: 'crc-event-ordering-section' });
-			orderingSection.createEl('h4', { text: 'Relative ordering', cls: 'crc-section-header' });
+			orderingSection.createEl('h4', { text: '相对顺序', cls: 'crc-section-header' });
 			orderingSection.createEl('p', {
-				text: 'Use for events with unknown or imprecise dates. Topological sort respects these constraints.',
+				text: '用于日期未知或不精确的事件。拓扑排序会遵循这些约束。',
 				cls: 'setting-item-description'
 			});
 
@@ -504,20 +504,20 @@ export class CreateEventModal extends Modal {
 		// Transfer section (for transfer events)
 		if (this.eventType === 'transfer') {
 			const transferSection = form.createDiv({ cls: 'crc-event-transfer-section' });
-			transferSection.createEl('h4', { text: 'Transfer details', cls: 'crc-section-header' });
+			transferSection.createEl('h4', { text: '转让详情', cls: 'crc-section-header' });
 
 			new Setting(transferSection)
-				.setName('Transfer type')
-				.setDesc('Type of ownership or status transfer')
+				.setName('转让类型')
+				.setDesc('所有权或身份转让的类型')
 				.addDropdown(dropdown => {
-					dropdown.addOption('', 'Select type...');
-					dropdown.addOption('inheritance', 'Inheritance (via will/probate)');
-					dropdown.addOption('purchase', 'Purchase (sale transaction)');
-					dropdown.addOption('gift', 'Gift (transfer without payment)');
-					dropdown.addOption('hire', 'Hire (temporary transfer)');
-					dropdown.addOption('seizure', 'Seizure (court-ordered, debt)');
-					dropdown.addOption('birth', 'Birth (born into ownership)');
-					dropdown.addOption('relocation', 'Relocation (move, same owner)');
+					dropdown.addOption('', '选择类型…');
+					dropdown.addOption('inheritance', '继承（通过遗嘱/遗产认证）');
+					dropdown.addOption('purchase', '购买（买卖交易）');
+					dropdown.addOption('gift', '赠与（无偿转让）');
+					dropdown.addOption('hire', '租赁（临时转让）');
+					dropdown.addOption('seizure', '扣押（法院裁定、债务）');
+					dropdown.addOption('birth', '出生（出生即获得所有权）');
+					dropdown.addOption('relocation', '迁移（搬迁，所有者不变）');
 					dropdown.setValue(this.transferType);
 					dropdown.onChange(value => {
 						this.transferType = value;
@@ -529,13 +529,13 @@ export class CreateEventModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				this.close();
 			});
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText(this.editMode ? 'Save changes' : 'Create event')
+			.setButtonText(this.editMode ? '保存更改' : '创建事件')
 			.setCta()
 			.onClick(() => {
 				if (this.editMode) {
@@ -626,8 +626,8 @@ export class CreateEventModal extends Modal {
 		);
 
 		new Setting(container)
-			.setName('Event type')
-			.setDesc('Type of event')
+			.setName('事件类型')
+			.setDesc('事件的类型')
 			.addDropdown(dropdown => {
 				// Add options grouped by category
 				for (const [category, types] of Object.entries(eventTypes)) {
@@ -688,14 +688,14 @@ export class CreateEventModal extends Modal {
 	private createPersonField(container: HTMLElement, label: string, description: string): void {
 		const setting = new Setting(container)
 			.setName(label)
-			.setDesc(this.person ? `Linked to: ${this.person}` : description);
+			.setDesc(this.person ? `已关联：${this.person}` : description);
 
 		// Text input (readonly, shows selected person name)
 		let inputEl: HTMLInputElement;
 
 		setting.addText(text => {
 			inputEl = text.inputEl;
-			text.setPlaceholder('Click "Link" to select person')
+			text.setPlaceholder('点击"关联"以选择人物')
 				.setValue(this.person);
 			text.inputEl.readOnly = true;
 			if (this.person) {
@@ -711,11 +711,11 @@ export class CreateEventModal extends Modal {
 				if (isLinked) {
 					const unlinkIcon = createLucideIcon('unlink', 16);
 					btn.buttonEl.appendChild(unlinkIcon);
-					btn.buttonEl.appendText(' Unlink');
+					btn.buttonEl.appendText(' 取消关联');
 				} else {
 					const linkIcon = createLucideIcon('link', 16);
 					btn.buttonEl.appendChild(linkIcon);
-					btn.buttonEl.appendText(' Link');
+					btn.buttonEl.appendText(' 关联');
 				}
 			};
 
@@ -748,10 +748,10 @@ export class CreateEventModal extends Modal {
 						this.personBasename = person.file?.basename ?? '';
 						inputEl.value = person.name;
 						inputEl.addClass('crc-input--linked');
-						setting.setDesc(`Linked to: ${person.name}`);
+						setting.setDesc(`已关联：${person.name}`);
 						updateButton(true);
 					}, {
-						title: 'Select person',
+						title: '选择人物',
 						createContext: createContext,
 						onCreateNew: () => {
 							// Callback signals inline creation support
@@ -775,14 +775,14 @@ export class CreateEventModal extends Modal {
 			const person = this.persons[i];
 			const setting = new Setting(container)
 				.setName(person.name)
-				.setDesc('Additional person');
+				.setDesc('附加人物');
 
 			setting.addButton(btn => {
 				btn.buttonEl.empty();
 				btn.buttonEl.addClass('crc-btn', 'crc-btn--secondary');
 				const icon = createLucideIcon('x', 16);
 				btn.buttonEl.appendChild(icon);
-				btn.buttonEl.appendText(' Remove');
+				btn.buttonEl.appendText(' 移除');
 				btn.onClick(() => {
 					this.persons.splice(i, 1);
 					this.renderAdditionalPeople(container);
@@ -797,7 +797,7 @@ export class CreateEventModal extends Modal {
 				btn.buttonEl.addClass('crc-btn', 'crc-btn--secondary');
 				const icon = createLucideIcon('user-plus', 16);
 				btn.buttonEl.appendChild(icon);
-				btn.buttonEl.appendText(' Add person');
+				btn.buttonEl.appendText(' 添加人物');
 				btn.onClick(() => {
 					const directory = this.settings.peopleFolder || '';
 					const createContext: RelationshipContext = {
@@ -811,7 +811,7 @@ export class CreateEventModal extends Modal {
 						this.persons.push({ name: person.name, crId: person.crId, basename: person.file?.basename });
 						this.renderAdditionalPeople(container);
 					}, {
-						title: 'Select additional person',
+						title: '选择附加人物',
 						createContext: createContext,
 						onCreateNew: () => {},
 						plugin: this.plugin
@@ -830,7 +830,7 @@ export class CreateEventModal extends Modal {
 	private renderOrderingList(container: HTMLElement, side: 'before' | 'after'): void {
 		container.empty();
 
-		container.createEl('h5', { text: side === 'after' ? 'After these events:' : 'Before these events:' });
+		container.createEl('h5', { text: side === 'after' ? '在这些事件之后：' : '在这些事件之前：' });
 
 		const refs = side === 'before' ? this.beforeRefs : this.afterRefs;
 
@@ -838,14 +838,14 @@ export class CreateEventModal extends Modal {
 			const ref = refs[i];
 			const setting = new Setting(container)
 				.setName(ref.name)
-				.setDesc('Linked event');
+				.setDesc('已关联事件');
 
 			setting.addButton(btn => {
 				btn.buttonEl.empty();
 				btn.buttonEl.addClass('crc-btn', 'crc-btn--secondary');
 				const icon = createLucideIcon('x', 16);
 				btn.buttonEl.appendChild(icon);
-				btn.buttonEl.appendText(' Remove');
+				btn.buttonEl.appendText(' 移除');
 				btn.onClick(() => {
 					refs.splice(i, 1);
 					this.renderOrderingList(container, side);
@@ -859,7 +859,7 @@ export class CreateEventModal extends Modal {
 				btn.buttonEl.addClass('crc-btn', 'crc-btn--secondary');
 				const icon = createLucideIcon('plus', 16);
 				btn.buttonEl.appendChild(icon);
-				btn.buttonEl.appendText(' Add event');
+				btn.buttonEl.appendText(' 添加事件');
 				btn.onClick(() => {
 					if (!this.plugin) return;
 
@@ -902,14 +902,14 @@ export class CreateEventModal extends Modal {
 
 		const setting = new Setting(container)
 			.setName(label)
-			.setDesc(placeDisplay ? `Linked to: ${placeDisplay}` : description);
+			.setDesc(placeDisplay ? `已关联：${placeDisplay}` : description);
 
 		// Text input (readonly, shows selected place name)
 		let inputEl: HTMLInputElement;
 
 		setting.addText(text => {
 			inputEl = text.inputEl;
-			text.setPlaceholder('Click "Link" to select place')
+			text.setPlaceholder('点击"关联"以选择地点')
 				.setValue(placeDisplay);
 			text.inputEl.readOnly = true;
 			if (this.place) {
@@ -925,11 +925,11 @@ export class CreateEventModal extends Modal {
 				if (isLinked) {
 					const unlinkIcon = createLucideIcon('unlink', 16);
 					btn.buttonEl.appendChild(unlinkIcon);
-					btn.buttonEl.appendText(' Unlink');
+					btn.buttonEl.appendText(' 取消关联');
 				} else {
 					const linkIcon = createLucideIcon('link', 16);
 					btn.buttonEl.appendChild(linkIcon);
-					btn.buttonEl.appendText(' Link');
+					btn.buttonEl.appendText(' 关联');
 				}
 			};
 
@@ -951,7 +951,7 @@ export class CreateEventModal extends Modal {
 						this.placeBasename = place.file?.basename ?? '';
 						inputEl.value = place.name;
 						inputEl.addClass('crc-input--linked');
-						setting.setDesc(`Linked to: ${place.name}`);
+						setting.setDesc(`已关联：${place.name}`);
 						updateButton(true);
 					}, {
 						settings: this.settings,
@@ -981,7 +981,7 @@ export class CreateEventModal extends Modal {
 	private async createEvent(): Promise<void> {
 		// Validate required fields
 		if (!this.title.trim()) {
-			new Notice('Please enter a title for the event');
+			new Notice('请输入事件标题');
 			return;
 		}
 
@@ -1051,7 +1051,7 @@ export class CreateEventModal extends Modal {
 
 			const file = await this.eventService.createEvent(data);
 
-			new Notice(`Created event note: ${file.basename}`);
+			new Notice(`已创建事件笔记：${file.basename}`);
 
 			// Auto-compute sort_order in the background if relative-ordering
 			// constraints were set, so the new event takes its narrative position
@@ -1080,7 +1080,7 @@ export class CreateEventModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to create event note:', error);
-			new Notice(`Failed to create event note: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建事件笔记失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -1089,13 +1089,13 @@ export class CreateEventModal extends Modal {
 	 */
 	private async updateEvent(): Promise<void> {
 		if (!this.editingFile) {
-			new Notice('No file to update');
+			new Notice('没有可更新的文件');
 			return;
 		}
 
 		// Validate required fields
 		if (!this.title.trim()) {
-			new Notice('Please enter a title for the event');
+			new Notice('请输入事件标题');
 			return;
 		}
 
@@ -1230,7 +1230,7 @@ export class CreateEventModal extends Modal {
 				// are automatically preserved since we don't touch them
 			});
 
-			new Notice(`Updated event note: ${this.editingFile.basename}`);
+			new Notice(`已更新事件笔记：${this.editingFile.basename}`);
 
 			// Auto-compute sort_order in the background if relative-ordering
 			// constraints are set on the saved event (#569 follow-up). Fired
@@ -1250,7 +1250,7 @@ export class CreateEventModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to update event note:', error);
-			new Notice(`Failed to update event note: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`更新事件笔记失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -1284,7 +1284,7 @@ export class CreateEventModal extends Modal {
 
 			if (result.cycleEvents.length > 0) {
 				new Notice(
-					`Sort order updated, but ${result.cycleEvents.length} event(s) couldn't be ordered due to a before/after loop involving: ${formatCycleEvents(result.cycleEvents)}.`,
+					`排序顺序已更新，但有 ${result.cycleEvents.length} 个事件因涉及以下事件的前后关系循环而无法排序：${formatCycleEvents(result.cycleEvents)}。`,
 					10000
 				);
 			}
@@ -1322,19 +1322,20 @@ export class CreateEventModal extends Modal {
 
 		// Build notice with clickable action
 		const fragment = activeDocument.createDocumentFragment();
+		const fieldLabel = field === 'born' ? '出生' : '去世';
 		const message = existingDate
-			? `${personName} has ${field}: ${existingDate}. Update to ${dateValue}?`
-			: `Copy ${this.eventType} date to ${personName}?`;
+			? `${personName} 的${fieldLabel}日期为：${existingDate}。是否更新为 ${dateValue}？`
+			: `是否将${this.eventType === 'birth' ? '出生' : '去世'}日期复制到 ${personName}？`;
 		fragment.appendText(message);
 		fragment.createEl('br');
-		const btn = fragment.createEl('button', { cls: 'cr-create-event__date-action-btn', text: `Set ${field} to ${dateValue}` });
+		const btn = fragment.createEl('button', { cls: 'cr-create-event__date-action-btn', text: `将${fieldLabel}日期设为 ${dateValue}` });
 		btn.addEventListener('click', () => {
 			void (async () => {
 				const updateData: Partial<PersonData> = this.eventType === 'birth'
 					? { birthDate: dateValue }
 					: { deathDate: dateValue };
 				await updatePersonNote(this.app, personFile, updateData);
-				new Notice(`Updated ${field} for ${personName}`);
+				new Notice(`已更新 ${personName} 的${fieldLabel}`);
 				notice.hide();
 			})();
 		});

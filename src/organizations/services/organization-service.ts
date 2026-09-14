@@ -460,7 +460,7 @@ export class OrganizationService {
 		// something else triggers a reload.
 		await this.reloadCache([file]);
 
-		new Notice(`Created organization: ${name}`);
+		new Notice(`已创建组织：${name}`);
 		return file;
 	}
 
@@ -564,7 +564,7 @@ export class OrganizationService {
 		// without this, the cached entry retains pre-edit state.
 		await this.reloadCache([file]);
 
-		new Notice(`Updated organization: ${data.name || cache.frontmatter.name}`);
+		new Notice(`已更新组织：${data.name || cache.frontmatter.name}`);
 	}
 
 	/**

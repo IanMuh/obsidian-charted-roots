@@ -55,14 +55,14 @@ export const SECTION_IDS = {
  * Generation labels for ancestor display
  */
 export const GENERATION_LABELS = [
-	'Self',
-	'Parents',
-	'Grandparents',
-	'Great-grandparents',
-	'2nd great-grandparents',
-	'3rd great-grandparents',
-	'4th great-grandparents',
-	'5th great-grandparents'
+	'本人',
+	'父母',
+	'祖父母',
+	'曾祖父母',
+	'高祖父母',
+	'天祖父母',
+	'烈祖父母',
+	'太祖父母'
 ] as const;
 
 /**
@@ -72,5 +72,5 @@ export function getGenerationLabel(generation: number): string {
 	if (generation < GENERATION_LABELS.length) {
 		return GENERATION_LABELS[generation];
 	}
-	return `${generation - 2}th great-grandparents`;
+	return `上${generation}代祖父母`;
 }

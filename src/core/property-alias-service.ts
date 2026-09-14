@@ -304,361 +304,361 @@ export const PERSON_PROPERTY_METADATA: PropertyMetadata[] = [
 	// Core identity
 	{
 		canonical: 'name',
-		label: 'Name',
-		description: 'The person\'s full name',
+		label: '名称',
+		description: '人物的完整姓名',
 		category: 'person',
 		commonAliases: ['full_name', 'display_name', 'person_name']
 	},
 	{
 		canonical: 'cr_id',
 		label: 'CR ID',
-		description: 'Unique identifier for the person',
+		description: '人物的唯一标识符',
 		category: 'person',
 		commonAliases: ['id', 'person_id', 'uuid']
 	},
 	{
 		canonical: 'cr_type',
-		label: 'CR type',
-		description: 'Note type identifier (usually "person")',
+		label: 'CR 类型',
+		description: '笔记类型标识符（通常为 "person"）',
 		category: 'person',
 		commonAliases: ['type', 'note_type']
 	},
 	{
 		canonical: 'sex',
-		label: 'Sex',
-		description: 'Biological sex (male, female, nonbinary, unknown)',
+		label: '生理性别',
+		description: '生理性别（male、female、nonbinary、unknown）',
 		category: 'person',
 		commonAliases: ['gender', 'sex_at_birth']
 	},
 	{
 		canonical: 'gender',
-		label: 'Gender',
-		description: 'Gender (backwards compatibility - use gender_identity or sex)',
+		label: '性别',
+		description: '性别（向后兼容 - 请使用 gender_identity 或 sex）',
 		category: 'person',
 		commonAliases: []
 	},
 	{
 		canonical: 'gender_identity',
-		label: 'Gender identity',
-		description: 'Gender identity (distinct from biological sex)',
+		label: '性别认同',
+		description: '性别认同（区别于生理性别）',
 		category: 'person',
 		commonAliases: []
 	},
 	{
 		canonical: 'nickname',
-		label: 'Nickname',
-		description: 'Informal name or alias',
+		label: '昵称',
+		description: '非正式名称或别名',
 		category: 'person',
 		commonAliases: ['alias', 'known_as', 'goes_by']
 	},
 	{
 		canonical: 'alt_name',
-		label: 'Alternate name',
-		description: 'Alternative or display name (e.g., stage name, transliteration)',
+		label: '别名',
+		description: '替代名称或显示名称（如艺名、音译名）',
 		category: 'person',
 		commonAliases: ['also_known_as', 'aka', 'alternate_name', 'display_name']
 	},
 	{
 		canonical: 'maiden_name',
-		label: 'Maiden name',
-		description: 'Birth surname (before marriage)',
+		label: '娘家姓',
+		description: '出生时的姓氏（婚前）',
 		category: 'person',
 		commonAliases: ['birth_name', 'birth_surname', 'née', 'nee']
 	},
 	// Name components
 	{
 		canonical: 'given_name',
-		label: 'Given name',
-		description: 'First/given name(s)',
+		label: '名',
+		description: '名（first/given name）',
 		category: 'person',
 		commonAliases: ['first_name', 'forename', 'christian_name']
 	},
 	{
 		canonical: 'surnames',
-		label: 'Surnames',
-		description: 'Family name(s)/surname(s)',
+		label: '姓氏',
+		description: '家族姓氏',
 		category: 'person',
 		commonAliases: ['last_name', 'family_name']
 	},
 	{
 		canonical: 'married_names',
-		label: 'Married names',
-		description: 'Surname(s) after marriage',
+		label: '婚后姓氏',
+		description: '婚后的姓氏',
 		category: 'person',
 		commonAliases: []
 	},
 	// Dates
 	{
 		canonical: 'born',
-		label: 'Birth date',
-		description: 'Date when the person was born',
+		label: '出生日期',
+		description: '人物的出生日期',
 		category: 'person',
 		commonAliases: ['birthdate', 'birth_date', 'dob', 'date_of_birth']
 	},
 	{
 		canonical: 'died',
-		label: 'Death date',
-		description: 'Date when the person died',
+		label: '去世日期',
+		description: '人物的去世日期',
 		category: 'person',
 		commonAliases: ['deathdate', 'death_date', 'dod', 'date_of_death']
 	},
 	// Places
 	{
 		canonical: 'birth_place',
-		label: 'Birth place',
-		description: 'Location where the person was born',
+		label: '出生地点',
+		description: '人物出生的地点',
 		category: 'person',
 		commonAliases: ['birthplace', 'place_of_birth', 'born_in']
 	},
 	{
 		canonical: 'death_place',
-		label: 'Death place',
-		description: 'Location where the person died',
+		label: '去世地点',
+		description: '人物去世的地点',
 		category: 'person',
 		commonAliases: ['deathplace', 'place_of_death', 'died_in']
 	},
 	// Relationships
 	{
 		canonical: 'father',
-		label: 'Father',
-		description: 'Link to father\'s note',
+		label: '父亲',
+		description: '指向父亲笔记的链接',
 		category: 'person',
 		commonAliases: ['father_name', 'dad', 'père']
 	},
 	{
 		canonical: 'father_id',
-		label: 'Father ID',
-		description: 'CR ID of father',
+		label: '父亲 ID',
+		description: '父亲的 CR ID',
 		category: 'person',
 		commonAliases: ['father_cr_id']
 	},
 	{
 		canonical: 'mother',
-		label: 'Mother',
-		description: 'Link to mother\'s note',
+		label: '母亲',
+		description: '指向母亲笔记的链接',
 		category: 'person',
 		commonAliases: ['mother_name', 'mom', 'mère']
 	},
 	{
 		canonical: 'mother_id',
-		label: 'Mother ID',
-		description: 'CR ID of mother',
+		label: '母亲 ID',
+		description: '母亲的 CR ID',
 		category: 'person',
 		commonAliases: ['mother_cr_id']
 	},
 	{
 		canonical: 'parents',
-		label: 'Parents',
-		description: 'Array of parent links (alternative to father/mother)',
+		label: '父母',
+		description: '父母链接数组（father/mother 的替代）',
 		category: 'person',
 		commonAliases: ['parent']
 	},
 	{
 		canonical: 'parents_id',
-		label: 'Parents ID',
-		description: 'Array of parent CR IDs',
+		label: '父母 ID',
+		description: '父母 CR ID 数组',
 		category: 'person',
 		commonAliases: ['parent_ids']
 	},
 	// Step-parent relationships
 	{
 		canonical: 'stepfather',
-		label: 'Stepfather',
-		description: 'Link to stepfather\'s note',
+		label: '继父',
+		description: '指向继父笔记的链接',
 		category: 'person',
 		commonAliases: ['step_father', 'step-father']
 	},
 	{
 		canonical: 'stepfather_id',
-		label: 'Stepfather ID',
-		description: 'CR ID of stepfather',
+		label: '继父 ID',
+		description: '继父的 CR ID',
 		category: 'person',
 		commonAliases: ['step_father_id', 'stepfather_cr_id']
 	},
 	{
 		canonical: 'stepmother',
-		label: 'Stepmother',
-		description: 'Link to stepmother\'s note',
+		label: '继母',
+		description: '指向继母笔记的链接',
 		category: 'person',
 		commonAliases: ['step_mother', 'step-mother']
 	},
 	{
 		canonical: 'stepmother_id',
-		label: 'Stepmother ID',
-		description: 'CR ID of stepmother',
+		label: '继母 ID',
+		description: '继母的 CR ID',
 		category: 'person',
 		commonAliases: ['step_mother_id', 'stepmother_cr_id']
 	},
 	// Adoptive parent relationships
 	{
 		canonical: 'adoptive_father',
-		label: 'Adoptive father',
-		description: 'Link to adoptive father\'s note',
+		label: '养父',
+		description: '指向养父笔记的链接',
 		category: 'person',
 		commonAliases: ['adopted_father', 'adoptivefather']
 	},
 	{
 		canonical: 'adoptive_father_id',
-		label: 'Adoptive father ID',
-		description: 'CR ID of adoptive father',
+		label: '养父 ID',
+		description: '养父的 CR ID',
 		category: 'person',
 		commonAliases: ['adopted_father_id', 'adoptive_father_cr_id']
 	},
 	{
 		canonical: 'adoptive_mother',
-		label: 'Adoptive mother',
-		description: 'Link to adoptive mother\'s note',
+		label: '养母',
+		description: '指向养母笔记的链接',
 		category: 'person',
 		commonAliases: ['adopted_mother', 'adoptivemother']
 	},
 	{
 		canonical: 'adoptive_mother_id',
-		label: 'Adoptive mother ID',
-		description: 'CR ID of adoptive mother',
+		label: '养母 ID',
+		description: '养母的 CR ID',
 		category: 'person',
 		commonAliases: ['adopted_mother_id', 'adoptive_mother_cr_id']
 	},
 	{
 		canonical: 'spouse',
-		label: 'Spouse',
-		description: 'Link to spouse\'s note',
+		label: '配偶',
+		description: '指向配偶笔记的链接',
 		category: 'person',
 		commonAliases: ['spouse_name', 'partner', 'husband', 'wife']
 	},
 	{
 		canonical: 'spouse_id',
-		label: 'Spouse ID',
-		description: 'CR ID of spouse',
+		label: '配偶 ID',
+		description: '配偶的 CR ID',
 		category: 'person',
 		commonAliases: ['spouse_cr_id', 'partner_id']
 	},
 	{
 		canonical: 'partners',
-		label: 'Partners',
-		description: 'Array of partner/spouse links',
+		label: '伴侣',
+		description: '伴侣/配偶链接数组',
 		category: 'person',
 		commonAliases: ['spouses']
 	},
 	{
 		canonical: 'partners_id',
-		label: 'Partners ID',
-		description: 'Array of partner CR IDs',
+		label: '伴侣 ID',
+		description: '伴侣 CR ID 数组',
 		category: 'person',
 		commonAliases: ['partner_ids', 'spouse_ids']
 	},
 	{
 		canonical: 'child',
-		label: 'Children',
-		description: 'Links to children\'s notes',
+		label: '子女',
+		description: '指向子女笔记的链接',
 		category: 'person',
 		commonAliases: ['children', 'kids', 'offspring']
 	},
 	{
 		canonical: 'children_id',
-		label: 'Children ID',
-		description: 'CR IDs of children',
+		label: '子女 ID',
+		description: '子女的 CR ID',
 		category: 'person',
 		commonAliases: ['child_ids', 'kid_ids']
 	},
 	// Descriptive fields (rendered on Family Chart cards and in info panels)
 	{
 		canonical: 'pronouns',
-		label: 'Pronouns',
-		description: 'Preferred pronouns (e.g., she/her, they/them)',
+		label: '代词',
+		description: '偏好的代词（如 she/her、they/them）',
 		category: 'person',
 		commonAliases: []
 	},
 	{
 		canonical: 'occupation',
-		label: 'Occupation',
-		description: 'Person\'s profession or role',
+		label: '职业',
+		description: '人物的职业或角色',
 		category: 'person',
 		commonAliases: ['job', 'profession', 'career', 'work']
 	},
 	{
 		canonical: 'religion',
-		label: 'Religion',
-		description: 'Religious affiliation',
+		label: '宗教',
+		description: '宗教信仰',
 		category: 'person',
 		commonAliases: ['faith', 'denomination']
 	},
 	{
 		canonical: 'caste',
-		label: 'Caste',
-		description: 'Caste or social class',
+		label: '种姓',
+		description: '种姓或社会阶层',
 		category: 'person',
 		commonAliases: ['social_class']
 	},
 	// Other
 	{
 		canonical: 'universe',
-		label: 'Universe',
-		description: 'Fictional universe or world',
+		label: '宇宙',
+		description: '虚构宇宙或世界',
 		category: 'person',
 		commonAliases: ['world', 'setting', 'realm']
 	},
 	{
 		canonical: 'image',
-		label: 'Image',
-		description: 'Link to portrait or photo',
+		label: '图像',
+		description: '指向肖像或照片的链接',
 		category: 'person',
 		commonAliases: ['photo', 'portrait', 'picture', 'avatar']
 	},
 	{
 		canonical: 'sources',
-		label: 'Sources',
-		description: 'Source citations for this person',
+		label: '来源',
+		description: '此人的来源引文',
 		category: 'person',
 		commonAliases: ['citations', 'references', 'evidence']
 	},
 	{
 		canonical: 'sourced_facts',
-		label: 'Sourced facts',
-		description: 'Facts with source citations',
+		label: '有来源的事实',
+		description: '带有来源引文的事实',
 		category: 'person',
 		commonAliases: ['cited_facts']
 	},
 	{
 		canonical: 'relationships',
-		label: 'Relationships',
-		description: 'Custom relationship definitions',
+		label: '关系',
+		description: '自定义关系定义',
 		category: 'person',
 		commonAliases: ['custom_relationships', 'relations']
 	},
 	// External IDs (for import round-trip)
 	{
 		canonical: 'external_id',
-		label: 'External ID',
-		description: 'Original ID from imported data source (e.g., GEDCOM xref, Gramps handle)',
+		label: '外部 ID',
+		description: '导入数据源的原始 ID（如 GEDCOM xref、Gramps handle）',
 		category: 'person',
 		commonAliases: ['import_id', 'source_id', 'original_id']
 	},
 	{
 		canonical: 'external_id_source',
-		label: 'External ID source',
-		description: 'Source of the external ID (e.g., "gedcom", "gramps", "familysearch")',
+		label: '外部 ID 来源',
+		description: '外部 ID 的来源（如 "gedcom"、"gramps"、"familysearch"）',
 		category: 'person',
 		commonAliases: ['id_source', 'import_source']
 	},
 	// Ownership/transfer tracking (#123)
 	{
 		canonical: 'property_of',
-		label: 'Property of',
-		description: 'Link to the person who owns or holds rights over this person (e.g., enslaver, guardian)',
+		label: '归属',
+		description: '指向拥有或对此人持有权利者的链接（如奴隶主、监护人）',
 		category: 'person',
 		commonAliases: ['owned_by', 'enslaved_by', 'held_by', 'guardian']
 	},
 	{
 		canonical: 'held_at',
-		label: 'Held at',
-		description: 'Link to the place where this person is held or resides under ownership',
+		label: '所在地',
+		description: '指向此人在被拥有状态下被关押或居住地点的链接',
 		category: 'person',
 		commonAliases: ['location', 'residence', 'plantation', 'estate']
 	},
 	{
 		canonical: 'appraised_value',
-		label: 'Appraised value',
-		description: 'Monetary value assigned to this person in historical records',
+		label: '评估价值',
+		description: '历史记录中赋予此人的货币价值',
 		category: 'person',
 		commonAliases: ['value', 'worth', 'price', 'valuation']
 	}
@@ -672,155 +672,155 @@ export const EVENT_PROPERTY_METADATA: PropertyMetadata[] = [
 	{
 		canonical: 'cr_id',
 		label: 'CR ID',
-		description: 'Unique identifier for the event',
+		description: '事件的唯一标识符',
 		category: 'event',
 		commonAliases: ['id', 'event_id', 'uuid']
 	},
 	{
 		canonical: 'cr_type',
-		label: 'CR type',
-		description: 'Note type identifier (usually "event")',
+		label: 'CR 类型',
+		description: '笔记类型标识符（通常为 "event"）',
 		category: 'event',
 		commonAliases: ['type', 'note_type']
 	},
 	{
 		canonical: 'title',
-		label: 'Title',
-		description: 'Event name or title',
+		label: '标题',
+		description: '事件名称或标题',
 		category: 'event',
 		commonAliases: ['name', 'event_name', 'event_title']
 	},
 	{
 		canonical: 'event_type',
-		label: 'Event type',
-		description: 'Type of event (birth, death, marriage, etc.)',
+		label: '事件类型',
+		description: '事件类型（出生、去世、婚姻等）',
 		category: 'event',
 		commonAliases: ['type', 'category', 'kind']
 	},
 	// Dates
 	{
 		canonical: 'date',
-		label: 'Date',
-		description: 'When the event occurred',
+		label: '日期',
+		description: '事件发生的时间',
 		category: 'event',
 		commonAliases: ['event_date', 'occurred', 'happened', 'when']
 	},
 	{
 		canonical: 'date_end',
-		label: 'End date',
-		description: 'When the event ended (for date ranges)',
+		label: '结束日期',
+		description: '事件结束的时间（用于日期范围）',
 		category: 'event',
 		commonAliases: ['end_date', 'concluded', 'finished']
 	},
 	{
 		canonical: 'date_precision',
-		label: 'Date precision',
-		description: 'Precision of the date (exact, approximate, etc.)',
+		label: '日期精度',
+		description: '日期的精度（精确、约等）',
 		category: 'event',
 		commonAliases: ['precision', 'date_accuracy']
 	},
 	{
 		canonical: 'date_system',
-		label: 'Date system',
-		description: 'Calendar system used (Gregorian, fictional, etc.)',
+		label: '日期系统',
+		description: '使用的日历系统（公历、虚构历法等）',
 		category: 'event',
 		commonAliases: ['calendar', 'calendar_system']
 	},
 	// People
 	{
 		canonical: 'person',
-		label: 'Person',
-		description: 'Primary person involved in the event',
+		label: '人物',
+		description: '参与事件的主要人物',
 		category: 'event',
 		commonAliases: ['primary_person', 'subject']
 	},
 	{
 		canonical: 'persons',
-		label: 'Persons',
-		description: 'Multiple people involved in the event',
+		label: '人物（多人）',
+		description: '参与事件的多人',
 		category: 'event',
 		commonAliases: ['participants', 'people', 'attendees']
 	},
 	// Location
 	{
 		canonical: 'place',
-		label: 'Place',
-		description: 'Where the event occurred',
+		label: '地点',
+		description: '事件发生的地点',
 		category: 'event',
 		commonAliases: ['location', 'where', 'event_place']
 	},
 	// Sources and confidence
 	{
 		canonical: 'sources',
-		label: 'Sources',
-		description: 'Source citations for the event',
+		label: '来源',
+		description: '事件的来源引文',
 		category: 'event',
 		commonAliases: ['citations', 'references', 'evidence']
 	},
 	{
 		canonical: 'confidence',
-		label: 'Confidence',
-		description: 'Confidence level in the event data',
+		label: '置信度',
+		description: '事件数据的置信度',
 		category: 'event',
 		commonAliases: ['reliability', 'certainty']
 	},
 	// Description and metadata
 	{
 		canonical: 'description',
-		label: 'Description',
-		description: 'Details about the event',
+		label: '描述',
+		description: '事件的详细信息',
 		category: 'event',
 		commonAliases: ['details', 'notes', 'summary']
 	},
 	{
 		canonical: 'is_canonical',
-		label: 'Is canonical',
-		description: 'Whether this event is canonical in the story',
+		label: '是否正典',
+		description: '该事件在故事中是否为正典',
 		category: 'event',
 		commonAliases: ['canonical']
 	},
 	{
 		canonical: 'universe',
-		label: 'Universe',
-		description: 'Fictional universe or world',
+		label: '宇宙',
+		description: '虚构宇宙或世界',
 		category: 'event',
 		commonAliases: ['world', 'setting', 'realm']
 	},
 	// Ordering
 	{
 		canonical: 'before',
-		label: 'Before',
-		description: 'Events that occur before this one',
+		label: '之前',
+		description: '在此事件之前发生的事件',
 		category: 'event',
 		commonAliases: ['precedes', 'earlier']
 	},
 	{
 		canonical: 'after',
-		label: 'After',
-		description: 'Events that occur after this one',
+		label: '之后',
+		description: '在此事件之后发生的事件',
 		category: 'event',
 		commonAliases: ['follows', 'later']
 	},
 	{
 		canonical: 'timeline',
-		label: 'Timeline',
-		description: 'Timeline this event belongs to',
+		label: '时间轴',
+		description: '此事件所属的时间轴',
 		category: 'event',
 		commonAliases: ['sequence', 'chronology']
 	},
 	// Groups/factions
 	{
 		canonical: 'groups',
-		label: 'Groups',
-		description: 'Organizations or factions involved',
+		label: '群组',
+		description: '涉及的组织或派系',
 		category: 'event',
 		commonAliases: ['organizations', 'factions', 'parties']
 	},
 	// Transfer events (#123)
 	{
 		canonical: 'transfer_type',
-		label: 'Transfer type',
-		description: 'Type of transfer (inheritance, purchase, gift, hire, seizure, birth, relocation)',
+		label: '转移类型',
+		description: '转移类型（继承、购买、赠予、雇用、没收、出生、迁移）',
 		category: 'event',
 		commonAliases: ['transfer_kind', 'transaction_type']
 	}
@@ -833,64 +833,64 @@ export const PLACE_PROPERTY_METADATA: PropertyMetadata[] = [
 	{
 		canonical: 'cr_id',
 		label: 'CR ID',
-		description: 'Unique identifier for the place',
+		description: '地点的唯一标识符',
 		category: 'place',
 		commonAliases: ['id', 'place_id', 'uuid']
 	},
 	{
 		canonical: 'cr_type',
-		label: 'CR type',
-		description: 'Note type identifier (usually "place")',
+		label: 'CR 类型',
+		description: '笔记类型标识符（通常为 "place"）',
 		category: 'place',
 		commonAliases: ['type', 'note_type']
 	},
 	{
 		canonical: 'name',
-		label: 'Name',
-		description: 'Name of the place',
+		label: '名称',
+		description: '地点的名称',
 		category: 'place',
 		commonAliases: ['place_name', 'location_name']
 	},
 	{
 		canonical: 'place_type',
-		label: 'Place type',
-		description: 'Type of place (city, country, region, etc.)',
+		label: '地点类型',
+		description: '地点类型（城市、国家、地区等）',
 		category: 'place',
 		commonAliases: ['type', 'category', 'kind']
 	},
 	{
 		canonical: 'parent_place',
-		label: 'Parent place',
-		description: 'Larger place this is part of',
+		label: '上级地点',
+		description: '此地点所属的更大地点',
 		category: 'place',
 		commonAliases: ['parent', 'contains', 'within', 'part_of']
 	},
 	{
 		canonical: 'coordinates',
-		label: 'Coordinates',
-		description: 'Geographic coordinates (latitude, longitude)',
+		label: '坐标',
+		description: '地理坐标（纬度、经度）',
 		category: 'place',
 		commonAliases: ['coords', 'location', 'lat_long', 'latlng']
 	},
 	{
 		canonical: 'universe',
-		label: 'Universe',
-		description: 'Fictional universe or world',
+		label: '宇宙',
+		description: '虚构宇宙或世界',
 		category: 'place',
 		commonAliases: ['world', 'setting', 'realm']
 	},
 	{
 		canonical: 'collection',
-		label: 'Collection',
-		description: 'Collection or dataset this place belongs to',
+		label: '合集',
+		description: '此地点所属的合集或数据集',
 		category: 'place',
 		commonAliases: ['dataset', 'group']
 	},
 	// Ownership tracking (#123)
 	{
 		canonical: 'property_of',
-		label: 'Property of',
-		description: 'Link to the person who owns this place (e.g., plantation owner, estate holder)',
+		label: '归属',
+		description: '指向拥有此地点的个人的链接（如种植园主、地产持有人）',
 		category: 'place',
 		commonAliases: ['owned_by', 'owner', 'held_by']
 	}
@@ -903,105 +903,105 @@ export const SOURCE_PROPERTY_METADATA: PropertyMetadata[] = [
 	{
 		canonical: 'cr_id',
 		label: 'CR ID',
-		description: 'Unique identifier for the source',
+		description: '来源的唯一标识符',
 		category: 'source',
 		commonAliases: ['id', 'source_id', 'uuid']
 	},
 	{
 		canonical: 'cr_type',
-		label: 'CR type',
-		description: 'Note type identifier (usually "source")',
+		label: 'CR 类型',
+		description: '笔记类型标识符（通常为 "source"）',
 		category: 'source',
 		commonAliases: ['type', 'note_type']
 	},
 	{
 		canonical: 'title',
-		label: 'Title',
-		description: 'Source title or name',
+		label: '标题',
+		description: '来源标题或名称',
 		category: 'source',
 		commonAliases: ['name', 'source_name', 'source_title']
 	},
 	{
 		canonical: 'author',
-		label: 'Author',
-		description: 'Author or creator of the source',
+		label: '作者',
+		description: '来源的作者或创建者',
 		category: 'source',
 		commonAliases: ['creator', 'author_name', 'by']
 	},
 	{
 		canonical: 'source_type',
-		label: 'Source type',
-		description: 'Type of source record (census, vital_record, etc.)',
+		label: '来源类型',
+		description: '来源记录的类型（census、vital_record 等）',
 		category: 'source',
 		commonAliases: ['type', 'record_type', 'category']
 	},
 	{
 		canonical: 'repository',
-		label: 'Repository',
-		description: 'Archive or website where source is held',
+		label: '保管机构',
+		description: '存放来源的档案馆或网站',
 		category: 'source',
 		commonAliases: ['archive', 'location', 'held_at', 'source_repository']
 	},
 	{
 		canonical: 'repository_type',
-		label: 'Repository type',
-		description: 'Type of repository (Library, Archive, etc.)',
+		label: '保管机构类型',
+		description: '保管机构类型（图书馆、档案馆等）',
 		category: 'source',
 		commonAliases: ['archive_type', 'repo_type']
 	},
 	{
 		canonical: 'source_medium',
-		label: 'Source medium',
-		description: 'Medium of the source (Book, Electronic, etc.)',
+		label: '来源载体',
+		description: '来源的载体（书籍、电子等）',
 		category: 'source',
 		commonAliases: ['medium', 'format']
 	},
 	{
 		canonical: 'confidence',
-		label: 'Confidence',
-		description: 'Confidence level in the source (high, medium, low)',
+		label: '置信度',
+		description: '来源的置信度（高、中、低）',
 		category: 'source',
 		commonAliases: ['reliability', 'certainty', 'quality']
 	},
 	{
 		canonical: 'url',
 		label: 'URL',
-		description: 'URL to online source',
+		description: '在线来源的 URL',
 		category: 'source',
 		commonAliases: ['link', 'source_url', 'web_address']
 	},
 	{
 		canonical: 'access_date',
-		label: 'Access date',
-		description: 'Date the source was accessed',
+		label: '访问日期',
+		description: '访问来源的日期',
 		category: 'source',
 		commonAliases: ['accessed', 'date_accessed', 'viewed']
 	},
 	{
 		canonical: 'citation_detail',
-		label: 'Citation detail',
-		description: 'Specific citation details (page, volume, etc.)',
+		label: '引文详情',
+		description: '具体引文细节（页码、卷号等）',
 		category: 'source',
 		commonAliases: ['page', 'volume', 'citation', 'reference']
 	},
 	{
 		canonical: 'gramps_handle',
 		label: 'Gramps handle',
-		description: 'Original Gramps internal identifier',
+		description: 'Gramps 内部原始标识符',
 		category: 'source',
 		commonAliases: []
 	},
 	{
 		canonical: 'gramps_id',
 		label: 'Gramps ID',
-		description: 'Original Gramps user-visible ID',
+		description: 'Gramps 的原始用户可见 ID',
 		category: 'source',
 		commonAliases: []
 	},
 	{
 		canonical: 'gramps_media_refs',
-		label: 'Gramps media refs',
-		description: 'Gramps media handles needing manual resolution',
+		label: 'Gramps 媒体引用',
+		description: '需要手动处理的 Gramps 媒体 handle',
 		category: 'source',
 		commonAliases: []
 	}
@@ -1014,70 +1014,70 @@ export const UNIVERSE_PROPERTY_METADATA: PropertyMetadata[] = [
 	{
 		canonical: 'cr_id',
 		label: 'CR ID',
-		description: 'Unique identifier for the universe',
+		description: '宇宙的唯一标识符',
 		category: 'universe',
 		commonAliases: ['id', 'universe_id', 'uuid']
 	},
 	{
 		canonical: 'cr_type',
-		label: 'CR type',
-		description: 'Note type identifier (usually "universe")',
+		label: 'CR 类型',
+		description: '笔记类型标识符（通常为 "universe"）',
 		category: 'universe',
 		commonAliases: ['type', 'note_type']
 	},
 	{
 		canonical: 'name',
-		label: 'Name',
-		description: 'Name of the universe or fictional world',
+		label: '名称',
+		description: '宇宙或虚构世界的名称',
 		category: 'universe',
 		commonAliases: ['universe_name', 'world_name', 'title']
 	},
 	{
 		canonical: 'description',
-		label: 'Description',
-		description: 'Brief description of the universe',
+		label: '描述',
+		description: '宇宙的简要描述',
 		category: 'universe',
 		commonAliases: ['summary', 'about', 'overview']
 	},
 	{
 		canonical: 'author',
-		label: 'Author',
-		description: 'Creator or author of the universe',
+		label: '作者',
+		description: '宇宙的创作者或作者',
 		category: 'universe',
 		commonAliases: ['creator', 'writer', 'created_by']
 	},
 	{
 		canonical: 'genre',
-		label: 'Genre',
-		description: 'Genre or category of the universe',
+		label: '体裁',
+		description: '宇宙的体裁或类别',
 		category: 'universe',
 		commonAliases: ['category', 'type', 'setting_type']
 	},
 	{
 		canonical: 'status',
-		label: 'Status',
-		description: 'Universe status (active, draft, archived)',
+		label: '状态',
+		description: '宇宙状态（active、draft、archived）',
 		category: 'universe',
 		commonAliases: ['state', 'universe_status']
 	},
 	{
 		canonical: 'default_calendar',
-		label: 'Default calendar',
-		description: 'Default calendar system for dates in this universe',
+		label: '默认历法',
+		description: '此宇宙中日期的默认日历系统',
 		category: 'universe',
 		commonAliases: ['calendar', 'date_system']
 	},
 	{
 		canonical: 'default_map',
-		label: 'Default map',
-		description: 'Default map for locations in this universe',
+		label: '默认地图',
+		description: '此宇宙中地点的默认地图',
 		category: 'universe',
 		commonAliases: ['map', 'world_map']
 	},
 	{
 		canonical: 'created',
-		label: 'Created',
-		description: 'Date the universe note was created',
+		label: '创建时间',
+		description: '宇宙笔记的创建日期',
 		category: 'universe',
 		commonAliases: ['created_at', 'creation_date']
 	}

@@ -237,34 +237,34 @@ export class CsvImporter {
 
 		try {
 			// Validate CSV first
-			new Notice('Validating CSV file...');
+			new Notice('正在校验 CSV 文件…');
 			const validation = CsvParser.validate(content, options.parseOptions);
 			result.validation = validation;
 
 			// Check for critical errors
 			if (!validation.valid) {
 				result.errors.push(...validation.errors.map(e => e.message));
-				new Notice(`CSV validation failed: ${validation.errors[0]?.message || 'Unknown error'}`);
+				new Notice(`CSV 校验失败：${validation.errors[0]?.message || '未知错误'}`);
 				return result;
 			}
 
 			// Show validation summary
 			if (validation.warnings.length > 0) {
-				new Notice(`Found ${validation.warnings.length} warning(s) - import will continue`);
+				new Notice(`发现 ${validation.warnings.length} 条警告，导入将继续`);
 			}
 
 			// Parse CSV
-			new Notice('Parsing CSV file...');
+			new Notice('正在解析 CSV 文件…');
 			const parseResult = CsvParser.parse(content, options.parseOptions);
 
-			new Notice(`Parsed ${parseResult.rowCount} rows`);
+			new Notice(`已解析 ${parseResult.rowCount} 行`);
 
 			// Determine column mapping
 			const mapping = options.columnMapping || this.autoDetectMapping(parseResult.headers);
 
 			// Validate mapping has at least name column
 			if (!mapping.name) {
-				result.errors.push('No name column found or specified');
+				result.errors.push('未找到或未指定名称列');
 				return result;
 			}
 
@@ -283,7 +283,7 @@ export class CsvImporter {
 				const allPlaces = this.collectAllPlaces(parseResult.rows, mapping);
 
 				if (allPlaces.size > 0) {
-					new Notice(`Creating ${allPlaces.size} place notes...`);
+					new Notice(`正在创建 ${allPlaces.size} 个地点笔记…`);
 
 					for (const placeString of allPlaces) {
 						try {
@@ -292,7 +292,7 @@ export class CsvImporter {
 							result.placesCreated = (result.placesCreated || 0) + 1;
 						} catch (error: unknown) {
 							result.errors.push(
-								`Failed to import place ${placeString}: ${getErrorMessage(error)}`
+								`导入地点 ${placeString} 失败：${getErrorMessage(error)}`
 							);
 						}
 					}
@@ -312,14 +312,14 @@ export class CsvImporter {
 					const { wikilink } = await this.createSourceNote(sourceTitle, sourcesFolder, options.fileName);
 					sourceWikilink = wikilink;
 					result.sourcesCreated = 1;
-					new Notice(`Created source note for ${sourceTitle}`);
+					new Notice(`已为 ${sourceTitle} 创建来源笔记`);
 				} catch (error: unknown) {
-					result.errors.push(`Failed to create source note: ${getErrorMessage(error)}`);
+					result.errors.push(`创建来源笔记失败：${getErrorMessage(error)}`);
 				}
 			}
 
 			// Create person notes
-			new Notice('Creating person notes...');
+			new Notice('正在创建人物笔记…');
 
 			// Create mapping of row index to cr_id (for relationship resolution)
 			const rowToCrId = new Map<number, string>();
@@ -396,8 +396,8 @@ export class CsvImporter {
 					}
 
 				} catch (error: unknown) {
-					const name = this.getColumnValue(row, mapping.name) || `Row ${i + 1}`;
-					result.errors.push(`Failed to import ${name}: ${getErrorMessage(error)}`);
+					const name = this.getColumnValue(row, mapping.name) || `第 ${i + 1} 行`;
+					result.errors.push(`导入 ${name} 失败：${getErrorMessage(error)}`);
 				}
 			}
 
@@ -417,8 +417,8 @@ export class CsvImporter {
 						options
 					);
 				} catch (error: unknown) {
-					const name = this.getColumnValue(row, mapping.name) || `Row ${i + 1}`;
-					result.errors.push(`Failed to update relationships for ${name}: ${getErrorMessage(error)}`);
+					const name = this.getColumnValue(row, mapping.name) || `第 ${i + 1} 行`;
+					result.errors.push(`更新 ${name} 的关系失败：${getErrorMessage(error)}`);
 				}
 			}
 
@@ -435,7 +435,7 @@ export class CsvImporter {
 				}
 
 				if (eventCount > 0) {
-					new Notice(`Creating ${eventCount} event notes...`);
+					new Notice(`正在创建 ${eventCount} 个事件笔记…`);
 
 					for (const person of personInfoForEvents) {
 						// Create birth event
@@ -453,7 +453,7 @@ export class CsvImporter {
 								);
 								result.eventsCreated = (result.eventsCreated || 0) + 1;
 							} catch (error: unknown) {
-								result.errors.push(`Failed to create birth event for ${person.name}: ${getErrorMessage(error)}`);
+								result.errors.push(`为 ${person.name} 创建出生事件失败：${getErrorMessage(error)}`);
 							}
 						}
 
@@ -472,7 +472,7 @@ export class CsvImporter {
 								);
 								result.eventsCreated = (result.eventsCreated || 0) + 1;
 							} catch (error: unknown) {
-								result.errors.push(`Failed to create death event for ${person.name}: ${getErrorMessage(error)}`);
+								result.errors.push(`为 ${person.name} 创建去世事件失败：${getErrorMessage(error)}`);
 							}
 						}
 					}
@@ -480,26 +480,26 @@ export class CsvImporter {
 			}
 
 			// Enhanced import complete notice
-			let importMessage = `Import complete: ${result.notesCreated} people`;
+			let importMessage = `导入完成：${result.notesCreated} 人`;
 
 			if (result.sourcesCreated && result.sourcesCreated > 0) {
-				importMessage += `, ${result.sourcesCreated} source`;
+				importMessage += `，${result.sourcesCreated} 个来源`;
 			}
 
 			if (result.eventsCreated && result.eventsCreated > 0) {
-				importMessage += `, ${result.eventsCreated} events`;
+				importMessage += `，${result.eventsCreated} 个事件`;
 			}
 
 			if (result.placesCreated && result.placesCreated > 0) {
-				importMessage += `, ${result.placesCreated} places`;
+				importMessage += `，${result.placesCreated} 个地点`;
 			}
 
 			if (result.malformedDataCount && result.malformedDataCount > 0) {
-				importMessage += `. ${result.malformedDataCount} had missing data`;
+				importMessage += `。${result.malformedDataCount} 人缺失数据`;
 			}
 
 			if (result.errors.length > 0) {
-				importMessage += `. ${result.errors.length} errors`;
+				importMessage += `。${result.errors.length} 个错误`;
 			}
 
 			new Notice(importMessage, 8000);
@@ -507,8 +507,8 @@ export class CsvImporter {
 
 		} catch (error: unknown) {
 			const errorMsg = getErrorMessage(error);
-			result.errors.push(`CSV import error: ${errorMsg}`);
-			new Notice(`Import failed: ${errorMsg}`);
+			result.errors.push(`CSV 导入错误：${errorMsg}`);
+			new Notice(`导入失败：${errorMsg}`);
 		}
 
 		return result;
@@ -533,7 +533,7 @@ export class CsvImporter {
 		// Get name
 		const name = this.getColumnValue(row, mapping.name);
 		if (!name) {
-			throw new Error('Name is required');
+			throw new Error('缺少姓名');
 		}
 
 		// Check if file already exists

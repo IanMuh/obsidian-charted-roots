@@ -512,7 +512,7 @@ export class BookGenerationService {
 		activeDocument.body.removeChild(a);
 		URL.revokeObjectURL(url);
 
-		new Notice(`Book downloaded: ${filename}`);
+		new Notice(`书已下载：${filename}`);
 	}
 
 	/**
@@ -522,7 +522,7 @@ export class BookGenerationService {
 		const path = folder ? `${folder}/${filename}` : filename;
 		const arrayBuffer = await blob.arrayBuffer();
 		await this.app.vault.createBinary(path, arrayBuffer);
-		new Notice(`Book saved: ${path}`);
+		new Notice(`书已保存：${path}`);
 		return path;
 	}
 }

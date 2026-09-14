@@ -44,7 +44,6 @@ import { SourceMigrationService, type IndexedSourceNote } from '../sources/servi
 import { EventPersonMigrationService, type LegacyPersonEventNote } from '../events/services/event-person-migration-service';
 import { SourcedFactsMigrationService, type LegacySourcedFactsNote } from '../sources/services/sourced-facts-migration-service';
 import { LifeEventsMigrationService, type LegacyEventsNote } from '../events/services/life-events-migration-service';
-import { pluralize } from '../utils/format-utils';
 import { isPlaceNote } from '../utils/note-type-detection';
 import { generateCrId } from '../core/uuid';
 import {
@@ -259,7 +258,7 @@ export class CleanupWizardModal extends Modal {
 		const titleRow = header.createDiv({ cls: 'crc-wizard-title' });
 		const iconEl = titleRow.createDiv({ cls: 'crc-wizard-title-icon' });
 		setIcon(iconEl, 'sparkles');
-		titleRow.createSpan({ text: 'Post-Import Cleanup Wizard' });
+		titleRow.createSpan({ text: '导入后清理向导' });
 
 		// Progress container (used in step view)
 		this.progressContainer = contentEl.createDiv({ cls: 'crc-wizard-progress crc-cleanup-wizard-progress crc-hidden' });
@@ -286,7 +285,7 @@ export class CleanupWizardModal extends Modal {
 		const titleRow = header.createDiv({ cls: 'crc-wizard-title' });
 		const iconEl = titleRow.createDiv({ cls: 'crc-wizard-title-icon' });
 		setIcon(iconEl, 'sparkles');
-		titleRow.createSpan({ text: 'Post-Import Cleanup Wizard' });
+		titleRow.createSpan({ text: '导入后清理向导' });
 
 		// Resume prompt content
 		const content = contentEl.createDiv({ cls: 'crc-cleanup-wizard-content' });
@@ -295,14 +294,14 @@ export class CleanupWizardModal extends Modal {
 		const promptIcon = prompt.createDiv({ cls: 'crc-cleanup-resume-icon' });
 		setIcon(promptIcon, 'clock');
 
-		prompt.createEl('h3', { text: 'Resume Previous Session?' });
+		prompt.createEl('h3', { text: '恢复上次会话？' });
 
 		const savedDate = new Date(persistedState.savedAt);
 		const timeAgo = formatTimeAgo(savedDate);
 
 		const stats = getPersistedStateStats(persistedState);
 		prompt.createEl('p', {
-			text: `You have an incomplete cleanup session from ${timeAgo}. ${stats.completed} of ${stats.total} steps completed.`
+			text: `你有一个来自${timeAgo}的未完成清理会话。已完成 ${stats.completed} / ${stats.total} 个步骤。`
 		});
 
 		// Buttons
@@ -311,7 +310,7 @@ export class CleanupWizardModal extends Modal {
 		const rightBtns = footer.createDiv({ cls: 'crc-cleanup-footer-right' });
 
 		new ButtonComponent(leftBtns)
-			.setButtonText('Start Fresh')
+			.setButtonText('重新开始')
 			.onClick(() => {
 				void this.clearPersistedState();
 				this.state = this.getDefaultState();
@@ -328,7 +327,7 @@ export class CleanupWizardModal extends Modal {
 			});
 		const resumeIcon = resumeBtn.buttonEl.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(resumeIcon, 'play');
-		resumeBtn.buttonEl.createSpan({ text: 'Resume' });
+		resumeBtn.buttonEl.createSpan({ text: '恢复' });
 	}
 
 	/**
@@ -466,16 +465,16 @@ export class CleanupWizardModal extends Modal {
 		if (stepConfig.id === 'geocode') {
 			// Step 8 depends on Step 7 (place-variants) and 7b (place-dedup)
 			if (!this.isStepCompleted('place-variants')) {
-				unmet.push('Step 7: Standardize Place Variants');
+				unmet.push('步骤7：规范化地点变体');
 			}
 			// Note: 7b is optional, only warn if variants were run but dedup wasn't
 			if (this.isStepCompleted('place-variants') && !this.isStepCompleted('place-dedup') && this.placeDuplicateGroups.length > 0) {
-				unmet.push('Step 7b: Deduplicate Places');
+				unmet.push('步骤7b：去重地点');
 			}
 		} else if (stepConfig.id === 'place-hierarchy') {
 			// Step 9 depends on Step 8 (geocode)
 			if (!this.isStepCompleted('geocode')) {
-				unmet.push('Step 8: Bulk Geocode');
+				unmet.push('步骤8：批量地理编码');
 			}
 		}
 
@@ -495,10 +494,10 @@ export class CleanupWizardModal extends Modal {
 		setIcon(iconEl, 'alert-triangle');
 
 		const textEl = warning.createSpan({ cls: 'crc-dependency-warning-text' });
-		textEl.setText(`Recommended: Complete ${missingSteps.join(' and ')} first for best results.`);
+		textEl.setText(`建议：先完成${missingSteps.join('和')}以获得最佳效果。`);
 
 		const dismissBtn = warning.createEl('button', {
-			text: 'Continue anyway',
+			text: '仍然继续',
 			cls: 'crc-dependency-warning-dismiss'
 		});
 		dismissBtn.addEventListener('click', () => {
@@ -656,14 +655,14 @@ export class CleanupWizardModal extends Modal {
 
 		// Intro text
 		const intro = section.createDiv({ cls: 'crc-cleanup-intro' });
-		intro.textContent = 'Clean up your vault after import. Click a step to begin, or start from the first step.';
+		intro.textContent = '导入后清理你的库。点击某个步骤开始，或从第一步开始。';
 
 		// Pre-scan status
 		if (this.state.isPreScanning) {
 			const scanningEl = section.createDiv({ cls: 'crc-cleanup-scanning' });
 			const spinnerEl = scanningEl.createDiv({ cls: 'crc-cleanup-spinner' });
 			setIcon(spinnerEl, 'loader-2');
-			scanningEl.createSpan({ text: 'Analyzing vault...' });
+			scanningEl.createSpan({ text: '正在分析库…' });
 		}
 
 		// Tile grid (5x2)
@@ -679,20 +678,20 @@ export class CleanupWizardModal extends Modal {
 		// Footer buttons
 		const leftBtns = this.footerContainer.createDiv({ cls: 'crc-cleanup-footer-left' });
 		new ButtonComponent(leftBtns)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.onClick(() => this.close());
 
 		const rightBtns = this.footerContainer.createDiv({ cls: 'crc-cleanup-footer-right' });
 
 		// Skip All button
 		new ButtonComponent(rightBtns)
-			.setButtonText('Skip All & Exit')
+			.setButtonText('全部跳过并退出')
 			.onClick(() => {
 				// Mark all as skipped and close
 				for (const step of WIZARD_STEPS) {
 					if (this.state.steps[step.number].status === 'pending') {
 						this.state.steps[step.number].status = 'skipped';
-						this.state.steps[step.number].skippedReason = 'Skipped by user';
+						this.state.steps[step.number].skippedReason = '用户跳过';
 					}
 				}
 				this.currentView = 'summary';
@@ -709,7 +708,7 @@ export class CleanupWizardModal extends Modal {
 			});
 		const startIcon = startBtn.buttonEl.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(startIcon, 'play');
-		startBtn.buttonEl.createSpan({ text: 'Start Cleanup' });
+		startBtn.buttonEl.createSpan({ text: '开始清理' });
 
 		// Start pre-scan if not done
 		if (!this.state.preScanComplete && !this.state.isPreScanning) {
@@ -727,7 +726,7 @@ export class CleanupWizardModal extends Modal {
 		// Make tile focusable for keyboard navigation
 		tile.setAttribute('tabindex', '0');
 		tile.setAttribute('role', 'button');
-		tile.setAttribute('aria-label', `Step ${stepConfig.number}: ${stepConfig.title}`);
+		tile.setAttribute('aria-label', `步骤${stepConfig.number}：${stepConfig.title}`);
 
 		// Check for unmet dependencies
 		const unmetDeps = this.getUnmetDependencies(stepConfig);
@@ -739,7 +738,7 @@ export class CleanupWizardModal extends Modal {
 		// Add dependency class if has unmet dependencies
 		if (hasUnmetDeps && stepState.status === 'pending') {
 			tile.addClass('crc-cleanup-tile--has-deps');
-			tile.setAttribute('title', `Recommended: Complete ${unmetDeps.join(' and ')} first`);
+			tile.setAttribute('title', `建议：先完成${unmetDeps.join('和')}`);
 		}
 
 		// Step number badge
@@ -759,36 +758,36 @@ export class CleanupWizardModal extends Modal {
 				if (hasUnmetDeps) {
 					const depIcon = badge.createSpan({ cls: 'crc-cleanup-tile-badge-icon' });
 					setIcon(depIcon, 'link');
-					badge.createSpan({ text: 'Has deps' });
+					badge.createSpan({ text: '有依赖' });
 					badge.addClass('crc-cleanup-tile-badge--deps');
 				} else if (stepState.issueCount > 0) {
-					badge.textContent = `${stepState.issueCount} ${pluralize(stepState.issueCount, 'fix', 'fixes')}`;
+					badge.textContent = `${stepState.issueCount} 项修复`;
 					badge.addClass('crc-cleanup-tile-badge--count');
 				} else if (this.state.preScanComplete) {
-					badge.textContent = '0 issues';
+					badge.textContent = '0 个问题';
 					badge.addClass('crc-cleanup-tile-badge--empty');
 				} else {
-					badge.textContent = 'Pending';
+					badge.textContent = '待处理';
 					badge.addClass('crc-cleanup-tile-badge--pending');
 				}
 				break;
 			case 'in_progress':
-				badge.textContent = 'In progress';
+				badge.textContent = '进行中';
 				badge.addClass('crc-cleanup-tile-badge--progress');
 				break;
 			case 'complete': {
 				const checkIcon = badge.createSpan({ cls: 'crc-cleanup-tile-badge-icon' });
 				setIcon(checkIcon, 'check');
 				if (stepState.fixCount > 0) {
-					badge.createSpan({ text: `${stepState.fixCount} fixed` });
+					badge.createSpan({ text: `已修复 ${stepState.fixCount} 项` });
 				} else {
-					badge.createSpan({ text: 'Done' });
+					badge.createSpan({ text: '完成' });
 				}
 				badge.addClass('crc-cleanup-tile-badge--complete');
 				break;
 			}
 			case 'skipped':
-				badge.textContent = 'Skipped';
+				badge.textContent = '已跳过';
 				badge.addClass('crc-cleanup-tile-badge--skipped');
 				break;
 		}
@@ -836,7 +835,7 @@ export class CleanupWizardModal extends Modal {
 
 		// Step label
 		const stepLabel = this.progressContainer.createDiv({ cls: 'crc-cleanup-step-label' });
-		stepLabel.textContent = `Step ${this.state.currentStep} of ${totalSteps}`;
+		stepLabel.textContent = `第 ${this.state.currentStep} 步 / 共 ${totalSteps} 步`;
 	}
 
 	/**
@@ -852,7 +851,7 @@ export class CleanupWizardModal extends Modal {
 			const scanning = section.createDiv({ cls: 'crc-cleanup-scanning' });
 			const spinner = scanning.createDiv({ cls: 'crc-cleanup-spinner' });
 			setIcon(spinner, 'loader-2');
-			scanning.createSpan({ text: 'Analyzing vault...' });
+			scanning.createSpan({ text: '正在分析库…' });
 			void this.runPreScan();
 			return;
 		}
@@ -869,7 +868,7 @@ export class CleanupWizardModal extends Modal {
 
 		// Step title
 		section.createEl('h3', {
-			text: `Step ${stepConfig.number}: ${stepConfig.title}`,
+			text: `步骤${stepConfig.number}：${stepConfig.title}`,
 			cls: 'crc-cleanup-step-title'
 		});
 
@@ -908,8 +907,8 @@ export class CleanupWizardModal extends Modal {
 			const noIssues = container.createDiv({ cls: 'crc-cleanup-no-issues' });
 			const icon = noIssues.createDiv({ cls: 'crc-cleanup-no-issues-icon' });
 			setIcon(icon, 'check-circle');
-			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-text', text: 'No quality issues detected!' });
-			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-hint', text: 'Your vault looks good. You can skip to the next step or review the other steps.' });
+			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-text', text: '未检测到质量问题！' });
+			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-hint', text: '你的库看起来很好。可以跳到下一步，或查看其他步骤。' });
 			return;
 		}
 
@@ -918,7 +917,7 @@ export class CleanupWizardModal extends Modal {
 			const scanningEl = container.createDiv({ cls: 'crc-cleanup-scanning' });
 			const spinner = scanningEl.createDiv({ cls: 'crc-cleanup-spinner' });
 			setIcon(spinner, 'loader-2');
-			scanningEl.createSpan({ text: 'Analyzing quality issues...' });
+			scanningEl.createSpan({ text: '正在分析质量问题…' });
 			return;
 		}
 
@@ -948,33 +947,33 @@ export class CleanupWizardModal extends Modal {
 		} else {
 			scoreValue.addClass('crc-cleanup-quality-score--poor');
 		}
-		scoreCard.createDiv({ cls: 'crc-cleanup-quality-score-label', text: 'Quality Score' });
+		scoreCard.createDiv({ cls: 'crc-cleanup-quality-score-label', text: '质量得分' });
 
 		// Stats mini cards
 		const statsGrid = statsRow.createDiv({ cls: 'crc-cleanup-quality-mini-stats' });
 
-		this.renderMiniStat(statsGrid, 'users', String(report.summary.totalPeople), 'People');
-		this.renderMiniStat(statsGrid, 'alert-circle', String(report.summary.bySeverity.error), 'Errors');
-		this.renderMiniStat(statsGrid, 'alert-triangle', String(report.summary.bySeverity.warning), 'Warnings');
-		this.renderMiniStat(statsGrid, 'info', String(report.summary.bySeverity.info), 'Info');
+		this.renderMiniStat(statsGrid, 'users', String(report.summary.totalPeople), '人物');
+		this.renderMiniStat(statsGrid, 'alert-circle', String(report.summary.bySeverity.error), '错误');
+		this.renderMiniStat(statsGrid, 'alert-triangle', String(report.summary.bySeverity.warning), '警告');
+		this.renderMiniStat(statsGrid, 'info', String(report.summary.bySeverity.info), '信息');
 
 		// Issue categories
 		const categoriesSection = container.createDiv({ cls: 'crc-cleanup-categories' });
-		categoriesSection.createEl('h4', { text: 'Issues by Category', cls: 'crc-cleanup-categories-title' });
+		categoriesSection.createEl('h4', { text: '按分类统计的问题', cls: 'crc-cleanup-categories-title' });
 
 		const service = this.getDataQualityService();
 		const groupedIssues = service.groupIssuesByCategory(report.issues);
 
 		// Category display config
 		const categoryConfig: Record<IssueCategory, { icon: string; label: string; stepRef?: number }> = {
-			'date_inconsistency': { icon: 'calendar-x', label: 'Date Inconsistencies', stepRef: 3 },
-			'relationship_inconsistency': { icon: 'git-branch', label: 'Relationship Issues', stepRef: 2 },
-			'missing_data': { icon: 'file-question', label: 'Missing Data' },
-			'data_format': { icon: 'type', label: 'Format Issues', stepRef: 4 },
-			'orphan_reference': { icon: 'unlink', label: 'Orphan References', stepRef: 5 },
-			'nested_property': { icon: 'layers', label: 'Nested Properties', stepRef: 10 },
-			'legacy_type_property': { icon: 'tag', label: 'Legacy Type Property' },
-			'legacy_membership': { icon: 'users', label: 'Legacy Memberships' }
+			'date_inconsistency': { icon: 'calendar-x', label: '日期不一致', stepRef: 3 },
+			'relationship_inconsistency': { icon: 'git-branch', label: '关系问题', stepRef: 2 },
+			'missing_data': { icon: 'file-question', label: '缺失数据' },
+			'data_format': { icon: 'type', label: '格式问题', stepRef: 4 },
+			'orphan_reference': { icon: 'unlink', label: '孤立引用', stepRef: 5 },
+			'nested_property': { icon: 'layers', label: '嵌套属性', stepRef: 10 },
+			'legacy_type_property': { icon: 'tag', label: '旧版 type 属性' },
+			'legacy_membership': { icon: 'users', label: '旧版成员关系' }
 		};
 
 		// Render each category that has issues
@@ -988,7 +987,7 @@ export class CleanupWizardModal extends Modal {
 		// If no issues in any category, show a message
 		if (report.issues.length === 0) {
 			const noIssues = categoriesSection.createDiv({ cls: 'crc-cleanup-no-issues' });
-			noIssues.textContent = 'No issues found in any category.';
+			noIssues.textContent = '任何分类中都未发现问题。';
 		}
 	}
 
@@ -1081,7 +1080,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const moreEl = issueList.createDiv({ cls: 'crc-cleanup-issue-more' });
-			moreEl.textContent = `... and ${remaining} more`;
+			moreEl.textContent = `… 另有 ${remaining} 项`;
 		}
 
 		// Step reference link if applicable
@@ -1090,7 +1089,7 @@ export class CleanupWizardModal extends Modal {
 			const stepBtn = stepLink.createEl('button', {
 				cls: 'crc-btn crc-btn--secondary crc-btn--small'
 			});
-			stepBtn.textContent = `Go to Step ${config.stepRef} to fix`;
+			stepBtn.textContent = `转到步骤${config.stepRef}修复`;
 			stepBtn.addEventListener('click', () => {
 				this.state.currentStep = config.stepRef!;
 				this.currentView = 'step';
@@ -1126,9 +1125,9 @@ export class CleanupWizardModal extends Modal {
 			const complete = container.createDiv({ cls: 'crc-cleanup-step-complete' });
 			const icon = complete.createDiv({ cls: 'crc-cleanup-step-complete-icon' });
 			setIcon(icon, 'check-circle');
-			complete.createDiv({ cls: 'crc-cleanup-step-complete-text', text: 'Step complete!' });
+			complete.createDiv({ cls: 'crc-cleanup-step-complete-text', text: '步骤完成！' });
 			if (stepState.fixCount > 0) {
-				complete.createDiv({ cls: 'crc-cleanup-step-complete-count', text: `${stepState.fixCount} items fixed` });
+				complete.createDiv({ cls: 'crc-cleanup-step-complete-count', text: `已修复 ${stepState.fixCount} 项` });
 			}
 			return;
 		}
@@ -1137,8 +1136,8 @@ export class CleanupWizardModal extends Modal {
 			const noIssues = container.createDiv({ cls: 'crc-cleanup-no-issues' });
 			const icon = noIssues.createDiv({ cls: 'crc-cleanup-no-issues-icon' });
 			setIcon(icon, 'check-circle');
-			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-text', text: 'No issues to fix!' });
-			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-hint', text: 'This step has nothing to do. You can skip to the next step.' });
+			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-text', text: '无需修复的问题！' });
+			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-hint', text: '此步骤无事可做。你可以跳到下一步。' });
 			return;
 		}
 
@@ -1147,7 +1146,7 @@ export class CleanupWizardModal extends Modal {
 			const scanning = container.createDiv({ cls: 'crc-cleanup-scanning' });
 			const spinner = scanning.createDiv({ cls: 'crc-cleanup-spinner' });
 			setIcon(spinner, 'loader-2');
-			scanning.createSpan({ text: 'Detecting issues...' });
+			scanning.createSpan({ text: '正在检测问题…' });
 			return;
 		}
 
@@ -1207,11 +1206,11 @@ export class CleanupWizardModal extends Modal {
 		const header = progress.createDiv({ cls: 'crc-cleanup-batch-progress-header' });
 		const spinner = header.createSpan({ cls: 'crc-cleanup-batch-progress-spinner' });
 		setIcon(spinner, 'loader-2');
-		header.createSpan({ text: `Processing ${stepConfig.shortTitle}...`, cls: 'crc-cleanup-batch-progress-title' });
+		header.createSpan({ text: `正在处理${stepConfig.shortTitle}…`, cls: 'crc-cleanup-batch-progress-title' });
 
 		// Progress stats
 		const stats = progress.createDiv({ cls: 'crc-cleanup-batch-progress-stats' });
-		stats.createSpan({ text: `${current} of ${total} (${percent}%)` });
+		stats.createSpan({ text: `${current} / ${total}（${percent}%）` });
 
 		// Progress bar
 		const barContainer = progress.createDiv({ cls: 'crc-cleanup-batch-progress-bar-container' });
@@ -1242,7 +1241,7 @@ export class CleanupWizardModal extends Modal {
 		// Auto-fixable section
 		if (autoFixable.length > 0) {
 			const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-			summary.textContent = `${autoFixable.length} ${pluralize(autoFixable.length, 'relationship')} will be fixed:`;
+			summary.textContent = `将修复 ${autoFixable.length} 个关系：`;
 
 			const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1272,7 +1271,7 @@ export class CleanupWizardModal extends Modal {
 
 			if (remaining > 0) {
 				const moreEl = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-				moreEl.textContent = `... and ${remaining} more`;
+				moreEl.textContent = `… 另有 ${remaining} 项`;
 			}
 		}
 
@@ -1283,10 +1282,10 @@ export class CleanupWizardModal extends Modal {
 			const conflictHeader = conflictSection.createDiv({ cls: 'crc-cleanup-preview-conflict-header' });
 			const warningIcon = conflictHeader.createSpan({ cls: 'crc-cleanup-preview-conflict-icon' });
 			setIcon(warningIcon, 'alert-triangle');
-			conflictHeader.createSpan({ text: `${conflicts.length} ${pluralize(conflicts.length, 'conflict')} require manual resolution:` });
+			conflictHeader.createSpan({ text: `${conflicts.length} 个冲突需要手动解决：` });
 
 			const conflictHint = conflictSection.createDiv({ cls: 'crc-cleanup-preview-conflict-hint' });
-			conflictHint.textContent = 'Click a row to open the person note for editing.';
+			conflictHint.textContent = '点击某一行以打开人物笔记进行编辑。';
 
 			const conflictList = conflictSection.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1312,7 +1311,7 @@ export class CleanupWizardModal extends Modal {
 
 			if (conflicts.length > 10) {
 				const moreEl = conflictList.createDiv({ cls: 'crc-cleanup-preview-more' });
-				moreEl.textContent = `... and ${conflicts.length - 10} more`;
+				moreEl.textContent = `… 另有 ${conflicts.length - 10} 项`;
 			}
 		}
 	}
@@ -1332,7 +1331,7 @@ export class CleanupWizardModal extends Modal {
 			setIcon(successIcon, 'check-circle');
 			successSection.createDiv({
 				cls: 'crc-cleanup-step-complete-text',
-				text: `${fixCount} ${pluralize(fixCount, 'relationship')} fixed automatically`
+				text: `已自动修复 ${fixCount} 个关系`
 			});
 		}
 
@@ -1343,11 +1342,11 @@ export class CleanupWizardModal extends Modal {
 		const warningIcon = conflictHeader.createSpan({ cls: 'crc-cleanup-preview-conflict-icon' });
 		setIcon(warningIcon, 'alert-triangle');
 		conflictHeader.createSpan({
-			text: `${conflicts.length} ${pluralize(conflicts.length, 'conflict')} require manual resolution`
+			text: `${conflicts.length} 个冲突需要手动解决`
 		});
 
 		const conflictHint = conflictSection.createDiv({ cls: 'crc-cleanup-preview-conflict-hint' });
-		conflictHint.textContent = 'These people have multiple parents claiming them. Click a row to open the note and correct the parent references.';
+		conflictHint.textContent = '这些人有多位父母声明。点击某一行以打开笔记并更正父母引用。';
 
 		const conflictList = conflictSection.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1373,7 +1372,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (conflicts.length > 10) {
 			const moreEl = conflictList.createDiv({ cls: 'crc-cleanup-preview-more' });
-			moreEl.textContent = `... and ${conflicts.length - 10} more`;
+			moreEl.textContent = `… 另有 ${conflicts.length - 10} 项`;
 		}
 	}
 
@@ -1388,10 +1387,10 @@ export class CleanupWizardModal extends Modal {
 
 		const preview = container.createDiv({ cls: 'crc-cleanup-preview' });
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `${dateIssues.length} ${pluralize(dateIssues.length, 'date')} will be normalized to YYYY-MM-DD format:`;
+		summary.textContent = `将把 ${dateIssues.length} 个日期规范化为 YYYY-MM-DD 格式：`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'Click a row to open the person note for editing.';
+		hint.textContent = '点击某一行以打开人物笔记进行编辑。';
 
 		const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1427,7 +1426,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const moreEl = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-			moreEl.textContent = `... and ${remaining} more`;
+			moreEl.textContent = `… 另有 ${remaining} 项`;
 		}
 	}
 
@@ -1442,10 +1441,10 @@ export class CleanupWizardModal extends Modal {
 
 		const preview = container.createDiv({ cls: 'crc-cleanup-preview' });
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `${genderIssues.length} ${pluralize(genderIssues.length, 'gender value')} will be normalized:`;
+		summary.textContent = `将规范化 ${genderIssues.length} 个性别值：`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'Click a row to open the person note for editing.';
+		hint.textContent = '点击某一行以打开人物笔记进行编辑。';
 
 		const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1469,7 +1468,7 @@ export class CleanupWizardModal extends Modal {
 
 			const change = content.createSpan({ cls: 'crc-cleanup-preview-change' });
 			const currentValue = issue.details?.['value'] as string || '?';
-			change.textContent = `"${currentValue}" → standard format`;
+			change.textContent = `"${currentValue}" → 标准格式`;
 
 			// Click to open the person file
 			row.addEventListener('click', () => {
@@ -1480,7 +1479,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const moreEl = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-			moreEl.textContent = `... and ${remaining} more`;
+			moreEl.textContent = `… 另有 ${remaining} 项`;
 		}
 	}
 
@@ -1495,10 +1494,10 @@ export class CleanupWizardModal extends Modal {
 
 		const preview = container.createDiv({ cls: 'crc-cleanup-preview' });
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `${orphanIssues.length} ${pluralize(orphanIssues.length, 'orphan reference')} will be cleared:`;
+		summary.textContent = `将清除 ${orphanIssues.length} 个孤立引用：`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'Click a row to open the person note for editing.';
+		hint.textContent = '点击某一行以打开人物笔记进行编辑。';
 
 		const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1529,7 +1528,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const moreEl = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-			moreEl.textContent = `... and ${remaining} more`;
+			moreEl.textContent = `… 另有 ${remaining} 项`;
 		}
 	}
 
@@ -1541,10 +1540,10 @@ export class CleanupWizardModal extends Modal {
 
 		const preview = container.createDiv({ cls: 'crc-cleanup-preview' });
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `${this.indexedSourceNotes.length} ${pluralize(this.indexedSourceNotes.length, 'note')} will be migrated:`;
+		summary.textContent = `将迁移 ${this.indexedSourceNotes.length} 条笔记：`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'Indexed properties (source, source_2, source_3...) will be converted to a sources array.';
+		hint.textContent = '带索引的属性（source、source_2、source_3…）将被转换为 sources 数组。';
 
 		const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1565,7 +1564,7 @@ export class CleanupWizardModal extends Modal {
 
 			const desc = content.createSpan({ cls: 'crc-cleanup-preview-desc' });
 			const sourceCount = note.indexedSources.length;
-			desc.textContent = `: ${sourceCount} ${pluralize(sourceCount, 'source')} → sources array`;
+			desc.textContent = `：${sourceCount} 个来源 → sources 数组`;
 
 			// Click to open the file
 			row.addEventListener('click', () => {
@@ -1576,7 +1575,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const moreEl = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-			moreEl.textContent = `... and ${remaining} more`;
+			moreEl.textContent = `… 另有 ${remaining} 项`;
 		}
 	}
 
@@ -1591,10 +1590,10 @@ export class CleanupWizardModal extends Modal {
 
 		const preview = container.createDiv({ cls: 'crc-cleanup-preview' });
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `${nestedIssues.length} nested ${pluralize(nestedIssues.length, 'property', 'properties')} will be flattened:`;
+		summary.textContent = `将扁平化 ${nestedIssues.length} 个嵌套属性：`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'Click a row to open the person note for editing.';
+		hint.textContent = '点击某一行以打开人物笔记进行编辑。';
 
 		const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1627,7 +1626,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const moreEl = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-			moreEl.textContent = `... and ${remaining} more`;
+			moreEl.textContent = `… 另有 ${remaining} 项`;
 		}
 	}
 
@@ -1639,10 +1638,10 @@ export class CleanupWizardModal extends Modal {
 
 		const preview = container.createDiv({ cls: 'crc-cleanup-preview' });
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `${this.legacyPersonEventNotes.length} event ${pluralize(this.legacyPersonEventNotes.length, 'note')} will be migrated:`;
+		summary.textContent = `将迁移 ${this.legacyPersonEventNotes.length} 条事件笔记：`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'The singular "person" property will be converted to a "persons" array.';
+		hint.textContent = '单数"person"属性将被转换为"persons"数组。';
 
 		const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1663,7 +1662,7 @@ export class CleanupWizardModal extends Modal {
 
 			const desc = content.createSpan({ cls: 'crc-cleanup-preview-desc' });
 			const personName = note.personValue.replace(/\[\[|\]\]/g, '');
-			desc.textContent = `: person → persons["${personName}"]`;
+			desc.textContent = `：person → persons["${personName}"]`;
 
 			// Click to open the file
 			row.addEventListener('click', () => {
@@ -1674,7 +1673,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const moreEl = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-			moreEl.textContent = `... and ${remaining} more`;
+			moreEl.textContent = `… 另有 ${remaining} 项`;
 		}
 	}
 
@@ -1690,10 +1689,10 @@ export class CleanupWizardModal extends Modal {
 		// Calculate total sources
 		const totalSources = this.legacySourcedFactsNotes.reduce((sum, note) => sum + note.totalSources, 0);
 
-		summary.textContent = `${this.legacySourcedFactsNotes.length} person ${pluralize(this.legacySourcedFactsNotes.length, 'note')} with ${totalSources} source ${pluralize(totalSources, 'citation')} will be migrated:`;
+		summary.textContent = `将迁移 ${this.legacySourcedFactsNotes.length} 条笔记中的 ${totalSources} 条来源引文：`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'The nested "sourced_facts" object will be converted to flat "sourced_*" properties.';
+		hint.textContent = '嵌套的"sourced_facts"对象将被转换为扁平的"sourced_*"属性。';
 
 		const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1713,7 +1712,7 @@ export class CleanupWizardModal extends Modal {
 			fileName.textContent = note.file.basename;
 
 			const desc = content.createSpan({ cls: 'crc-cleanup-preview-desc' });
-			desc.textContent = `: ${note.factKeys.length} fact ${pluralize(note.factKeys.length, 'type')}, ${note.totalSources} ${pluralize(note.totalSources, 'source')}`;
+			desc.textContent = `：${note.factKeys.length} 种事实类型，${note.totalSources} 个来源`;
 
 			// Click to open the file
 			row.addEventListener('click', () => {
@@ -1724,7 +1723,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const moreEl = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-			moreEl.textContent = `... and ${remaining} more`;
+			moreEl.textContent = `… 另有 ${remaining} 项`;
 		}
 	}
 
@@ -1740,10 +1739,10 @@ export class CleanupWizardModal extends Modal {
 		// Calculate total events
 		const totalEvents = this.legacyEventsNotes.reduce((sum, note) => sum + note.eventCount, 0);
 
-		summary.textContent = `${this.legacyEventsNotes.length} person ${pluralize(this.legacyEventsNotes.length, 'note')} with ${totalEvents} inline ${pluralize(totalEvents, 'event')} will be migrated:`;
+		summary.textContent = `将迁移 ${this.legacyEventsNotes.length} 条笔记中的 ${totalEvents} 个内联事件：`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'Inline events will be converted to separate event note files linked via "life_events".';
+		hint.textContent = '内联事件将被转换为独立的事件笔记文件，并通过"life_events"链接。';
 
 		const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1764,7 +1763,7 @@ export class CleanupWizardModal extends Modal {
 
 			const desc = content.createSpan({ cls: 'crc-cleanup-preview-desc' });
 			const eventTypes = [...new Set(note.events.map(e => e.event_type))];
-			desc.textContent = `: ${note.eventCount} ${pluralize(note.eventCount, 'event')} (${eventTypes.join(', ')})`;
+			desc.textContent = `：${note.eventCount} 个事件（${eventTypes.join('、')}）`;
 
 			// Click to open the file
 			row.addEventListener('click', () => {
@@ -1775,7 +1774,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const moreEl = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-			moreEl.textContent = `... and ${remaining} more`;
+			moreEl.textContent = `… 另有 ${remaining} 项`;
 		}
 	}
 
@@ -1787,10 +1786,10 @@ export class CleanupWizardModal extends Modal {
 
 		const preview = container.createDiv({ cls: 'crc-cleanup-preview' });
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `${this.legacyChildNotes.length} person ${pluralize(this.legacyChildNotes.length, 'note')} will be updated:`;
+		summary.textContent = `将更新 ${this.legacyChildNotes.length} 条笔记：`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'The legacy "child" property will be converted to the "children" property.';
+		hint.textContent = '旧版"child"属性将被转换为"children"属性。';
 
 		const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -1810,7 +1809,7 @@ export class CleanupWizardModal extends Modal {
 			fileName.textContent = file.basename;
 
 			const desc = content.createSpan({ cls: 'crc-cleanup-preview-desc' });
-			desc.textContent = ': child → children';
+			desc.textContent = '：child → children';
 
 			// Click to open the file
 			row.addEventListener('click', () => {
@@ -1821,7 +1820,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const moreEl = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-			moreEl.textContent = `... and ${remaining} more`;
+			moreEl.textContent = `… 另有 ${remaining} 项`;
 		}
 	}
 
@@ -1837,12 +1836,12 @@ export class CleanupWizardModal extends Modal {
 
 		if (stepState.issueCount > 0) {
 			const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-			summary.textContent = `${stepState.issueCount} ${pluralize(stepState.issueCount, 'item')} will be fixed.`;
+			summary.textContent = `将修复 ${stepState.issueCount} 项。`;
 
 			const note = preview.createDiv({ cls: 'crc-cleanup-note' });
 			const noteIcon = note.createDiv({ cls: 'crc-cleanup-note-icon' });
 			setIcon(noteIcon, 'info');
-			note.createSpan({ text: `Detailed preview for ${stepConfig.title} coming in a future update.` });
+			note.createSpan({ text: `${stepConfig.title}的详细预览将在未来更新中提供。` });
 		}
 	}
 
@@ -1858,9 +1857,9 @@ export class CleanupWizardModal extends Modal {
 			const complete = container.createDiv({ cls: 'crc-cleanup-step-complete' });
 			const icon = complete.createDiv({ cls: 'crc-cleanup-step-complete-icon' });
 			setIcon(icon, 'check-circle');
-			complete.createDiv({ cls: 'crc-cleanup-step-complete-text', text: 'Step complete!' });
+			complete.createDiv({ cls: 'crc-cleanup-step-complete-text', text: '步骤完成！' });
 			if (stepState.fixCount > 0) {
-				complete.createDiv({ cls: 'crc-cleanup-step-complete-count', text: `${stepState.fixCount} items processed` });
+				complete.createDiv({ cls: 'crc-cleanup-step-complete-count', text: `已处理 ${stepState.fixCount} 项` });
 			}
 			return;
 		}
@@ -1888,13 +1887,13 @@ export class CleanupWizardModal extends Modal {
 	private renderInteractiveStepPlaceholder(container: HTMLElement, stepConfig: WizardStepConfig): void {
 		const interactive = container.createDiv({ cls: 'crc-cleanup-interactive' });
 		const placeholder = interactive.createDiv({ cls: 'crc-cleanup-placeholder' });
-		placeholder.textContent = `Interactive UI for ${stepConfig.title} will be implemented in Phase 2.`;
+		placeholder.textContent = `${stepConfig.title}的交互界面将在第二阶段实现。`;
 
 		// Note about interactive steps
 		const note = interactive.createDiv({ cls: 'crc-cleanup-note' });
 		const noteIcon = note.createDiv({ cls: 'crc-cleanup-note-icon' });
 		setIcon(noteIcon, 'info');
-		note.createSpan({ text: 'This step requires manual decisions for each item. You can skip it for now and run it individually later.' });
+		note.createSpan({ text: '此步骤需要对每一项手动决策。你可以暂时跳过，之后再单独运行。' });
 	}
 
 	/**
@@ -1919,8 +1918,8 @@ export class CleanupWizardModal extends Modal {
 			const noIssues = container.createDiv({ cls: 'crc-cleanup-no-issues' });
 			const icon = noIssues.createDiv({ cls: 'crc-cleanup-no-issues-icon' });
 			setIcon(icon, 'check-circle');
-			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-text', text: 'No place name variants found!' });
-			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-hint', text: 'Your place names are already standardized. You can skip to the next step.' });
+			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-text', text: '未找到地点名称变体！' });
+			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-hint', text: '你的地点名称已经标准化。可以跳到下一步。' });
 			return;
 		}
 
@@ -1929,10 +1928,10 @@ export class CleanupWizardModal extends Modal {
 		// Summary
 		const totalRefs = this.placeVariantMatches.reduce((sum, m) => sum + m.count, 0);
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `Found ${this.placeVariantMatches.length} place name ${pluralize(this.placeVariantMatches.length, 'variant')} across ${totalRefs} ${pluralize(totalRefs, 'reference')}.`;
+		summary.textContent = `在 ${totalRefs} 个引用中发现 ${this.placeVariantMatches.length} 个地点名称变体。`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'Select variants to standardize. The canonical form is shown on the right.';
+		hint.textContent = '选择要标准化的变体。规范形式显示在右侧。';
 
 		// Table container
 		const tableContainer = preview.createDiv({ cls: 'crc-cleanup-variant-table-container' });
@@ -1946,9 +1945,9 @@ export class CleanupWizardModal extends Modal {
 		const selectAllCheckbox = thCheck.createEl('input', { type: 'checkbox' });
 		selectAllCheckbox.checked = true;
 
-		headerRow.createEl('th', { text: 'Current Value' });
-		headerRow.createEl('th', { text: 'Standardize To' });
-		headerRow.createEl('th', { text: 'Refs', cls: 'crc-cleanup-variant-th-count' });
+		headerRow.createEl('th', { text: '当前值' });
+		headerRow.createEl('th', { text: '标准化为' });
+		headerRow.createEl('th', { text: '引用', cls: 'crc-cleanup-variant-th-count' });
 
 		const tbody = table.createEl('tbody');
 
@@ -1994,7 +1993,7 @@ export class CleanupWizardModal extends Modal {
 
 			// Keep as-is option
 			if (match.variant !== match.canonical) {
-				select.createEl('option', { value: match.variant, text: `${match.variant} (keep)` });
+				select.createEl('option', { value: match.variant, text: `${match.variant}（保留）` });
 			}
 
 			select.addEventListener('change', () => {
@@ -2044,13 +2043,13 @@ export class CleanupWizardModal extends Modal {
 			});
 		const applyIcon = applyBtn.buttonEl.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(applyIcon, 'zap');
-		applyBtn.buttonEl.createSpan({ text: `Standardize ${selectedVariants.size} variants` });
+		applyBtn.buttonEl.createSpan({ text: `标准化 ${selectedVariants.size} 个变体` });
 
 		// Update button text when selection changes
 		const updateApplyButton = () => {
 			const textSpan = applyBtn.buttonEl.querySelector('span:last-child');
 			if (textSpan) {
-				textSpan.textContent = `Standardize ${selectedVariants.size} ${pluralize(selectedVariants.size, 'variant')}`;
+				textSpan.textContent = `标准化 ${selectedVariants.size} 个变体`;
 			}
 			applyBtn.setDisabled(selectedVariants.size === 0);
 		};
@@ -2092,11 +2091,11 @@ export class CleanupWizardModal extends Modal {
 
 		if (errors.length > 0) {
 			console.error('Errors during variant standardization:', errors);
-			new Notice(`Updated ${totalUpdated} references. ${errors.length} errors occurred.`);
+			new Notice(`已更新 ${totalUpdated} 个引用。发生 ${errors.length} 个错误。`);
 		} else if (totalUpdated > 0) {
-			new Notice(`Standardized ${totalUpdated} place reference${totalUpdated !== 1 ? 's' : ''}`);
+			new Notice(`已标准化 ${totalUpdated} 个地点引用`);
 		} else {
-			new Notice('No changes were needed');
+			new Notice('无需更改');
 		}
 
 		// Check for duplicates after variant standardization
@@ -2105,7 +2104,7 @@ export class CleanupWizardModal extends Modal {
 			// Show deduplication step instead of marking complete
 			this.showDeduplicationStep = true;
 			stepState.status = 'in_progress'; // Keep in progress for deduplication
-			new Notice(`Found ${this.placeDuplicateGroups.length} duplicate place${this.placeDuplicateGroups.length !== 1 ? 's' : ''} to merge`);
+			new Notice(`找到 ${this.placeDuplicateGroups.length} 个重复地点待合并`);
 		} else {
 			stepState.status = 'complete';
 			this.recordStepCompletion('place-variants', stepState.fixCount);
@@ -2127,9 +2126,9 @@ export class CleanupWizardModal extends Modal {
 			const complete = container.createDiv({ cls: 'crc-cleanup-step-complete' });
 			const icon = complete.createDiv({ cls: 'crc-cleanup-step-complete-icon' });
 			setIcon(icon, 'check-circle');
-			complete.createDiv({ cls: 'crc-cleanup-step-complete-text', text: 'Place cleanup complete!' });
+			complete.createDiv({ cls: 'crc-cleanup-step-complete-text', text: '地点清理完成！' });
 			if (stepState.fixCount > 0) {
-				complete.createDiv({ cls: 'crc-cleanup-step-complete-count', text: `${stepState.fixCount} items processed` });
+				complete.createDiv({ cls: 'crc-cleanup-step-complete-count', text: `已处理 ${stepState.fixCount} 项` });
 			}
 			return;
 		}
@@ -2139,10 +2138,10 @@ export class CleanupWizardModal extends Modal {
 		// Summary
 		const totalDupes = this.placeDuplicateGroups.reduce((sum, g) => sum + g.files.length - 1, 0);
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `Found ${this.placeDuplicateGroups.length} ${pluralize(this.placeDuplicateGroups.length, 'place')} with duplicates (${totalDupes} duplicate ${pluralize(totalDupes, 'file')} to merge).`;
+		summary.textContent = `发现 ${this.placeDuplicateGroups.length} 个地点存在重复（${totalDupes} 个重复文件待合并）。`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'Select which file to keep as canonical for each place. Duplicates will be merged and deleted.';
+		hint.textContent = '为每个地点选择要保留为规范的文件。重复项将被合并并删除。';
 
 		// Table container
 		const tableContainer = preview.createDiv({ cls: 'crc-cleanup-dedup-table-container' });
@@ -2150,9 +2149,9 @@ export class CleanupWizardModal extends Modal {
 
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Place Name' });
-		headerRow.createEl('th', { text: 'Files', cls: 'crc-cleanup-dedup-th-files' });
-		headerRow.createEl('th', { text: 'Keep', cls: 'crc-cleanup-dedup-th-keep' });
+		headerRow.createEl('th', { text: '地点名称' });
+		headerRow.createEl('th', { text: '文件', cls: 'crc-cleanup-dedup-th-files' });
+		headerRow.createEl('th', { text: '保留', cls: 'crc-cleanup-dedup-th-keep' });
 
 		const tbody = table.createEl('tbody');
 
@@ -2183,11 +2182,11 @@ export class CleanupWizardModal extends Modal {
 
 				const refCount = group.refCounts.get(file) || 0;
 				const refBadge = fileItem.createSpan({ cls: 'crc-cleanup-dedup-ref-badge' });
-				refBadge.textContent = `${refCount} ${pluralize(refCount, 'ref')}`;
+				refBadge.textContent = `${refCount} 个引用`;
 
 				if (file === group.recommendedCanonical) {
 					const recBadge = fileItem.createSpan({ cls: 'crc-cleanup-dedup-rec-badge' });
-					recBadge.textContent = 'recommended';
+					recBadge.textContent = '推荐';
 				}
 			}
 
@@ -2199,7 +2198,7 @@ export class CleanupWizardModal extends Modal {
 				const refCount = group.refCounts.get(file) || 0;
 				const option = select.createEl('option', {
 					value: file.path,
-					text: `${file.basename} (${refCount} refs)`
+					text: `${file.basename}（${refCount} 个引用）`
 				});
 				if (file === group.recommendedCanonical) {
 					option.selected = true;
@@ -2218,7 +2217,7 @@ export class CleanupWizardModal extends Modal {
 		const warning = preview.createDiv({ cls: 'crc-cleanup-warning' });
 		const warningIcon = warning.createDiv({ cls: 'crc-cleanup-warning-icon' });
 		setIcon(warningIcon, 'alert-triangle');
-		warning.createSpan({ text: 'Duplicate files will be moved to trash. All references will be updated to point to the canonical file.' });
+		warning.createSpan({ text: '重复文件将被移至回收站。所有引用将更新为指向规范文件。' });
 
 		// Apply button
 		const applyContainer = preview.createDiv({ cls: 'crc-cleanup-dedup-apply' });
@@ -2229,11 +2228,11 @@ export class CleanupWizardModal extends Modal {
 			});
 		const applyIcon = applyBtn.buttonEl.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(applyIcon, 'git-merge');
-		applyBtn.buttonEl.createSpan({ text: `Merge ${this.placeDuplicateGroups.length} duplicate ${pluralize(this.placeDuplicateGroups.length, 'group')}` });
+		applyBtn.buttonEl.createSpan({ text: `合并 ${this.placeDuplicateGroups.length} 组重复项` });
 
 		// Skip button
 		new ButtonComponent(applyContainer)
-			.setButtonText('Skip Deduplication')
+			.setButtonText('跳过去重')
 			.onClick(() => {
 				this.showDeduplicationStep = false;
 				stepState.status = 'complete';
@@ -2277,9 +2276,9 @@ export class CleanupWizardModal extends Modal {
 
 		if (errors.length > 0) {
 			console.error('Errors during deduplication:', errors);
-			new Notice(`Merged ${totalDeletedFiles} duplicates, updated ${totalUpdatedLinks} links. ${errors.length} errors.`);
+			new Notice(`已合并 ${totalDeletedFiles} 个重复项，更新 ${totalUpdatedLinks} 个链接。发生 ${errors.length} 个错误。`);
 		} else {
-			new Notice(`Merged ${totalDeletedFiles} duplicate${totalDeletedFiles !== 1 ? 's' : ''}, updated ${totalUpdatedLinks} link${totalUpdatedLinks !== 1 ? 's' : ''}`);
+			new Notice(`已合并 ${totalDeletedFiles} 个重复项，更新 ${totalUpdatedLinks} 个链接`);
 		}
 
 		this.renderCurrentView();
@@ -2315,8 +2314,8 @@ export class CleanupWizardModal extends Modal {
 			const noIssues = container.createDiv({ cls: 'crc-cleanup-no-issues' });
 			const icon = noIssues.createDiv({ cls: 'crc-cleanup-no-issues-icon' });
 			setIcon(icon, 'check-circle');
-			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-text', text: 'All places have coordinates!' });
-			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-hint', text: 'Your place notes already have geographic coordinates. You can skip to the next step.' });
+			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-text', text: '所有地点都有坐标！' });
+			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-hint', text: '你的地点笔记已包含地理坐标。可以跳到下一步。' });
 			return;
 		}
 
@@ -2324,24 +2323,24 @@ export class CleanupWizardModal extends Modal {
 
 		// Summary
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `Found ${this.ungeocodedPlaces.length} ${pluralize(this.ungeocodedPlaces.length, 'place')} without coordinates.`;
+		summary.textContent = `发现 ${this.ungeocodedPlaces.length} 个地点缺少坐标。`;
 
 		// Description
 		const desc = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		desc.textContent = 'This will use OpenStreetMap\'s Nominatim service to look up coordinates. The process respects the API rate limit (1 request per second).';
+		desc.textContent = '这将使用 OpenStreetMap 的 Nominatim 服务查询坐标。该过程遵循 API 速率限制（每秒 1 次请求）。';
 
 		// Estimated time
 		const estimatedMinutes = Math.ceil(this.ungeocodedPlaces.length / 60);
-		const timeText = `about ${estimatedMinutes} ${pluralize(estimatedMinutes, 'minute')}`;
+		const timeText = `约${estimatedMinutes}分钟`;
 		const timeEstimate = preview.createDiv({ cls: 'crc-cleanup-geocode-time' });
 		const timeIcon = timeEstimate.createSpan({ cls: 'crc-cleanup-geocode-time-icon' });
 		setIcon(timeIcon, 'clock');
-		timeEstimate.createSpan({ text: `Estimated time: ${timeText}` });
+		timeEstimate.createSpan({ text: `预计时间：${timeText}` });
 
 		// Places list preview
 		const listContainer = preview.createDiv({ cls: 'crc-cleanup-geocode-list-container' });
 		const listTitle = listContainer.createDiv({ cls: 'crc-cleanup-geocode-list-title' });
-		listTitle.textContent = 'Places to geocode:';
+		listTitle.textContent = '待地理编码的地点：';
 
 		const placesList = listContainer.createDiv({ cls: 'crc-cleanup-geocode-list' });
 		const maxDisplay = 20;
@@ -2356,14 +2355,14 @@ export class CleanupWizardModal extends Modal {
 
 		if (this.ungeocodedPlaces.length > maxDisplay) {
 			const moreEl = placesList.createDiv({ cls: 'crc-cleanup-geocode-list-more' });
-			moreEl.textContent = `... and ${this.ungeocodedPlaces.length - maxDisplay} more`;
+			moreEl.textContent = `… 另有 ${this.ungeocodedPlaces.length - maxDisplay} 个`;
 		}
 
 		// Warning
 		const warning = preview.createDiv({ cls: 'crc-cleanup-warning' });
 		const warningIcon = warning.createDiv({ cls: 'crc-cleanup-warning-icon' });
 		setIcon(warningIcon, 'alert-triangle');
-		warning.createSpan({ text: 'Backup your vault before proceeding. This operation will modify place notes to add coordinates.' });
+		warning.createSpan({ text: '操作前请备份你的库。此操作将修改地点笔记以添加坐标。' });
 
 		// Start button
 		const applyContainer = preview.createDiv({ cls: 'crc-cleanup-geocode-apply' });
@@ -2374,7 +2373,7 @@ export class CleanupWizardModal extends Modal {
 			});
 		const startIcon = startBtn.buttonEl.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(startIcon, 'map');
-		startBtn.buttonEl.createSpan({ text: `Start geocoding ${this.ungeocodedPlaces.length} places` });
+		startBtn.buttonEl.createSpan({ text: `开始对 ${this.ungeocodedPlaces.length} 个地点进行地理编码` });
 	}
 
 	/**
@@ -2385,7 +2384,7 @@ export class CleanupWizardModal extends Modal {
 
 		// Progress header
 		const header = progress.createDiv({ cls: 'crc-cleanup-geocode-progress-header' });
-		header.createSpan({ text: 'Geocoding in progress...', cls: 'crc-cleanup-geocode-progress-title' });
+		header.createSpan({ text: '正在地理编码…', cls: 'crc-cleanup-geocode-progress-title' });
 
 		// Progress stats
 		const stats = progress.createDiv({ cls: 'crc-cleanup-geocode-progress-stats' });
@@ -2396,7 +2395,7 @@ export class CleanupWizardModal extends Modal {
 		const successCount = this.geocodingResults.filter(r => r.success && r.coordinates).length;
 		const failedCount = this.geocodingResults.filter(r => !r.success || !r.coordinates).length;
 
-		stats.createSpan({ text: `${processed} of ${total} (${percent}%)` });
+		stats.createSpan({ text: `${processed} / ${total}（${percent}%）` });
 
 		// Progress bar
 		const progressBarContainer = progress.createDiv({ cls: 'crc-cleanup-geocode-progress-bar-container' });
@@ -2409,12 +2408,12 @@ export class CleanupWizardModal extends Modal {
 		const successStat = breakdown.createSpan({ cls: 'crc-cleanup-geocode-stat crc-cleanup-geocode-stat--success' });
 		const successIcon = successStat.createSpan({ cls: 'crc-cleanup-geocode-stat-icon' });
 		setIcon(successIcon, 'check');
-		successStat.createSpan({ text: `${successCount} found` });
+		successStat.createSpan({ text: `已找到 ${successCount} 个` });
 
 		const failedStat = breakdown.createSpan({ cls: 'crc-cleanup-geocode-stat crc-cleanup-geocode-stat--failed' });
 		const failedIcon = failedStat.createSpan({ cls: 'crc-cleanup-geocode-stat-icon' });
 		setIcon(failedIcon, 'x');
-		failedStat.createSpan({ text: `${failedCount} not found` });
+		failedStat.createSpan({ text: `未找到 ${failedCount} 个` });
 
 		// Results list (live updating)
 		const resultsList = progress.createDiv({ cls: 'crc-cleanup-geocode-results-list' });
@@ -2448,11 +2447,11 @@ export class CleanupWizardModal extends Modal {
 		// Cancel button
 		const cancelContainer = progress.createDiv({ cls: 'crc-cleanup-geocode-cancel' });
 		const cancelBtn = new ButtonComponent(cancelContainer)
-			.setButtonText(this.geocodingCancelled ? 'Cancelling...' : 'Cancel')
+			.setButtonText(this.geocodingCancelled ? '正在取消…' : '取消')
 			.setDisabled(this.geocodingCancelled)
 			.onClick(() => {
 				this.geocodingCancelled = true;
-				cancelBtn.setButtonText('Cancelling...');
+				cancelBtn.setButtonText('正在取消…');
 				cancelBtn.setDisabled(true);
 			});
 	}
@@ -2473,13 +2472,13 @@ export class CleanupWizardModal extends Modal {
 		const successIcon = successSummary.createDiv({ cls: 'crc-cleanup-geocode-summary-icon' });
 		setIcon(successIcon, 'check-circle');
 		successSummary.createDiv({ cls: 'crc-cleanup-geocode-summary-value', text: String(successCount) });
-		successSummary.createDiv({ cls: 'crc-cleanup-geocode-summary-label', text: 'Coordinates found' });
+		successSummary.createDiv({ cls: 'crc-cleanup-geocode-summary-label', text: '已找到坐标' });
 
 		const failedSummary = summary.createDiv({ cls: 'crc-cleanup-geocode-summary-stat crc-cleanup-geocode-summary-stat--failed' });
 		const failedIcon = failedSummary.createDiv({ cls: 'crc-cleanup-geocode-summary-icon' });
 		setIcon(failedIcon, 'x-circle');
 		failedSummary.createDiv({ cls: 'crc-cleanup-geocode-summary-value', text: String(failedCount) });
-		failedSummary.createDiv({ cls: 'crc-cleanup-geocode-summary-label', text: 'Not found' });
+		failedSummary.createDiv({ cls: 'crc-cleanup-geocode-summary-label', text: '未找到' });
 
 		// Results table
 		const tableContainer = results.createDiv({ cls: 'crc-cleanup-geocode-table-container' });
@@ -2488,8 +2487,8 @@ export class CleanupWizardModal extends Modal {
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
 		headerRow.createEl('th', { text: '', cls: 'crc-cleanup-geocode-th-status' });
-		headerRow.createEl('th', { text: 'Place' });
-		headerRow.createEl('th', { text: 'Result' });
+		headerRow.createEl('th', { text: '地点' });
+		headerRow.createEl('th', { text: '结果' });
 
 		const tbody = table.createEl('tbody');
 
@@ -2517,7 +2516,7 @@ export class CleanupWizardModal extends Modal {
 				tdResult.textContent = `${result.coordinates.lat.toFixed(4)}, ${result.coordinates.long.toFixed(4)}`;
 				tdResult.addClass('crc-cleanup-geocode-result--coords');
 			} else {
-				tdResult.textContent = result.error || 'Not found';
+				tdResult.textContent = result.error || '未找到';
 				tdResult.addClass('crc-cleanup-geocode-result--error');
 			}
 		}
@@ -2527,7 +2526,7 @@ export class CleanupWizardModal extends Modal {
 			const failedNote = results.createDiv({ cls: 'crc-cleanup-geocode-failed-note' });
 			const noteIcon = failedNote.createSpan({ cls: 'crc-cleanup-geocode-failed-note-icon' });
 			setIcon(noteIcon, 'info');
-			failedNote.createSpan({ text: 'Places not found may have unusual names or be too specific. You can try geocoding them manually.' });
+			failedNote.createSpan({ text: '未找到的地点可能名称不常见或过于具体。你可以尝试手动对其进行地理编码。' });
 		}
 
 		// Update step state
@@ -2546,7 +2545,7 @@ export class CleanupWizardModal extends Modal {
 			});
 		const doneIcon = doneBtn.buttonEl.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(doneIcon, 'check');
-		doneBtn.buttonEl.createSpan({ text: 'Done' });
+		doneBtn.buttonEl.createSpan({ text: '完成' });
 	}
 
 	/**
@@ -2609,9 +2608,9 @@ export class CleanupWizardModal extends Modal {
 		const failedCount = this.geocodingResults.filter(r => !r.success || !r.coordinates).length;
 
 		if (this.geocodingCancelled) {
-			new Notice(`Geocoding cancelled. Found ${successCount} coordinates.`);
+			new Notice(`地理编码已取消。找到 ${successCount} 个坐标。`);
 		} else {
-			new Notice(`Geocoding complete! Found ${successCount} coordinates, ${failedCount} not found.`);
+			new Notice(`地理编码完成！找到 ${successCount} 个坐标，${failedCount} 个未找到。`);
 		}
 
 		// Clear the ungeocoded places list since we've processed them
@@ -2654,8 +2653,8 @@ export class CleanupWizardModal extends Modal {
 			const noIssues = container.createDiv({ cls: 'crc-cleanup-no-issues' });
 			const icon = noIssues.createDiv({ cls: 'crc-cleanup-no-issues-icon' });
 			setIcon(icon, 'check-circle');
-			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-text', text: 'All places have parent hierarchies!' });
-			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-hint', text: 'Your place notes already have parent places defined. You can skip to the next step.' });
+			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-text', text: '所有地点都有父母层级！' });
+			noIssues.createDiv({ cls: 'crc-cleanup-no-issues-hint', text: '你的地点笔记已定义父级地点。可以跳到下一步。' });
 			return;
 		}
 
@@ -2663,19 +2662,19 @@ export class CleanupWizardModal extends Modal {
 
 		// Summary
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `Found ${this.placesWithoutParent.length} ${pluralize(this.placesWithoutParent.length, 'place')} without parent hierarchy.`;
+		summary.textContent = `发现 ${this.placesWithoutParent.length} 个地点缺少父母层级。`;
 
 		// Description
 		const desc = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		desc.textContent = 'This will geocode each place, parse the full address into hierarchy components (city → county → state → country), and create or link parent place notes.';
+		desc.textContent = '这将对每个地点进行地理编码，将完整地址解析为层级组成部分（城市 → 县 → 州 → 国家），并创建或链接父级地点笔记。';
 
 		// Estimated time
 		const estimatedMinutes = Math.ceil(this.placesWithoutParent.length / 60);
-		const timeText = `about ${estimatedMinutes} ${pluralize(estimatedMinutes, 'minute')}`;
+		const timeText = `约${estimatedMinutes}分钟`;
 		const timeEstimate = preview.createDiv({ cls: 'crc-cleanup-hierarchy-time' });
 		const timeIcon = timeEstimate.createSpan({ cls: 'crc-cleanup-hierarchy-time-icon' });
 		setIcon(timeIcon, 'clock');
-		timeEstimate.createSpan({ text: `Estimated time: ${timeText}` });
+		timeEstimate.createSpan({ text: `预计时间：${timeText}` });
 
 		// Settings
 		const settingsContainer = preview.createDiv({ cls: 'crc-cleanup-hierarchy-settings' });
@@ -2688,27 +2687,27 @@ export class CleanupWizardModal extends Modal {
 		createParentsCheckbox.addEventListener('change', () => {
 			this.hierarchyCreateMissingParents = createParentsCheckbox.checked;
 		});
-		createParentsLabel.createSpan({ text: ' Create missing parent places' });
-		createParentsRow.createDiv({ cls: 'crc-cleanup-hierarchy-setting-desc', text: 'Automatically create place notes for missing parents in the hierarchy' });
+		createParentsLabel.createSpan({ text: ' 创建缺失的父级地点' });
+		createParentsRow.createDiv({ cls: 'crc-cleanup-hierarchy-setting-desc', text: '自动为层级中缺失的父级创建地点笔记' });
 
 		// Directory input
 		const dirRow = settingsContainer.createDiv({ cls: 'crc-cleanup-hierarchy-setting' });
-		dirRow.createDiv({ cls: 'crc-cleanup-hierarchy-setting-label', text: 'Directory for new places' });
+		dirRow.createDiv({ cls: 'crc-cleanup-hierarchy-setting-label', text: '新地点所在文件夹' });
 		const dirInput = dirRow.createEl('input', {
 			type: 'text',
 			cls: 'crc-cleanup-hierarchy-input',
-			placeholder: 'e.g., Places'
+			placeholder: '例：Places'
 		});
 		dirInput.value = this.hierarchyPlacesDirectory;
 		dirInput.addEventListener('change', () => {
 			this.hierarchyPlacesDirectory = dirInput.value;
 		});
-		dirRow.createDiv({ cls: 'crc-cleanup-hierarchy-setting-desc', text: 'Where to create new parent place notes' });
+		dirRow.createDiv({ cls: 'crc-cleanup-hierarchy-setting-desc', text: '新建父级地点笔记的创建位置' });
 
 		// Places list preview
 		const listContainer = preview.createDiv({ cls: 'crc-cleanup-hierarchy-list-container' });
 		const listTitle = listContainer.createDiv({ cls: 'crc-cleanup-hierarchy-list-title' });
-		listTitle.textContent = 'Places to enrich:';
+		listTitle.textContent = '待丰富的地点：';
 
 		const placesList = listContainer.createDiv({ cls: 'crc-cleanup-hierarchy-list' });
 		const maxDisplay = 20;
@@ -2728,14 +2727,14 @@ export class CleanupWizardModal extends Modal {
 
 		if (this.placesWithoutParent.length > maxDisplay) {
 			const moreEl = placesList.createDiv({ cls: 'crc-cleanup-hierarchy-list-more' });
-			moreEl.textContent = `... and ${this.placesWithoutParent.length - maxDisplay} more`;
+			moreEl.textContent = `… 另有 ${this.placesWithoutParent.length - maxDisplay} 个`;
 		}
 
 		// Warning
 		const warning = preview.createDiv({ cls: 'crc-cleanup-warning' });
 		const warningIcon = warning.createDiv({ cls: 'crc-cleanup-warning-icon' });
 		setIcon(warningIcon, 'alert-triangle');
-		warning.createSpan({ text: 'Backup your vault before proceeding. This operation will create new files and modify existing place notes.' });
+		warning.createSpan({ text: '操作前请备份你的库。此操作将创建新文件并修改现有地点笔记。' });
 
 		// Start button
 		const applyContainer = preview.createDiv({ cls: 'crc-cleanup-hierarchy-apply' });
@@ -2746,7 +2745,7 @@ export class CleanupWizardModal extends Modal {
 			});
 		const startIcon = startBtn.buttonEl.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(startIcon, 'git-branch');
-		startBtn.buttonEl.createSpan({ text: `Start enriching ${this.placesWithoutParent.length} places` });
+		startBtn.buttonEl.createSpan({ text: `开始丰富 ${this.placesWithoutParent.length} 个地点` });
 	}
 
 	/**
@@ -2757,7 +2756,7 @@ export class CleanupWizardModal extends Modal {
 
 		// Progress header
 		const header = progress.createDiv({ cls: 'crc-cleanup-hierarchy-progress-header' });
-		header.createSpan({ text: 'Enriching place hierarchies...', cls: 'crc-cleanup-hierarchy-progress-title' });
+		header.createSpan({ text: '正在丰富地点层级…', cls: 'crc-cleanup-hierarchy-progress-title' });
 
 		// Progress stats
 		const stats = progress.createDiv({ cls: 'crc-cleanup-hierarchy-progress-stats' });
@@ -2769,7 +2768,7 @@ export class CleanupWizardModal extends Modal {
 		const failedCount = this.hierarchyEnrichmentResults.filter(r => !r.success && !r.skipped).length;
 		const parentsCreated = this.hierarchyEnrichmentResults.reduce((sum, r) => sum + (r.parentsCreated?.length || 0), 0);
 
-		stats.createSpan({ text: `${processed} of ${total} (${percent}%)` });
+		stats.createSpan({ text: `${processed} / ${total}（${percent}%）` });
 
 		// Progress bar
 		const progressBarContainer = progress.createDiv({ cls: 'crc-cleanup-hierarchy-progress-bar-container' });
@@ -2782,17 +2781,17 @@ export class CleanupWizardModal extends Modal {
 		const successStat = breakdown.createSpan({ cls: 'crc-cleanup-hierarchy-stat crc-cleanup-hierarchy-stat--success' });
 		const successIcon = successStat.createSpan({ cls: 'crc-cleanup-hierarchy-stat-icon' });
 		setIcon(successIcon, 'check');
-		successStat.createSpan({ text: `${successCount} enriched` });
+		successStat.createSpan({ text: `已丰富 ${successCount} 个` });
 
 		const createdStat = breakdown.createSpan({ cls: 'crc-cleanup-hierarchy-stat crc-cleanup-hierarchy-stat--created' });
 		const createdIcon = createdStat.createSpan({ cls: 'crc-cleanup-hierarchy-stat-icon' });
 		setIcon(createdIcon, 'plus');
-		createdStat.createSpan({ text: `${parentsCreated} parents created` });
+		createdStat.createSpan({ text: `已创建 ${parentsCreated} 个父级` });
 
 		const failedStat = breakdown.createSpan({ cls: 'crc-cleanup-hierarchy-stat crc-cleanup-hierarchy-stat--failed' });
 		const failedIcon = failedStat.createSpan({ cls: 'crc-cleanup-hierarchy-stat-icon' });
 		setIcon(failedIcon, 'x');
-		failedStat.createSpan({ text: `${failedCount} failed` });
+		failedStat.createSpan({ text: `${failedCount} 个失败` });
 
 		// Results list (live updating)
 		const resultsList = progress.createDiv({ cls: 'crc-cleanup-hierarchy-results-list' });
@@ -2832,11 +2831,11 @@ export class CleanupWizardModal extends Modal {
 		// Cancel button
 		const cancelContainer = progress.createDiv({ cls: 'crc-cleanup-hierarchy-cancel' });
 		const cancelBtn = new ButtonComponent(cancelContainer)
-			.setButtonText(this.hierarchyEnrichmentCancelled ? 'Cancelling...' : 'Cancel')
+			.setButtonText(this.hierarchyEnrichmentCancelled ? '正在取消…' : '取消')
 			.setDisabled(this.hierarchyEnrichmentCancelled)
 			.onClick(() => {
 				this.hierarchyEnrichmentCancelled = true;
-				cancelBtn.setButtonText('Cancelling...');
+				cancelBtn.setButtonText('正在取消…');
 				cancelBtn.setDisabled(true);
 			});
 	}
@@ -2858,19 +2857,19 @@ export class CleanupWizardModal extends Modal {
 		const successIcon = successSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-icon' });
 		setIcon(successIcon, 'check-circle');
 		successSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-value', text: String(successCount) });
-		successSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-label', text: 'Places enriched' });
+		successSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-label', text: '已丰富地点' });
 
 		const createdSummary = summary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-stat crc-cleanup-hierarchy-summary-stat--created' });
 		const createdIcon = createdSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-icon' });
 		setIcon(createdIcon, 'plus-circle');
 		createdSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-value', text: String(parentsCreated) });
-		createdSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-label', text: 'Parents created' });
+		createdSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-label', text: '已创建父级' });
 
 		const failedSummary = summary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-stat crc-cleanup-hierarchy-summary-stat--failed' });
 		const failedIcon = failedSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-icon' });
 		setIcon(failedIcon, 'x-circle');
 		failedSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-value', text: String(failedCount) });
-		failedSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-label', text: 'Failed' });
+		failedSummary.createDiv({ cls: 'crc-cleanup-hierarchy-summary-label', text: '失败' });
 
 		// Results table
 		const tableContainer = results.createDiv({ cls: 'crc-cleanup-hierarchy-table-container' });
@@ -2879,8 +2878,8 @@ export class CleanupWizardModal extends Modal {
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
 		headerRow.createEl('th', { text: '', cls: 'crc-cleanup-hierarchy-th-status' });
-		headerRow.createEl('th', { text: 'Place' });
-		headerRow.createEl('th', { text: 'Result' });
+		headerRow.createEl('th', { text: '地点' });
+		headerRow.createEl('th', { text: '结果' });
 
 		const tbody = table.createEl('tbody');
 
@@ -2909,15 +2908,15 @@ export class CleanupWizardModal extends Modal {
 			const tdResult = row.createEl('td', { cls: 'crc-cleanup-hierarchy-td-result' });
 			if (result.success && result.parentLinked) {
 				const createdText = result.parentsCreated && result.parentsCreated.length > 0
-					? ` (created: ${result.parentsCreated.join(', ')})`
+					? `（已创建：${result.parentsCreated.join('、')}）`
 					: '';
 				tdResult.textContent = `→ ${result.parentLinked}${createdText}`;
 				tdResult.addClass('crc-cleanup-hierarchy-result--success');
 			} else if (result.skipped) {
-				tdResult.textContent = 'Already has parent';
+				tdResult.textContent = '已有父级';
 				tdResult.addClass('crc-cleanup-hierarchy-result--skipped');
 			} else {
-				tdResult.textContent = result.error || 'Failed';
+				tdResult.textContent = result.error || '失败';
 				tdResult.addClass('crc-cleanup-hierarchy-result--error');
 			}
 		}
@@ -2927,7 +2926,7 @@ export class CleanupWizardModal extends Modal {
 			const failedNote = results.createDiv({ cls: 'crc-cleanup-hierarchy-failed-note' });
 			const noteIcon = failedNote.createSpan({ cls: 'crc-cleanup-hierarchy-failed-note-icon' });
 			setIcon(noteIcon, 'info');
-			failedNote.createSpan({ text: 'Places that failed may have unusual names or not be found in OpenStreetMap. You can enrich them manually.' });
+			failedNote.createSpan({ text: '失败的地点可能名称不常见，或未能在 OpenStreetMap 中找到。你可以手动丰富它们。' });
 		}
 
 		// Update step state
@@ -2946,7 +2945,7 @@ export class CleanupWizardModal extends Modal {
 			});
 		const doneIcon = doneBtn.buttonEl.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(doneIcon, 'check');
-		doneBtn.buttonEl.createSpan({ text: 'Done' });
+		doneBtn.buttonEl.createSpan({ text: '完成' });
 	}
 
 	/**
@@ -2991,9 +2990,9 @@ export class CleanupWizardModal extends Modal {
 		const failedCount = this.hierarchyEnrichmentResults.filter(r => !r.success && !r.skipped).length;
 
 		if (this.hierarchyEnrichmentCancelled) {
-			new Notice(`Hierarchy enrichment cancelled. Enriched ${successCount} places, created ${parentsCreated} parents.`);
+			new Notice(`层级丰富已取消。已丰富 ${successCount} 个地点，创建 ${parentsCreated} 个父级。`);
 		} else {
-			new Notice(`Hierarchy enrichment complete! Enriched ${successCount} places, created ${parentsCreated} parents. ${failedCount} failed.`);
+			new Notice(`层级丰富完成！已丰富 ${successCount} 个地点，创建 ${parentsCreated} 个父级。${failedCount} 个失败。`);
 		}
 
 		// Clear the places list since we've processed them
@@ -3029,7 +3028,7 @@ export class CleanupWizardModal extends Modal {
 			const geocodeResult = await geocodingService.geocodeWithDetails(searchQuery);
 
 			if (!geocodeResult.success || !geocodeResult.addressComponents) {
-				result.error = geocodeResult.error || 'No address found';
+				result.error = geocodeResult.error || '未找到地址';
 				return result;
 			}
 
@@ -3052,10 +3051,10 @@ export class CleanupWizardModal extends Modal {
 					}
 					result.success = true;
 					result.parentsCreated = [];
-					result.parentLinked = '(top-level country)';
+					result.parentLinked = '(顶级国家)';
 					return result;
 				}
-				result.error = 'Could not parse hierarchy';
+				result.error = '无法解析层级';
 				return result;
 			}
 
@@ -3084,11 +3083,11 @@ export class CleanupWizardModal extends Modal {
 				result.parentsCreated = parentsCreated;
 				result.parentLinked = placeGraph.getPlaceByCrId(parentId)?.name;
 			} else {
-				result.error = 'Could not establish parent chain';
+				result.error = '无法建立父级链';
 			}
 
 		} catch (error) {
-			result.error = error instanceof Error ? error.message : 'Unknown error';
+			result.error = error instanceof Error ? error.message : '未知错误';
 		}
 
 		return result;
@@ -3241,7 +3240,7 @@ export class CleanupWizardModal extends Modal {
 		});
 		const overviewIcon = overviewBtn.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(overviewIcon, 'layout-grid');
-		overviewBtn.createSpan({ text: 'Overview' });
+		overviewBtn.createSpan({ text: '总览' });
 		overviewBtn.addEventListener('click', () => {
 			this.currentView = 'overview';
 			this.renderCurrentView();
@@ -3250,7 +3249,7 @@ export class CleanupWizardModal extends Modal {
 		// Back button (if not first step)
 		if (this.state.currentStep > 1) {
 			new ButtonComponent(leftBtns)
-				.setButtonText('Back')
+				.setButtonText('上一步')
 				.onClick(() => {
 					this.state.currentStep--;
 					this.renderCurrentView();
@@ -3261,10 +3260,10 @@ export class CleanupWizardModal extends Modal {
 
 		// Skip button
 		new ButtonComponent(rightBtns)
-			.setButtonText('Skip Step')
+			.setButtonText('跳过此步骤')
 			.onClick(() => {
 				this.state.steps[this.state.currentStep].status = 'skipped';
-				this.state.steps[this.state.currentStep].skippedReason = 'Skipped by user';
+				this.state.steps[this.state.currentStep].skippedReason = '用户跳过';
 				this.advanceToNextStep();
 			});
 
@@ -3272,7 +3271,7 @@ export class CleanupWizardModal extends Modal {
 		if (stepConfig.type === 'review' || stepState.status === 'complete') {
 			// Review step or already complete - just show Next
 			new ButtonComponent(rightBtns)
-				.setButtonText(this.state.currentStep === WIZARD_STEPS.length ? 'Finish' : 'Next')
+				.setButtonText(this.state.currentStep === WIZARD_STEPS.length ? '完成' : '下一步')
 				.setCta()
 				.onClick(() => {
 					if (stepState.status === 'pending') {
@@ -3290,16 +3289,16 @@ export class CleanupWizardModal extends Modal {
 				});
 			const applyIcon = applyBtn.buttonEl.createSpan({ cls: 'crc-btn-icon' });
 			setIcon(applyIcon, 'zap');
-			applyBtn.buttonEl.createSpan({ text: 'Apply Fixes' });
+			applyBtn.buttonEl.createSpan({ text: '应用修复' });
 		} else {
 			// No issues or interactive step - show Next
 			new ButtonComponent(rightBtns)
-				.setButtonText(this.state.currentStep === WIZARD_STEPS.length ? 'Finish' : 'Next')
+				.setButtonText(this.state.currentStep === WIZARD_STEPS.length ? '完成' : '下一步')
 				.setCta()
 				.onClick(() => {
 					if (stepState.status === 'pending' && stepState.issueCount === 0) {
 						this.state.steps[this.state.currentStep].status = 'skipped';
-						this.state.steps[this.state.currentStep].skippedReason = 'No issues found';
+						this.state.steps[this.state.currentStep].skippedReason = '未发现问题';
 					}
 					this.advanceToNextStep();
 				});
@@ -3414,9 +3413,9 @@ export class CleanupWizardModal extends Modal {
 					// Custom notice for life events to show how many notes were created
 					// (plus any reused via #414 semantic-identity dedup, when applicable)
 					const reusedSuffix = migrationResult.eventNotesReused > 0
-						? ` (reused ${migrationResult.eventNotesReused} existing event${migrationResult.eventNotesReused === 1 ? '' : 's'})`
+						? `（复用了 ${migrationResult.eventNotesReused} 条已有事件）`
 						: '';
-					new Notice(`Created ${migrationResult.eventNotesCreated} event notes from ${migrationResult.modified} person notes${reusedSuffix}`);
+					new Notice(`已从 ${migrationResult.modified} 条人物笔记创建 ${migrationResult.eventNotesCreated} 条事件笔记${reusedSuffix}`);
 					break;
 				}
 				case 'child-to-children': {
@@ -3454,17 +3453,17 @@ export class CleanupWizardModal extends Modal {
 				if (stepConfig.id === 'bidirectional') {
 					const conflicts = this.bidirectionalIssues.filter(i => i.type === 'conflicting-parent-claim').length;
 					if (conflicts > 0) {
-						new Notice(`Fixed ${result.modified} issues (${conflicts} conflicts require manual resolution)`);
+						new Notice(`已修复 ${result.modified} 个问题（${conflicts} 个冲突需要手动解决）`);
 					} else {
-						new Notice(`Fixed ${result.modified} issues`);
+						new Notice(`已修复 ${result.modified} 个问题`);
 					}
 				} else {
-					new Notice(`Fixed ${result.modified} issues`);
+					new Notice(`已修复 ${result.modified} 个问题`);
 				}
 			}
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Unknown error';
-			new Notice(`Error: ${message}`);
+			const message = error instanceof Error ? error.message : '未知错误';
+			new Notice(`错误：${message}`);
 			stepState.status = 'pending';
 		}
 
@@ -3487,7 +3486,7 @@ export class CleanupWizardModal extends Modal {
 		const header = section.createDiv({ cls: 'crc-cleanup-summary-header' });
 		const headerIcon = header.createDiv({ cls: 'crc-cleanup-summary-icon' });
 		setIcon(headerIcon, 'check-circle');
-		header.createEl('h2', { text: 'Cleanup Complete!' });
+		header.createEl('h2', { text: '清理完成！' });
 
 		// Stats cards
 		const stats = section.createDiv({ cls: 'crc-cleanup-summary-stats' });
@@ -3509,12 +3508,12 @@ export class CleanupWizardModal extends Modal {
 			}
 		}
 
-		this.renderStatCard(stats, String(totalFixes), 'Fixes Applied', 'zap');
-		this.renderStatCard(stats, String(skippedCount), 'Steps Skipped', 'skip-forward');
-		this.renderStatCard(stats, String(manualCount), 'Manual Issues', 'hand');
+		this.renderStatCard(stats, String(totalFixes), '已应用修复', 'zap');
+		this.renderStatCard(stats, String(skippedCount), '已跳过步骤', 'skip-forward');
+		this.renderStatCard(stats, String(manualCount), '手动问题', 'hand');
 
 		// Step breakdown
-		section.createEl('h4', { text: 'Step Breakdown', cls: 'crc-cleanup-breakdown-title' });
+		section.createEl('h4', { text: '步骤明细', cls: 'crc-cleanup-breakdown-title' });
 
 		const breakdown = section.createDiv({ cls: 'crc-cleanup-breakdown' });
 
@@ -3523,7 +3522,7 @@ export class CleanupWizardModal extends Modal {
 			const row = breakdown.createDiv({ cls: 'crc-cleanup-breakdown-row' });
 
 			const label = row.createDiv({ cls: 'crc-cleanup-breakdown-label' });
-			label.textContent = `Step ${step.number}: ${step.title}`;
+			label.textContent = `步骤${step.number}：${step.title}`;
 
 			const status = row.createDiv({ cls: 'crc-cleanup-breakdown-status' });
 
@@ -3532,20 +3531,20 @@ export class CleanupWizardModal extends Modal {
 					const checkIcon = status.createSpan({ cls: 'crc-cleanup-breakdown-icon crc-cleanup-breakdown-icon--complete' });
 					setIcon(checkIcon, 'check');
 					if (stepState.fixCount > 0) {
-						status.createSpan({ text: `${stepState.fixCount} fixed` });
+						status.createSpan({ text: `已修复 ${stepState.fixCount} 项` });
 					} else {
-						status.createSpan({ text: 'Reviewed' });
+						status.createSpan({ text: '已查看' });
 					}
 					break;
 				}
 				case 'skipped': {
 					const skipIcon = status.createSpan({ cls: 'crc-cleanup-breakdown-icon crc-cleanup-breakdown-icon--skipped' });
 					setIcon(skipIcon, 'skip-forward');
-					status.createSpan({ text: stepState.skippedReason || 'Skipped' });
+					status.createSpan({ text: stepState.skippedReason || '已跳过' });
 					break;
 				}
 				case 'pending':
-					status.createSpan({ text: 'Not started', cls: 'crc-cleanup-breakdown-pending' });
+					status.createSpan({ text: '未开始', cls: 'crc-cleanup-breakdown-pending' });
 					break;
 			}
 		}
@@ -3558,7 +3557,7 @@ export class CleanupWizardModal extends Modal {
 		});
 		const saveIcon = saveReportBtn.createSpan({ cls: 'crc-btn-icon' });
 		setIcon(saveIcon, 'file-text');
-		saveReportBtn.createSpan({ text: 'Save Report' });
+		saveReportBtn.createSpan({ text: '保存报告' });
 		saveReportBtn.addEventListener('click', () => {
 			void this.saveReport();
 		});
@@ -3566,7 +3565,7 @@ export class CleanupWizardModal extends Modal {
 		const rightBtns = this.footerContainer.createDiv({ cls: 'crc-cleanup-footer-right' });
 
 		new ButtonComponent(rightBtns)
-			.setButtonText('Done')
+			.setButtonText('完成')
 			.setCta()
 			.onClick(() => this.close());
 	}
@@ -3764,10 +3763,10 @@ export class CleanupWizardModal extends Modal {
 			// Create report file
 			const filePath = `${folderPath}/${fileName}`;
 			await this.app.vault.create(filePath, content);
-			new Notice(`Report saved to ${filePath}`);
+			new Notice(`报告已保存至 ${filePath}`);
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Unknown error';
-			new Notice(`Failed to save report: ${message}`);
+			const message = error instanceof Error ? error.message : '未知错误';
+			new Notice(`保存报告失败：${message}`);
 		}
 	}
 
@@ -3880,10 +3879,10 @@ export class CleanupWizardModal extends Modal {
 
 		const preview = container.createDiv({ cls: 'crc-cleanup-preview' });
 		const summary = preview.createDiv({ cls: 'crc-cleanup-preview-summary' });
-		summary.textContent = `${this.placesWithoutCrIdNotes.length} place ${pluralize(this.placesWithoutCrIdNotes.length, 'note')} will be updated:`;
+		summary.textContent = `将更新 ${this.placesWithoutCrIdNotes.length} 条地点笔记：`;
 
 		const hint = preview.createDiv({ cls: 'crc-cleanup-preview-hint' });
-		hint.textContent = 'A generated cr_id will be added to each place note so it appears in the place graph and downstream features.';
+		hint.textContent = '将为每条地点笔记添加生成的 cr_id，使其出现在地点图谱及后续功能中。';
 
 		const list = preview.createDiv({ cls: 'crc-cleanup-preview-list' });
 
@@ -3903,7 +3902,7 @@ export class CleanupWizardModal extends Modal {
 			fileName.textContent = file.basename;
 
 			const desc = content.createSpan({ cls: 'crc-cleanup-preview-desc' });
-			desc.textContent = ': add cr_id';
+			desc.textContent = '：添加 cr_id';
 
 			row.addEventListener('click', () => {
 				this.close();
@@ -3913,7 +3912,7 @@ export class CleanupWizardModal extends Modal {
 
 		if (remaining > 0) {
 			const more = list.createDiv({ cls: 'crc-cleanup-preview-more' });
-			more.textContent = `…and ${remaining} more`;
+			more.textContent = `…另有 ${remaining} 个`;
 		}
 	}
 

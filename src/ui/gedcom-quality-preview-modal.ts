@@ -43,12 +43,12 @@ interface TabConfig {
 }
 
 const TABS: TabConfig[] = [
-	{ id: 'summary', label: 'Summary', icon: 'bar-chart' },
-	{ id: 'places', label: 'Places', icon: 'globe' },
-	{ id: 'date', label: 'Dates', icon: 'calendar' },
-	{ id: 'relationship', label: 'Relationships', icon: 'users' },
-	{ id: 'reference', label: 'References', icon: 'link' },
-	{ id: 'data', label: 'Data', icon: 'file-text' }
+	{ id: 'summary', label: '概览', icon: 'bar-chart' },
+	{ id: 'places', label: '地点', icon: 'globe' },
+	{ id: 'date', label: '日期', icon: 'calendar' },
+	{ id: 'relationship', label: '关系', icon: 'users' },
+	{ id: 'reference', label: '引用', icon: 'link' },
+	{ id: 'data', label: '数据', icon: 'file-text' }
 ];
 
 const SEVERITY_ICONS: Record<QualityIssueSeverity, LucideIconName> = {
@@ -96,7 +96,7 @@ export class GedcomQualityPreviewModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const titleIcon = createLucideIcon('clipboard-check', 24);
 		titleContainer.appendChild(titleIcon);
-		titleContainer.createEl('span', { text: 'Data quality preview' });
+		titleContainer.createEl('span', { text: '数据质量预览' });
 
 		// Summary bar
 		this.renderSummaryBar(contentEl);
@@ -128,17 +128,17 @@ export class GedcomQualityPreviewModal extends Modal {
 		// Record counts
 		const recordsInfo = summaryBar.createDiv({ cls: 'crc-quality-summary-item' });
 		recordsInfo.createEl('span', {
-			text: `${summary.totalIndividuals} individuals`,
+			text: `${summary.totalIndividuals} 位人物`,
 			cls: 'crc-quality-summary-count'
 		});
 		recordsInfo.createEl('span', { text: ' · ', cls: 'crc-text--muted' });
 		recordsInfo.createEl('span', {
-			text: `${summary.totalFamilies} families`,
+			text: `${summary.totalFamilies} 个家族`,
 			cls: 'crc-quality-summary-count'
 		});
 		recordsInfo.createEl('span', { text: ' · ', cls: 'crc-text--muted' });
 		recordsInfo.createEl('span', {
-			text: `${summary.uniquePlaces.length} unique places`,
+			text: `${summary.uniquePlaces.length} 个不重复地点`,
 			cls: 'crc-quality-summary-count'
 		});
 
@@ -165,7 +165,7 @@ export class GedcomQualityPreviewModal extends Modal {
 
 		if (summary.totalIssues === 0 && summary.placeVariants.length === 0) {
 			issuesInfo.createEl('span', {
-				text: '✓ No issues found',
+				text: '✓ 未发现问题',
 				cls: 'crc-text--success'
 			});
 		}
@@ -240,39 +240,39 @@ export class GedcomQualityPreviewModal extends Modal {
 
 		// Overview
 		const overviewSection = container.createDiv({ cls: 'crc-quality-section' });
-		overviewSection.createEl('h4', { text: 'Import overview' });
+		overviewSection.createEl('h4', { text: '导入概览' });
 
 		const overviewGrid = overviewSection.createDiv({ cls: 'crc-quality-overview-grid' });
 
-		this.createStatCard(overviewGrid, 'users', summary.totalIndividuals.toString(), 'Individuals');
-		this.createStatCard(overviewGrid, 'home', summary.totalFamilies.toString(), 'Families');
-		this.createStatCard(overviewGrid, 'map-pin', summary.uniquePlaces.length.toString(), 'Unique places');
+		this.createStatCard(overviewGrid, 'users', summary.totalIndividuals.toString(), '人物');
+		this.createStatCard(overviewGrid, 'home', summary.totalFamilies.toString(), '家族');
+		this.createStatCard(overviewGrid, 'map-pin', summary.uniquePlaces.length.toString(), '不重复地点');
 		this.createStatCard(
 			overviewGrid,
 			summary.totalIssues > 0 ? 'alert-triangle' : 'check-circle',
 			summary.totalIssues.toString(),
-			'Issues found',
+			'发现的问题',
 			summary.totalIssues === 0 ? 'crc-stat-card--success' : summary.bySeverity.error > 0 ? 'crc-stat-card--error' : ''
 		);
 
 		// Place variants summary (if any)
 		if (summary.placeVariants.length > 0) {
 			const variantsSection = container.createDiv({ cls: 'crc-quality-section' });
-			variantsSection.createEl('h4', { text: 'Place name variants' });
+			variantsSection.createEl('h4', { text: '地点名称变体' });
 			variantsSection.createEl('p', {
-				text: `Found ${summary.placeVariants.length} place name variant${summary.placeVariants.length !== 1 ? 's' : ''} that can be standardized (e.g., "USA" vs "United States").`,
+				text: `发现 ${summary.placeVariants.length} 个可标准化的地点名称变体（例如"USA"与"United States"）。`,
 				cls: 'crc-text--muted'
 			});
 
 			const viewBtn = variantsSection.createEl('button', {
-				text: 'Configure place names →',
+				text: '配置地点名称 →',
 				cls: 'crc-btn crc-btn--small'
 			});
 			viewBtn.addEventListener('click', () => {
 				this.activeTab = 'places';
 				this.tabContentEl?.parentElement?.querySelectorAll('.crc-quality-tab').forEach(el => {
 					el.removeClass('crc-quality-tab--active');
-					if (el.textContent?.includes('Places')) {
+					if (el.textContent?.includes('地点')) {
 						el.addClass('crc-quality-tab--active');
 					}
 				});
@@ -283,15 +283,15 @@ export class GedcomQualityPreviewModal extends Modal {
 		// Issues breakdown (if any)
 		if (summary.totalIssues > 0) {
 			const issuesSection = container.createDiv({ cls: 'crc-quality-section' });
-			issuesSection.createEl('h4', { text: 'Issues by category' });
+			issuesSection.createEl('h4', { text: '按分类的问题' });
 
 			const categoryGrid = issuesSection.createDiv({ cls: 'crc-quality-category-grid' });
 
 			const categories: Array<{ cat: QualityIssueCategory; label: string; icon: LucideIconName }> = [
-				{ cat: 'date', label: 'Date issues', icon: 'calendar' },
-				{ cat: 'relationship', label: 'Relationship issues', icon: 'users' },
-				{ cat: 'reference', label: 'Reference issues', icon: 'link' },
-				{ cat: 'data', label: 'Data issues', icon: 'file-text' }
+				{ cat: 'date', label: '日期问题', icon: 'calendar' },
+				{ cat: 'relationship', label: '关系问题', icon: 'users' },
+				{ cat: 'reference', label: '引用问题', icon: 'link' },
+				{ cat: 'data', label: '数据问题', icon: 'file-text' }
 			];
 
 			for (const { cat, label, icon } of categories) {
@@ -310,9 +310,9 @@ export class GedcomQualityPreviewModal extends Modal {
 			const successIcon = createLucideIcon('check-circle', 48);
 			successIcon.addClass('crc-text--success');
 			successSection.appendChild(successIcon);
-			successSection.createEl('h4', { text: 'Data looks good!' });
+			successSection.createEl('h4', { text: '数据看起来很好！' });
 			successSection.createEl('p', {
-				text: 'No data quality issues were detected in this GEDCOM file.',
+				text: '在此 GEDCOM 文件中未检测到数据质量问题。',
 				cls: 'crc-text--muted'
 			});
 		}
@@ -344,7 +344,7 @@ export class GedcomQualityPreviewModal extends Modal {
 		if (summary.placeVariants.length === 0) {
 			const emptyState = container.createDiv({ cls: 'crc-quality-empty' });
 			emptyState.createEl('p', {
-				text: 'No place name variants found. All place names are already standardized.',
+				text: '未发现地点名称变体。所有地点名称均已标准化。',
 				cls: 'crc-text--muted'
 			});
 			return;
@@ -353,14 +353,14 @@ export class GedcomQualityPreviewModal extends Modal {
 		// Description
 		const description = container.createDiv({ cls: 'crc-quality-section' });
 		description.createEl('p', {
-			text: 'The following place name variants were found. Choose which form to use for each:',
+			text: '发现以下地点名称变体。请为每个变体选择要使用的形式：',
 			cls: 'crc-text--muted'
 		});
 
 		// Quick actions
 		const quickActions = container.createDiv({ cls: 'crc-quality-quick-actions' });
 		const useCanonicalBtn = quickActions.createEl('button', {
-			text: 'Use all canonical forms',
+			text: '全部使用规范形式',
 			cls: 'crc-btn crc-btn--small'
 		});
 		useCanonicalBtn.addEventListener('click', () => {
@@ -371,7 +371,7 @@ export class GedcomQualityPreviewModal extends Modal {
 		});
 
 		const keepOriginalBtn = quickActions.createEl('button', {
-			text: 'Keep all original forms',
+			text: '全部保留原始形式',
 			cls: 'crc-btn crc-btn--small'
 		});
 		keepOriginalBtn.addEventListener('click', () => {
@@ -387,9 +387,9 @@ export class GedcomQualityPreviewModal extends Modal {
 
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Found in file' });
-		headerRow.createEl('th', { text: 'Standardize to' });
-		headerRow.createEl('th', { text: 'Occurrences' });
+		headerRow.createEl('th', { text: '文件中的形式' });
+		headerRow.createEl('th', { text: '标准化为' });
+		headerRow.createEl('th', { text: '出现次数' });
 
 		const tbody = table.createEl('tbody');
 
@@ -412,7 +412,7 @@ export class GedcomQualityPreviewModal extends Modal {
 			// Option: Keep original
 			const keepOpt = select.createEl('option', {
 				value: variant.variant,
-				text: `${variant.variant} (keep)`
+				text: `${variant.variant}（保留）`
 			});
 			keepOpt.selected = currentChoice === variant.variant;
 
@@ -442,9 +442,10 @@ export class GedcomQualityPreviewModal extends Modal {
 		const issues = this.analysis.issues.filter(i => i.category === category);
 
 		if (issues.length === 0) {
+			const categoryLabel = TABS.find(t => t.id === category)?.label ?? category;
 			const emptyState = container.createDiv({ cls: 'crc-quality-empty' });
 			emptyState.createEl('p', {
-				text: `No ${category} issues found.`,
+				text: `未发现${categoryLabel}问题。`,
 				cls: 'crc-text--muted'
 			});
 			return;
@@ -456,13 +457,13 @@ export class GedcomQualityPreviewModal extends Modal {
 		const infoIssues = issues.filter(i => i.severity === 'info');
 
 		if (errorIssues.length > 0) {
-			this.renderIssueGroup(container, 'Errors', 'error', errorIssues);
+			this.renderIssueGroup(container, '错误', 'error', errorIssues);
 		}
 		if (warningIssues.length > 0) {
-			this.renderIssueGroup(container, 'Warnings', 'warning', warningIssues);
+			this.renderIssueGroup(container, '警告', 'warning', warningIssues);
 		}
 		if (infoIssues.length > 0) {
-			this.renderIssueGroup(container, 'Info', 'info', infoIssues);
+			this.renderIssueGroup(container, '提示', 'info', infoIssues);
 		}
 	}
 
@@ -507,7 +508,7 @@ export class GedcomQualityPreviewModal extends Modal {
 
 		if (issues.length > displayLimit) {
 			list.createEl('p', {
-				text: `... and ${issues.length - displayLimit} more`,
+				text: `… 以及另外 ${issues.length - displayLimit} 条`,
 				cls: 'crc-text--muted crc-text--center'
 			});
 		}
@@ -525,7 +526,7 @@ export class GedcomQualityPreviewModal extends Modal {
 			const warningIcon = createLucideIcon('alert-triangle', 16);
 			warning.appendChild(warningIcon);
 			warning.createSpan({
-				text: ` ${summary.bySeverity.error} error${summary.bySeverity.error !== 1 ? 's' : ''} found. These records may have data problems that could affect your family tree.`
+				text: ` 发现 ${summary.bySeverity.error} 个错误。这些记录可能存在影响家谱的数据问题。`
 			});
 		}
 
@@ -533,7 +534,7 @@ export class GedcomQualityPreviewModal extends Modal {
 		const buttonContainer = container.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel import')
+			.setButtonText('取消导入')
 			.onClick(() => {
 				this.onComplete({ proceed: false, choices: this.choices });
 				this.close();
@@ -541,8 +542,8 @@ export class GedcomQualityPreviewModal extends Modal {
 
 		new ButtonComponent(buttonContainer)
 			.setButtonText(summary.placeVariants.length > 0
-				? 'Continue with these settings'
-				: 'Continue import')
+				? '使用这些设置继续'
+				: '继续导入')
 			.setCta()
 			.onClick(() => {
 				this.onComplete({ proceed: true, choices: this.choices });

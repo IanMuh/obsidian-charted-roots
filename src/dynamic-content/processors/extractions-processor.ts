@@ -69,7 +69,7 @@ export class ExtractionsProcessor {
 
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			renderBlockError(el, `Error rendering extractions: ${message}`);
+			renderBlockError(el, `渲染提取项失败：${message}`);
 		}
 	}
 

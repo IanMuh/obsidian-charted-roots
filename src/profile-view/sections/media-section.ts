@@ -26,11 +26,11 @@ export function renderMediaSection(
 ): void {
 	const sectionId = options.sectionId || 'media';
 	const count = media.length;
-	const summary = `${count} item${count !== 1 ? 's' : ''}`;
+	const summary = `${count} 项`;
 
 	const content = renderProfileSection(parent, {
 		sectionId,
-		title: 'Media',
+		title: '媒体',
 		summary,
 		expanded: options.sectionStates[sectionId] ?? false,
 		onToggle: options.onToggle,

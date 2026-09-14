@@ -8,12 +8,12 @@ import { getPlaceCategoryLabel, PLACE_CATEGORY_LABELS } from '../src/models/plac
  */
 describe('getPlaceCategoryLabel (#745)', () => {
 	it('maps each known category to its label', () => {
-		expect(getPlaceCategoryLabel('real')).toBe('Real');
-		expect(getPlaceCategoryLabel('historical')).toBe('Historical');
-		expect(getPlaceCategoryLabel('disputed')).toBe('Disputed');
-		expect(getPlaceCategoryLabel('legendary')).toBe('Legendary');
-		expect(getPlaceCategoryLabel('mythological')).toBe('Mythological');
-		expect(getPlaceCategoryLabel('fictional')).toBe('Fictional');
+		expect(getPlaceCategoryLabel('real')).toBe('真实');
+		expect(getPlaceCategoryLabel('historical')).toBe('历史');
+		expect(getPlaceCategoryLabel('disputed')).toBe('存疑');
+		expect(getPlaceCategoryLabel('legendary')).toBe('传说');
+		expect(getPlaceCategoryLabel('mythological')).toBe('神话');
+		expect(getPlaceCategoryLabel('fictional')).toBe('虚构');
 	});
 
 	it('returns an empty string for an unset category', () => {

@@ -56,7 +56,7 @@ function renderMemberRow(
 	}
 
 	if (member.isCurrent) {
-		row.createSpan({ text: 'Current', cls: 'cr-profile__member-badge cr-profile__member-badge--current' });
+		row.createSpan({ text: '现任', cls: 'cr-profile__member-badge cr-profile__member-badge--current' });
 	}
 }
 
@@ -67,11 +67,11 @@ export function renderMembersSection(
 	options: MembersSectionOptions
 ): void {
 	const count = members.length;
-	const summary = `${count} member${count !== 1 ? 's' : ''}`;
+	const summary = `${count} 名成员`;
 
 	const content = renderProfileSection(parent, {
 		sectionId: 'members',
-		title: 'Members',
+		title: '成员',
 		summary,
 		expanded: options.sectionStates['members'] ?? true,
 		onToggle: options.onToggle,
@@ -80,7 +80,7 @@ export function renderMembersSection(
 	if (!content) return;
 
 	if (count === 0) {
-		content.createDiv({ cls: 'cr-profile__section-empty', text: 'No members found' });
+		content.createDiv({ cls: 'cr-profile__section-empty', text: '未找到成员' });
 		return;
 	}
 
@@ -104,8 +104,9 @@ export function renderMembersSection(
 
 	// If only one group AND it's the no-role catch-all, render flat
 	// without the redundant "Members" heading (matches the dynamic
-	// block's heading-suppression rule).
-	const onlyNoRole = groups.size === 1 && groups.has('Members');
+	// block's heading-suppression rule). The literal must match
+	// NO_ROLE_HEADING in group-members-by-role.ts.
+	const onlyNoRole = groups.size === 1 && groups.has('成员');
 
 	for (const [heading, entries] of groups) {
 		if (entries.length === 0) continue;

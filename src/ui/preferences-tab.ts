@@ -7,7 +7,6 @@
 
 import { Setting, Notice, App, SliderComponent, AbstractInputSuggest, TextComponent, TFolder } from 'obsidian';
 import { setIcon } from 'obsidian';
-import { pluralize } from '../utils/format-utils';
 
 /**
  * Inline suggest for folder paths with autocomplete from existing vault folders
@@ -102,10 +101,10 @@ export function renderPreferencesTab(
 	const deprecationNotice = container.createDiv({ cls: 'cr-info-box cr-deprecation-notice' });
 	const warningIcon = deprecationNotice.createSpan({ cls: 'cr-info-box-icon' });
 	setIcon(warningIcon, 'alert-triangle');
-	deprecationNotice.createEl('strong', { text: 'This tab is deprecated.' });
-	deprecationNotice.appendText(' All settings have been consolidated in ');
+	deprecationNotice.createEl('strong', { text: '此标签页已弃用。' });
+	deprecationNotice.appendText(' 所有设置已整合到 ');
 	const settingsLink = deprecationNotice.createEl('a', {
-		text: 'Settings → Charted Roots',
+		text: '设置 → Charted Roots',
 		href: '#'
 	});
 	settingsLink.addEventListener('click', (e) => {
@@ -115,7 +114,7 @@ export function renderPreferencesTab(
 		appWithSettings.setting?.open();
 		appWithSettings.setting?.openTabById('canvas-roots');
 	});
-	deprecationNotice.appendText('. This tab will be removed in a future release.');
+	deprecationNotice.appendText('。此标签页将在未来的版本中移除。');
 
 	// Aliases card (property names + property values)
 	renderAliasesCard(container, plugin, propertyAliasService, valueAliasService, createCard, showTab);
@@ -179,8 +178,8 @@ function renderPropertySection(
 
 	// Show "X configured" if any are configured, otherwise show total count
 	const countText = configuredCount > 0
-		? `${configuredCount} configured`
-		: `${properties.length} properties`;
+		? `已配置 ${configuredCount} 项`
+		: `${properties.length} 个属性`;
 	summary.createSpan({
 		text: countText,
 		cls: 'cr-property-section-count'
@@ -227,7 +226,7 @@ function renderPropertySection(
 
 							// Check if aliasing to itself (warning)
 							if (trimmed === meta.canonical) {
-								new Notice(`"${trimmed}" is already the canonical name`);
+								new Notice(`"${trimmed}"已是规范名称`);
 								text.inputEl.value = currentAlias; // Restore previous value
 								return;
 							}
@@ -235,7 +234,7 @@ function renderPropertySection(
 							// Check for duplicate
 							const existingMapping = propertyAliasService.aliases[trimmed];
 							if (existingMapping && existingMapping !== meta.canonical) {
-								new Notice(`"${trimmed}" is already mapped to "${existingMapping}"`);
+								new Notice(`"${trimmed}"已映射到"${existingMapping}"`);
 								text.inputEl.value = currentAlias; // Restore previous value
 								return;
 							}
@@ -251,11 +250,11 @@ function renderPropertySection(
 				.addExtraButton(button => {
 					button
 						.setIcon('x')
-						.setTooltip('Clear alias')
-						.onClick(async () => {
-							if (currentAlias) {
-								await propertyAliasService.removeAlias(currentAlias);
-								new Notice(`Cleared alias for ${meta.label}`);
+							.setTooltip('清除别名')
+							.onClick(async () => {
+								if (currentAlias) {
+									await propertyAliasService.removeAlias(currentAlias);
+									new Notice(`已清除${meta.label}的别名`);
 								showTab('preferences'); // Refresh
 							}
 						});
@@ -321,7 +320,7 @@ function renderValueSection(
 
 	// Alias count badge
 	summary.createSpan({
-		text: `${aliasCount} ${pluralize(aliasCount, 'alias', 'aliases')}`,
+		text: `${aliasCount} 个别名`,
 		cls: 'cr-property-section-count'
 	});
 
@@ -351,7 +350,7 @@ function renderValueSection(
 				.setDesc(canonicalValue)
 				.addText(text => {
 					text
-						.setPlaceholder('your value')
+						.setPlaceholder('你的值')
 						.setValue(userValue);
 
 					// Validate and save only on blur
@@ -371,7 +370,7 @@ function renderValueSection(
 
 							// Check if aliasing to itself (warning)
 							if (trimmed.toLowerCase() === canonicalValue.toLowerCase()) {
-								new Notice(`"${trimmed}" is already the canonical value`);
+								new Notice(`"${trimmed}"已是规范值`);
 								text.inputEl.value = userValue; // Restore previous value
 								return;
 							}
@@ -379,7 +378,7 @@ function renderValueSection(
 							// Check for duplicate (mapping to different canonical value)
 							const existingMapping = aliases[trimmed.toLowerCase()];
 							if (existingMapping && existingMapping !== canonicalValue) {
-								new Notice(`"${trimmed}" is already mapped to "${existingMapping}"`);
+								new Notice(`"${trimmed}"已映射到"${existingMapping}"`);
 								text.inputEl.value = userValue; // Restore previous value
 								return;
 							}
@@ -399,11 +398,11 @@ function renderValueSection(
 				.addExtraButton(button => {
 					button
 						.setIcon('x')
-						.setTooltip('Clear alias')
+						.setTooltip('清除别名')
 						.onClick(async () => {
 							if (userValue) {
 								await valueAliasService.removeAlias(field, userValue);
-								new Notice(`Cleared alias for ${valueLabel}`);
+								new Notice(`已清除${valueLabel}的别名`);
 								showTab('preferences'); // Refresh
 							}
 						});
@@ -442,16 +441,16 @@ function renderAliasesCard(
 	showTab: (tabId: string) => void
 ): void {
 	const card = createCard({
-		title: 'Property and value configuration',
+		title: '属性与值配置',
 		icon: 'hash',
-		subtitle: 'Configure custom property names and values'
+		subtitle: '配置自定义属性名称和值'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	// Description
 	content.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'Use your own property names and values - Charted Roots will recognize them without rewriting your files.'
+		text: '使用你自己的属性名称和值——Charted Roots 会识别它们，而不会重写你的文件。'
 	});
 
 	// Base files note (prominent position)
@@ -459,7 +458,7 @@ function renderAliasesCard(
 	const baseNoteIcon = baseNote.createSpan({ cls: 'cr-info-box-icon' });
 	setIcon(baseNoteIcon, 'info');
 	baseNote.createSpan({
-		text: 'Existing Bases files are not automatically updated when aliases change. Delete and recreate the base file to apply new aliases.'
+		text: '别名变更时，现有的 Bases 文件不会自动更新。请删除并重新创建 base 文件以应用新别名。'
 	});
 
 	// ===== SEARCH BOX =====
@@ -469,7 +468,7 @@ function renderAliasesCard(
 	new Setting(searchContainer)
 		.addSearch(search => {
 			search
-				.setPlaceholder('Search properties...')
+				.setPlaceholder('搜索属性…')
 				.onChange((query) => {
 					currentSearchQuery = query;
 					filterProperties(query);
@@ -482,7 +481,7 @@ function renderAliasesCard(
 	// Person properties section
 	renderPropertySection(
 		sectionsContainer,
-		'Person properties',
+		'人物属性',
 		PERSON_PROPERTY_METADATA,
 		propertyAliasService,
 		showTab,
@@ -492,7 +491,7 @@ function renderAliasesCard(
 	// Event properties section
 	renderPropertySection(
 		sectionsContainer,
-		'Event properties',
+		'事件属性',
 		EVENT_PROPERTY_METADATA,
 		propertyAliasService,
 		showTab,
@@ -502,7 +501,7 @@ function renderAliasesCard(
 	// Place properties section
 	renderPropertySection(
 		sectionsContainer,
-		'Place properties',
+		'地点属性',
 		PLACE_PROPERTY_METADATA,
 		propertyAliasService,
 		showTab,
@@ -512,7 +511,7 @@ function renderAliasesCard(
 	// Source properties section
 	renderPropertySection(
 		sectionsContainer,
-		'Source properties',
+		'来源属性',
 		SOURCE_PROPERTY_METADATA,
 		propertyAliasService,
 		showTab,
@@ -563,9 +562,9 @@ function renderAliasesCard(
 		const countEl = section.querySelector('.cr-property-section-count');
 		if (countEl) {
 			if (currentSearchQuery && visible < total) {
-				countEl.textContent = `(${visible} of ${total})`;
+				countEl.textContent = `（${visible} / ${total}）`;
 			} else {
-				countEl.textContent = `(${total})`;
+				countEl.textContent = `（${total}）`;
 			}
 		}
 	}
@@ -575,13 +574,13 @@ function renderAliasesCard(
 
 	// ===== VALUE ALIASES SECTION =====
 	content.createEl('h4', {
-		text: 'Value aliases',
+		text: '值别名',
 		cls: 'cr-aliases-section-title'
 	});
 
 	content.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'Map your custom values to Charted Roots canonical values. For example, map "nameday" to "birth" event type.'
+		text: '将你的自定义值映射到 Charted Roots 的规范值。例如，将"nameday"映射到"birth"事件类型。'
 	});
 
 	// Value sections container
@@ -590,7 +589,7 @@ function renderAliasesCard(
 	// Event type values
 	renderValueSection(
 		valueSectionsContainer,
-		'Event type values',
+		'事件类型值',
 		'eventType',
 		CANONICAL_EVENT_TYPES,
 		EVENT_TYPE_LABELS,
@@ -602,7 +601,7 @@ function renderAliasesCard(
 	// Sex values
 	renderValueSection(
 		valueSectionsContainer,
-		'Sex values',
+		'性别值',
 		'sex',
 		CANONICAL_SEX_VALUES,
 		SEX_LABELS,
@@ -614,7 +613,7 @@ function renderAliasesCard(
 	// Place category values
 	renderValueSection(
 		valueSectionsContainer,
-		'Place category values',
+		'地点分类值',
 		'placeCategory',
 		CANONICAL_PLACE_CATEGORIES,
 		PLACE_CATEGORY_LABELS,
@@ -626,7 +625,7 @@ function renderAliasesCard(
 	// Note type values
 	renderValueSection(
 		valueSectionsContainer,
-		'Note type values (cr_type)',
+		'笔记类型值（cr_type）',
 		'noteType',
 		CANONICAL_NOTE_TYPES,
 		NOTE_TYPE_LABELS,
@@ -641,7 +640,7 @@ function renderAliasesCard(
 	const tipIcon = tipContainer.createSpan({ cls: 'cr-info-box-icon' });
 	setIcon(tipIcon, 'info');
 	tipContainer.createSpan({
-		text: 'Canonical values take precedence over aliases. Unknown event types are treated as "custom".'
+		text: '规范值优先于别名。未知事件类型会被视为"custom"。'
 	});
 
 	container.appendChild(card);
@@ -656,9 +655,9 @@ function renderFolderLocationsCard(
 	createCard: (options: { title: string; icon?: LucideIconName; subtitle?: string }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Folder locations',
+		title: '文件夹位置',
 		icon: 'folder',
-		subtitle: 'Configure where Charted Roots stores and finds notes'
+		subtitle: '配置 Charted Roots 存储和查找笔记的位置'
 	});
 	card.id = 'cr-folder-locations-card';
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
@@ -666,7 +665,7 @@ function renderFolderLocationsCard(
 	// Folder explanation
 	content.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'These folders determine where new notes are created during imports and when using "Create new" actions. Charted Roots identifies notes by their properties (cr_type), not their location—your notes can live anywhere in your vault.'
+		text: '这些文件夹决定导入时以及使用"新建"操作时新笔记的创建位置。Charted Roots 通过属性（cr_type）而非位置来识别笔记——你的笔记可以放在库中的任何位置。'
 	});
 
 	// Helper to create folder setting with autocomplete
@@ -701,8 +700,8 @@ function renderFolderLocationsCard(
 
 	// People folder
 	createFolderSetting(
-		'People folder',
-		'Default folder for person notes',
+		'人物文件夹',
+		'人物笔记的默认文件夹',
 		'Charted Roots/People',
 		() => plugin.settings.peopleFolder,
 		(v) => { plugin.settings.peopleFolder = v; }
@@ -710,8 +709,8 @@ function renderFolderLocationsCard(
 
 	// Places folder
 	createFolderSetting(
-		'Places folder',
-		'Default folder for place notes',
+		'地点文件夹',
+		'地点笔记的默认文件夹',
 		'Charted Roots/Places',
 		() => plugin.settings.placesFolder,
 		(v) => { plugin.settings.placesFolder = v; }
@@ -719,8 +718,8 @@ function renderFolderLocationsCard(
 
 	// Map notes folder
 	createFolderSetting(
-		'Map notes folder',
-		'Default folder for map notes',
+		'地图笔记文件夹',
+		'地图笔记的默认文件夹',
 		'Charted Roots/Places/Maps',
 		() => plugin.settings.mapsFolder,
 		(v) => { plugin.settings.mapsFolder = v; }
@@ -728,8 +727,8 @@ function renderFolderLocationsCard(
 
 	// Organizations folder
 	createFolderSetting(
-		'Organizations folder',
-		'Default folder for organization notes',
+		'组织文件夹',
+		'组织笔记的默认文件夹',
 		'Charted Roots/Organizations',
 		() => plugin.settings.organizationsFolder,
 		(v) => { plugin.settings.organizationsFolder = v; }
@@ -737,8 +736,8 @@ function renderFolderLocationsCard(
 
 	// Sources folder
 	createFolderSetting(
-		'Sources folder',
-		'Default folder for source notes',
+		'来源文件夹',
+		'来源笔记的默认文件夹',
 		'Charted Roots/Sources',
 		() => plugin.settings.sourcesFolder,
 		(v) => { plugin.settings.sourcesFolder = v; }
@@ -746,8 +745,8 @@ function renderFolderLocationsCard(
 
 	// Events folder
 	createFolderSetting(
-		'Events folder',
-		'Default folder for event notes',
+		'事件文件夹',
+		'事件笔记的默认文件夹',
 		'Charted Roots/Events',
 		() => plugin.settings.eventsFolder,
 		(v) => { plugin.settings.eventsFolder = v; }
@@ -755,8 +754,8 @@ function renderFolderLocationsCard(
 
 	// Timelines folder
 	createFolderSetting(
-		'Timelines folder',
-		'Default folder for timeline notes (grouping events)',
+		'时间轴文件夹',
+		'时间轴笔记的默认文件夹（用于分组事件）',
 		'Charted Roots/Timelines',
 		() => plugin.settings.timelinesFolder,
 		(v) => { plugin.settings.timelinesFolder = v; }
@@ -764,8 +763,8 @@ function renderFolderLocationsCard(
 
 	// Bases folder
 	createFolderSetting(
-		'Bases folder',
-		'Default folder for Obsidian Bases files',
+		'Bases 文件夹',
+		'Obsidian Bases 文件的默认文件夹',
 		'Charted Roots/Bases',
 		() => plugin.settings.basesFolder,
 		(v) => { plugin.settings.basesFolder = v; }
@@ -773,8 +772,8 @@ function renderFolderLocationsCard(
 
 	// Schemas folder
 	createFolderSetting(
-		'Schemas folder',
-		'Default folder for validation schemas',
+		'架构文件夹',
+		'验证架构的默认文件夹',
 		'Charted Roots/Schemas',
 		() => plugin.settings.schemasFolder,
 		(v) => { plugin.settings.schemasFolder = v; }
@@ -782,8 +781,8 @@ function renderFolderLocationsCard(
 
 	// Universes folder
 	createFolderSetting(
-		'Universes folder',
-		'Default folder for universe notes (fictional worlds)',
+		'宇宙文件夹',
+		'宇宙笔记（虚构世界）的默认文件夹',
 		'Charted Roots/Universes',
 		() => plugin.settings.universesFolder,
 		(v) => { plugin.settings.universesFolder = v; }
@@ -791,8 +790,8 @@ function renderFolderLocationsCard(
 
 	// Canvases folder
 	createFolderSetting(
-		'Canvases folder',
-		'Default folder for generated canvas files',
+		'画布文件夹',
+		'生成的画布文件的默认文件夹',
 		'Charted Roots/Canvases',
 		() => plugin.settings.canvasesFolder,
 		(v) => { plugin.settings.canvasesFolder = v; }
@@ -800,8 +799,8 @@ function renderFolderLocationsCard(
 
 	// Reports folder
 	createFolderSetting(
-		'Reports folder',
-		'Default folder for generated reports (Individual Summary, Family Group Sheet, etc.)',
+		'报告文件夹',
+		'生成的报告（个人摘要、家族群组表等）的默认文件夹',
 		'Charted Roots/Reports',
 		() => plugin.settings.reportsFolder,
 		(v) => { plugin.settings.reportsFolder = v; }
@@ -809,8 +808,8 @@ function renderFolderLocationsCard(
 
 	// Staging folder
 	createFolderSetting(
-		'Import staging folder',
-		'Folder for import staging (isolated from main vault during processing)',
+		'导入暂存文件夹',
+		'导入暂存用的文件夹（处理期间与主库隔离）',
 		'Charted Roots/Staging',
 		() => plugin.settings.stagingFolder,
 		(v) => { plugin.settings.stagingFolder = v; }
@@ -819,8 +818,8 @@ function renderFolderLocationsCard(
 	// Staging isolation toggle (only show if staging folder is configured)
 	if (plugin.settings.stagingFolder) {
 		new Setting(content)
-			.setName('Enable staging isolation')
-			.setDesc('Exclude staging folder from normal operations (statistics, family charts, etc.)')
+			.setName('启用暂存隔离')
+			.setDesc('在常规操作（统计、家族图表等）中排除暂存文件夹')
 			.addToggle(toggle => toggle
 				.setValue(plugin.settings.enableStagingIsolation)
 				.onChange(async (value) => {
@@ -831,19 +830,19 @@ function renderFolderLocationsCard(
 
 	// Section: Media Folders
 	content.createEl('h4', {
-		text: 'Media folder filtering',
+		text: '媒体文件夹筛选',
 		cls: 'cr-aliases-section-title'
 	});
 
 	content.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'Limit media discovery to specific folders. This affects Find Unlinked, Media Manager stats, and the media picker—but not already-linked media or the Browse Gallery.'
+		text: '将媒体发现范围限定在特定文件夹。这会影响查找未关联项、媒体管理器统计和媒体选择器——但不影响已关联的媒体或浏览图库。'
 	});
 
 	// Enable media folder filter toggle
 	new Setting(content)
-		.setName('Limit media scanning to specified folders')
-		.setDesc('When enabled, only scan the folders listed below for media files')
+		.setName('将媒体扫描限定在指定文件夹')
+		.setDesc('启用后，仅在下列文件夹中扫描媒体文件')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.enableMediaFolderFilter)
 			.onChange(async (value) => {
@@ -860,7 +859,7 @@ function renderFolderLocationsCard(
 	const advancedIcon = advancedNote.createSpan({ cls: 'cr-info-box-icon' });
 	setIcon(advancedIcon, 'settings');
 	advancedNote.createSpan({
-		text: 'For folder filtering options (include/exclude folders from discovery), see Settings → Charted Roots → Advanced.'
+		text: '有关文件夹筛选选项（从发现中纳入/排除文件夹），请参阅设置 → Charted Roots → 高级。'
 	});
 
 	container.appendChild(card);
@@ -870,12 +869,12 @@ function renderFolderLocationsCard(
  * Place category options for dropdown
  */
 const PLACE_CATEGORIES: { value: PlaceCategory; label: string }[] = [
-	{ value: 'real', label: 'Real' },
-	{ value: 'historical', label: 'Historical' },
-	{ value: 'disputed', label: 'Disputed' },
-	{ value: 'legendary', label: 'Legendary' },
-	{ value: 'mythological', label: 'Mythological' },
-	{ value: 'fictional', label: 'Fictional' }
+	{ value: 'real', label: '真实' },
+	{ value: 'historical', label: '历史' },
+	{ value: 'disputed', label: '有争议' },
+	{ value: 'legendary', label: '传说' },
+	{ value: 'mythological', label: '神话' },
+	{ value: 'fictional', label: '虚构' }
 ];
 
 /**
@@ -888,22 +887,22 @@ function renderPlaceOrganizationCard(
 	createCard: (options: { title: string; icon?: LucideIconName; subtitle?: string }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Place organization',
+		title: '地点组织',
 		icon: 'map-pin',
-		subtitle: 'Organize places into subfolders by category'
+		subtitle: '按分类将地点归入子文件夹'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	// Explanation
 	content.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'When enabled, new places are automatically stored in category-based subfolders (e.g., historical places go to Places/Historical/). You can also define custom folder mappings for specific categories.'
+		text: '启用后，新地点会自动存入基于分类的子文件夹（例如历史地点会存入 Places/Historical/）。你也可以为特定分类定义自定义文件夹映射。'
 	});
 
 	// Main toggle for category subfolders
 	new Setting(content)
-		.setName('Use category-based subfolders')
-		.setDesc('Automatically organize new places into subfolders based on their category')
+		.setName('使用基于分类的子文件夹')
+		.setDesc('根据分类自动将新地点归入子文件夹')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.useCategorySubfolders)
 			.onChange(async (value) => {
@@ -916,13 +915,13 @@ function renderPlaceOrganizationCard(
 	// Show category folder rules section if enabled
 	if (plugin.settings.useCategorySubfolders) {
 		content.createEl('h4', {
-			text: 'Category folder overrides',
+			text: '分类文件夹覆盖',
 			cls: 'cr-aliases-section-title'
 		});
 
 		content.createEl('p', {
 			cls: 'crc-text-muted',
-			text: 'Override the default subfolder name for specific categories. Leave empty to use the capitalized category name (e.g., "Historical").'
+			text: '覆盖特定分类的默认子文件夹名称。留空则使用首字母大写的分类名（例如"Historical"）。'
 		});
 
 		// Container for existing rules
@@ -935,7 +934,7 @@ function renderPlaceOrganizationCard(
 	const importIcon = importNote.createSpan({ cls: 'cr-info-box-icon' });
 	setIcon(importIcon, 'info');
 	importNote.createSpan({
-		text: 'Imports (GEDCOM, Gramps) always create places in the base folder. Use Data Quality → "Places not in category folders" to organize them afterward.'
+		text: '导入（GEDCOM、Gramps）始终在基础文件夹中创建地点。之后可使用数据质量 → "不在分类文件夹中的地点"来整理它们。'
 	});
 
 	// Replace any existing card with the same title
@@ -1001,7 +1000,7 @@ function renderCategoryFolderRules(
 		// Remove button
 		const removeBtn = ruleRow.createSpan({ cls: 'cr-category-folder-rule-remove' });
 		setIcon(removeBtn, 'x');
-		removeBtn.setAttribute('aria-label', 'Remove override');
+		removeBtn.setAttribute('aria-label', '移除覆盖');
 
 		removeBtn.addEventListener('click', () => {
 			void (async () => {
@@ -1020,7 +1019,7 @@ function renderCategoryFolderRules(
 
 		// Category dropdown
 		const categorySelect = addRow.createEl('select', { cls: 'cr-category-folder-rule-select' });
-		categorySelect.createEl('option', { value: '', text: 'Add override...' });
+		categorySelect.createEl('option', { value: '', text: '添加覆盖…' });
 		for (const cat of availableCategories) {
 			categorySelect.createEl('option', { value: cat.value, text: cat.label });
 		}
@@ -1033,7 +1032,7 @@ function renderCategoryFolderRules(
 			cls: 'cr-category-folder-rule-folder crc-hidden',
 			attr: {
 				type: 'text',
-				placeholder: 'Subfolder path'
+				placeholder: '子文件夹路径'
 			}
 		});
 
@@ -1127,7 +1126,7 @@ function renderMediaFoldersList(
 		// Remove button
 		const removeBtn = row.createSpan({ cls: 'cr-media-folder-remove' });
 		setIcon(removeBtn, 'x');
-		removeBtn.setAttribute('aria-label', 'Remove folder');
+		removeBtn.setAttribute('aria-label', '移除文件夹');
 
 		removeBtn.addEventListener('click', () => {
 			plugin.settings.mediaFolders = folders.filter((_, idx) => idx !== i);
@@ -1203,7 +1202,7 @@ function renderMediaFoldersList(
 
 	const addSetting = new Setting(inputWrapper)
 		.addText(text => {
-			text.setPlaceholder('Add media folder...');
+			text.setPlaceholder('添加媒体文件夹…');
 
 			// Attach folder autocomplete
 			new FolderSuggest(plugin.app, text, (value) => {
@@ -1242,16 +1241,16 @@ export function renderCanvasLayoutCard(
 	createCard: (options: { title: string; icon?: LucideIconName; subtitle?: string }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Canvas layout',
+		title: '画布布局',
 		icon: 'layout',
-		subtitle: 'Node dimensions and spacing for tree generation'
+		subtitle: '树生成时的节点尺寸与间距'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	// Info text
 	content.createEl('p', {
 		cls: 'crc-text-muted crc-mb-2',
-		text: 'Changes apply to new tree generations. To update existing canvases, right-click the canvas file and select "Re-layout family tree".'
+		text: '更改会作用于新生成的树。要更新现有画布，请右键单击画布文件并选择"重新布局家族树"。'
 	});
 
 	// Helper to create a slider setting with reset button
@@ -1282,7 +1281,7 @@ export function renderCanvasLayoutCard(
 			})
 			.addExtraButton(button => button
 				.setIcon('rotate-ccw')
-				.setTooltip(`Reset to default (${defaultValue})`)
+				.setTooltip(`重置为默认值（${defaultValue}）`)
 				.onClick(async () => {
 					setValue(defaultValue);
 					await plugin.saveSettings();
@@ -1292,8 +1291,8 @@ export function renderCanvasLayoutCard(
 
 	// Horizontal Spacing
 	createSliderSetting(
-		'Horizontal spacing',
-		'Space between nodes horizontally',
+		'水平间距',
+		'节点之间的水平间距',
 		100, 1000, 50, 400,
 		() => plugin.settings.horizontalSpacing,
 		(v) => { plugin.settings.horizontalSpacing = v; }
@@ -1301,8 +1300,8 @@ export function renderCanvasLayoutCard(
 
 	// Vertical Spacing
 	createSliderSetting(
-		'Vertical spacing',
-		'Space between generations vertically',
+		'垂直间距',
+		'世代之间的垂直间距',
 		100, 1000, 50, 250,
 		() => plugin.settings.verticalSpacing,
 		(v) => { plugin.settings.verticalSpacing = v; }
@@ -1310,8 +1309,8 @@ export function renderCanvasLayoutCard(
 
 	// Node Width
 	createSliderSetting(
-		'Node width',
-		'Width of person nodes',
+		'节点宽度',
+		'人物节点的宽度',
 		100, 500, 25, 200,
 		() => plugin.settings.defaultNodeWidth,
 		(v) => { plugin.settings.defaultNodeWidth = v; }
@@ -1319,8 +1318,8 @@ export function renderCanvasLayoutCard(
 
 	// Node Height
 	createSliderSetting(
-		'Node height',
-		'Height of person nodes',
+		'节点高度',
+		'人物节点的高度',
 		50, 300, 25, 100,
 		() => plugin.settings.defaultNodeHeight,
 		(v) => { plugin.settings.defaultNodeHeight = v; }
@@ -1338,78 +1337,78 @@ export function renderCanvasStylingCard(
 	createCard: (options: { title: string; icon?: LucideIconName; subtitle?: string }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Canvas styling',
+		title: '画布样式',
 		icon: 'settings',
-		subtitle: 'Arrow styles and node coloring options'
+		subtitle: '箭头样式与节点着色选项'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	// Node Color Scheme
 	new Setting(content)
-		.setName('Color scheme')
-		.setDesc('How to color person nodes in family trees')
+		.setName('配色方案')
+		.setDesc('如何为家族树中的人物节点着色')
 		.addDropdown(dropdown => dropdown
-			.addOption('sex', 'Sex - green for males, purple for females')
-			.addOption('generation', 'Generation - color by generation level')
-			.addOption('collection', 'Collection - different color per collection')
-			.addOption('monochrome', 'Monochrome - no coloring')
+			.addOption('sex', '性别——男性绿色，女性紫色')
+			.addOption('generation', '世代——按世代层级着色')
+			.addOption('collection', '合集——每个合集使用不同颜色')
+			.addOption('monochrome', '单色——不着色')
 			.setValue(plugin.settings.nodeColorScheme)
 			.onChange(async (value) => {
 				plugin.settings.nodeColorScheme = value as ColorScheme;
 				await plugin.saveSettings();
-				new Notice('Node color scheme updated');
+				new Notice('节点配色方案已更新');
 			}));
 
 	// Canvas Grouping Strategy
 	new Setting(content)
-		.setName('Canvas grouping')
-		.setDesc('Visual groups to organize related nodes on the canvas')
+		.setName('画布分组')
+		.setDesc('用可视分组在画布上组织相关节点')
 		.addDropdown(dropdown => dropdown
-			.addOption('none', 'None - no grouping (default)')
-			.addOption('generation', 'By generation - group nodes by generation level')
-			.addOption('nuclear-family', 'By couples - group parent pairs who share children')
-			.addOption('collection', 'By collection - group by family collection')
+			.addOption('none', '无——不分组（默认）')
+			.addOption('generation', '按世代——按世代层级对节点分组')
+			.addOption('nuclear-family', '按伴侣——对共同育有子女的父母配对分组')
+			.addOption('collection', '按合集——按家族合集分组')
 			.setValue(plugin.settings.canvasGroupingStrategy)
 			.onChange(async (value) => {
 				plugin.settings.canvasGroupingStrategy = value as CanvasGroupingStrategy;
 				await plugin.saveSettings();
-				new Notice('Canvas grouping strategy updated');
+				new Notice('画布分组策略已更新');
 			}));
 
 	// Section: Arrow Styling
 	content.createEl('h4', {
-		text: 'Arrow styling',
+		text: '箭头样式',
 		cls: 'cr-aliases-section-title'
 	});
 
 	// Parent-Child Arrow Style
 	new Setting(content)
-		.setName('Parent → child arrows')
-		.setDesc('Arrow style for parent-child relationships')
+		.setName('父母 → 子女箭头')
+		.setDesc('父母子女关系的箭头样式')
 		.addDropdown(dropdown => dropdown
-			.addOption('directed', 'Directed (→) - single arrow pointing to child')
-			.addOption('bidirectional', 'Bidirectional (↔) - arrows on both ends')
-			.addOption('undirected', 'Undirected (—) - no arrows')
+			.addOption('directed', '有向（→）——指向子女的单箭头')
+			.addOption('bidirectional', '双向（↔）——两端都有箭头')
+			.addOption('undirected', '无向（—）——无箭头')
 			.setValue(plugin.settings.parentChildArrowStyle)
 			.onChange(async (value) => {
 				plugin.settings.parentChildArrowStyle = value as ArrowStyle;
 				await plugin.saveSettings();
-				new Notice('Parent-child arrow style updated');
+				new Notice('父母子女箭头样式已更新');
 			}));
 
 	// Spouse Arrow Style
 	new Setting(content)
 		.setName(getSpouseCompoundLabel(plugin.settings, 'arrows'))
-		.setDesc('Arrow style for spouse/partner relationships')
+		.setDesc('配偶/伴侣关系的箭头样式')
 		.addDropdown(dropdown => dropdown
-			.addOption('directed', 'Directed (→) - single arrow')
-			.addOption('bidirectional', 'Bidirectional (↔) - arrows on both ends')
-			.addOption('undirected', 'Undirected (—) - no arrows')
+			.addOption('directed', '有向（→）——单箭头')
+			.addOption('bidirectional', '双向（↔）——两端都有箭头')
+			.addOption('undirected', '无向（—）——无箭头')
 			.setValue(plugin.settings.spouseArrowStyle)
 			.onChange(async (value) => {
 				plugin.settings.spouseArrowStyle = value as ArrowStyle;
 				await plugin.saveSettings();
-				new Notice(`${getSpouseCompoundLabel(plugin.settings, 'arrow style')} updated`);
+				new Notice(`${getSpouseCompoundLabel(plugin.settings, 'arrow style')}已更新`);
 			}));
 
 	// Section: Spouse Edges
@@ -1420,30 +1419,30 @@ export function renderCanvasStylingCard(
 
 	// Show Spouse Edges Toggle
 	new Setting(content)
-		.setName(`Show ${getSpouseCompoundLabel(plugin.settings, 'edges').toLowerCase()}`)
-		.setDesc('Display edges between spouses/partners with marriage metadata. When disabled (default), spouses are visually grouped by positioning only.')
+		.setName(`显示${getSpouseCompoundLabel(plugin.settings, 'edges')}`)
+		.setDesc('显示配偶/伴侣之间带有婚姻元数据的连线。禁用时（默认），配偶仅通过位置进行可视分组。')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.showSpouseEdges)
 			.onChange(async (value) => {
 				plugin.settings.showSpouseEdges = value;
 				await plugin.saveSettings();
-				new Notice(`${getSpouseCompoundLabel(plugin.settings, 'edge display')} updated`);
+				new Notice(`${getSpouseCompoundLabel(plugin.settings, 'edge display')}已更新`);
 			}));
 
 	// Spouse Edge Label Format
 	new Setting(content)
 		.setName(getSpouseCompoundLabel(plugin.settings, 'edge label format'))
-		.setDesc(`How to display marriage information on ${getSpouseCompoundLabel(plugin.settings, 'edges').toLowerCase()} (only applies when edges are enabled)`)
+		.setDesc(`如何在${getSpouseCompoundLabel(plugin.settings, 'edges')}上显示婚姻信息（仅在启用连线时适用）`)
 		.addDropdown(dropdown => dropdown
-			.addOption('none', 'None - no labels')
-			.addOption('date-only', 'Date only - e.g., "m. 1985"')
-			.addOption('date-location', 'Date and location - e.g., "m. 1985 | Boston, MA"')
-			.addOption('full', 'Full details - e.g., "m. 1985 | Boston, MA | div. 1992"')
+			.addOption('none', '无——不显示标签')
+			.addOption('date-only', '仅日期——例："m. 1985"')
+			.addOption('date-location', '日期和地点——例："m. 1985 | Boston, MA"')
+			.addOption('full', '完整详情——例："m. 1985 | Boston, MA | div. 1992"')
 			.setValue(plugin.settings.spouseEdgeLabelFormat)
 			.onChange(async (value) => {
 				plugin.settings.spouseEdgeLabelFormat = value as SpouseEdgeLabelFormat;
 				await plugin.saveSettings();
-				new Notice(`${getSpouseCompoundLabel(plugin.settings, 'edge label format')} updated`);
+				new Notice(`${getSpouseCompoundLabel(plugin.settings, 'edge label format')}已更新`);
 			}));
 
 	container.appendChild(card);
@@ -1459,9 +1458,9 @@ function renderDateValidationCard(
 	showTab: (tabId: string) => void
 ): void {
 	const card = createCard({
-		title: 'Date validation',
+		title: '日期验证',
 		icon: 'calendar',
-		subtitle: 'Configure date format standards for batch validation'
+		subtitle: '配置批量验证的日期格式标准'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
@@ -1469,10 +1468,10 @@ function renderDateValidationCard(
 	const infoText = content.createEl('p', {
 		cls: 'crc-text-muted'
 	});
-	infoText.appendText('These settings control how dates are validated in the "Validate date formats" batch operation. Fictional dates (with fc-calendar property) are automatically skipped. ');
+	infoText.appendText('这些设置控制"验证日期格式"批量操作中如何验证日期。虚构日期（带有 fc-calendar 属性）会自动跳过。 ');
 
 	const link = infoText.createEl('a', {
-		text: 'Fictional date systems are defined in the Events tab',
+		text: '虚构日期系统在"事件"标签页中定义',
 		href: '#',
 		cls: 'crc-text-link'
 	});
@@ -1480,16 +1479,16 @@ function renderDateValidationCard(
 		e.preventDefault();
 		showTab('events');
 	});
-	infoText.appendText('.');
+	infoText.appendText('。');
 
 	// Date Format Standard
 	new Setting(content)
-		.setName('Date format standard')
-		.setDesc('Preferred date format standard for validation')
+		.setName('日期格式标准')
+		.setDesc('验证时首选的日期格式标准')
 		.addDropdown(dropdown => dropdown
-			.addOption('iso8601', 'ISO 8601 - strict YYYY-MM-DD format')
-			.addOption('GEDCOM', 'GEDCOM - DD MMM YYYY (e.g., 15 JAN 1920)')
-			.addOption('flexible', 'Flexible - allows multiple formats')
+			.addOption('iso8601', 'ISO 8601——严格的 YYYY-MM-DD 格式')
+			.addOption('GEDCOM', 'GEDCOM——DD MMM YYYY（例：15 JAN 1920）')
+			.addOption('flexible', '灵活——允许多种格式')
 			.setValue(plugin.settings.dateFormatStandard)
 			.onChange(async (value) => {
 				plugin.settings.dateFormatStandard = value as 'iso8601' | 'gedcom' | 'flexible';
@@ -1498,8 +1497,8 @@ function renderDateValidationCard(
 
 	// Allow Partial Dates
 	new Setting(content)
-		.setName('Allow partial dates')
-		.setDesc('Accept dates with missing day or month (e.g., "1920-05" or "1920")')
+		.setName('允许部分日期')
+		.setDesc('接受缺少日或月的日期（例："1920-05"或"1920"）')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.allowPartialDates)
 			.onChange(async (value) => {
@@ -1509,8 +1508,8 @@ function renderDateValidationCard(
 
 	// Allow Circa Dates
 	new Setting(content)
-		.setName('Allow circa dates')
-		.setDesc('Accept approximate dates with "c.", "ca.", "circa", or "~" prefix (e.g., "c. 1850")')
+		.setName('允许约略日期')
+		.setDesc('接受带"c."、"ca."、"circa"或"~"前缀的近似日期（例："c. 1850"）')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.allowCircaDates)
 			.onChange(async (value) => {
@@ -1520,8 +1519,8 @@ function renderDateValidationCard(
 
 	// Allow Date Ranges
 	new Setting(content)
-		.setName('Allow date ranges')
-		.setDesc('Accept date ranges with hyphen or "to" (e.g., "1850-1920" or "1850 to 1920")')
+		.setName('允许日期范围')
+		.setDesc('接受用连字符或"to"表示的日期范围（例："1850-1920"或"1850 to 1920"）')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.allowDateRanges)
 			.onChange(async (value) => {
@@ -1531,8 +1530,8 @@ function renderDateValidationCard(
 
 	// Require Leading Zeros
 	new Setting(content)
-		.setName('Require leading zeros')
-		.setDesc('Require zero-padded months and days (e.g., "1920-05-01" instead of "1920-5-1")')
+		.setName('要求前导零')
+		.setDesc('要求月和日用零补齐（例："1920-05-01"而非"1920-5-1"）')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.requireLeadingZeros)
 			.onChange(async (value) => {
@@ -1552,26 +1551,26 @@ function renderSexNormalizationCard(
 	createCard: (options: { title: string; icon?: LucideIconName; subtitle?: string }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Sex value normalization',
+		title: '性别值规范化',
 		icon: 'sliders',
-		subtitle: 'Configure batch normalization behavior for sex values'
+		subtitle: '配置性别值的批量规范化行为'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	// Info text
 	content.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'Controls how the "Normalize sex values" batch operation in Data Quality behaves. Standard mode normalizes all values to GEDCOM M/F, while schema-aware mode respects schemas that define custom sex values.'
+		text: '控制数据质量中"规范化性别值"批量操作的行为。标准模式将所有值规范化为 GEDCOM 的 M/F，而架构感知模式会遵循定义了自定义性别值的架构。'
 	});
 
 	// Normalization Mode dropdown
 	new Setting(content)
-		.setName('Normalization mode')
-		.setDesc('How sex values are normalized in batch operations')
+		.setName('规范化模式')
+		.setDesc('批量操作中如何规范化性别值')
 		.addDropdown(dropdown => dropdown
-			.addOption('standard', 'Standard - normalize to GEDCOM M/F')
-			.addOption('schema-aware', 'Schema-aware - skip notes with custom schemas')
-			.addOption('disabled', 'Disabled - never normalize sex values')
+			.addOption('standard', '标准——规范化为 GEDCOM M/F')
+			.addOption('schema-aware', '架构感知——跳过使用自定义架构的笔记')
+			.addOption('disabled', '禁用——从不规范化性别值')
 			.setValue(plugin.settings.sexNormalizationMode)
 			.onChange(async (value) => {
 				plugin.settings.sexNormalizationMode = value as SexNormalizationMode;
@@ -1590,16 +1589,16 @@ function renderInclusiveParentsCard(
 	createCard: (options: { title: string; icon?: LucideIconName; subtitle?: string }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Inclusive parent relationships',
+		title: '包容性父母关系',
 		icon: 'users',
-		subtitle: 'Opt-in support for gender-neutral parent terminology'
+		subtitle: '可选启用性别中立的父母称谓'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	// Info text
 	content.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'Add a gender-neutral "Parents" property to Create/Edit Person modals for users with nonbinary parents or who prefer inclusive terminology. This setting is optional and coexists with existing father/mother properties.'
+		text: '为有非二元父母或偏好包容性称谓的用户，在创建/编辑人物模态框中添加性别中立的"父母"属性。此设置为可选，并与现有父母属性并存。'
 	});
 
 	// Parent field label container (conditionally shown)
@@ -1610,13 +1609,13 @@ function renderInclusiveParentsCard(
 		labelContainer.empty();
 		if (show) {
 			new Setting(labelContainer)
-				.setName('Parent property label')
-				.setDesc('Customize the UI label for the gender-neutral parent property')
+				.setName('父母属性标签')
+				.setDesc('自定义性别中立父母属性的界面标签')
 				.addText(text => text
-					.setPlaceholder('Parents')
+					.setPlaceholder('父母')
 					.setValue(plugin.settings.parentFieldLabel)
 					.onChange(async (value) => {
-						plugin.settings.parentFieldLabel = value || 'Parents';
+						plugin.settings.parentFieldLabel = value || '父母';
 						await plugin.saveSettings();
 					}));
 
@@ -1624,15 +1623,15 @@ function renderInclusiveParentsCard(
 			const examplesDiv = labelContainer.createDiv({ cls: 'cr-info-box' });
 			const examplesIcon = examplesDiv.createSpan({ cls: 'cr-info-box-icon' });
 			setIcon(examplesIcon, 'lightbulb');
-			examplesDiv.createEl('strong', { text: 'Label examples:' });
-			examplesDiv.appendText(' Parents (default), Guardians, Progenitors, or any custom term');
+			examplesDiv.createEl('strong', { text: '标签示例：' });
+			examplesDiv.appendText(' 父母（默认）、监护人、生育者，或任何自定义术语');
 		}
 	};
 
 	// Enable toggle
 	new Setting(content)
-		.setName('Enable gender-neutral parent property')
-		.setDesc('Show a "Parents" property in person modals (uses parents/parents_id properties)')
+		.setName('启用性别中立父母属性')
+		.setDesc('在人物模态框中显示"父母"属性（使用 parents/parents_id 属性）')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.enableInclusiveParents)
 			.onChange(async (value) => {
@@ -1657,22 +1656,22 @@ function renderDisplayPreferencesCard(
 	createCard: (options: { title: string; icon?: LucideIconName; subtitle?: string }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Display preferences',
+		title: '显示偏好',
 		icon: 'eye',
-		subtitle: 'Configure how person information is displayed'
+		subtitle: '配置人物信息的显示方式'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	// Info text
 	content.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'Control what information is shown in person pickers and other displays throughout the plugin.'
+		text: '控制人物选择器及插件各处显示中展示哪些信息。'
 	});
 
 	// Show pronouns toggle
 	new Setting(content)
-		.setName('Show pronouns')
-		.setDesc('Display pronouns (from the "pronouns" property) in person pickers and cards')
+		.setName('显示代词')
+		.setDesc('在人物选择器和卡片中显示代词（来自"pronouns"属性）')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.showPronouns)
 			.onChange(async (value) => {

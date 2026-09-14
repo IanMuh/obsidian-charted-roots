@@ -38,7 +38,7 @@ describe('DateService — universe default calendar resolution (#650 approach A)
 		// Note says `universe: Star Wars (AU)` (display name); the calendar is
 		// tagged with the cr_id, so the name/cr_id mismatch leaves the built-in.
 		const parsed = svc.parseDate('BBY 19', 'Star Wars (AU)');
-		expect(parsed?.fictional?.system.name).toBe('Galactic Standard Calendar');
+		expect(parsed?.fictional?.system.name).toBe('银河标准历法');
 	});
 
 	it('with the resolver, the universe default calendar wins', () => {
@@ -65,6 +65,6 @@ describe('DateService — universe default calendar resolution (#650 approach A)
 		const svc = makeService();
 		svc.setUniverseCalendarResolver(() => null);
 		const parsed = svc.parseDate('BBY 19', 'Star Wars (AU)');
-		expect(parsed?.fictional?.system.name).toBe('Galactic Standard Calendar');
+		expect(parsed?.fictional?.system.name).toBe('银河标准历法');
 	});
 });

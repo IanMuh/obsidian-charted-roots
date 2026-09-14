@@ -130,14 +130,14 @@ describe('computeCollectionDateRange (#714/#719)', () => {
 describe('formatDateRangeLine (#719)', () => {
 	it('renders a bare span when the universe is hidden', () => {
 		expect(formatDateRangeLine({ earliest: '1850', latest: '1990', spanYears: 140 }, false))
-			.toBe('1850 — 1990 (140 years)');
+			.toBe('1850 — 1990（140年）');
 	});
 
 	it('prefixes the universe name (or Real-world) when shown', () => {
 		expect(formatDateRangeLine({ universe: 'Star Wars', earliest: '8082 BBY', latest: '23 ABY', spanYears: 8105 }, true))
-			.toBe('Star Wars: 8082 BBY — 23 ABY (8105 years)');
+			.toBe('Star Wars：8082 BBY — 23 ABY（8105年）');
 		expect(formatDateRangeLine({ earliest: '1850', latest: '1990', spanYears: 140 }, true))
-			.toBe('Real-world: 1850 — 1990 (140 years)');
+			.toBe('现实世界：1850 — 1990（140年）');
 	});
 
 	it('omits the span suffix for a single-point range', () => {
@@ -147,6 +147,6 @@ describe('formatDateRangeLine (#719)', () => {
 
 	it('always labels the Uncategorized bucket, even when the universe is hidden', () => {
 		expect(formatDateRangeLine({ uncategorized: true, earliest: '-33', latest: '9', spanYears: 42 }, false))
-			.toBe('Uncategorized: -33 — 9 (42 years)');
+			.toBe('未分类：-33 — 9（42年）');
 	});
 });

@@ -37,7 +37,7 @@ const logger = getLogger('bulk-operations');
 export function openLinkMediaModal(plugin: CanvasRootsPlugin, file: TFile, entityType: string, entityName: string): void {
 	const mediaService = plugin.getMediaService();
 	if (!mediaService) {
-		new Notice('Media service not available');
+		new Notice('媒体服务不可用');
 		return;
 	}
 
@@ -59,12 +59,12 @@ export function openLinkMediaModal(plugin: CanvasRootsPlugin, file: TFile, entit
 					await ms.addMediaToEntity(file, wikilink);
 				}
 
-				new Notice(`Linked ${selectedFiles.length} media file${selectedFiles.length !== 1 ? 's' : ''} to ${entityName}`);
+				new Notice(`已将 ${selectedFiles.length} 个媒体文件链接到 ${entityName}`);
 			})();
 		},
 		{
-			title: 'Link media',
-			subtitle: `Select media files to link to ${entityName}`,
+			title: '链接媒体',
+			subtitle: `选择要链接到 ${entityName} 的媒体文件`,
 			multiSelect: true,
 			existingMedia
 		},
@@ -81,7 +81,7 @@ export function openEditPlaceModal(plugin: CanvasRootsPlugin, file: TFile): void
 	const crId = cache?.frontmatter?.cr_id;
 
 	if (!crId) {
-		new Notice('Place note does not have a cr_id');
+		new Notice('地点笔记没有 cr_id');
 		return;
 	}
 
@@ -91,7 +91,7 @@ export function openEditPlaceModal(plugin: CanvasRootsPlugin, file: TFile): void
 	const place = placeGraph.getPlaceByCrId(crId);
 
 	if (!place) {
-		new Notice('Could not find place in graph');
+		new Notice('在图表中找不到该地点');
 		return;
 	}
 
@@ -117,7 +117,7 @@ export function openEditEventModal(plugin: CanvasRootsPlugin, file: TFile): void
 	const fm = cache?.frontmatter;
 
 	if (!fm?.cr_id) {
-		new Notice('Event note does not have a cr_id');
+		new Notice('事件笔记没有 cr_id');
 		return;
 	}
 
@@ -126,7 +126,7 @@ export function openEditEventModal(plugin: CanvasRootsPlugin, file: TFile): void
 	const event = eventService.getEventByFile(file);
 
 	if (!event) {
-		new Notice('Could not find event data');
+		new Notice('找不到事件数据');
 		return;
 	}
 
@@ -136,7 +136,7 @@ export function openEditEventModal(plugin: CanvasRootsPlugin, file: TFile): void
 		editEvent: event,
 		editFile: file,
 		onUpdated: () => {
-			new Notice('Event updated');
+			new Notice('事件已更新');
 		}
 	}).open();
 }
@@ -150,7 +150,7 @@ export function openEditPersonModal(plugin: CanvasRootsPlugin, file: TFile): voi
 	const fm = cache?.frontmatter;
 
 	if (!fm?.cr_id) {
-		new Notice('Person note does not have a cr_id');
+		new Notice('人物笔记没有 cr_id');
 		return;
 	}
 
@@ -298,7 +298,7 @@ export function promptAssignReferenceNumbers(plugin: CanvasRootsPlugin, system: 
 				const service = new ReferenceNumberingService(plugin.app);
 				let stats;
 
-				new Notice(`Assigning ${system} numbers from ${selectedPerson.name}...`);
+				new Notice(`正在从 ${selectedPerson.name} 分配 ${system} 编号…`);
 
 				switch (system) {
 					case 'ahnentafel':
@@ -315,10 +315,10 @@ export function promptAssignReferenceNumbers(plugin: CanvasRootsPlugin, system: 
 						break;
 				}
 
-				new Notice(`Assigned ${stats.totalAssigned} ${system} numbers from ${stats.rootPerson}`);
+				new Notice(`已从 ${stats.rootPerson} 分配 ${stats.totalAssigned} 个 ${system} 编号`);
 			} catch (error) {
 				logger.error('reference-numbering', `Failed to assign ${system} numbers`, error);
-				new Notice(`Failed to assign numbers: ${getErrorMessage(error)}`);
+				new Notice(`分配编号失败：${getErrorMessage(error)}`);
 			}
 		})();
 	});
@@ -330,27 +330,27 @@ export function promptAssignReferenceNumbers(plugin: CanvasRootsPlugin, system: 
  */
 export function promptClearReferenceNumbers(plugin: CanvasRootsPlugin): void {
 	const systemChoices: { system: NumberingSystem; label: string }[] = [
-		{ system: 'ahnentafel', label: 'Ahnentafel numbers' },
-		{ system: 'daboville', label: "d'Aboville numbers" },
-		{ system: 'henry', label: 'Henry numbers' },
-		{ system: 'generation', label: 'Generation numbers' }
+		{ system: 'ahnentafel', label: 'Ahnentafel 编号' },
+		{ system: 'daboville', label: "d'Aboville 编号" },
+		{ system: 'henry', label: 'Henry 编号' },
+		{ system: 'generation', label: '世代编号' }
 	];
 
 	const menu = new Menu();
 	for (const choice of systemChoices) {
 		menu.addItem((item) => {
 			item
-				.setTitle(`Clear ${choice.label}`)
+				.setTitle(`清除${choice.label}`)
 				.setIcon('trash-2')
 				.onClick(async () => {
 					try {
 						const service = new ReferenceNumberingService(plugin.app);
-						new Notice(`Clearing ${choice.label}...`);
+						new Notice(`正在清除${choice.label}…`);
 						const count = await service.clearNumbers(choice.system);
-						new Notice(`Cleared ${count} ${choice.label}`);
+						new Notice(`已清除 ${count} 个${choice.label}`);
 					} catch (error) {
 						logger.error('clear-numbers', `Failed to clear ${choice.label}`, error);
-						new Notice(`Failed to clear numbers: ${getErrorMessage(error)}`);
+						new Notice(`清除编号失败：${getErrorMessage(error)}`);
 					}
 				});
 		});
@@ -374,7 +374,7 @@ export function promptAssignLineage(plugin: CanvasRootsPlugin): void {
 
 			try {
 				const service = new LineageTrackingService(plugin.app);
-				new Notice(`Assigning "${lineageName}" lineage from ${selectedPerson.name}...`);
+				new Notice(`正在从 ${selectedPerson.name} 分配「${lineageName}」世系…`);
 
 				const stats = await service.assignLineage({
 					name: lineageName,
@@ -382,10 +382,10 @@ export function promptAssignLineage(plugin: CanvasRootsPlugin): void {
 					type: lineageType
 				});
 
-				new Notice(`Assigned "${lineageName}" to ${stats.totalMembers} descendants (${stats.maxGeneration} generations)`);
+				new Notice(`已将「${lineageName}」分配给 ${stats.totalMembers} 名后代（${stats.maxGeneration} 个世代）`);
 			} catch (error) {
 				logger.error('lineage-tracking', 'Failed to assign lineage', error);
-				new Notice(`Failed to assign lineage: ${getErrorMessage(error)}`);
+				new Notice(`分配世系失败：${getErrorMessage(error)}`);
 			}
 		})();
 	});
@@ -401,7 +401,7 @@ export function promptRemoveLineage(plugin: CanvasRootsPlugin): void {
 		const lineages = service.getAllLineages();
 
 		if (lineages.length === 0) {
-			new Notice('No lineages found in vault');
+			new Notice('库中未找到世系');
 			return;
 		}
 
@@ -409,16 +409,16 @@ export function promptRemoveLineage(plugin: CanvasRootsPlugin): void {
 		for (const lineage of lineages) {
 			menu.addItem((item) => {
 				item
-					.setTitle(`Remove "${lineage}"`)
+					.setTitle(`移除「${lineage}」`)
 					.setIcon('trash-2')
 					.onClick(async () => {
 						try {
-							new Notice(`Removing "${lineage}" lineage...`);
+							new Notice(`正在移除「${lineage}」世系…`);
 							const count = await service.removeLineage(lineage);
-							new Notice(`Removed "${lineage}" from ${count} people`);
+							new Notice(`已从 ${count} 个人物移除「${lineage}」`);
 						} catch (error) {
 							logger.error('lineage-tracking', 'Failed to remove lineage', error);
-							new Notice(`Failed to remove lineage: ${getErrorMessage(error)}`);
+							new Notice(`移除世系失败：${getErrorMessage(error)}`);
 						}
 					});
 			});
@@ -426,7 +426,7 @@ export function promptRemoveLineage(plugin: CanvasRootsPlugin): void {
 		menu.showAtMouseEvent(new MouseEvent('click'));
 	} catch (error) {
 		logger.error('lineage-tracking', 'Failed to get lineages', error);
-		new Notice(`Failed to get lineages: ${getErrorMessage(error)}`);
+		new Notice(`获取世系失败：${getErrorMessage(error)}`);
 	}
 }
 
@@ -436,16 +436,16 @@ export function promptRemoveLineage(plugin: CanvasRootsPlugin): void {
 export async function promptLineageType(plugin: CanvasRootsPlugin): Promise<LineageType | null> {
 	return new Promise((resolve) => {
 		const modal = new Modal(plugin.app);
-		modal.titleEl.setText('Select lineage type');
+		modal.titleEl.setText('选择世系类型');
 
 		modal.contentEl.createEl('p', {
-			text: 'How should descendants be traced?'
+			text: '应如何追溯后代？'
 		});
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'cr-prompt-buttons' });
 
 		const allBtn = buttonContainer.createEl('button', {
-			text: 'All descendants',
+			text: '所有后代',
 			cls: 'mod-cta'
 		});
 		allBtn.addEventListener('click', () => {
@@ -454,7 +454,7 @@ export async function promptLineageType(plugin: CanvasRootsPlugin): Promise<Line
 		});
 
 		const patriBtn = buttonContainer.createEl('button', {
-			text: 'Patrilineal'
+			text: '父系'
 		});
 		patriBtn.addEventListener('click', () => {
 			modal.close();
@@ -462,7 +462,7 @@ export async function promptLineageType(plugin: CanvasRootsPlugin): Promise<Line
 		});
 
 		const matriBtn = buttonContainer.createEl('button', {
-			text: 'Matrilineal'
+			text: '母系'
 		});
 		matriBtn.addEventListener('click', () => {
 			modal.close();
@@ -470,7 +470,7 @@ export async function promptLineageType(plugin: CanvasRootsPlugin): Promise<Line
 		});
 
 		const cancelBtn = buttonContainer.createEl('button', {
-			text: 'Cancel'
+			text: '取消'
 		});
 		cancelBtn.addEventListener('click', () => {
 			modal.close();
@@ -485,14 +485,14 @@ export function generateTreeForCurrentNote(plugin: CanvasRootsPlugin): void {
 	const activeFile = plugin.app.workspace.getActiveFile();
 
 	if (!activeFile) {
-		new Notice('No active note. Please open a person note first.');
+		new Notice('没有活动笔记。请先打开一个人物笔记。');
 		return;
 	}
 
 	// Check if the active file is a person note (has cr_id)
 	const cache = plugin.app.metadataCache.getFileCache(activeFile);
 	if (!cache?.frontmatter?.cr_id) {
-		new Notice('Current note is not a person note (missing cr_id field)');
+		new Notice('当前笔记不是人物笔记（缺少 cr_id 字段）');
 		return;
 	}
 
@@ -503,14 +503,14 @@ export function generateTreeForCurrentNote(plugin: CanvasRootsPlugin): void {
 
 export async function regenerateCanvas(plugin: CanvasRootsPlugin, canvasFile: TFile, direction?: 'vertical' | 'horizontal') {
 	try {
-		new Notice('Regenerating canvas...');
+		new Notice('正在重新生成画布…');
 
 		// 1. Read current Canvas JSON
 		const canvasContent = await plugin.app.vault.read(canvasFile);
 		const canvasData = JSON.parse(canvasContent);
 
 		if (!canvasData.nodes || canvasData.nodes.length === 0) {
-			new Notice('Canvas is empty - nothing to regenerate');
+			new Notice('画布为空 - 没有可重新生成的内容');
 			return;
 		}
 
@@ -525,7 +525,7 @@ export async function regenerateCanvas(plugin: CanvasRootsPlugin, canvasFile: TF
 		);
 
 		if (personNodes.length === 0) {
-			new Notice('No person notes found in canvas');
+			new Notice('画布中未找到人物笔记');
 			return;
 		}
 
@@ -558,7 +558,7 @@ export async function regenerateCanvas(plugin: CanvasRootsPlugin, canvasFile: TF
 			}
 
 			if (!rootCrId || !rootPersonName) {
-				new Notice('No person notes with cr_id found in canvas');
+				new Notice('画布中未找到带 cr_id 的人物笔记');
 				return;
 			}
 
@@ -570,7 +570,7 @@ export async function regenerateCanvas(plugin: CanvasRootsPlugin, canvasFile: TF
 
 		// Validate we have root person info before proceeding
 		if (!rootCrId || !rootPersonName) {
-			new Notice('No person notes with cr_id found in canvas');
+			new Notice('画布中未找到带 cr_id 的人物笔记');
 			return;
 		}
 
@@ -584,7 +584,7 @@ export async function regenerateCanvas(plugin: CanvasRootsPlugin, canvasFile: TF
 		});
 
 		if (!familyTree) {
-			new Notice('Failed to build family tree from canvas nodes');
+			new Notice('无法从画布节点构建家族树');
 			return;
 		}
 
@@ -659,10 +659,10 @@ export async function regenerateCanvas(plugin: CanvasRootsPlugin, canvasFile: TF
 		const formattedJson = formatCanvasJson(updatedCanvasData);
 		await plugin.app.vault.modify(canvasFile, formattedJson);
 
-		new Notice(`Canvas regenerated successfully! (${newCanvasData.nodes.length} people)`);
+		new Notice(`画布已重新生成！（${newCanvasData.nodes.length} 个人物）`);
 	} catch (error: unknown) {
 		console.error('Error regenerating canvas:', error);
-		new Notice('Failed to regenerate canvas. Check console for details.');
+		new Notice('重新生成画布失败。请查看控制台了解详情。');
 	}
 }
 export function createPersonNote(plugin: CanvasRootsPlugin) {
@@ -684,7 +684,7 @@ export function createPersonNote(plugin: CanvasRootsPlugin) {
 }
 
 export async function generateAllTrees(plugin: CanvasRootsPlugin) {
-	new Notice('Finding all family groups...');
+	new Notice('正在查找所有家族分组…');
 
 	try {
 		// Open Control Center to generate all trees
@@ -692,7 +692,7 @@ export async function generateAllTrees(plugin: CanvasRootsPlugin) {
 		await modal.openAndGenerateAllTrees();
 	} catch (error: unknown) {
 		console.error('Error generating all trees:', error);
-		new Notice('Failed to generate all trees. Check console for details.');
+		new Notice('生成所有树失败。请查看控制台了解详情。');
 	}
 }
 
@@ -707,7 +707,7 @@ export async function insertDynamicBlocks(plugin: CanvasRootsPlugin, files: TFil
 
 	if (showProgress) {
 		progressNotice = new Notice(
-			`Inserting dynamic blocks: 0/${files.length}...`,
+			`正在插入动态块：0/${files.length}…`,
 			0 // Don't auto-dismiss
 		);
 	}
@@ -833,7 +833,7 @@ export async function insertDynamicBlocks(plugin: CanvasRootsPlugin, files: TFil
 				// Update progress notice every 5 files or at the end
 				if (progressNotice && (processedCount % 5 === 0 || processedCount === files.length)) {
 					progressNotice.setMessage(
-						`Inserting dynamic blocks: ${processedCount}/${files.length} (${addedCount} added)...`
+						`正在插入动态块：${processedCount}/${files.length}（已添加 ${addedCount}）…`
 					);
 				}
 
@@ -852,18 +852,18 @@ export async function insertDynamicBlocks(plugin: CanvasRootsPlugin, files: TFil
 		// Show summary
 		if (files.length === 1) {
 			if (addedCount === 1) {
-				new Notice('Added dynamic content blocks');
+				new Notice('已添加动态内容块');
 			} else if (skippedCount === 1) {
-				new Notice('Note already has dynamic blocks or is not a supported note type');
+				new Notice('笔记已有动态块，或不是支持的笔记类型');
 			} else {
-				new Notice('Failed to add dynamic blocks');
+				new Notice('添加动态块失败');
 			}
 		} else {
 			const parts = [];
-			if (addedCount > 0) parts.push(`${addedCount} updated`);
-			if (skippedCount > 0) parts.push(`${skippedCount} skipped`);
-			if (errorCount > 0) parts.push(`${errorCount} errors`);
-			new Notice(`Dynamic blocks: ${parts.join(', ')}`);
+			if (addedCount > 0) parts.push(`已更新 ${addedCount}`);
+			if (skippedCount > 0) parts.push(`已跳过 ${skippedCount}`);
+			if (errorCount > 0) parts.push(`${errorCount} 个错误`);
+			new Notice(`动态块：${parts.join('，')}`);
 		}
 
 	} catch (error: unknown) {
@@ -872,7 +872,7 @@ export async function insertDynamicBlocks(plugin: CanvasRootsPlugin, files: TFil
 			progressNotice.hide();
 		}
 		console.error('Error inserting dynamic blocks:', error);
-		new Notice('Failed to add dynamic blocks');
+		new Notice('添加动态块失败');
 	}
 }
 
@@ -882,12 +882,12 @@ export async function insertDynamicBlocks(plugin: CanvasRootsPlugin, files: TFil
  */
 export async function generateExcalidrawTreeForPerson(plugin: CanvasRootsPlugin, personFile: TFile) {
 	try {
-		new Notice('Generating Excalidraw tree...');
+		new Notice('正在生成 Excalidraw 树…');
 
 		// Get person info from file metadata
 		const cache = plugin.app.metadataCache.getFileCache(personFile);
 		if (!cache?.frontmatter?.cr_id) {
-			new Notice('Invalid person note: missing cr_id');
+			new Notice('无效的人物笔记：缺少 cr_id');
 			return;
 		}
 
@@ -904,7 +904,7 @@ export async function generateExcalidrawTreeForPerson(plugin: CanvasRootsPlugin,
 		});
 
 		if (!familyTree) {
-			new Notice('Failed to generate tree: root person not found');
+			new Notice('生成树失败：找不到根人物');
 			return;
 		}
 
@@ -946,7 +946,7 @@ export async function generateExcalidrawTreeForPerson(plugin: CanvasRootsPlugin,
 		await plugin.app.fileManager.trashFile(tempCanvasFile);
 
 		if (!result.success) {
-			new Notice(`Export failed: ${result.errors.join(', ')}`);
+			new Notice(`导出失败：${result.errors.join(', ')}`);
 			return;
 		}
 
@@ -963,7 +963,7 @@ export async function generateExcalidrawTreeForPerson(plugin: CanvasRootsPlugin,
 
 		await plugin.app.vault.create(finalPath, result.excalidrawContent!);
 
-		new Notice(`Generated Excalidraw tree with ${result.elementsExported} elements`);
+		new Notice(`已生成 Excalidraw 树，包含 ${result.elementsExported} 个元素`);
 
 		// Open the newly created file
 		const excalidrawFile = plugin.app.vault.getAbstractFileByPath(finalPath);
@@ -973,7 +973,7 @@ export async function generateExcalidrawTreeForPerson(plugin: CanvasRootsPlugin,
 		}
 	} catch (error: unknown) {
 		console.error('Error generating Excalidraw tree:', error);
-		new Notice(`Failed to generate Excalidraw tree: ${getErrorMessage(error)}`);
+		new Notice(`生成 Excalidraw 树失败：${getErrorMessage(error)}`);
 	}
 }
 

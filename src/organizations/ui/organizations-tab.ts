@@ -92,11 +92,11 @@ function renderOrphanOrganizationsCard(
 	const orphans = orgService.findOrphanOrganizations();
 	if (orphans.length === 0) return;
 
-	const card = createCard({ title: 'Orphan organizations', icon: 'alert-triangle' });
+	const card = createCard({ title: '孤立组织', icon: 'alert-triangle' });
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	content.createEl('p', {
-		text: 'These organizations are referenced by events, people, or other organizations but have no organization note. Create the note to manage them; existing references link up automatically.',
+		text: '这些组织被事件、人物或其他组织引用，但没有对应的组织笔记。创建笔记即可管理它们；现有引用会自动建立关联。',
 		cls: 'crc-text-muted crc-mb-3'
 	});
 
@@ -105,11 +105,11 @@ function renderOrphanOrganizationsCard(
 			try {
 				const { backfilledCount } = await orgService.adoptOrphanOrganization(name);
 				new Notice(backfilledCount > 0
-					? `Created organization "${name}" and linked ${backfilledCount} person note${backfilledCount === 1 ? '' : 's'}.`
-					: `Created organization "${name}".`);
+					? `已创建组织"${name}"，并关联了 ${backfilledCount} 份人物笔记。`
+					: `已创建组织"${name}"。`);
 				showTab('organizations');
 			} catch (err) {
-				new Notice(`Failed to create organization: ${err instanceof Error ? err.message : String(err)}`);
+				new Notice(`创建组织失败：${err instanceof Error ? err.message : String(err)}`);
 			}
 		})();
 	};
@@ -118,16 +118,16 @@ function renderOrphanOrganizationsCard(
 		const row = content.createDiv({ cls: 'crc-flex crc-justify-between crc-items-center crc-mb-2' });
 		row.createSpan({ text: `"${orphan.name}"`, cls: 'crc-code' });
 		row.createSpan({
-			text: `${orphan.entityCount} reference${orphan.entityCount === 1 ? '' : 's'}`,
+			text: `${orphan.entityCount} 处引用`,
 			cls: 'crc-text-muted'
 		});
-		const createBtn = row.createEl('button', { text: 'Create note', cls: 'crc-btn crc-btn--small' });
+		const createBtn = row.createEl('button', { text: '创建笔记', cls: 'crc-btn crc-btn--small' });
 		createBtn.addEventListener('click', () => adopt(orphan.name));
 	});
 
 	if (orphans.length > 1) {
 		const createAllBtn = content.createEl('button', {
-			text: 'Create all',
+			text: '全部创建',
 			cls: 'crc-btn crc-btn--secondary crc-mt-3'
 		});
 		createAllBtn.addEventListener('click', () => {
@@ -142,7 +142,7 @@ function renderOrphanOrganizationsCard(
 						failed++;
 					}
 				}
-				new Notice(`Created ${created} organization note${created === 1 ? '' : 's'}${failed > 0 ? ` (${failed} failed)` : ''}.`);
+				new Notice(`已创建 ${created} 份组织笔记${failed > 0 ? `（${failed} 个失败）` : ''}。`);
 				showTab('organizations');
 			})();
 		});
@@ -163,7 +163,7 @@ function renderOrganizationsListCard(
 	showTab: (tabId: string) => void
 ): void {
 	const card = createCard({
-		title: 'Organizations',
+		title: '组织',
 		icon: 'building'
 	});
 	addOrganizationsDockButton(card, plugin);
@@ -171,10 +171,10 @@ function renderOrganizationsListCard(
 
 	// Create organization button
 	new Setting(content)
-		.setName('Create organization')
-		.setDesc('Create a new organization note')
+		.setName('创建组织')
+		.setDesc('创建一份新的组织笔记')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.setCta()
 			.onClick(() => {
 				new CreateOrganizationModal(plugin.app, plugin, () => {
@@ -184,10 +184,10 @@ function renderOrganizationsListCard(
 
 	// View templates button
 	new Setting(content)
-		.setName('Templater templates')
-		.setDesc('Copy ready-to-use templates for Templater integration')
+		.setName('Templater 模板')
+		.setDesc('复制可直接用于 Templater 集成的模板')
 		.addButton(button => button
-			.setButtonText('View templates')
+			.setButtonText('查看模板')
 			.onClick(() => {
 				new TemplateSnippetsModal(plugin.app, 'organization', plugin.settings.propertyAliases).open();
 			}));
@@ -198,10 +198,10 @@ function renderOrganizationsListCard(
 	if (allOrgs.length === 0) {
 		const emptyState = content.createDiv({ cls: 'crc-empty-state' });
 		setIcon(emptyState.createSpan({ cls: 'crc-empty-icon' }), 'building');
-		emptyState.createEl('p', { text: 'No organizations found.' });
+		emptyState.createEl('p', { text: '未找到组织。' });
 		emptyState.createEl('p', {
 			cls: 'crc-text-muted',
-			text: 'Create organization notes with cr_type: organization in frontmatter, or use the button above.'
+			text: '创建 frontmatter 中带有 cr_type: organization 的组织笔记，或使用上方按钮。'
 		});
 	} else {
 		// Pre-compute member counts for all orgs
@@ -226,12 +226,12 @@ function renderOrganizationsListCard(
 		const filterSelect = filterContainer.createEl('select', { cls: 'dropdown crc-filter-select' });
 
 		// Build filter options
-		filterSelect.createEl('option', { value: 'all', text: 'All organizations' });
+		filterSelect.createEl('option', { value: 'all', text: '全部组织' });
 
 		// Add type-based filters dynamically
 		const orgTypes = getAllOrganizationTypes(plugin.settings.customOrganizationTypes || []);
 		if (orgTypes.length > 0) {
-			const typeGroup = filterSelect.createEl('optgroup', { attr: { label: 'By type' } });
+			const typeGroup = filterSelect.createEl('optgroup', { attr: { label: '按类型' } });
 			for (const ot of orgTypes) {
 				typeGroup.createEl('option', { value: `type_${ot.id}`, text: ot.name });
 			}
@@ -239,22 +239,22 @@ function renderOrganizationsListCard(
 
 		// Membership filters
 		if (anyHasMembers) {
-			const memberGroup = filterSelect.createEl('optgroup', { attr: { label: 'By membership' } });
-			memberGroup.createEl('option', { value: 'has_members', text: 'Has members' });
-			memberGroup.createEl('option', { value: 'no_members', text: 'No members' });
+			const memberGroup = filterSelect.createEl('optgroup', { attr: { label: '按成员身份' } });
+			memberGroup.createEl('option', { value: 'has_members', text: '有成员' });
+			memberGroup.createEl('option', { value: 'no_members', text: '无成员' });
 		}
 
 		// Sort dropdown
 		const sortContainer = controls.createDiv({ cls: 'crc-filter-container' });
 		const sortSelect = sortContainer.createEl('select', { cls: 'dropdown crc-filter-select' });
-		sortSelect.createEl('option', { value: 'name_asc', text: 'Name A-Z' });
-		sortSelect.createEl('option', { value: 'name_desc', text: 'Name Z-A' });
-		sortSelect.createEl('option', { value: 'type', text: 'Type' });
+		sortSelect.createEl('option', { value: 'name_asc', text: '名称 A-Z' });
+		sortSelect.createEl('option', { value: 'name_desc', text: '名称 Z-A' });
+		sortSelect.createEl('option', { value: 'type', text: '类型' });
 		if (anyHasMembers) {
-			sortSelect.createEl('option', { value: 'members_desc', text: 'Members (most)' });
-			sortSelect.createEl('option', { value: 'members_asc', text: 'Members (least)' });
+			sortSelect.createEl('option', { value: 'members_desc', text: '成员数（多到少）' });
+			sortSelect.createEl('option', { value: 'members_asc', text: '成员数（少到多）' });
 		}
-		sortSelect.createEl('option', { value: 'universe', text: 'Universe' });
+		sortSelect.createEl('option', { value: 'universe', text: '宇宙' });
 
 		// Table container (for refreshing)
 		const tableContainer = content.createDiv({ cls: 'crc-org-table-container' });
@@ -312,30 +312,30 @@ function renderOrganizationsListCard(
 
 			if (filtered.length === 0) {
 				const noResults = tableContainer.createDiv({ cls: 'crc-empty-state' });
-				noResults.createEl('p', { text: 'No organizations match the current filter.' });
+				noResults.createEl('p', { text: '没有符合当前筛选条件的组织。' });
 				return;
 			}
 
 			// Hint text above table
 			const hint = tableContainer.createEl('p', { cls: 'crc-text-muted crc-text-small crc-mb-2' });
-			hint.appendText('Click a row to edit. ');
+			hint.appendText('点击某行进行编辑。');
 			const fileIconHint = createLucideIcon('file-text', 12);
 			fileIconHint.addClass('crc-icon-inline');
 			hint.appendChild(fileIconHint);
-			hint.appendText(' opens the note.');
+			hint.appendText('打开笔记。');
 
 			const table = tableContainer.createEl('table', { cls: 'cr-org-table' });
 
 			// Header
 			const thead = table.createEl('thead');
 			const headerRow = thead.createEl('tr');
-			headerRow.createEl('th', { text: 'Name' });
-			headerRow.createEl('th', { text: 'Type' });
-			headerRow.createEl('th', { text: 'Universe' });
+			headerRow.createEl('th', { text: '名称' });
+			headerRow.createEl('th', { text: '类型' });
+			headerRow.createEl('th', { text: '宇宙' });
 			if (anyHasMembers) {
-				headerRow.createEl('th', { text: 'Members' });
+				headerRow.createEl('th', { text: '成员' });
 			}
-			headerRow.createEl('th', { text: 'Media', cls: 'cr-org-th-center' });
+			headerRow.createEl('th', { text: '媒体', cls: 'cr-org-th-center' });
 			headerRow.createEl('th', { text: '', cls: 'cr-org-th-actions' });
 
 			// Body
@@ -348,11 +348,11 @@ function renderOrganizationsListCard(
 			if (filtered.length > displayLimit) {
 				const loadMoreContainer = tableContainer.createDiv({ cls: 'crc-load-more-container' });
 				loadMoreContainer.createSpan({
-					text: `Showing ${displayed.length} of ${filtered.length} organizations`,
+					text: `显示 ${filtered.length} 个组织中的 ${displayed.length} 个`,
 					cls: 'crc-text-muted'
 				});
 				const loadMoreBtn = loadMoreContainer.createEl('button', { cls: 'mod-cta' });
-				loadMoreBtn.textContent = 'Load more';
+				loadMoreBtn.textContent = '加载更多';
 				loadMoreBtn.addEventListener('click', () => {
 					displayLimit += 25;
 					renderTable();
@@ -360,7 +360,7 @@ function renderOrganizationsListCard(
 			} else if (filtered.length > 0) {
 				const countInfo = tableContainer.createDiv({ cls: 'crc-count-info' });
 				countInfo.createSpan({
-					text: `Showing all ${filtered.length} organization${filtered.length !== 1 ? 's' : ''}`,
+					text: `已显示全部 ${filtered.length} 个组织`,
 					cls: 'crc-text-muted'
 				});
 			}
@@ -429,7 +429,7 @@ function renderOrganizationRow(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Edit organization...')
+				.setTitle('编辑组织…')
 				.setIcon('pencil')
 				.onClick(() => {
 					new CreateOrganizationModal(plugin.app, plugin, {
@@ -446,7 +446,7 @@ function renderOrganizationRow(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Open note')
+				.setTitle('打开笔记')
 				.setIcon('file')
 				.onClick(async () => {
 					await plugin.trackRecentFile(org.file, 'organization');
@@ -456,7 +456,7 @@ function renderOrganizationRow(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Open in new tab')
+				.setTitle('在新标签页中打开')
 				.setIcon('file-plus')
 				.onClick(async () => {
 					await plugin.trackRecentFile(org.file, 'organization');
@@ -469,7 +469,7 @@ function renderOrganizationRow(
 		// Member management
 		menu.addItem((item) => {
 			item
-				.setTitle('Manage members...')
+				.setTitle('管理成员…')
 				.setIcon('users')
 				.onClick(() => {
 					new ManageOrganizationMembersModal(plugin.app, plugin, {
@@ -490,7 +490,7 @@ function renderOrganizationRow(
 		const mediaCount = org.media?.length || 0;
 		menu.addItem((item) => {
 			item
-				.setTitle('Link media...')
+				.setTitle('链接媒体…')
 				.setIcon('image-plus')
 				.onClick(() => {
 					plugin.openLinkMediaModal(org.file, 'organization', org.name);
@@ -500,7 +500,7 @@ function renderOrganizationRow(
 		if (mediaCount > 0) {
 			menu.addItem((item) => {
 				item
-					.setTitle(`Manage media (${mediaCount})...`)
+					.setTitle(`管理媒体（${mediaCount}）…`)
 					.setIcon('images')
 					.onClick(() => {
 						openManageMediaModal(plugin, org.file, 'organization', org.name);
@@ -538,7 +538,7 @@ function renderOrganizationRow(
 	if (mediaCount > 0) {
 		const mediaBadge = mediaCell.createEl('span', {
 			cls: 'crc-person-list-badge crc-person-list-badge--media',
-			attr: { title: `${mediaCount} media file${mediaCount !== 1 ? 's' : ''}` }
+			attr: { title: `${mediaCount} 个媒体文件` }
 		});
 		const mediaIcon = createLucideIcon('image', 12);
 		mediaBadge.appendChild(mediaIcon);
@@ -559,7 +559,7 @@ function renderOrganizationRow(
 	const actionsCell = row.createEl('td', { cls: 'cr-org-cell-actions' });
 	const openBtn = actionsCell.createEl('button', {
 		cls: 'crc-btn crc-btn--small',
-		attr: { title: 'Open organization note' }
+		attr: { title: '打开组织笔记' }
 	});
 	const fileIcon = createLucideIcon('file-text', 14);
 	openBtn.appendChild(fileIcon);
@@ -587,7 +587,7 @@ function renderOrganizationStatsCard(
 	closeModal: () => void
 ): void {
 	const card = createCard({
-		title: 'Statistics',
+		title: '统计',
 		icon: 'bar-chart'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
@@ -603,15 +603,15 @@ function renderOrganizationStatsCard(
 		item.createDiv({ cls: 'cr-stat-label', text: label });
 	};
 
-	createStatItem('Organizations', stats.total);
-	createStatItem('People with memberships', stats.peopleWithMemberships);
-	createStatItem('Total memberships', stats.totalMemberships);
-	createStatItem('Empty organizations', stats.emptyOrganizations);
+	createStatItem('组织', stats.total);
+	createStatItem('拥有成员身份的人物', stats.peopleWithMemberships);
+	createStatItem('成员身份总数', stats.totalMemberships);
+	createStatItem('无成员的组织', stats.emptyOrganizations);
 
 	// Breakdown by type
 	if (stats.total > 0) {
 		const breakdown = content.createDiv({ cls: 'cr-stats-breakdown' });
-		breakdown.createEl('h4', { text: 'By type', cls: 'cr-subsection-heading' });
+		breakdown.createEl('h4', { text: '按类型', cls: 'cr-subsection-heading' });
 
 		const typeList = breakdown.createDiv({ cls: 'cr-type-breakdown-list' });
 		const allTypes = getAllOrganizationTypes(plugin.settings.customOrganizationTypes || []);
@@ -629,7 +629,7 @@ function renderOrganizationStatsCard(
 
 	// View full statistics link
 	const statsLink = content.createDiv({ cls: 'cr-stats-link' });
-	const link = statsLink.createEl('a', { text: 'View full statistics →', cls: 'crc-text-muted' });
+	const link = statsLink.createEl('a', { text: '查看完整统计 →', cls: 'crc-text-muted' });
 	link.addEventListener('click', (e) => {
 		e.preventDefault();
 		closeModal();
@@ -648,16 +648,16 @@ function renderDataToolsCard(
 	createCard: (options: { title: string; icon?: LucideIconName }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Data tools',
+		title: '数据工具',
 		icon: 'table-2'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	new Setting(content)
-		.setName('Create base template')
-		.setDesc('Create a ready-to-use Obsidian Bases template for managing organizations in table view')
+		.setName('创建 Base 模板')
+		.setDesc('创建可直接使用的 Obsidian Bases 模板，用于以表格视图管理组织')
 		.addButton(btn => btn
-			.setButtonText('Create template')
+			.setButtonText('创建模板')
 			.setCta()
 			.onClick(() => {
 				plugin.app.commands.executeCommandById('charted-roots:create-organizations-base-template');
@@ -681,7 +681,7 @@ function addOrganizationsDockButton(card: HTMLElement, plugin: CanvasRootsPlugin
 
 	const dockBtn = activeDocument.createElement('button');
 	dockBtn.className = 'crc-card__dock-btn clickable-icon';
-	dockBtn.setAttribute('aria-label', 'Open in sidebar');
+	dockBtn.setAttribute('aria-label', '在侧边栏中打开');
 	setIcon(dockBtn, 'panel-right');
 	dockBtn.addEventListener('click', (e) => {
 		e.stopPropagation();
@@ -710,7 +710,7 @@ export function renderOrganizationsList(options: OrganizationsListOptions): void
 
 	// Loading indicator
 	container.empty();
-	container.createEl('p', { text: 'Loading organizations...', cls: 'crc-text--muted' });
+	container.createEl('p', { text: '正在加载组织…', cls: 'crc-text--muted' });
 
 	// Load data
 	const allOrgs = orgService.getAllOrganizations();
@@ -720,10 +720,10 @@ export function renderOrganizationsList(options: OrganizationsListOptions): void
 	if (allOrgs.length === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		setIcon(emptyState.createSpan({ cls: 'crc-empty-icon' }), 'building');
-		emptyState.createEl('p', { text: 'No organizations found.' });
+		emptyState.createEl('p', { text: '未找到组织。' });
 		emptyState.createEl('p', {
 			cls: 'crc-text-muted',
-			text: 'Create organization notes with cr_type: organization in frontmatter.'
+			text: '创建 frontmatter 中带有 cr_type: organization 的组织笔记。'
 		});
 		return;
 	}
@@ -748,20 +748,20 @@ export function renderOrganizationsList(options: OrganizationsListOptions): void
 	const filterContainer = controls.createDiv({ cls: 'crc-filter-container' });
 	const filterSelect = filterContainer.createEl('select', { cls: 'dropdown crc-filter-select' });
 
-	filterSelect.createEl('option', { value: 'all', text: 'All organizations' });
+	filterSelect.createEl('option', { value: 'all', text: '全部组织' });
 
 	const orgTypes = getAllOrganizationTypes(plugin.settings.customOrganizationTypes || []);
 	if (orgTypes.length > 0) {
-		const typeGroup = filterSelect.createEl('optgroup', { attr: { label: 'By type' } });
+		const typeGroup = filterSelect.createEl('optgroup', { attr: { label: '按类型' } });
 		for (const ot of orgTypes) {
 			typeGroup.createEl('option', { value: `type_${ot.id}`, text: ot.name });
 		}
 	}
 
 	if (anyHasMembers) {
-		const memberGroup = filterSelect.createEl('optgroup', { attr: { label: 'By membership' } });
-		memberGroup.createEl('option', { value: 'has_members', text: 'Has members' });
-		memberGroup.createEl('option', { value: 'no_members', text: 'No members' });
+		const memberGroup = filterSelect.createEl('optgroup', { attr: { label: '按成员身份' } });
+		memberGroup.createEl('option', { value: 'has_members', text: '有成员' });
+		memberGroup.createEl('option', { value: 'no_members', text: '无成员' });
 	}
 
 	filterSelect.value = currentFilter;
@@ -769,21 +769,21 @@ export function renderOrganizationsList(options: OrganizationsListOptions): void
 	// Sort dropdown
 	const sortContainer = controls.createDiv({ cls: 'crc-filter-container' });
 	const sortSelect = sortContainer.createEl('select', { cls: 'dropdown crc-filter-select' });
-	sortSelect.createEl('option', { value: 'name_asc', text: 'Name A-Z' });
-	sortSelect.createEl('option', { value: 'name_desc', text: 'Name Z-A' });
-	sortSelect.createEl('option', { value: 'type', text: 'Type' });
+	sortSelect.createEl('option', { value: 'name_asc', text: '名称 A-Z' });
+	sortSelect.createEl('option', { value: 'name_desc', text: '名称 Z-A' });
+	sortSelect.createEl('option', { value: 'type', text: '类型' });
 	if (anyHasMembers) {
-		sortSelect.createEl('option', { value: 'members_desc', text: 'Members (most)' });
-		sortSelect.createEl('option', { value: 'members_asc', text: 'Members (least)' });
+		sortSelect.createEl('option', { value: 'members_desc', text: '成员数（多到少）' });
+		sortSelect.createEl('option', { value: 'members_asc', text: '成员数（少到多）' });
 	}
-	sortSelect.createEl('option', { value: 'universe', text: 'Universe' });
+	sortSelect.createEl('option', { value: 'universe', text: '宇宙' });
 	sortSelect.value = currentSort;
 
 	// Search input
 	const searchContainer = controls.createDiv({ cls: 'crc-filter-container' });
 	const searchInput = searchContainer.createEl('input', {
 		type: 'search',
-		placeholder: 'Search organizations...',
+		placeholder: '搜索组织…',
 		cls: 'crc-filter-search',
 		value: currentSearch
 	});
@@ -858,7 +858,7 @@ export function renderOrganizationsList(options: OrganizationsListOptions): void
 
 		if (filtered.length === 0) {
 			const noResults = tableContainer.createDiv({ cls: 'crc-empty-state' });
-			noResults.createEl('p', { text: 'No organizations match the current filter.' });
+			noResults.createEl('p', { text: '没有符合当前筛选条件的组织。' });
 			return;
 		}
 
@@ -867,13 +867,13 @@ export function renderOrganizationsList(options: OrganizationsListOptions): void
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name' });
-		headerRow.createEl('th', { text: 'Type' });
-		headerRow.createEl('th', { text: 'Universe' });
+		headerRow.createEl('th', { text: '名称' });
+		headerRow.createEl('th', { text: '类型' });
+		headerRow.createEl('th', { text: '宇宙' });
 		if (anyHasMembers) {
-			headerRow.createEl('th', { text: 'Members' });
+			headerRow.createEl('th', { text: '成员' });
 		}
-		headerRow.createEl('th', { text: 'Media', cls: 'cr-org-th-center' });
+		headerRow.createEl('th', { text: '媒体', cls: 'cr-org-th-center' });
 		headerRow.createEl('th', { text: '', cls: 'cr-org-th-actions' });
 
 		// Body
@@ -886,11 +886,11 @@ export function renderOrganizationsList(options: OrganizationsListOptions): void
 		if (filtered.length > displayLimit) {
 			const loadMoreContainer = tableContainer.createDiv({ cls: 'crc-load-more-container' });
 			loadMoreContainer.createSpan({
-				text: `Showing ${displayed.length} of ${filtered.length} organizations`,
+				text: `显示 ${filtered.length} 个组织中的 ${displayed.length} 个`,
 				cls: 'crc-text-muted'
 			});
 			const loadMoreBtn = loadMoreContainer.createEl('button', { cls: 'mod-cta' });
-			loadMoreBtn.textContent = 'Load more';
+			loadMoreBtn.textContent = '加载更多';
 			loadMoreBtn.addEventListener('click', () => {
 				displayLimit += 25;
 				renderTable();
@@ -898,7 +898,7 @@ export function renderOrganizationsList(options: OrganizationsListOptions): void
 		} else if (filtered.length > 0) {
 			const countInfo = tableContainer.createDiv({ cls: 'crc-count-info' });
 			countInfo.createSpan({
-				text: `Showing all ${filtered.length} organization${filtered.length !== 1 ? 's' : ''}`,
+				text: `已显示全部 ${filtered.length} 个组织`,
 				cls: 'crc-text-muted'
 			});
 		}
@@ -957,7 +957,7 @@ function renderBrowseRow(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Open note')
+				.setTitle('打开笔记')
 				.setIcon('file')
 				.onClick(async () => {
 					await plugin.trackRecentFile(org.file, 'organization');
@@ -967,7 +967,7 @@ function renderBrowseRow(
 
 		menu.addItem((item) => {
 			item
-				.setTitle('Open in new tab')
+				.setTitle('在新标签页中打开')
 				.setIcon('file-plus')
 				.onClick(async () => {
 					await plugin.trackRecentFile(org.file, 'organization');
@@ -1005,7 +1005,7 @@ function renderBrowseRow(
 	if (mediaCount > 0) {
 		const mediaBadge = mediaCell.createEl('span', {
 			cls: 'crc-person-list-badge crc-person-list-badge--media',
-			attr: { title: `${mediaCount} media file${mediaCount !== 1 ? 's' : ''}` }
+			attr: { title: `${mediaCount} 个媒体文件` }
 		});
 		const mediaIcon = createLucideIcon('image', 12);
 		mediaBadge.appendChild(mediaIcon);
@@ -1018,7 +1018,7 @@ function renderBrowseRow(
 	const actionsCell = row.createEl('td', { cls: 'cr-org-cell-actions' });
 	const openBtn = actionsCell.createEl('button', {
 		cls: 'crc-btn crc-btn--small',
-		attr: { title: 'Open organization note' }
+		attr: { title: '打开组织笔记' }
 	});
 	const fileIcon = createLucideIcon('file-text', 14);
 	openBtn.appendChild(fileIcon);

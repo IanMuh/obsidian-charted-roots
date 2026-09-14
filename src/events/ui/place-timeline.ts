@@ -10,7 +10,6 @@ import { App } from 'obsidian';
 import type { CanvasRootsSettings } from '../../settings';
 import { createLucideIcon } from '../../ui/lucide-icons';
 import { EventService } from '../services/event-service';
-import { pluralize } from '../../utils/format-utils';
 import { EventNote, getEventType, DATE_PRECISION_LABELS } from '../types/event-types';
 import { DEFAULT_DATE_SYSTEMS } from '../../dates/constants/default-date-systems';
 import { getCalendarSystemName } from '../../dates/calendar-display';
@@ -58,7 +57,7 @@ function sortEventsChronologically(events: EventNote[]): EventNote[] {
  */
 function formatDateForDisplay(event: EventNote): string {
 	if (!event.date) {
-		return 'Date unknown';
+		return '日期未知';
 	}
 
 	let dateStr = event.date;
@@ -71,8 +70,8 @@ function formatDateForDisplay(event: EventNote): string {
 	// Add precision indicator if not exact
 	if (event.datePrecision && event.datePrecision !== 'exact') {
 		const precisionLabel = DATE_PRECISION_LABELS[event.datePrecision];
-		if (precisionLabel && precisionLabel !== 'Exact date') {
-			dateStr += ` (${precisionLabel.toLowerCase()})`;
+		if (precisionLabel && precisionLabel !== '精确日期') {
+			dateStr += `（${precisionLabel}）`;
 		}
 	}
 
@@ -138,7 +137,7 @@ export function renderPlaceTimelineCard(
 	if (places.length === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-place-timeline__empty' });
 		emptyState.createEl('p', {
-			text: 'No events with places recorded.',
+			text: '未记录带地点的事件。',
 			cls: 'crc-text--muted'
 		});
 		return;
@@ -149,7 +148,7 @@ export function renderPlaceTimelineCard(
 
 	// Place dropdown
 	const placeSelect = filterRow.createEl('select', { cls: 'crc-timeline-filter' });
-	placeSelect.createEl('option', { text: 'Select a place...', attr: { value: '' } });
+	placeSelect.createEl('option', { text: '选择地点…', attr: { value: '' } });
 
 	for (const place of places) {
 		const events = eventService.getEventsAtPlace(`[[${place}]]`);
@@ -174,10 +173,10 @@ export function renderPlaceTimelineCard(
 		});
 		const calendarIcon = createLucideIcon('calendar', 14);
 		filterLabel.appendChild(calendarIcon);
-		filterLabel.appendText(' Calendar:');
+		filterLabel.appendText(' 历法：');
 
 		calendarSelect = calendarFilterContainer.createEl('select', { cls: 'crc-timeline-filter' });
-		calendarSelect.createEl('option', { text: 'All calendars', attr: { value: '' } });
+		calendarSelect.createEl('option', { text: '全部历法', attr: { value: '' } });
 
 		// Resolve each calendar id to its display name so the dropdown shows
 		// "Star Wars (out of universe)" rather than the raw id (#766). User
@@ -241,7 +240,7 @@ function renderPlaceSelectionPrompt(container: HTMLElement): void {
 	const icon = createLucideIcon('map-pin', 24);
 	prompt.appendChild(icon);
 	prompt.createEl('p', {
-		text: 'Select a place to view its timeline',
+		text: '选择一个地点以查看其时间轴',
 		cls: 'crc-text--muted'
 	});
 }
@@ -275,8 +274,8 @@ function renderPlaceTimeline(
 		const emptyState = container.createDiv({ cls: 'crc-place-timeline__empty' });
 		emptyState.createEl('p', {
 			text: calendarFilter
-				? `No events at this location for calendar "${calendarFilter}".`
-				: 'No events at this location.',
+				? `此地点的历法"${calendarFilter}"下没有事件。`
+				: '此地点没有事件。',
 			cls: 'crc-text--muted'
 		});
 		return;
@@ -293,12 +292,12 @@ function renderPlaceTimeline(
 		const dateRange = firstDate === lastDate ? firstDate : `${firstDate} – ${lastDate}`;
 
 		summary.createEl('span', {
-			text: `${sortedEvents.length} events • ${dateRange}`,
+			text: `${sortedEvents.length} 个事件 • ${dateRange}`,
 			cls: 'crc-place-timeline__summary-text'
 		});
 	} else {
 		summary.createEl('span', {
-			text: `${sortedEvents.length} events`,
+			text: `${sortedEvents.length} 个事件`,
 			cls: 'crc-place-timeline__summary-text'
 		});
 	}
@@ -310,7 +309,7 @@ function renderPlaceTimeline(
 		const peopleIcon = createLucideIcon('users', 14);
 		peopleSection.appendChild(peopleIcon);
 		peopleSection.createEl('span', {
-			text: `${uniquePeople.length} ${pluralize(uniquePeople.length, 'person', 'people')}: `,
+			text: `${uniquePeople.length} 位人物：`,
 			cls: 'crc-place-timeline__people-label'
 		});
 
@@ -320,7 +319,7 @@ function renderPlaceTimeline(
 		const remaining = uniquePeople.length - maxDisplay;
 
 		peopleSection.createEl('span', {
-			text: displayPeople.join(', ') + (remaining > 0 ? ` and ${remaining} more` : ''),
+			text: displayPeople.join('，') + (remaining > 0 ? ` 等 ${remaining} 人` : ''),
 			cls: 'crc-place-timeline__people-list'
 		});
 	}
@@ -414,7 +413,7 @@ function renderFamilyPresenceAnalysis(
 	// Render presence bars
 	const presenceSection = container.createDiv({ cls: 'crc-place-timeline__presence' });
 	presenceSection.createEl('h4', {
-		text: 'Family presence',
+		text: '家族活动的时期',
 		cls: 'crc-place-timeline__presence-title'
 	});
 
@@ -577,7 +576,7 @@ function renderPlaceTimelineEvent(
 	if (event.sources && event.sources.length > 0) {
 		const sourceRow = content.createDiv({ cls: 'crc-place-timeline-event__details' });
 		sourceRow.createEl('span', {
-			text: `${event.sources.length} source${event.sources.length !== 1 ? 's' : ''}`,
+			text: `${event.sources.length} 个来源`,
 			cls: 'crc-text--muted'
 		});
 	}

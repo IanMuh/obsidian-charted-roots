@@ -120,7 +120,7 @@ export class EnrichPlaceHierarchyModal extends Modal {
 		this.modalEl.addClass('cr-bulk-geocode-modal', 'cr-enrich-hierarchy-modal');
 
 		// Modal title
-		contentEl.createEl('h2', { text: 'Enrich place hierarchy' });
+		contentEl.createEl('h2', { text: '丰富地点层级' });
 
 		// Load places that could benefit from hierarchy enrichment
 		this.loadPlacesToEnrich();
@@ -130,13 +130,13 @@ export class EnrichPlaceHierarchyModal extends Modal {
 
 		if (this.placesToEnrich.length === 0) {
 			description.createEl('p', {
-				text: 'All places already have parent places defined.',
+				text: '所有地点均已定义父地点。',
 				cls: 'cr-text-success'
 			});
 
 			new Setting(contentEl)
 				.addButton(btn => btn
-					.setButtonText('Close')
+					.setButtonText('关闭')
 					.onClick(() => this.close()));
 
 			return;
@@ -147,7 +147,7 @@ export class EnrichPlaceHierarchyModal extends Modal {
 		});
 
 		description.createEl('p', {
-			text: 'This will geocode each place, parse the full address into hierarchy components (city → county → state → country), and create or link parent place notes.',
+			text: '将对每个地点进行地理编码，将完整地址解析为层级组件（城市 → 县 → 州 → 国家），并创建或链接父地点笔记。',
 			cls: 'cr-text-muted cr-text-small'
 		});
 
@@ -164,8 +164,8 @@ export class EnrichPlaceHierarchyModal extends Modal {
 		const settingsContainer = contentEl.createDiv({ cls: 'cr-enrich-settings' });
 
 		new Setting(settingsContainer)
-			.setName('Create missing parent places')
-			.setDesc('Automatically create place notes for missing parents in the hierarchy')
+			.setName('创建缺失的父地点')
+			.setDesc('自动为层级中缺失的父地点创建地点笔记')
 			.addToggle(toggle => toggle
 				.setValue(this.createMissingParents)
 				.onChange(value => {
@@ -173,8 +173,8 @@ export class EnrichPlaceHierarchyModal extends Modal {
 				}));
 
 		new Setting(settingsContainer)
-			.setName('Include incomplete hierarchies')
-			.setDesc('Re-enrich places that skip levels (e.g., city linked directly to state, missing county)')
+			.setName('包含不完整的层级')
+			.setDesc('重新丰富跳级的地点（例如城市直接链接到州，缺少县）')
 			.addToggle(toggle => toggle
 				.setValue(this.includeIncompleteHierarchies)
 				.onChange(value => {
@@ -184,10 +184,10 @@ export class EnrichPlaceHierarchyModal extends Modal {
 				}));
 
 		new Setting(settingsContainer)
-			.setName('Directory for new places')
-			.setDesc('Where to create new parent place notes')
+			.setName('新地点的文件夹')
+			.setDesc('新父地点笔记的创建位置')
 			.addText(text => text
-				.setPlaceholder('e.g., Places')
+				.setPlaceholder('例如：Places')
 				.setValue(this.directory)
 				.onChange(value => {
 					this.directory = value;
@@ -197,7 +197,7 @@ export class EnrichPlaceHierarchyModal extends Modal {
 		this.progressContainer = contentEl.createDiv({ cls: 'cr-bulk-geocode-progress cr-hidden' });
 
 		const progressHeader = this.progressContainer.createDiv({ cls: 'cr-progress-header' });
-		this.progressText = progressHeader.createEl('span', { text: 'Starting...' });
+		this.progressText = progressHeader.createEl('span', { text: '开始中…' });
 
 		const progressBarContainer = this.progressContainer.createDiv({ cls: 'cr-progress-bar-container' });
 		this.progressBar = progressBarContainer.createDiv({ cls: 'cr-progress-bar' });
@@ -211,7 +211,7 @@ export class EnrichPlaceHierarchyModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will create new files and modify existing notes.'
+			text: ' 请先备份您的库再继续。此操作会创建新文件并修改现有笔记。'
 		});
 
 		// Buttons
@@ -220,12 +220,12 @@ export class EnrichPlaceHierarchyModal extends Modal {
 		new Setting(buttonsContainer)
 			.addButton(btn => {
 				this.cancelButton = btn.buttonEl;
-				btn.setButtonText('Cancel')
+				btn.setButtonText('取消')
 					.onClick(() => {
 						if (this.isRunning) {
 							this.isCancelled = true;
 							btn.setDisabled(true);
-							btn.setButtonText('Cancelling...');
+							btn.setButtonText('正在取消…');
 						} else {
 							this.close();
 						}
@@ -233,7 +233,7 @@ export class EnrichPlaceHierarchyModal extends Modal {
 			})
 			.addButton(btn => {
 				this.startButton = btn.buttonEl;
-				btn.setButtonText('Start enrichment')
+				btn.setButtonText('开始丰富')
 					.setCta()
 					.onClick(() => this.startEnrichment());
 			});
@@ -329,9 +329,9 @@ export class EnrichPlaceHierarchyModal extends Modal {
 	private getCountText(): string {
 		const count = this.placesToEnrich.length;
 		if (this.includeIncompleteHierarchies) {
-			return `Found ${count} place${count !== 1 ? 's' : ''} that could be enriched (including incomplete hierarchies).`;
+			return `发现 ${count} 个可丰富的地点（包含不完整的层级）。`;
 		}
-		return `Found ${count} place${count !== 1 ? 's' : ''} without parent places that could be enriched.`;
+		return `发现 ${count} 个缺少父地点、可丰富的地点。`;
 	}
 
 	/**
@@ -339,7 +339,7 @@ export class EnrichPlaceHierarchyModal extends Modal {
 	 */
 	private getTimeText(): string {
 		const estimatedMinutes = Math.ceil(this.placesToEnrich.length / 60);
-		return estimatedMinutes === 1 ? 'Estimated time: about 1 minute' : `Estimated time: about ${estimatedMinutes} minutes`;
+		return estimatedMinutes === 1 ? '预计耗时：约1分钟' : `预计耗时：约 ${estimatedMinutes} 分钟`;
 	}
 
 	/**
@@ -412,7 +412,7 @@ export class EnrichPlaceHierarchyModal extends Modal {
 		// Update UI
 		if (this.startButton) {
 			this.startButton.disabled = true;
-			this.startButton.textContent = 'Processing...';
+			this.startButton.textContent = '处理中…';
 		}
 
 		if (this.progressContainer) {
@@ -490,7 +490,7 @@ export class EnrichPlaceHierarchyModal extends Modal {
 			const geocodeResult = await this.geocodingService.geocodeWithDetails(searchQuery);
 
 			if (!geocodeResult.success || !geocodeResult.addressComponents) {
-				result.error = geocodeResult.error || 'No address components found';
+				result.error = geocodeResult.error || '未找到地址组件';
 				return result;
 			}
 
@@ -513,10 +513,10 @@ export class EnrichPlaceHierarchyModal extends Modal {
 					}
 					result.success = true;
 					result.parentsCreated = [];
-					result.parentLinked = '(top-level country)';
+					result.parentLinked = '(顶级国家)';
 					return result;
 				}
-				result.error = 'Could not parse hierarchy from geocoding result';
+				result.error = '无法从地理编码结果解析层级';
 				return result;
 			}
 
@@ -544,11 +544,11 @@ export class EnrichPlaceHierarchyModal extends Modal {
 				result.parentsCreated = parentsCreated;
 				result.parentLinked = this.placeGraph.getPlaceByCrId(parentId)?.name;
 			} else {
-				result.error = 'Could not establish parent chain';
+				result.error = '无法建立父级链';
 			}
 
 		} catch (error) {
-			result.error = error instanceof Error ? error.message : 'Unknown error';
+			result.error = error instanceof Error ? error.message : '未知错误';
 		}
 
 		return result;
@@ -699,7 +699,7 @@ export class EnrichPlaceHierarchyModal extends Modal {
 		}
 
 		if (this.progressText) {
-			this.progressText.textContent = `Processing ${current} of ${total} (${percent}%)`;
+			this.progressText.textContent = `正在处理第 ${current} / ${total} 个（${percent}%）`;
 		}
 
 		if (this.resultsList) {
@@ -723,7 +723,7 @@ export class EnrichPlaceHierarchyModal extends Modal {
 			if (result.success && result.parentLinked) {
 				const detail = item.createSpan({ cls: 'cr-geocode-result-coords cr-text-muted' });
 				const createdText = result.parentsCreated && result.parentsCreated.length > 0
-					? ` (created ${result.parentsCreated.length} parent${result.parentsCreated.length !== 1 ? 's' : ''})`
+					? `（创建了 ${result.parentsCreated.length} 个父地点）`
 					: '';
 				detail.textContent = ` → ${result.parentLinked}${createdText}`;
 			} else if (result.error) {
@@ -746,14 +746,14 @@ export class EnrichPlaceHierarchyModal extends Modal {
 
 		if (this.progressText) {
 			if (wasActuallyCancelled) {
-				this.progressText.textContent = `Cancelled. Processed ${processedCount} of ${result.total}.`;
+				this.progressText.textContent = `已取消。已处理 ${processedCount} / ${result.total}。`;
 			} else {
-				this.progressText.textContent = 'Complete!';
+				this.progressText.textContent = '完成！';
 			}
 		}
 
 		if (this.startButton) {
-			this.startButton.textContent = 'Done';
+			this.startButton.textContent = '完成';
 			this.startButton.disabled = false;
 			this.startButton.onclick = () => this.close();
 		}
@@ -765,9 +765,9 @@ export class EnrichPlaceHierarchyModal extends Modal {
 		// Show summary notice
 		let message: string;
 		if (wasActuallyCancelled) {
-			message = `Enrichment cancelled. Enriched ${result.enriched} places, created ${result.parentsCreated} parent notes.`;
+			message = `丰富已取消。丰富了 ${result.enriched} 个地点，创建了 ${result.parentsCreated} 个父地点笔记。`;
 		} else {
-			message = `Enrichment complete! Enriched ${result.enriched} places, created ${result.parentsCreated} parent notes. ${result.failed} failed.`;
+			message = `丰富完成！丰富了 ${result.enriched} 个地点，创建了 ${result.parentsCreated} 个父地点笔记。${result.failed} 个失败。`;
 		}
 
 		new Notice(message, 5000);

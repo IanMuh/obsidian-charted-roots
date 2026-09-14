@@ -72,15 +72,15 @@ interface StepConfig {
  * All possible steps - actual flow depends on output format selection
  */
 const ALL_STEPS: StepConfig[] = [
-	{ id: 'person', title: 'Select person', subtitle: 'Choose the root person' },
-	{ id: 'tree-type', title: 'Tree type', subtitle: 'Configure tree structure' },
-	{ id: 'output-format', title: 'Output format', subtitle: 'Canvas or PDF' },
-	{ id: 'canvas-options', title: 'Options', subtitle: 'Scope and style settings' },
-	{ id: 'canvas-preview', title: 'Preview', subtitle: 'Review your tree' },
-	{ id: 'canvas-output', title: 'Output', subtitle: 'Save location' },
-	{ id: 'excalidraw-style', title: 'Style', subtitle: 'Drawing options' },
-	{ id: 'pdf-options', title: 'Options', subtitle: 'Page and style settings' },
-	{ id: 'pdf-output', title: 'Generate', subtitle: 'Create PDF' }
+	{ id: 'person', title: '选择人物', subtitle: '选择根人物' },
+	{ id: 'tree-type', title: '树类型', subtitle: '配置树结构' },
+	{ id: 'output-format', title: '输出格式', subtitle: '画布或 PDF' },
+	{ id: 'canvas-options', title: '选项', subtitle: '范围与样式设置' },
+	{ id: 'canvas-preview', title: '预览', subtitle: '查看你的树' },
+	{ id: 'canvas-output', title: '输出', subtitle: '保存位置' },
+	{ id: 'excalidraw-style', title: '样式', subtitle: '绘制选项' },
+	{ id: 'pdf-options', title: '选项', subtitle: '页面与样式设置' },
+	{ id: 'pdf-output', title: '生成', subtitle: '创建 PDF' }
 ];
 
 /**
@@ -359,7 +359,7 @@ export class UnifiedTreeWizardModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'cr-wizard-title' });
 		const icon = createLucideIcon('git-branch', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Generate family tree');
+		titleContainer.appendText('生成家谱');
 
 		// Progress indicator
 		this.progressContainer = contentEl.createDiv({ cls: 'cr-wizard-progress' });
@@ -495,7 +495,7 @@ export class UnifiedTreeWizardModal extends Modal {
 		}
 
 		stepHeader.createEl('h3', { text: step.title, cls: 'cr-wizard-step-heading' });
-		stepHeader.createEl('p', { text: `Step ${this.currentStepIndex + 1} of ${flow.length}`, cls: 'cr-wizard-step-counter' });
+		stepHeader.createEl('p', { text: `第${this.currentStepIndex + 1}步，共${flow.length}步`, cls: 'cr-wizard-step-counter' });
 
 		// Step content
 		const stepContent = this.contentContainer.createDiv({ cls: 'cr-wizard-step-content' });
@@ -537,7 +537,7 @@ export class UnifiedTreeWizardModal extends Modal {
 
 	private renderPersonStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: 'Choose the person who will be at the center of your family tree.',
+			text: '选择将位于家谱中心的人物。',
 			cls: 'cr-wizard-step-desc'
 		});
 
@@ -559,7 +559,7 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		const searchInput = searchWrapper.createEl('input', {
 			type: 'text',
-			placeholder: 'Search by name...',
+			placeholder: '按名称搜索…',
 			cls: 'crc-wizard-search-input'
 		});
 		searchInput.value = this.searchQuery;
@@ -578,10 +578,10 @@ export class UnifiedTreeWizardModal extends Modal {
 		const sortSelect = sortContainer.createEl('select', { cls: 'crc-wizard-select' });
 
 		const sortOptions: { value: PersonSortOption; label: string }[] = [
-			{ value: 'name-asc', label: 'Name A-Z' },
-			{ value: 'name-desc', label: 'Name Z-A' },
-			{ value: 'birth-asc', label: 'Birth (oldest)' },
-			{ value: 'birth-desc', label: 'Birth (newest)' }
+			{ value: 'name-asc', label: '名称 A-Z' },
+			{ value: 'name-desc', label: '名称 Z-A' },
+			{ value: 'birth-asc', label: '出生（最早）' },
+			{ value: 'birth-desc', label: '出生（最晚）' }
 		];
 
 		for (const opt of sortOptions) {
@@ -600,13 +600,13 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		// Sex filter
 		const sexFilter = filterRow.createDiv({ cls: 'crc-wizard-filter-group' });
-		sexFilter.createSpan({ text: 'Sex:', cls: 'crc-wizard-filter-label' });
+		sexFilter.createSpan({ text: '性别：', cls: 'crc-wizard-filter-label' });
 
 		const sexOptions: { value: 'all' | 'male' | 'female' | 'unknown'; label: string }[] = [
-			{ value: 'all', label: 'All' },
-			{ value: 'male', label: 'Male' },
-			{ value: 'female', label: 'Female' },
-			{ value: 'unknown', label: 'Unknown' }
+			{ value: 'all', label: '全部' },
+			{ value: 'male', label: '男' },
+			{ value: 'female', label: '女' },
+			{ value: 'unknown', label: '未知' }
 		];
 
 		for (const opt of sexOptions) {
@@ -631,7 +631,7 @@ export class UnifiedTreeWizardModal extends Modal {
 		const connectionsLabel = connectionsFilter.createEl('label', { cls: 'crc-wizard-filter-toggle' });
 		const connectionsCheckbox = connectionsLabel.createEl('input', { type: 'checkbox' });
 		connectionsCheckbox.checked = this.filterOptions.hasConnections;
-		connectionsLabel.appendText('Has family connections');
+		connectionsLabel.appendText('有家族关联');
 
 		connectionsCheckbox.addEventListener('change', () => {
 			this.filterOptions.hasConnections = connectionsCheckbox.checked;
@@ -641,7 +641,7 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		// Results count
 		const resultsCount = container.createDiv({ cls: 'crc-wizard-results-count' });
-		resultsCount.createSpan({ text: `${this.filteredPeople.length} of ${this.allPeople.length} people` });
+		resultsCount.createSpan({ text: `${this.filteredPeople.length} / ${this.allPeople.length} 人` });
 
 		this.renderPersonList(this.personListContainer);
 	}
@@ -666,7 +666,7 @@ export class UnifiedTreeWizardModal extends Modal {
 		const resultsDiv = container.querySelector('.crc-wizard-results-count');
 		if (resultsDiv) {
 			resultsDiv.empty();
-			resultsDiv.createSpan({ text: `${this.filteredPeople.length} of ${this.allPeople.length} people` });
+			resultsDiv.createSpan({ text: `${this.filteredPeople.length} / ${this.allPeople.length} 人` });
 		}
 	}
 
@@ -688,7 +688,7 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		const clearBtn = card.createEl('button', {
 			cls: 'crc-wizard-clear-btn',
-			attr: { type: 'button', 'aria-label': 'Clear selection' }
+			attr: { type: 'button', 'aria-label': '清除选择' }
 		});
 		setLucideIcon(clearBtn, 'x', 16);
 		clearBtn.addEventListener('click', () => {
@@ -765,7 +765,7 @@ export class UnifiedTreeWizardModal extends Modal {
 		if (this.filteredPeople.length === 0) {
 			container.createDiv({
 				cls: 'crc-wizard-empty',
-				text: this.searchQuery ? 'No people match your search.' : 'No people found in vault.'
+				text: this.searchQuery ? '没有人物匹配你的搜索。' : '库中未找到人物。'
 			});
 			return;
 		}
@@ -812,7 +812,7 @@ export class UnifiedTreeWizardModal extends Modal {
 		if (this.filteredPeople.length > displayLimit) {
 			container.createDiv({
 				cls: 'crc-wizard-more',
-				text: `Showing ${displayLimit} of ${this.filteredPeople.length} people. Refine your search to see more.`
+				text: `显示${displayLimit} / ${this.filteredPeople.length} 人。优化搜索以查看更多。`
 			});
 		}
 	}
@@ -821,22 +821,22 @@ export class UnifiedTreeWizardModal extends Modal {
 
 	private renderTreeTypeStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: 'Choose how your family tree should be structured.',
+			text: '选择家谱的组织结构。',
 			cls: 'cr-wizard-step-desc'
 		});
 
 		const form = container.createDiv({ cls: 'cr-wizard-form' });
 
 		// Tree type selection
-		form.createEl('div', { cls: 'cr-wizard-subsection', text: 'Tree type' });
+		form.createEl('div', { cls: 'cr-wizard-subsection', text: '树类型' });
 
 		const treeTypeContainer = form.createDiv({ cls: 'crc-wizard-tree-types' });
 
 		const treeTypes: { id: TreeType; label: string; desc: string; icon: LucideIconName; pdfOnly?: boolean }[] = [
-			{ id: 'full', label: 'Full tree', desc: 'Ancestors and descendants', icon: 'cr-hourglass-tree' as LucideIconName },
-			{ id: 'ancestors', label: 'Ancestors', desc: 'Parents, grandparents, etc.', icon: 'cr-pedigree-tree' as LucideIconName },
-			{ id: 'descendants', label: 'Descendants', desc: 'Children, grandchildren, etc.', icon: 'cr-descendant-tree' as LucideIconName },
-			{ id: 'fan', label: 'Fan chart', desc: 'Semicircular pedigree', icon: 'cr-fan-chart' as LucideIconName, pdfOnly: true }
+			{ id: 'full', label: '完整树', desc: '祖先与后代', icon: 'cr-hourglass-tree' as LucideIconName },
+			{ id: 'ancestors', label: '祖先', desc: '父母、祖父母等', icon: 'cr-pedigree-tree' as LucideIconName },
+			{ id: 'descendants', label: '后代', desc: '子女、孙辈等', icon: 'cr-descendant-tree' as LucideIconName },
+			{ id: 'fan', label: '扇形图', desc: '半圆形谱系', icon: 'cr-fan-chart' as LucideIconName, pdfOnly: true }
 		];
 
 		for (const type of treeTypes) {
@@ -852,7 +852,7 @@ export class UnifiedTreeWizardModal extends Modal {
 			info.createDiv({ cls: 'crc-wizard-type-desc', text: type.desc });
 
 			if (type.pdfOnly) {
-				info.createDiv({ cls: 'crc-wizard-type-badge', text: 'PDF only' });
+				info.createDiv({ cls: 'crc-wizard-type-badge', text: '仅 PDF' });
 			}
 
 			if (!isDisabled) {
@@ -871,11 +871,11 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		if (showDirection) {
 			new Setting(form)
-				.setName('Direction')
-				.setDesc('Primary flow direction of the tree')
+				.setName('方向')
+				.setDesc('树的主要延伸方向')
 				.addDropdown(dropdown => dropdown
-					.addOption('vertical', 'Vertical (top to bottom)')
-					.addOption('horizontal', 'Horizontal (left to right)')
+					.addOption('vertical', '垂直（从上到下）')
+					.addOption('horizontal', '水平（从左到右）')
 					.setValue(this.formData.direction)
 					.onChange(value => {
 						this.formData.direction = value as 'vertical' | 'horizontal';
@@ -885,8 +885,8 @@ export class UnifiedTreeWizardModal extends Modal {
 		// Generation limits
 		if (this.formData.treeType !== 'descendants') {
 			new Setting(form)
-				.setName('Ancestor generations')
-				.setDesc('Maximum ancestor generations (0 = unlimited)')
+				.setName('祖先世代')
+				.setDesc('最多祖先世代（0 = 不限）')
 				.addSlider(slider => slider
 					.setLimits(0, 10, 1)
 					.setValue(this.formData.maxAncestorGenerations)
@@ -897,8 +897,8 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		if (this.formData.treeType !== 'ancestors' && this.formData.treeType !== 'fan') {
 			new Setting(form)
-				.setName('Descendant generations')
-				.setDesc('Maximum descendant generations (0 = unlimited)')
+				.setName('后代世代')
+				.setDesc('最多后代世代（0 = 不限）')
 				.addSlider(slider => slider
 					.setLimits(0, 10, 1)
 					.setValue(this.formData.maxDescendantGenerations)
@@ -909,8 +909,8 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		// Include spouses
 		new Setting(form)
-			.setName(`Include ${getSpouseLabel(this.plugin.settings, { plural: true, lowercase: true })}`)
-			.setDesc(`Show ${getSpouseLabel(this.plugin.settings, { lowercase: true })} nodes alongside each person`)
+			.setName(`包含${getSpouseLabel(this.plugin.settings, { plural: true, lowercase: true })}`)
+			.setDesc(`在每个人物旁显示${getSpouseLabel(this.plugin.settings, { lowercase: true })}节点`)
 			.addToggle(toggle => toggle
 				.setValue(this.formData.includeSpouses)
 				.onChange(value => {
@@ -922,7 +922,7 @@ export class UnifiedTreeWizardModal extends Modal {
 
 	private renderOutputFormatStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: 'Choose how you want to output your family tree.',
+			text: '选择家谱的输出方式。',
 			cls: 'cr-wizard-step-desc'
 		});
 
@@ -937,12 +937,12 @@ export class UnifiedTreeWizardModal extends Modal {
 		canvasIcon.appendChild(createLucideIcon('layout-dashboard', 20));
 
 		const canvasInfo = canvasCard.createDiv({ cls: 'crc-wizard-format-info' });
-		canvasInfo.createDiv({ cls: 'crc-wizard-format-title', text: 'Obsidian Canvas' });
-		canvasInfo.createDiv({ cls: 'crc-wizard-format-desc', text: 'Interactive tree you can edit and explore' });
+		canvasInfo.createDiv({ cls: 'crc-wizard-format-title', text: 'Obsidian 画布' });
+		canvasInfo.createDiv({ cls: 'crc-wizard-format-desc', text: '可编辑和浏览的交互式树' });
 
 		const canvasFeatures = canvasInfo.createEl('ul', { cls: 'crc-wizard-format-features' });
-		canvasFeatures.createEl('li', { text: 'Click nodes to open notes' });
-		canvasFeatures.createEl('li', { text: 'Pan, zoom, and edit layout' });
+		canvasFeatures.createEl('li', { text: '点击节点打开笔记' });
+		canvasFeatures.createEl('li', { text: '平移、缩放并编辑布局' });
 
 		canvasCard.addEventListener('click', () => {
 			this.formData.outputFormat = 'canvas';
@@ -964,11 +964,11 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		const excalidrawInfo = excalidrawCard.createDiv({ cls: 'crc-wizard-format-info' });
 		excalidrawInfo.createDiv({ cls: 'crc-wizard-format-title', text: 'Excalidraw' });
-		excalidrawInfo.createDiv({ cls: 'crc-wizard-format-desc', text: 'Hand-drawn style diagram for annotation' });
+		excalidrawInfo.createDiv({ cls: 'crc-wizard-format-desc', text: '用于批注的手绘风格图' });
 
 		const excalidrawFeatures = excalidrawInfo.createEl('ul', { cls: 'crc-wizard-format-features' });
-		excalidrawFeatures.createEl('li', { text: 'Annotate with drawings and text' });
-		excalidrawFeatures.createEl('li', { text: 'Export to SVG or PNG' });
+		excalidrawFeatures.createEl('li', { text: '用绘图和文字添加批注' });
+		excalidrawFeatures.createEl('li', { text: '导出为 SVG 或 PNG' });
 
 		excalidrawCard.addEventListener('click', () => {
 			this.formData.outputFormat = 'excalidraw';
@@ -989,12 +989,12 @@ export class UnifiedTreeWizardModal extends Modal {
 		pdfIcon.appendChild(createLucideIcon('file-image', 20));
 
 		const pdfInfo = pdfCard.createDiv({ cls: 'crc-wizard-format-info' });
-		pdfInfo.createDiv({ cls: 'crc-wizard-format-title', text: 'PDF Document' });
-		pdfInfo.createDiv({ cls: 'crc-wizard-format-desc', text: 'Printable tree diagram you can share' });
+		pdfInfo.createDiv({ cls: 'crc-wizard-format-title', text: 'PDF 文档' });
+		pdfInfo.createDiv({ cls: 'crc-wizard-format-desc', text: '可分享的可打印树图' });
 
 		const pdfFeatures = pdfInfo.createEl('ul', { cls: 'crc-wizard-format-features' });
-		pdfFeatures.createEl('li', { text: 'Print on paper up to 24×36"' });
-		pdfFeatures.createEl('li', { text: 'Multiple page sizes available' });
+		pdfFeatures.createEl('li', { text: '可打印至最大 24×36 英寸的纸张' });
+		pdfFeatures.createEl('li', { text: '提供多种页面尺寸' });
 
 		pdfCard.addEventListener('click', () => {
 			this.formData.outputFormat = 'pdf';
@@ -1011,12 +1011,12 @@ export class UnifiedTreeWizardModal extends Modal {
 		odtIcon.appendChild(createLucideIcon('file-text', 20));
 
 		const odtInfo = odtCard.createDiv({ cls: 'crc-wizard-format-info' });
-		odtInfo.createDiv({ cls: 'crc-wizard-format-title', text: 'ODT Document' });
-		odtInfo.createDiv({ cls: 'crc-wizard-format-desc', text: 'Editable document for word processors' });
+		odtInfo.createDiv({ cls: 'crc-wizard-format-title', text: 'ODT 文档' });
+		odtInfo.createDiv({ cls: 'crc-wizard-format-desc', text: '供文字处理软件使用的可编辑文档' });
 
 		const odtFeatures = odtInfo.createEl('ul', { cls: 'crc-wizard-format-features' });
-		odtFeatures.createEl('li', { text: 'Open in LibreOffice or Word' });
-		odtFeatures.createEl('li', { text: 'Add text before printing' });
+		odtFeatures.createEl('li', { text: '可在 LibreOffice 或 Word 中打开' });
+		odtFeatures.createEl('li', { text: '打印前可添加文字' });
 
 		odtCard.addEventListener('click', () => {
 			this.formData.outputFormat = 'odt';
@@ -1029,7 +1029,7 @@ export class UnifiedTreeWizardModal extends Modal {
 
 	private renderCanvasOptionsStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: 'Configure additional scope and style options.',
+			text: '配置额外的范围与样式选项。',
 			cls: 'cr-wizard-step-desc'
 		});
 
@@ -1039,20 +1039,20 @@ export class UnifiedTreeWizardModal extends Modal {
 		const scopeDetails = form.createEl('details', { cls: 'crc-wizard-details' });
 		scopeDetails.open = true;
 		const scopeSummary = scopeDetails.createEl('summary', { cls: 'crc-wizard-details-summary' });
-		scopeSummary.createSpan({ text: 'Scope options', cls: 'crc-wizard-details-title' });
+		scopeSummary.createSpan({ text: '范围选项', cls: 'crc-wizard-details-title' });
 
 		const scopeContent = scopeDetails.createDiv({ cls: 'crc-wizard-details-content' });
 
 		new Setting(scopeContent)
-			.setName('Include step-parents')
-			.setDesc('Show step-parent relationships with dashed lines')
+			.setName('包含继父母')
+			.setDesc('以虚线显示继父母关系')
 			.addToggle(toggle => toggle
 				.setValue(this.formData.includeStepParents)
 				.onChange(value => { this.formData.includeStepParents = value; }));
 
 		new Setting(scopeContent)
-			.setName('Include adoptive parents')
-			.setDesc('Show adoptive parent relationships with dotted lines')
+			.setName('包含养父母')
+			.setDesc('以点线显示养父母关系')
 			.addToggle(toggle => toggle
 				.setValue(this.formData.includeAdoptiveParents)
 				.onChange(value => { this.formData.includeAdoptiveParents = value; }));
@@ -1060,10 +1060,10 @@ export class UnifiedTreeWizardModal extends Modal {
 		const collections = this.graphService.getUserCollections();
 		if (collections.length > 0) {
 			new Setting(scopeContent)
-				.setName('Filter by collection')
-				.setDesc('Limit tree to people in a specific collection')
+				.setName('按合集筛选')
+				.setDesc('将树限制为特定合集中的人物')
 				.addDropdown(dropdown => {
-					dropdown.addOption('', 'All collections (no filter)');
+					dropdown.addOption('', '所有合集（不筛选）');
 					for (const collection of collections) {
 						dropdown.addOption(collection.name, collection.name);
 					}
@@ -1073,10 +1073,10 @@ export class UnifiedTreeWizardModal extends Modal {
 		}
 
 		new Setting(scopeContent)
-			.setName('Filter by place')
-			.setDesc('Limit tree to people associated with a specific place')
-			.addText(text => text
-				.setPlaceholder('e.g., London, England')
+				.setName('按地点筛选')
+				.setDesc('将树限制为与特定地点相关的人物')
+				.addText(text => text
+					.setPlaceholder('例如：伦敦，英格兰')
 				.setValue(this.formData.placeFilter)
 				.onChange(value => { this.formData.placeFilter = value; }));
 
@@ -1084,16 +1084,16 @@ export class UnifiedTreeWizardModal extends Modal {
 		const privacyDetails = form.createEl('details', { cls: 'crc-wizard-details' });
 		privacyDetails.open = false;
 		const privacySummary = privacyDetails.createEl('summary', { cls: 'crc-wizard-details-summary' });
-		privacySummary.createSpan({ text: 'Privacy options', cls: 'crc-wizard-details-title' });
+		privacySummary.createSpan({ text: '隐私选项', cls: 'crc-wizard-details-title' });
 		if (this.formData.applyCanvasPrivacy) {
-			privacySummary.createSpan({ text: '(privacy enabled)', cls: 'crc-wizard-details-hint' });
+			privacySummary.createSpan({ text: '（已启用隐私保护）', cls: 'crc-wizard-details-hint' });
 		}
 
 		const privacyContent = privacyDetails.createDiv({ cls: 'crc-wizard-details-content' });
 
 		new Setting(privacyContent)
-			.setName('Apply privacy protection')
-			.setDesc('Obfuscate names and hide details for living persons')
+			.setName('应用隐私保护')
+			.setDesc('对在世人物混淆姓名并隐藏详情')
 			.addToggle(toggle => toggle
 				.setValue(this.formData.applyCanvasPrivacy)
 				.onChange(value => {
@@ -1104,11 +1104,11 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		if (this.formData.applyCanvasPrivacy) {
 			new Setting(privacyContent)
-				.setName('Privacy format')
-				.setDesc('How protected persons appear on the canvas')
+				.setName('隐私格式')
+				.setDesc('受保护人物在画布上的显示方式')
 				.addDropdown(dropdown => dropdown
-					.addOption('text', 'Text node (no file link)')
-					.addOption('file', 'File node (keeps link)')
+					.addOption('text', '文本节点（无文件链接）')
+					.addOption('file', '文件节点（保留链接）')
 					.setValue(this.formData.canvasPrivacyFormat)
 					.onChange(value => { this.formData.canvasPrivacyFormat = value as 'text' | 'file'; }));
 		}
@@ -1117,65 +1117,65 @@ export class UnifiedTreeWizardModal extends Modal {
 		const styleDetails = form.createEl('details', { cls: 'crc-wizard-details' });
 		styleDetails.open = false;
 		const styleSummary = styleDetails.createEl('summary', { cls: 'crc-wizard-details-summary' });
-		styleSummary.createSpan({ text: 'Style options', cls: 'crc-wizard-details-title' });
-		styleSummary.createSpan({ text: '(uses global settings by default)', cls: 'crc-wizard-details-hint' });
+		styleSummary.createSpan({ text: '样式选项', cls: 'crc-wizard-details-title' });
+		styleSummary.createSpan({ text: '（默认使用全局设置）', cls: 'crc-wizard-details-hint' });
 
 		const styleContent = styleDetails.createDiv({ cls: 'crc-wizard-details-content' });
 
 		new Setting(styleContent)
-			.setName('Layout algorithm')
-			.setDesc('How nodes are arranged on the canvas')
+			.setName('布局算法')
+			.setDesc('节点在画布上的排列方式')
 			.addDropdown(dropdown => dropdown
-				.addOption('standard', 'Standard')
-				.addOption('compact', 'Compact')
-				.addOption('timeline', 'Timeline (chronological)')
-				.addOption('hourglass', 'Hourglass')
+				.addOption('standard', '标准')
+				.addOption('compact', '紧凑')
+				.addOption('timeline', '时间轴（按时间顺序）')
+				.addOption('hourglass', '沙漏')
 				.setValue(this.formData.layoutAlgorithm)
 				.onChange(value => { this.formData.layoutAlgorithm = value as LayoutAlgorithm; }));
 
 		new Setting(styleContent)
-			.setName('Canvas grouping')
-			.setDesc('Visual groups to organize related nodes')
+			.setName('画布分组')
+			.setDesc('用于组织相关节点的视觉分组')
 			.addDropdown(dropdown => dropdown
-				.addOption('none', 'None')
-				.addOption('generation', 'By generation')
-				.addOption('nuclear-family', 'By couples')
-				.addOption('collection', 'By collection')
+				.addOption('none', '无')
+				.addOption('generation', '按世代')
+				.addOption('nuclear-family', '按夫妻')
+				.addOption('collection', '按合集')
 				.setValue(this.formData.canvasGroupingStrategy)
 				.onChange(value => { this.formData.canvasGroupingStrategy = value as CanvasGroupingStrategy; }));
 
 		new Setting(styleContent)
-			.setName('Node coloring')
-			.setDesc('How nodes are colored on the canvas')
+			.setName('节点着色')
+			.setDesc('画布上节点的着色方式')
 			.addDropdown(dropdown => dropdown
-				.addOption('sex', 'By sex (green/purple)')
-				.addOption('generation', 'By generation (gradient)')
-				.addOption('collection', 'By collection')
-				.addOption('monochrome', 'Monochrome (neutral)')
+				.addOption('sex', '按性别（绿/紫）')
+				.addOption('generation', '按世代（渐变）')
+				.addOption('collection', '按合集')
+				.addOption('monochrome', '单色（中性）')
 				.setValue(this.formData.colorScheme)
 				.onChange(value => { this.formData.colorScheme = value as ColorScheme; }));
 
 		new Setting(styleContent)
-			.setName('Parent-child arrows')
+			.setName('父母-子女箭头')
 			.addDropdown(dropdown => dropdown
-				.addOption('directed', 'Directed (arrow)')
-				.addOption('bidirectional', 'Bidirectional (double arrow)')
-				.addOption('undirected', 'Undirected (line)')
+				.addOption('directed', '单向（箭头）')
+				.addOption('bidirectional', '双向（双箭头）')
+				.addOption('undirected', '无向（连线）')
 				.setValue(this.formData.parentChildArrowStyle)
 				.onChange(value => { this.formData.parentChildArrowStyle = value as 'directed' | 'bidirectional' | 'undirected'; }));
 
 		new Setting(styleContent)
 			.setName(getSpouseCompoundLabel(this.plugin.settings, 'arrows'))
 			.addDropdown(dropdown => dropdown
-				.addOption('directed', 'Directed (arrow)')
-				.addOption('bidirectional', 'Bidirectional (double arrow)')
-				.addOption('undirected', 'Undirected (line)')
+				.addOption('directed', '单向（箭头）')
+				.addOption('bidirectional', '双向（双箭头）')
+				.addOption('undirected', '无向（连线）')
 				.setValue(this.formData.spouseArrowStyle)
 				.onChange(value => { this.formData.spouseArrowStyle = value as 'directed' | 'bidirectional' | 'undirected'; }));
 
 		new Setting(styleContent)
-			.setName(`Show ${getSpouseCompoundLabel(this.plugin.settings, 'edges').toLowerCase()}`)
-			.setDesc('Display marriage/partnership relationship edges')
+			.setName(`显示${getSpouseCompoundLabel(this.plugin.settings, 'edges')}`)
+			.setDesc('显示婚姻/伴侣关系连线')
 			.addToggle(toggle => toggle
 				.setValue(this.formData.showSpouseEdges)
 				.onChange(value => { this.formData.showSpouseEdges = value; }));
@@ -1187,14 +1187,14 @@ export class UnifiedTreeWizardModal extends Modal {
 		const person = this.formData.rootPerson;
 		if (!person) {
 			container.createEl('p', {
-				text: 'No root person selected. Go back to Step 1.',
+				text: '未选择根人物。请返回第1步。',
 				cls: 'cr-wizard-step-desc'
 			});
 			return;
 		}
 
 		container.createEl('p', {
-			text: 'Preview your tree before generating. Pan and zoom to explore.',
+			text: '生成前预览你的树。平移和缩放以浏览。',
 			cls: 'cr-wizard-step-desc'
 		});
 
@@ -1224,7 +1224,7 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		this.previewContainer.empty();
 		const loading = this.previewContainer.createDiv({ cls: 'crc-wizard-loading' });
-		loading.createSpan({ text: 'Building tree...' });
+		loading.createSpan({ text: '正在构建树…' });
 
 		try {
 			const treeOptions = this.buildTreeOptions();
@@ -1234,7 +1234,7 @@ export class UnifiedTreeWizardModal extends Modal {
 				this.previewContainer.empty();
 				this.previewContainer.createDiv({
 					cls: 'crc-wizard-empty',
-					text: 'No family connections found for this person.'
+					text: '未找到此人的家族关联。'
 				});
 				return;
 			}
@@ -1242,7 +1242,7 @@ export class UnifiedTreeWizardModal extends Modal {
 			const nodeCount = familyTree.nodes.size;
 
 			summaryContainer.empty();
-			summaryContainer.createSpan({ text: `${nodeCount} people in tree` });
+			summaryContainer.createSpan({ text: `树中有${nodeCount}人` });
 
 			// Show living persons count if privacy is enabled
 			if (this.formData.applyCanvasPrivacy) {
@@ -1268,7 +1268,7 @@ export class UnifiedTreeWizardModal extends Modal {
 				if (livingCount > 0) {
 					summaryContainer.createSpan({ text: ' · ' });
 					summaryContainer.createSpan({
-						text: `${livingCount} privacy-protected`,
+						text: `${livingCount} 人受隐私保护`,
 						cls: 'crc-wizard-privacy-count'
 					});
 				}
@@ -1278,7 +1278,7 @@ export class UnifiedTreeWizardModal extends Modal {
 				this.previewContainer.empty();
 				this.previewContainer.createDiv({
 					cls: 'crc-wizard-warning',
-					text: `Tree has ${nodeCount} people - too large for preview. The canvas will still generate correctly.`
+					text: `树中有${nodeCount}人——对预览而言过大。画布仍会正确生成。`
 				});
 				return;
 			}
@@ -1303,7 +1303,7 @@ export class UnifiedTreeWizardModal extends Modal {
 			this.previewContainer.empty();
 			this.previewContainer.createDiv({
 				cls: 'crc-wizard-error',
-				text: 'Error building preview. Check console for details.'
+				text: '构建预览时出错。请查看控制台了解详情。'
 			});
 		}
 	}
@@ -1312,17 +1312,17 @@ export class UnifiedTreeWizardModal extends Modal {
 
 	private renderCanvasOutputStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: 'Configure where and how to save your canvas tree.',
+			text: '配置画布树的保存位置和方式。',
 			cls: 'cr-wizard-step-desc'
 		});
 
 		const form = container.createDiv({ cls: 'cr-wizard-form' });
 
 		new Setting(form)
-			.setName('Canvas name')
-			.setDesc('Name for the generated canvas file')
+			.setName('画布名称')
+			.setDesc('生成的画布文件的名称')
 			.addText(text => text
-				.setPlaceholder('Family Tree')
+				.setPlaceholder('家谱')
 				.setValue(this.formData.canvasName)
 				.onChange(value => {
 					this.formData.canvasName = value;
@@ -1331,8 +1331,8 @@ export class UnifiedTreeWizardModal extends Modal {
 				}));
 
 		new Setting(form)
-			.setName('Save location')
-			.setDesc('Folder where the canvas will be saved')
+			.setName('保存位置')
+			.setDesc('画布将会保存到的文件夹')
 			.addText(text => {
 				text.setPlaceholder('/')
 					.setValue(this.formData.saveFolder)
@@ -1340,28 +1340,28 @@ export class UnifiedTreeWizardModal extends Modal {
 			});
 
 		new Setting(form)
-			.setName('Open after generation')
-			.setDesc('Automatically open the canvas after it is created')
+			.setName('生成后打开')
+			.setDesc('创建后自动打开画布')
 			.addToggle(toggle => toggle
 				.setValue(this.formData.openAfterGenerate)
 				.onChange(value => { this.formData.openAfterGenerate = value; }));
 
 		// Summary
 		const summarySection = form.createDiv({ cls: 'crc-wizard-output-summary' });
-		summarySection.createEl('h4', { text: 'Summary', cls: 'cr-wizard-subsection' });
+		summarySection.createEl('h4', { text: '概要', cls: 'cr-wizard-subsection' });
 
 		const summaryList = summarySection.createEl('ul', { cls: 'crc-wizard-summary-items' });
-		summaryList.createEl('li', { text: `Root person: ${this.formData.rootPerson?.name || 'Not selected'}` });
-		summaryList.createEl('li', { text: `Tree type: ${this.getTreeTypeLabel()}` });
-		summaryList.createEl('li', { text: `Layout: ${this.formData.layoutAlgorithm}, ${this.formData.direction}` });
-		summaryList.createEl('li', { text: `${getSpouseLabel(this.plugin.settings, { plural: true })}: ${this.formData.includeSpouses ? 'Included' : 'Not included'}` });
+		summaryList.createEl('li', { text: `根人物：${this.formData.rootPerson?.name || '未选择'}` });
+		summaryList.createEl('li', { text: `树类型：${this.getTreeTypeLabel()}` });
+		summaryList.createEl('li', { text: `布局：${this.getLayoutAlgorithmLabel(this.formData.layoutAlgorithm)}, ${this.getDirectionLabel(this.formData.direction)}` });
+		summaryList.createEl('li', { text: `${getSpouseLabel(this.plugin.settings, { plural: true })}：${this.formData.includeSpouses ? '已包含' : '未包含'}` });
 	}
 
 	// ========== EXCALIDRAW STYLE STEP ==========
 
 	private renderExcalidrawStyleStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: 'Configure the drawing style for your Excalidraw tree.',
+			text: '配置 Excalidraw 树的绘制样式。',
 			cls: 'cr-wizard-step-desc'
 		});
 
@@ -1369,12 +1369,12 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		// Node content level
 		new Setting(form)
-			.setName('Node content')
-			.setDesc('What information to show in each person box')
+			.setName('节点内容')
+			.setDesc('每个人物框中显示的信息')
 			.addDropdown(dropdown => dropdown
-				.addOption('name', 'Name only')
-				.addOption('name-dates', 'Name and dates')
-				.addOption('name-dates-places', 'Name, dates, and places')
+				.addOption('name', '仅名称')
+				.addOption('name-dates', '名称和日期')
+				.addOption('name-dates-places', '名称、日期和地点')
 				.setValue(this.formData.excalidrawNodeContent)
 				.onChange(value => {
 					this.formData.excalidrawNodeContent = value as 'name' | 'name-dates' | 'name-dates-places';
@@ -1382,17 +1382,17 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		// Drawing style (roughness)
 		const roughnessDescriptions: Record<number, string> = {
-			0: 'Clean, precise lines',
-			1: 'Natural hand-drawn look',
-			2: 'Expressive cartoon style'
+			0: '干净、精确的线条',
+			1: '自然的手绘效果',
+			2: '表现力强的卡通风格'
 		};
 		const roughnessSetting = new Setting(form)
-			.setName('Drawing style')
+			.setName('绘制样式')
 			.setDesc(roughnessDescriptions[this.formData.excalidrawRoughness])
 			.addDropdown(dropdown => dropdown
-				.addOption('0', 'Architect (clean)')
-				.addOption('1', 'Artist (natural)')
-				.addOption('2', 'Cartoonist (rough)')
+				.addOption('0', '建筑师（干净）')
+				.addOption('1', '艺术家（自然）')
+				.addOption('2', '漫画家（粗糙）')
 				.setValue(String(this.formData.excalidrawRoughness))
 				.onChange(value => {
 					this.formData.excalidrawRoughness = parseInt(value) as 0 | 1 | 2;
@@ -1401,16 +1401,16 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		// Font family
 		new Setting(form)
-			.setName('Font')
-			.setDesc('Font style for text labels')
+			.setName('字体')
+			.setDesc('文字标签的字体样式')
 			.addDropdown(dropdown => dropdown
-				.addOption('1', 'Virgil (hand-drawn)')
-				.addOption('5', 'Excalifont (hand-drawn)')
-				.addOption('4', 'Comic Shanns (comic)')
-				.addOption('2', 'Helvetica (clean)')
-				.addOption('6', 'Nunito (rounded)')
-				.addOption('7', 'Lilita One (display)')
-				.addOption('3', 'Cascadia (monospace)')
+				.addOption('1', 'Virgil（手绘）')
+				.addOption('5', 'Excalifont（手绘）')
+				.addOption('4', 'Comic Shanns（漫画）')
+				.addOption('2', 'Helvetica（简洁）')
+				.addOption('6', 'Nunito（圆润）')
+				.addOption('7', 'Lilita One（展示）')
+				.addOption('3', 'Cascadia（等宽）')
 				.setValue(String(this.formData.excalidrawFontFamily))
 				.onChange(value => {
 					this.formData.excalidrawFontFamily = parseInt(value) as 1 | 2 | 3 | 4 | 5 | 6 | 7;
@@ -1418,8 +1418,8 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		// Font size
 		new Setting(form)
-			.setName('Font size')
-			.setDesc('Size of text labels')
+			.setName('字号')
+			.setDesc('文字标签的大小')
 			.addSlider(slider => slider
 				.setLimits(10, 32, 2)
 				.setValue(this.formData.excalidrawFontSize)
@@ -1427,12 +1427,12 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		// Fill style
 		new Setting(form)
-			.setName('Fill style')
-			.setDesc('How shapes are filled')
+			.setName('填充样式')
+			.setDesc('形状的填充方式')
 			.addDropdown(dropdown => dropdown
-				.addOption('solid', 'Solid')
-				.addOption('hachure', 'Hachure (diagonal lines)')
-				.addOption('cross-hatch', 'Cross-hatch')
+				.addOption('solid', '实心')
+				.addOption('hachure', '斜线填充')
+				.addOption('cross-hatch', '交叉影线')
 				.setValue(this.formData.excalidrawFillStyle)
 				.onChange(value => {
 					this.formData.excalidrawFillStyle = value as 'solid' | 'hachure' | 'cross-hatch';
@@ -1443,21 +1443,21 @@ export class UnifiedTreeWizardModal extends Modal {
 
 	private renderPdfOptionsStep(container: HTMLElement): void {
 		container.createEl('p', {
-			text: 'Configure page and style settings for your PDF.',
+			text: '配置 PDF 的页面与样式设置。',
 			cls: 'cr-wizard-step-desc'
 		});
 
 		const form = container.createDiv({ cls: 'cr-wizard-form' });
 
 		new Setting(form)
-			.setName('Page size')
+			.setName('页面尺寸')
 			.addDropdown(dropdown => dropdown
-				.addOption('letter', 'Letter (8.5 x 11 in)')
-				.addOption('a4', 'A4 (210 x 297 mm)')
-				.addOption('legal', 'Legal (8.5 x 14 in)')
-				.addOption('tabloid', 'Tabloid (11 x 17 in)')
-				.addOption('a3', 'A3 (297 x 420 mm)')
-				.addOption('arch-d', 'Arch D (24 x 36 in)')
+				.addOption('letter', 'Letter（8.5 x 11 英寸）')
+				.addOption('a4', 'A4（210 x 297 毫米）')
+				.addOption('legal', 'Legal（8.5 x 14 英寸）')
+				.addOption('tabloid', 'Tabloid（11 x 17 英寸）')
+				.addOption('a3', 'A3（297 x 420 毫米）')
+				.addOption('arch-d', 'Arch D（24 x 36 英寸）')
 				.setValue(this.formData.pageSize)
 				.onChange(value => {
 					this.formData.pageSize = value as VisualTreePageSize;
@@ -1465,10 +1465,10 @@ export class UnifiedTreeWizardModal extends Modal {
 				}));
 
 		new Setting(form)
-			.setName('Orientation')
+			.setName('方向')
 			.addDropdown(dropdown => dropdown
-				.addOption('landscape', 'Landscape')
-				.addOption('portrait', 'Portrait')
+				.addOption('landscape', '横向')
+				.addOption('portrait', '纵向')
 				.setValue(this.formData.orientation)
 				.onChange(value => {
 					this.formData.orientation = value as VisualTreeOrientation;
@@ -1476,22 +1476,22 @@ export class UnifiedTreeWizardModal extends Modal {
 				}));
 
 		new Setting(form)
-			.setName('Node content')
-			.setDesc('What to display in each box')
+			.setName('节点内容')
+			.setDesc('每个框中显示的内容')
 			.addDropdown(dropdown => dropdown
-				.addOption('name', 'Name only')
-				.addOption('name-dates', 'Name + dates')
-				.addOption('name-dates-places', 'Name + dates + places')
+				.addOption('name', '仅名称')
+				.addOption('name-dates', '名称 + 日期')
+				.addOption('name-dates-places', '名称 + 日期 + 地点')
 				.setValue(this.formData.nodeContent)
 				.onChange(value => { this.formData.nodeContent = value as VisualTreeNodeContent; }));
 
 		new Setting(form)
-			.setName('Color scheme')
+			.setName('配色方案')
 			.addDropdown(dropdown => dropdown
-				.addOption('default', 'Default (theme colors)')
-				.addOption('gender', 'By gender (blue/pink)')
-				.addOption('generation', 'By generation (rainbow)')
-				.addOption('grayscale', 'Grayscale (for printing)')
+				.addOption('default', '默认（主题颜色）')
+				.addOption('gender', '按性别（蓝/粉）')
+				.addOption('generation', '按世代（彩虹色）')
+				.addOption('grayscale', '灰度（用于打印）')
 				.setValue(this.formData.pdfColorScheme)
 				.onChange(value => { this.formData.pdfColorScheme = value as VisualTreeColorScheme; }));
 
@@ -1541,15 +1541,15 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		const header = warningContainer.createDiv({ cls: 'cr-large-tree-warning-header' });
 		header.appendChild(createLucideIcon('alert-triangle', 16));
-		header.createSpan({ text: 'Large tree detected' });
+		header.createSpan({ text: '检测到大树' });
 
 		const info = warningContainer.createDiv({ cls: 'cr-large-tree-warning-info' });
 		info.createEl('p', {
-			text: `This tree has ${analysis.generationsCount} generations with up to ${analysis.maxNodesInGeneration} people in the widest generation.`
+			text: `此树有${analysis.generationsCount}个世代，最宽的世代有多达${analysis.maxNodesInGeneration}人。`
 		});
 
 		const optionsDiv = warningContainer.createDiv({ cls: 'cr-large-tree-warning-options' });
-		optionsDiv.createEl('p', { text: 'Choose how to handle this:' });
+		optionsDiv.createEl('p', { text: '选择处理方式：' });
 
 		// Auto page size option
 		const autoSizeOption = optionsDiv.createDiv({ cls: 'cr-large-tree-option' });
@@ -1561,13 +1561,13 @@ export class UnifiedTreeWizardModal extends Modal {
 		autoSizeRadio.addEventListener('change', () => { this.formData.largeTreeHandling = 'auto-page-size'; });
 
 		const autoSizeLabel = autoSizeOption.createEl('label', { attr: { for: 'largeTree-autoSize' } });
-		autoSizeLabel.createEl('strong', { text: 'Use larger page size' });
+		autoSizeLabel.createEl('strong', { text: '使用更大的页面尺寸' });
 		if (analysis.canFitOnSinglePage && analysis.recommendedPageSize) {
 			autoSizeLabel.createEl('span', {
-				text: ` - Will use ${analysis.recommendedPageSize.toUpperCase()} to fit on a single page`
+				text: ` - 将使用 ${this.getPageSizeLabel(analysis.recommendedPageSize)} 以适配单页`
 			});
 		} else {
-			autoSizeLabel.createEl('span', { text: ' - Tree is too large for any single page' });
+			autoSizeLabel.createEl('span', { text: ' - 树太大，无法放入任何单页' });
 		}
 
 		// Multi-page option
@@ -1580,9 +1580,9 @@ export class UnifiedTreeWizardModal extends Modal {
 		multiPageRadio.addEventListener('change', () => { this.formData.largeTreeHandling = 'multi-page'; });
 
 		const multiPageLabel = multiPageOption.createEl('label', { attr: { for: 'largeTree-multiPage' } });
-		multiPageLabel.createEl('strong', { text: 'Split across multiple pages' });
+		multiPageLabel.createEl('strong', { text: '拆分到多页' });
 		multiPageLabel.createEl('span', {
-			text: ` - Will create ${analysis.pagesNeededForMultiPage} pages, each showing 4 generations`
+			text: ` - 将创建 ${analysis.pagesNeededForMultiPage} 页，每页显示4个世代`
 		});
 	}
 
@@ -1591,27 +1591,27 @@ export class UnifiedTreeWizardModal extends Modal {
 	private renderPdfOutputStep(container: HTMLElement): void {
 		const formatName = this.formData.outputFormat === 'odt' ? 'ODT' : 'PDF';
 		container.createEl('p', {
-			text: `Review your settings and generate the ${formatName}.`,
+			text: `检查你的设置并生成 ${formatName}。`,
 			cls: 'cr-wizard-step-desc'
 		});
 
 		const form = container.createDiv({ cls: 'cr-wizard-form' });
 
 		new Setting(form)
-			.setName('Title')
-			.setDesc(`Custom title for the ${formatName} (optional)`)
+			.setName('标题')
+			.setDesc(`${formatName} 的自定义标题（可选）`)
 			.addText(text => text
-				.setPlaceholder('Leave blank for auto-generated title')
+				.setPlaceholder('留空以自动生成标题')
 				.setValue(this.formData.pdfTitle)
 				.onChange(value => { this.formData.pdfTitle = value; }));
 
 		// Summary
 		const summarySection = form.createDiv({ cls: 'crc-wizard-output-summary' });
-		summarySection.createEl('h4', { text: 'Summary', cls: 'cr-wizard-subsection' });
+		summarySection.createEl('h4', { text: '概要', cls: 'cr-wizard-subsection' });
 
 		const summaryList = summarySection.createEl('ul', { cls: 'crc-wizard-summary-items' });
-		summaryList.createEl('li', { text: `Root person: ${this.formData.rootPerson?.name || 'Not selected'}` });
-		summaryList.createEl('li', { text: `Chart type: ${this.getPdfChartTypeLabel()}` });
+		summaryList.createEl('li', { text: `根人物：${this.formData.rootPerson?.name || '未选择'}` });
+		summaryList.createEl('li', { text: `图表类型：${this.getPdfChartTypeLabel()}` });
 
 		// Show effective page size (may be overridden by large tree handling)
 		const effectivePageSize = this.treeSizeAnalysis?.isLarge &&
@@ -1619,10 +1619,10 @@ export class UnifiedTreeWizardModal extends Modal {
 			this.treeSizeAnalysis.recommendedPageSize
 			? this.treeSizeAnalysis.recommendedPageSize
 			: this.formData.pageSize;
-		summaryList.createEl('li', { text: `Page: ${effectivePageSize.toUpperCase()}, ${this.formData.orientation}` });
+		summaryList.createEl('li', { text: `页面：${this.getPageSizeLabel(effectivePageSize)}, ${this.getOrientationLabel(this.formData.orientation)}` });
 
-		summaryList.createEl('li', { text: `Content: ${this.formData.nodeContent}` });
-		summaryList.createEl('li', { text: `Colors: ${this.formData.pdfColorScheme}` });
+		summaryList.createEl('li', { text: `内容：${this.getNodeContentLabel(this.formData.nodeContent)}` });
+		summaryList.createEl('li', { text: `颜色：${this.getColorSchemeLabel(this.formData.pdfColorScheme)}` });
 	}
 
 	// ========== NAVIGATION ==========
@@ -1641,10 +1641,10 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		// Back/Cancel button
 		if (this.currentStepIndex === 0) {
-			const cancelBtn = nav.createEl('button', { text: 'Cancel', cls: 'cr-btn' });
+			const cancelBtn = nav.createEl('button', { text: '取消', cls: 'cr-btn' });
 			cancelBtn.addEventListener('click', () => this.close());
 		} else {
-			const backBtn = nav.createEl('button', { text: 'Back', cls: 'cr-btn' });
+			const backBtn = nav.createEl('button', { text: '上一步', cls: 'cr-btn' });
 			backBtn.prepend(createLucideIcon('chevron-left', 16));
 			backBtn.addEventListener('click', () => this.goBack());
 		}
@@ -1655,7 +1655,7 @@ export class UnifiedTreeWizardModal extends Modal {
 		const isLastStep = this.currentStepIndex === flow.length - 1;
 
 		if (!isLastStep) {
-			const nextBtn = rightBtns.createEl('button', { text: 'Next', cls: 'cr-btn cr-btn--primary' });
+			const nextBtn = rightBtns.createEl('button', { text: '下一步', cls: 'cr-btn cr-btn--primary' });
 			nextBtn.appendChild(createLucideIcon('arrow-right', 16));
 
 			// Disable if requirements not met
@@ -1666,9 +1666,9 @@ export class UnifiedTreeWizardModal extends Modal {
 
 			nextBtn.addEventListener('click', () => this.goNext());
 		} else {
-			const buttonText = this.formData.outputFormat === 'canvas' ? 'Generate Canvas' :
-				this.formData.outputFormat === 'excalidraw' ? 'Generate Excalidraw' :
-				this.formData.outputFormat === 'pdf' ? 'Generate PDF' : 'Generate ODT';
+			const buttonText = this.formData.outputFormat === 'canvas' ? '生成画布' :
+				this.formData.outputFormat === 'excalidraw' ? '生成 Excalidraw' :
+				this.formData.outputFormat === 'pdf' ? '生成 PDF' : '生成 ODT';
 			const generateBtn = rightBtns.createEl('button', {
 				text: buttonText,
 				cls: 'cr-btn cr-btn--primary'
@@ -1750,12 +1750,12 @@ export class UnifiedTreeWizardModal extends Modal {
 
 	private async generateCanvas(): Promise<void> {
 		if (!this.formData.rootPerson || !this.formData.canvasName.trim()) {
-			new Notice('Please select a root person and enter a canvas name.');
+			new Notice('请选择根人物并输入画布名称。');
 			return;
 		}
 
 		try {
-			new Notice('Generating canvas...');
+			new Notice('正在生成画布…');
 
 			const treeOptions = this.buildTreeOptions();
 			logger.info('unified-wizard', 'Starting canvas generation', treeOptions);
@@ -1763,7 +1763,7 @@ export class UnifiedTreeWizardModal extends Modal {
 			const familyTree = this.graphService.generateTree(treeOptions);
 
 			if (!familyTree) {
-				new Notice('Failed to generate tree: root person not found');
+				new Notice('生成树失败：未找到根人物');
 				return;
 			}
 
@@ -1853,10 +1853,10 @@ export class UnifiedTreeWizardModal extends Modal {
 			if (existingFile instanceof TFile) {
 				await this.app.vault.modify(existingFile, canvasContent);
 				file = existingFile;
-				new Notice(`Updated existing canvas: ${fileName}`);
+				new Notice(`已更新现有画布：${fileName}`);
 			} else {
 				file = await this.app.vault.create(filePath, canvasContent);
-				new Notice(`Created canvas: ${fileName}`);
+				new Notice(`已创建画布：${fileName}`);
 			}
 
 			await new Promise(resolve => window.setTimeout(resolve, 100));
@@ -1897,18 +1897,18 @@ export class UnifiedTreeWizardModal extends Modal {
 
 		} catch (error) {
 			console.error('Error generating canvas:', error);
-			new Notice('Error generating canvas. Check console for details.');
+			new Notice('生成画布时出错。请查看控制台了解详情。');
 		}
 	}
 
 	private async generateExcalidraw(): Promise<void> {
 		if (!this.formData.rootPerson || !this.formData.canvasName.trim()) {
-			new Notice('Please select a root person and enter a name.');
+			new Notice('请选择根人物并输入名称。');
 			return;
 		}
 
 		try {
-			new Notice('Generating Excalidraw...');
+			new Notice('正在生成 Excalidraw…');
 
 			const treeOptions = this.buildTreeOptions();
 			logger.info('unified-wizard', 'Starting Excalidraw generation', treeOptions);
@@ -1916,7 +1916,7 @@ export class UnifiedTreeWizardModal extends Modal {
 			const familyTree = this.graphService.generateTree(treeOptions);
 
 			if (!familyTree) {
-				new Notice('Failed to generate tree: root person not found');
+				new Notice('生成树失败：未找到根人物');
 				return;
 			}
 
@@ -2010,10 +2010,10 @@ export class UnifiedTreeWizardModal extends Modal {
 				if (existingExcalidraw instanceof TFile) {
 					await this.app.vault.modify(existingExcalidraw, excalidrawResult.excalidrawContent);
 					excalidrawFile = existingExcalidraw;
-					new Notice(`Updated Excalidraw: ${excalidrawPath}`);
+					new Notice(`已更新 Excalidraw：${excalidrawPath}`);
 				} else {
 					excalidrawFile = await this.app.vault.create(excalidrawPath, excalidrawResult.excalidrawContent);
-					new Notice(`Created Excalidraw: ${excalidrawPath}`);
+					new Notice(`已创建 Excalidraw：${excalidrawPath}`);
 				}
 
 				// Delete the temporary canvas file (we only needed it for the export)
@@ -2029,18 +2029,18 @@ export class UnifiedTreeWizardModal extends Modal {
 			} else {
 				// Clean up temporary canvas file even on failure
 				await this.app.fileManager.trashFile(canvasFile);
-				new Notice(`Excalidraw export failed: ${excalidrawResult.errors?.join(', ') || 'Unknown error'}`);
+				new Notice(`Excalidraw 导出失败：${excalidrawResult.errors?.join(', ') || '未知错误'}`);
 			}
 
 		} catch (error) {
 			console.error('Error generating Excalidraw:', error);
-			new Notice('Error generating Excalidraw. Check console for details.');
+			new Notice('生成 Excalidraw 时出错。请查看控制台了解详情。');
 		}
 	}
 
 	private async generatePdf(): Promise<void> {
 		if (!this.formData.rootPerson) {
-			new Notice('Please select a root person.');
+			new Notice('请选择根人物。');
 			return;
 		}
 
@@ -2066,12 +2066,12 @@ export class UnifiedTreeWizardModal extends Modal {
 		};
 
 		try {
-			new Notice('Generating PDF...');
+			new Notice('正在生成 PDF…');
 
 			const layouts = this.visualTreeService.buildLayouts(options);
 
 			if (layouts.length === 0) {
-				new Notice('Failed to generate tree layout. The person may not have any ancestors.');
+				new Notice('生成树布局失败。此人可能没有任何祖先。');
 				return;
 			}
 
@@ -2080,22 +2080,22 @@ export class UnifiedTreeWizardModal extends Modal {
 			const totalPeople = layouts.reduce((sum, l) => sum + l.stats.peopleCount, 0);
 
 			if (layouts.length > 1) {
-				new Notice(`PDF generated with ${totalPeople} people across ${layouts.length} pages.`);
+				new Notice(`PDF 已生成，包含 ${totalPeople} 人，共 ${layouts.length} 页。`);
 			} else {
-				new Notice(`PDF generated with ${layouts[0].stats.peopleCount} people across ${layouts[0].stats.generationsCount} generations.`);
+				new Notice(`PDF 已生成，包含 ${layouts[0].stats.peopleCount} 人，共 ${layouts[0].stats.generationsCount} 个世代。`);
 			}
 
 			this.close();
 
 		} catch (error) {
 			console.error('Error generating PDF:', error);
-			new Notice('Error generating PDF. Check console for details.');
+			new Notice('生成 PDF 时出错。请查看控制台了解详情。');
 		}
 	}
 
 	private async generateOdt(): Promise<void> {
 		if (!this.formData.rootPerson) {
-			new Notice('Please select a root person.');
+			new Notice('请选择根人物。');
 			return;
 		}
 
@@ -2121,12 +2121,12 @@ export class UnifiedTreeWizardModal extends Modal {
 		};
 
 		try {
-			new Notice('Generating ODT...');
+			new Notice('正在生成 ODT…');
 
 			const layouts = this.visualTreeService.buildLayouts(options);
 
 			if (layouts.length === 0) {
-				new Notice('Failed to generate tree layout. The person may not have any ancestors.');
+				new Notice('生成树布局失败。此人可能没有任何祖先。');
 				return;
 			}
 
@@ -2172,12 +2172,12 @@ export class UnifiedTreeWizardModal extends Modal {
 			activeDocument.body.removeChild(a);
 			URL.revokeObjectURL(url);
 
-			new Notice(`ODT generated with ${layout.stats.peopleCount} people across ${layout.stats.generationsCount} generations.`);
+			new Notice(`ODT 已生成，包含 ${layout.stats.peopleCount} 人，共 ${layout.stats.generationsCount} 个世代。`);
 			this.close();
 
 		} catch (error) {
 			console.error('Error generating ODT:', error);
-			new Notice('Error generating ODT. Check console for details.');
+			new Notice('生成 ODT 时出错。请查看控制台了解详情。');
 		}
 	}
 
@@ -2226,15 +2226,15 @@ export class UnifiedTreeWizardModal extends Modal {
 		if (!birthDate && !deathDate) return '';
 		const birth = birthDate || '?';
 		const death = deathDate || '';
-		return death ? `(${birth} - ${death})` : `(b. ${birth})`;
+		return death ? `(${birth} - ${death})` : `(生于 ${birth})`;
 	}
 
 	private getTreeTypeLabel(): string {
 		switch (this.formData.treeType) {
-			case 'full': return 'Full Tree';
-			case 'ancestors': return 'Pedigree Chart';
-			case 'descendants': return 'Descendant Chart';
-			case 'fan': return 'Fan Chart';
+			case 'full': return '完整树';
+			case 'ancestors': return '祖先图';
+			case 'descendants': return '后代图';
+			case 'fan': return '扇形图';
 		}
 	}
 
@@ -2243,10 +2243,10 @@ export class UnifiedTreeWizardModal extends Modal {
 	 */
 	private getPdfChartTypeLabel(): string {
 		switch (this.formData.treeType) {
-			case 'full': return 'Hourglass Chart';
-			case 'ancestors': return 'Pedigree Chart';
-			case 'descendants': return 'Descendant Chart';
-			case 'fan': return 'Fan Chart';
+			case 'full': return '沙漏图';
+			case 'ancestors': return '祖先图';
+			case 'descendants': return '后代图';
+			case 'fan': return '扇形图';
 		}
 	}
 
@@ -2255,10 +2255,73 @@ export class UnifiedTreeWizardModal extends Modal {
 	 */
 	private getOutputFormatLabel(): string {
 		switch (this.formData.outputFormat) {
-			case 'canvas': return 'Canvas';
+			case 'canvas': return '画布';
 			case 'excalidraw': return 'Excalidraw';
 			case 'pdf': return 'PDF';
 			case 'odt': return 'ODT';
+		}
+	}
+
+	/**
+	 * Get human-readable layout algorithm label
+	 */
+	private getLayoutAlgorithmLabel(algorithm: LayoutAlgorithm): string {
+		switch (algorithm) {
+			case 'standard': return '标准';
+			case 'compact': return '紧凑';
+			case 'timeline': return '时间轴';
+			case 'hourglass': return '沙漏';
+		}
+	}
+
+	/**
+	 * Get human-readable direction label
+	 */
+	private getDirectionLabel(direction: 'vertical' | 'horizontal'): string {
+		return direction === 'horizontal' ? '水平' : '垂直';
+	}
+
+	/**
+	 * Get human-readable page size label
+	 */
+	private getPageSizeLabel(pageSize: VisualTreePageSize): string {
+		switch (pageSize) {
+			case 'letter': return 'Letter';
+			case 'a4': return 'A4';
+			case 'legal': return 'Legal';
+			case 'tabloid': return 'Tabloid';
+			case 'a3': return 'A3';
+			case 'arch-d': return 'Arch D';
+		}
+	}
+
+	/**
+	 * Get human-readable page orientation label
+	 */
+	private getOrientationLabel(orientation: VisualTreeOrientation): string {
+		return orientation === 'portrait' ? '纵向' : '横向';
+	}
+
+	/**
+	 * Get human-readable node content label
+	 */
+	private getNodeContentLabel(content: VisualTreeNodeContent): string {
+		switch (content) {
+			case 'name': return '仅名称';
+			case 'name-dates': return '名称 + 日期';
+			case 'name-dates-places': return '名称 + 日期 + 地点';
+		}
+	}
+
+	/**
+	 * Get human-readable PDF color scheme label
+	 */
+	private getColorSchemeLabel(scheme: VisualTreeColorScheme): string {
+		switch (scheme) {
+			case 'default': return '默认';
+			case 'gender': return '按性别';
+			case 'generation': return '按世代';
+			case 'grayscale': return '灰度';
 		}
 	}
 }

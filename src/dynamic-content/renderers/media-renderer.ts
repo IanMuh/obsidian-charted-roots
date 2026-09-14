@@ -282,7 +282,7 @@ export class MediaRenderer {
 		const header = container.createDiv({ cls: 'cr-dynamic-block__header' });
 
 		// Title with count
-		const titleText = config.title as string || 'Media Gallery';
+		const titleText = config.title as string || '媒体库';
 		const titleWithCount = itemCount > 0 ? `${titleText} (${itemCount})` : titleText;
 
 		const titleEl = header.createSpan({ cls: 'cr-dynamic-block__title' });
@@ -299,7 +299,7 @@ export class MediaRenderer {
 		// Freeze button
 		const freezeBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Freeze to Markdown' }
+			attr: { 'aria-label': '冻结为 Markdown' }
 		});
 		freezeBtn.textContent = '❄️';
 		freezeBtn.addEventListener('click', () => {
@@ -309,7 +309,7 @@ export class MediaRenderer {
 		// Copy button
 		const copyBtn = toolbar.createEl('button', {
 			cls: 'cr-dynamic-block__btn clickable-icon',
-			attr: { 'aria-label': 'Copy as embeds' }
+			attr: { 'aria-label': '复制为嵌入' }
 		});
 		copyBtn.textContent = '📋';
 		copyBtn.addEventListener('click', () => {
@@ -327,8 +327,8 @@ export class MediaRenderer {
 		const iconEl = empty.createDiv({ cls: 'cr-media__empty-icon' });
 		setIcon(iconEl, 'image');
 
-		empty.createDiv({ cls: 'cr-media__empty-text', text: 'No media linked to this note.' });
-		empty.createDiv({ cls: 'cr-media__empty-hint', text: 'Add media wikilinks to the "media" frontmatter property.' });
+		empty.createDiv({ cls: 'cr-media__empty-text', text: '此笔记未链接任何媒体。' });
+		empty.createDiv({ cls: 'cr-media__empty-hint', text: '将媒体 wikilink 添加到 "media" frontmatter 属性中。' });
 	}
 
 	/**
@@ -388,7 +388,7 @@ export class MediaRenderer {
 			// Add drag handle indicator using Lucide grip-vertical icon
 			const handle = thumbEl.createDiv({ cls: 'cr-media__drag-handle' });
 			setIcon(handle, 'grip-vertical');
-			setTooltip(handle, 'Drag to reorder');
+			setTooltip(handle, '拖动以重新排序');
 		}
 
 		if (item.isImage && item.file) {
@@ -440,7 +440,7 @@ export class MediaRenderer {
 
 				menu.addItem((menuItem) => {
 					menuItem
-						.setTitle('Open in Obsidian')
+						.setTitle('在 Obsidian 中打开')
 						.setIcon('image')
 						.onClick(() => {
 							if (item.file) {
@@ -453,7 +453,7 @@ export class MediaRenderer {
 
 				menu.addItem((menuItem) => {
 					menuItem
-						.setTitle('Open in new tab')
+						.setTitle('在新标签页中打开')
 						.setIcon('file-plus')
 						.onClick(() => {
 							if (item.file) {
@@ -467,7 +467,7 @@ export class MediaRenderer {
 					menu.addSeparator();
 					menu.addItem((menuItem) => {
 						menuItem
-							.setTitle(item.crop ? 'Edit crop region' : 'Set crop region')
+							.setTitle(item.crop ? '编辑裁剪区域' : '设置裁剪区域')
 							.setIcon('crop')
 							.onClick(() => {
 								if (!item.file || !this.currentContext) return;
@@ -486,7 +486,7 @@ export class MediaRenderer {
 					if (item.crop) {
 						menu.addItem((menuItem) => {
 							menuItem
-								.setTitle('Remove crop')
+								.setTitle('移除裁剪')
 								.setIcon('x')
 								.onClick(() => {
 									if (!item.file || !this.currentContext) return;
@@ -499,7 +499,7 @@ export class MediaRenderer {
 					menu.addSeparator();
 					menu.addItem((menuItem) => {
 						menuItem
-							.setTitle(item.caption ? 'Edit caption' : 'Set caption')
+							.setTitle(item.caption ? '编辑图注' : '设置图注')
 							.setIcon('text-cursor-input')
 							.onClick(() => {
 								if (!item.file || !this.currentContext) return;
@@ -517,7 +517,7 @@ export class MediaRenderer {
 					if (item.caption) {
 						menu.addItem((menuItem) => {
 							menuItem
-								.setTitle('Remove caption')
+								.setTitle('移除图注')
 								.setIcon('x')
 								.onClick(() => {
 									if (!item.file || !this.currentContext) return;
@@ -532,8 +532,8 @@ export class MediaRenderer {
 
 			// Add thumbnail badge if applicable
 			if (item.isThumbnail) {
-				const badge = thumbEl.createDiv({ cls: 'cr-media__badge', text: 'Thumbnail' });
-				badge.setAttribute('aria-label', 'This image is used as the thumbnail');
+				const badge = thumbEl.createDiv({ cls: 'cr-media__badge', text: '缩略图' });
+				badge.setAttribute('aria-label', '此图像用作缩略图');
 			}
 
 		} else if (item.extension === 'pdf' && item.file) {
@@ -556,7 +556,7 @@ export class MediaRenderer {
 						cls: 'cr-media__pdf-thumb',
 						attr: {
 							src: dataUrl,
-							alt: item.file?.basename || 'PDF preview',
+							alt: item.file?.basename || 'PDF 预览',
 							loading: 'lazy'
 						}
 					});
@@ -581,7 +581,7 @@ export class MediaRenderer {
 			setIcon(iconEl, this.getDocumentIconName(item.extension));
 
 			const nameEl = thumbEl.createDiv({ cls: 'cr-media__doc-name' });
-			nameEl.textContent = item.file?.basename || item.path.split('/').pop() || 'Document';
+			nameEl.textContent = item.file?.basename || item.path.split('/').pop() || '文档';
 
 			// Add click handler to open document
 			// In editable mode, use double-click to avoid conflicts with drag
@@ -680,7 +680,7 @@ export class MediaRenderer {
 		const newMediaRefs = this.currentItems.map(item => item.wikilink);
 		await this.updateMediaFrontmatter(this.currentContext.file, newMediaRefs, fromIndex, toIndex);
 
-		new Notice('Media order updated');
+		new Notice('媒体顺序已更新');
 	}
 
 	/**
@@ -711,8 +711,8 @@ export class MediaRenderer {
 					domItem.addClass('cr-media__item--thumbnail');
 					// Add badge if not present
 					if (!domItem.querySelector('.cr-media__badge')) {
-						const badge = domItem.createDiv({ cls: 'cr-media__badge', text: 'Thumbnail' });
-						badge.setAttribute('aria-label', 'This image is used as the thumbnail');
+						const badge = domItem.createDiv({ cls: 'cr-media__badge', text: '缩略图' });
+						badge.setAttribute('aria-label', '此图像用作缩略图');
 					}
 				} else {
 					domItem.removeClass('cr-media__item--thumbnail');
@@ -876,7 +876,7 @@ export class MediaRenderer {
 			applyMediaCropFields(fm, crops);
 		});
 
-		new Notice('Crop region removed');
+		new Notice('已移除裁剪区域');
 	}
 
 	/**
@@ -922,7 +922,7 @@ export class MediaRenderer {
 			this.assignCaptions(fm, captions);
 		});
 
-		new Notice('Caption removed');
+		new Notice('已移除图注');
 	}
 
 	/**
@@ -981,13 +981,13 @@ export class MediaRenderer {
 	 */
 	private copyAsEmbeds(): void {
 		if (this.currentItems.length === 0) {
-			new Notice('No media to copy');
+			new Notice('没有可复制的媒体');
 			return;
 		}
 
 		const embeds = this.currentItems.map(item => `!${item.wikilink}`).join('\n');
 		void navigator.clipboard.writeText(embeds);
-		new Notice('Copied media embeds to clipboard');
+		new Notice('已将媒体嵌入复制到剪贴板');
 	}
 
 	/**
@@ -995,7 +995,7 @@ export class MediaRenderer {
 	 */
 	private async freezeToMarkdown(): Promise<void> {
 		if (!this.currentContext || this.currentItems.length === 0) {
-			new Notice('No media to freeze');
+			new Notice('没有可冻结的媒体');
 			return;
 		}
 

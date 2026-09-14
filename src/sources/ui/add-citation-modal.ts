@@ -14,24 +14,24 @@ import { CITATION_QUALITY_LABELS, type CitationQuality, type CitationData } from
 
 /** Common fact types for the dropdown */
 const FACT_OPTIONS: Array<{ value: string; label: string }> = [
-	{ value: 'birth_date', label: 'Birth date' },
-	{ value: 'birth_place', label: 'Birth place' },
-	{ value: 'death_date', label: 'Death date' },
-	{ value: 'death_place', label: 'Death place' },
-	{ value: 'burial_date', label: 'Burial date' },
-	{ value: 'burial_place', label: 'Burial place' },
-	{ value: 'baptism_date', label: 'Baptism date' },
-	{ value: 'marriage_date', label: 'Marriage date' },
-	{ value: 'marriage_place', label: 'Marriage place' },
-	{ value: 'divorce_date', label: 'Divorce date' },
-	{ value: 'occupation', label: 'Occupation' },
-	{ value: 'residence', label: 'Residence' },
-	{ value: 'census', label: 'Census' },
-	{ value: 'immigration', label: 'Immigration' },
-	{ value: 'military_service', label: 'Military service' },
-	{ value: 'education', label: 'Education' },
-	{ value: 'name', label: 'Name' },
-	{ value: 'sex', label: 'Sex' },
+	{ value: 'birth_date', label: '出生日期' },
+	{ value: 'birth_place', label: '出生地点' },
+	{ value: 'death_date', label: '去世日期' },
+	{ value: 'death_place', label: '去世地点' },
+	{ value: 'burial_date', label: '安葬日期' },
+	{ value: 'burial_place', label: '安葬地点' },
+	{ value: 'baptism_date', label: '洗礼日期' },
+	{ value: 'marriage_date', label: '结婚日期' },
+	{ value: 'marriage_place', label: '结婚地点' },
+	{ value: 'divorce_date', label: '离婚日期' },
+	{ value: 'occupation', label: '职业' },
+	{ value: 'residence', label: '居住地' },
+	{ value: 'census', label: '人口普查' },
+	{ value: 'immigration', label: '移民' },
+	{ value: 'military_service', label: '服役' },
+	{ value: 'education', label: '教育' },
+	{ value: 'name', label: '姓名' },
+	{ value: 'sex', label: '性别' },
 ];
 
 export class AddCitationModal extends Modal {
@@ -60,9 +60,9 @@ export class AddCitationModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass('cr-add-citation-modal');
 
-		contentEl.createEl('h2', { text: 'Add citation' });
+		contentEl.createEl('h2', { text: '添加引文' });
 		contentEl.createEl('p', {
-			text: `Adding citation to: ${this.subjectName}`,
+			text: `正在向以下人物添加引文：${this.subjectName}`,
 			cls: 'setting-item-description'
 		});
 
@@ -70,16 +70,16 @@ export class AddCitationModal extends Modal {
 
 		// Source picker
 		const sourceSetting = new Setting(form)
-			.setName('Source')
-			.setDesc('Select the source being cited');
+			.setName('来源')
+			.setDesc('选择被引用的来源');
 
 		const sourceDisplay = sourceSetting.controlEl.createSpan({
-			text: this.selectedSourceName || 'None selected',
+			text: this.selectedSourceName || '未选择',
 			cls: 'cr-add-citation__source-display'
 		});
 
 		sourceSetting.addButton(btn => btn
-			.setButtonText('Select source')
+			.setButtonText('选择来源')
 			.onClick(() => {
 				new SourcePickerModal(this.app, this.plugin, {
 					onSelect: (source) => {
@@ -93,10 +93,10 @@ export class AddCitationModal extends Modal {
 
 		// Fact selector
 		new Setting(form)
-			.setName('Fact')
-			.setDesc('Which fact does this source support?')
+			.setName('事实')
+			.setDesc('该来源支持哪一事实？')
 			.addDropdown(dropdown => {
-				dropdown.addOption('', 'Select a fact...');
+				dropdown.addOption('', '选择事实…');
 				for (const opt of FACT_OPTIONS) {
 					dropdown.addOption(opt.value, opt.label);
 				}
@@ -108,20 +108,20 @@ export class AddCitationModal extends Modal {
 
 		// Page reference
 		new Setting(form)
-			.setName('Page / location')
-			.setDesc('Page, entry, or location within the source')
+			.setName('页码 / 位置')
+			.setDesc('来源中的页码、条目或位置')
 			.addText(text => text
-				.setPlaceholder('e.g., p. 42, entry 15')
+				.setPlaceholder('例如：第 42 页，第 15 条')
 				.onChange(value => {
 					this.page = value;
 				}));
 
 		// Quality assessment
 		new Setting(form)
-			.setName('Quality')
-			.setDesc('Source quality assessment (GEDCOM QUAY)')
+			.setName('质量')
+			.setDesc('来源质量评估（GEDCOM QUAY）')
 			.addDropdown(dropdown => {
-				dropdown.addOption('', 'Not specified');
+				dropdown.addOption('', '未指定');
 				for (const [key, label] of Object.entries(CITATION_QUALITY_LABELS)) {
 					dropdown.addOption(key, `${key} — ${label}`);
 				}
@@ -133,10 +133,10 @@ export class AddCitationModal extends Modal {
 		// Actions
 		const actions = new Setting(form);
 		actions.addButton(btn => btn
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => this.close()));
 		actions.addButton(btn => {
-			btn.setButtonText('Add citation')
+			btn.setButtonText('添加引文')
 				.setCta()
 				.onClick(() => void this.submit());
 			btn.buttonEl.addClass('cr-add-citation__submit');
@@ -179,11 +179,11 @@ export class AddCitationModal extends Modal {
 				frontmatter.citations = existing;
 			});
 
-			new Notice(`Citation added: ${sourceBaseName} → ${this.selectedFact}`);
+			new Notice(`已添加引文：${sourceBaseName} → ${this.selectedFact}`);
 			this.close();
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			new Notice(`Failed to create citation: ${message}`);
+			new Notice(`创建引文失败：${message}`);
 		}
 	}
 

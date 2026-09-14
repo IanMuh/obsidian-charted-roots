@@ -12,6 +12,7 @@ import { formatPronouns } from '../utils/format-utils';
 import { QuickCreatePersonModal, RelationshipContext } from './quick-create-person-modal';
 import type CanvasRootsPlugin from '../../main';
 import { formatDisplayDate } from '../dates';
+import { getRelationshipTypeLabel } from '../utils/terminology';
 
 /**
  * Place reference info for person detail view
@@ -208,7 +209,7 @@ export class PersonPickerModal extends Modal {
 		const { contentEl } = this;
 		this.loadingEl = contentEl.createDiv({ cls: 'crc-picker-loading' });
 		this.loadingEl.createDiv({ cls: 'crc-picker-loading__spinner' });
-		this.loadingEl.createDiv({ cls: 'crc-picker-loading__text', text: 'Loading people...' });
+		this.loadingEl.createDiv({ cls: 'crc-picker-loading__text', text: '正在加载人物…' });
 	}
 
 	/**
@@ -438,7 +439,7 @@ export class PersonPickerModal extends Modal {
 		const titleSection = header.createDiv({ cls: 'crc-picker-title' });
 		const icon = createLucideIcon('users', 20);
 		titleSection.appendChild(icon);
-		titleSection.appendText(this.customTitle || 'Select person');
+		titleSection.appendText(this.customTitle || '选择人物');
 
 		// Optional subtitle
 		if (this.customSubtitle) {
@@ -470,7 +471,7 @@ export class PersonPickerModal extends Modal {
 			cls: 'crc-form-input',
 			attr: {
 				type: 'text',
-				placeholder: 'Search by name...'
+				placeholder: '按姓名搜索…'
 			}
 		});
 
@@ -509,15 +510,15 @@ export class PersonPickerModal extends Modal {
 
 		// Sort dropdown
 		const sortContainer = contentEl.createDiv({ cls: 'crc-picker-sort' });
-		sortContainer.createSpan({ cls: 'crc-picker-sort__label', text: 'Sort by:' });
+		sortContainer.createSpan({ cls: 'crc-picker-sort__label', text: '排序方式：' });
 		const sortSelect = sortContainer.createEl('select', { cls: 'crc-form-select' });
 
 		const sortOptions: Array<{ value: SortOption; label: string }> = [
-			{ value: 'name-asc', label: 'Name (A-Z)' },
-			{ value: 'name-desc', label: 'Name (Z-A)' },
-			{ value: 'birth-asc', label: 'Birth year (oldest first)' },
-			{ value: 'birth-desc', label: 'Birth year (youngest first)' },
-			{ value: 'recent', label: 'Recently modified' }
+			{ value: 'name-asc', label: '姓名（A-Z）' },
+			{ value: 'name-desc', label: '姓名（Z-A）' },
+			{ value: 'birth-asc', label: '出生年份（最早优先）' },
+			{ value: 'birth-desc', label: '出生年份（最晚优先）' },
+			{ value: 'recent', label: '最近修改' }
 		];
 
 		sortOptions.forEach(opt => {
@@ -539,12 +540,12 @@ export class PersonPickerModal extends Modal {
 
 		// Living status filter
 		const livingFilter = filtersContainer.createDiv({ cls: 'crc-picker-filter' });
-		livingFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Living:' });
+		livingFilter.createSpan({ cls: 'crc-picker-filter__label', text: '在世：' });
 		const livingSelect = livingFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 		[
-			{ value: 'all', label: 'All' },
-			{ value: 'living', label: 'Living only' },
-			{ value: 'deceased', label: 'Deceased only' }
+			{ value: 'all', label: '全部' },
+			{ value: 'living', label: '仅在世' },
+			{ value: 'deceased', label: '仅已故' }
 		].forEach(opt => {
 			livingSelect.createEl('option', { value: opt.value, text: opt.label });
 		});
@@ -555,12 +556,12 @@ export class PersonPickerModal extends Modal {
 
 		// Birth date filter
 		const birthFilter = filtersContainer.createDiv({ cls: 'crc-picker-filter' });
-		birthFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Birth date:' });
+		birthFilter.createSpan({ cls: 'crc-picker-filter__label', text: '出生日期：' });
 		const birthSelect = birthFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 		[
-			{ value: 'all', label: 'All' },
-			{ value: 'yes', label: 'Has date' },
-			{ value: 'no', label: 'Missing date' }
+			{ value: 'all', label: '全部' },
+			{ value: 'yes', label: '有日期' },
+			{ value: 'no', label: '缺少日期' }
 		].forEach(opt => {
 			birthSelect.createEl('option', { value: opt.value, text: opt.label });
 		});
@@ -571,12 +572,12 @@ export class PersonPickerModal extends Modal {
 
 		// Sex filter
 		const sexFilter = filtersContainer.createDiv({ cls: 'crc-picker-filter' });
-		sexFilter.createSpan({ cls: 'crc-picker-filter__label', text: 'Sex:' });
+		sexFilter.createSpan({ cls: 'crc-picker-filter__label', text: '性别：' });
 		const sexSelect = sexFilter.createEl('select', { cls: 'crc-form-select crc-form-select--small' });
 		[
-			{ value: 'all', label: 'All' },
-			{ value: 'M', label: 'Male' },
-			{ value: 'F', label: 'Female' }
+			{ value: 'all', label: '全部' },
+			{ value: 'M', label: '男性' },
+			{ value: 'F', label: '女性' }
 		].forEach(opt => {
 			sexSelect.createEl('option', { value: opt.value, text: opt.label });
 		});
@@ -615,7 +616,7 @@ export class PersonPickerModal extends Modal {
 
 		// Sidebar header
 		const sidebarHeader = this.tabsContainer.createDiv({ cls: 'crc-picker-sidebar__header' });
-		sidebarHeader.setText('Family groups');
+		sidebarHeader.setText('家族分组');
 
 		// Sidebar tabs container
 		const tabsWrapper = this.tabsContainer.createDiv({ cls: 'crc-picker-sidebar__tabs' });
@@ -627,7 +628,7 @@ export class PersonPickerModal extends Modal {
 		}
 
 		const allTabLabel = allTab.createSpan({ cls: 'crc-picker-sidebar-tab__label' });
-		allTabLabel.setText('All families');
+		allTabLabel.setText('全部家族');
 
 		const allTabBadge = allTab.createSpan({ cls: 'crc-picker-sidebar-tab__badge' });
 		const totalPeople = this.familyComponents.reduce((sum, c) => sum + c.size, 0);
@@ -650,7 +651,7 @@ export class PersonPickerModal extends Modal {
 			// Use the user's collection name when every member shares one
 			// (or when the merge step combined multiple components under a
 			// shared name). Falls back to the generic ordinal label otherwise. (#491)
-			tabLabel.setText(component.collectionName ?? `Family ${index + 1}`);
+			tabLabel.setText(component.collectionName ?? `家族 ${index + 1}`);
 
 			const tabBadge = tab.createSpan({ cls: 'crc-picker-sidebar-tab__badge' });
 			tabBadge.setText(component.size.toString());
@@ -742,11 +743,11 @@ export class PersonPickerModal extends Modal {
 			const emptyState = this.resultsContainer.createDiv({ cls: 'crc-picker-empty' });
 			const emptyIcon = createLucideIcon('search', 48);
 			emptyState.appendChild(emptyIcon);
-			emptyState.createEl('p', { text: 'No people found' });
+			emptyState.createEl('p', { text: '未找到人物' });
 			emptyState.createEl('p', {
 				text: this.allPeople.length === 0
-					? 'Create person notes to link them as relationships'
-					: 'Try a different search term',
+					? '创建人物笔记后即可将其关联为亲属'
+					: '请尝试其他搜索词',
 				cls: 'crc-text-muted'
 			});
 			return;
@@ -800,9 +801,9 @@ export class PersonPickerModal extends Modal {
 			if (person.birthDate && person.deathDate) {
 				dateBadge.appendText(`${formatDisplayDate(person.birthDate)} – ${formatDisplayDate(person.deathDate)}`);
 			} else if (person.birthDate) {
-				dateBadge.appendText(`b. ${formatDisplayDate(person.birthDate)}`);
+				dateBadge.appendText(`生于 ${formatDisplayDate(person.birthDate)}`);
 			} else if (person.deathDate) {
-				dateBadge.appendText(`d. ${formatDisplayDate(person.deathDate)}`);
+				dateBadge.appendText(`卒于 ${formatDisplayDate(person.deathDate)}`);
 			}
 		} else {
 			// Fallback: show cr_id only when no dates available
@@ -832,10 +833,9 @@ export class PersonPickerModal extends Modal {
 	 */
 	private getCreateNewButtonLabel(): string {
 		if (this.createContext?.relationshipType) {
-			const relType = this.createContext.relationshipType.toLowerCase();
-			return ` Create new ${relType}`;
+			return ` 新建${getRelationshipTypeLabel(this.createContext.relationshipType)}`;
 		}
-		return ' Create new person';
+		return ' 新建人物';
 	}
 
 	/**

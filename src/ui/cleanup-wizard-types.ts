@@ -101,9 +101,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'quality-report',
 		number: 1,
-		title: 'Quality Report',
-		shortTitle: 'Quality Report',
-		description: 'Review data quality issues identified in your vault.',
+		title: '数据质量报告',
+		shortTitle: '质量报告',
+		description: '查看库中检测到的数据质量问题。',
 		type: 'review',
 		service: 'DataQualityService',
 		detectMethod: 'getIssuesSummary',
@@ -112,9 +112,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'bidirectional',
 		number: 2,
-		title: 'Fix Bidirectional Relationships',
-		shortTitle: 'Bidir Rels',
-		description: 'Ensure parent-child relationships are properly linked in both directions.',
+		title: '修复双向关系',
+		shortTitle: '双向关系',
+		description: '确保父母子女关系在双向都正确关联。',
 		type: 'batch',
 		service: 'DataQualityService',
 		detectMethod: 'detectBidirectionalIssues',
@@ -124,9 +124,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'date-normalize',
 		number: 3,
-		title: 'Normalize Date Formats',
-		shortTitle: 'Dates',
-		description: 'Convert non-standard date formats to ISO 8601 (YYYY-MM-DD).',
+		title: '规范化日期格式',
+		shortTitle: '日期',
+		description: '将非标准日期格式转换为 ISO 8601（YYYY-MM-DD）。',
 		type: 'batch',
 		service: 'DataQualityService',
 		detectMethod: 'detectDateIssues',
@@ -136,9 +136,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'gender-normalize',
 		number: 4,
-		title: 'Normalize Gender Values',
-		shortTitle: 'Gender',
-		description: 'Standardize gender/sex values to consistent format.',
+		title: '规范化性别值',
+		shortTitle: '性别',
+		description: '将性别值统一为标准格式。',
 		type: 'batch',
 		service: 'DataQualityService',
 		detectMethod: 'detectGenderIssues',
@@ -148,9 +148,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'orphan-clear',
 		number: 5,
-		title: 'Clear Orphan References',
-		shortTitle: 'Orphans',
-		description: 'Remove dangling links to non-existent notes.',
+		title: '清除孤立引用',
+		shortTitle: '孤立引用',
+		description: '移除指向不存在笔记的悬空链接。',
 		type: 'batch',
 		service: 'DataQualityService',
 		detectMethod: 'detectOrphanReferences',
@@ -160,9 +160,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'source-migrate',
 		number: 6,
-		title: 'Migrate Source Properties',
-		shortTitle: 'Sources',
-		description: 'Convert indexed source properties (source_2, source_3) to array format.',
+		title: '迁移来源属性',
+		shortTitle: '来源',
+		description: '将索引形式的来源属性（source_2、source_3）转换为数组格式。',
 		type: 'batch',
 		service: 'SourceMigrationService',
 		detectMethod: 'detectIndexedSources',
@@ -172,9 +172,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'place-variants',
 		number: 7,
-		title: 'Standardize Place Variants',
-		shortTitle: 'Place Names',
-		description: 'Choose canonical names for places with multiple variants.',
+		title: '标准化地点变体',
+		shortTitle: '地点名称',
+		description: '为有多个变体的地点选择规范名称。',
 		type: 'interactive',
 		service: 'PlaceGraphService',
 		detectMethod: 'detectPlaceVariants',
@@ -184,9 +184,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'geocode',
 		number: 8,
-		title: 'Bulk Geocode',
-		shortTitle: 'Geocode',
-		description: 'Add geographic coordinates to place notes.',
+		title: '批量地理编码',
+		shortTitle: '地理编码',
+		description: '为地点笔记添加地理坐标。',
 		type: 'interactive',
 		service: 'GeocodingService',
 		detectMethod: 'detectUngeocoded',
@@ -196,9 +196,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'place-hierarchy',
 		number: 9,
-		title: 'Enrich Place Hierarchy',
-		shortTitle: 'Hierarchy',
-		description: 'Build containment chains (city \u2192 county \u2192 state \u2192 country).',
+		title: '丰富地点层级',
+		shortTitle: '层级',
+		description: '构建从属链（城市 → 县 → 州 → 国家）。',
 		type: 'interactive',
 		service: 'PlaceGraphService',
 		detectMethod: 'detectMissingHierarchy',
@@ -208,9 +208,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'flatten-props',
 		number: 10,
-		title: 'Flatten Nested Properties',
-		shortTitle: 'Flatten',
-		description: 'Convert nested YAML objects to flat property format.',
+		title: '展平嵌套属性',
+		shortTitle: '展平',
+		description: '将嵌套的 YAML 对象转换为扁平属性格式。',
 		type: 'batch',
 		service: 'DataQualityService',
 		detectMethod: 'detectNestedProperties',
@@ -220,9 +220,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'event-person-migrate',
 		number: 11,
-		title: 'Migrate Event Person Properties',
-		shortTitle: 'Event Persons',
-		description: 'Convert singular person property to persons array format.',
+		title: '迁移事件人物属性',
+		shortTitle: '事件人物',
+		description: '将单数 person 属性转换为 persons 数组格式。',
 		type: 'batch',
 		service: 'EventPersonMigrationService',
 		detectMethod: 'detectLegacyPersonProperty',
@@ -232,9 +232,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'sourced-facts-migrate',
 		number: 12,
-		title: 'Migrate Evidence Tracking',
-		shortTitle: 'Evidence',
-		description: 'Convert nested sourced_facts to flat sourced_* properties.',
+		title: '迁移证据追踪',
+		shortTitle: '证据',
+		description: '将嵌套的 sourced_facts 转换为扁平的 sourced_* 属性。',
 		type: 'batch',
 		service: 'SourcedFactsMigrationService',
 		detectMethod: 'detectLegacySourcedFacts',
@@ -244,9 +244,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'life-events-migrate',
 		number: 13,
-		title: 'Migrate Life Events',
-		shortTitle: 'Life Events',
-		description: 'Convert inline events arrays to separate event note files.',
+		title: '迁移生平事件',
+		shortTitle: '生平事件',
+		description: '将内联的 events 数组转换为独立的事件笔记文件。',
 		type: 'batch',
 		service: 'LifeEventsMigrationService',
 		detectMethod: 'detectInlineEvents',
@@ -256,9 +256,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'child-to-children',
 		number: 14,
-		title: 'Normalize Children Property',
-		shortTitle: 'Children',
-		description: 'Rename legacy "child" property to "children" for consistency.',
+		title: '规范化子女属性',
+		shortTitle: '子女',
+		description: '将旧版 "child" 属性重命名为 "children" 以保持一致。',
 		type: 'batch',
 		service: 'inline', // No external service needed
 		detectMethod: 'detectLegacyChildProperty',
@@ -268,9 +268,9 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 	{
 		id: 'place-cr-id',
 		number: 15,
-		title: 'Add cr_id to place notes',
-		shortTitle: 'Place IDs',
-		description: 'Generate cr_id for place notes that lack one. Without cr_id, places are silently excluded from the place graph and don’t appear in by-name lookups, the parent dropdown, or map markers.',
+		title: '为地点笔记添加 cr_id',
+		shortTitle: '地点 ID',
+		description: '为缺少 cr_id 的地点笔记生成 cr_id。没有 cr_id 时，地点会被静默排除在地点图之外，也不会出现在按名称查找、父级下拉菜单或地图标记中。',
 		type: 'batch',
 		service: 'inline',
 		detectMethod: 'detectPlacesWithoutCrId',
@@ -282,15 +282,15 @@ export const WIZARD_STEPS: WizardStepConfig[] = [
 // --- Pure utility functions ---
 
 /**
- * Format a date as relative time (e.g., "2 hours ago")
+ * Format a date as relative time (e.g., "2 小时前")
  */
 export function formatTimeAgo(date: Date): string {
 	const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
 
-	if (seconds < 60) return 'just now';
-	if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
-	if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
-	return `${Math.floor(seconds / 86400)} days ago`;
+	if (seconds < 60) return '刚刚';
+	if (seconds < 3600) return `${Math.floor(seconds / 60)} 分钟前`;
+	if (seconds < 86400) return `${Math.floor(seconds / 3600)} 小时前`;
+	return `${Math.floor(seconds / 86400)} 天前`;
 }
 
 /**

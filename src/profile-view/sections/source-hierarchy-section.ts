@@ -29,7 +29,7 @@ export function renderParentSourceSection(
 ): void {
 	const content = renderProfileSection(parent, {
 		sectionId: 'parent-source',
-		title: 'Parent source',
+		title: '来源上级',
 		summary: parentSource.title,
 		expanded: options.sectionStates['parent-source'] ?? true,
 		onToggle: options.onToggle,
@@ -73,11 +73,11 @@ export function renderChildSourcesSection(
 	childSources: SourceNote[],
 	options: SourceHierarchySectionOptions
 ): void {
-	const summary = `${childSources.length} document${childSources.length !== 1 ? 's' : ''}`;
+	const summary = `${childSources.length} 份文档`;
 
 	const content = renderProfileSection(parent, {
 		sectionId: 'child-sources',
-		title: 'Child documents',
+		title: '下级文档',
 		summary,
 		expanded: options.sectionStates['child-sources'] ?? true,
 		onToggle: options.onToggle,
@@ -96,11 +96,11 @@ export function renderSiblingSourcesSection(
 	siblingSources: SourceNote[],
 	options: SourceHierarchySectionOptions
 ): void {
-	const summary = `${siblingSources.length} document${siblingSources.length !== 1 ? 's' : ''}`;
+	const summary = `${siblingSources.length} 份文档`;
 
 	const content = renderProfileSection(parent, {
 		sectionId: 'sibling-sources',
-		title: 'Related documents',
+		title: '相关文档',
 		summary,
 		expanded: options.sectionStates['sibling-sources'] ?? false,
 		onToggle: options.onToggle,
@@ -121,11 +121,11 @@ export function renderSourceTreeSection(
 	options: SourceHierarchySectionOptions
 ): void {
 	const total = childSources.length + 1;
-	const summary = `${total} document${total !== 1 ? 's' : ''} in hierarchy`;
+	const summary = `层级中共 ${total} 份文档`;
 
 	const content = renderProfileSection(parent, {
 		sectionId: 'source-tree',
-		title: 'Source tree',
+		title: '来源树',
 		summary,
 		expanded: options.sectionStates['source-tree'] ?? false,
 		onToggle: options.onToggle,

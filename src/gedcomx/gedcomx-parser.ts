@@ -103,7 +103,7 @@ export class GedcomXParser {
 			if (!data.persons || !Array.isArray(data.persons)) {
 				result.warnings.push({
 					path: 'persons',
-					message: 'No persons array found in document'
+					message: '文档中未找到 persons 数组'
 				});
 			} else {
 				result.stats.personCount = data.persons.length;
@@ -113,7 +113,7 @@ export class GedcomXParser {
 					if (!person.id) {
 						result.errors.push({
 							path: `persons[${index}]`,
-							message: 'Person is missing required id field'
+							message: '人物缺少必需的 id 字段'
 						});
 						result.valid = false;
 					}
@@ -122,7 +122,7 @@ export class GedcomXParser {
 					if (!person.names || person.names.length === 0) {
 						result.warnings.push({
 							path: `persons[${index}]`,
-							message: `Person ${person.id || index} has no name`
+							message: `人物 ${person.id || index} 没有姓名`
 						});
 					}
 				});
@@ -136,13 +136,13 @@ export class GedcomXParser {
 					if (!rel.type) {
 						result.warnings.push({
 							path: `relationships[${index}]`,
-							message: 'Relationship is missing type'
+							message: '关系缺少 type'
 						});
 					}
 					if (!rel.person1?.resource || !rel.person2?.resource) {
 						result.errors.push({
 							path: `relationships[${index}]`,
-							message: 'Relationship is missing person references'
+							message: '关系缺少人物引用'
 						});
 						result.valid = false;
 					}
@@ -156,7 +156,7 @@ export class GedcomXParser {
 		} catch (error) {
 			result.valid = false;
 			result.errors.push({
-				message: `Invalid JSON: ${error instanceof Error ? error.message : String(error)}`
+				message: `JSON 无效：${error instanceof Error ? error.message : String(error)}`
 			});
 		}
 

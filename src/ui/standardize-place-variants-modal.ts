@@ -162,20 +162,20 @@ export class StandardizePlaceVariantsModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('globe', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Standardize place name variants');
+		titleContainer.appendText('标准化地点名称变体');
 
 		// Description
 		const descriptionEl = contentEl.createDiv({ cls: 'crc-batch-description' });
 
 		if (this.matches.length === 0) {
 			descriptionEl.createEl('p', {
-				text: 'No place name variants found. Your place names are already standardized!',
+				text: '未发现地点名称变体。你的地点名称已标准化！',
 				cls: 'crc-text--success'
 			});
 
 			const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 			new ButtonComponent(buttonContainer)
-				.setButtonText('Close')
+				.setButtonText('关闭')
 				.setCta()
 				.onClick(() => this.close());
 			return;
@@ -183,11 +183,11 @@ export class StandardizePlaceVariantsModal extends Modal {
 
 		const totalRefs = this.matches.reduce((sum, m) => sum + m.count, 0);
 		descriptionEl.createEl('p', {
-			text: `Found ${this.matches.length} place name variant${this.matches.length !== 1 ? 's' : ''} across ${totalRefs} reference${totalRefs !== 1 ? 's' : ''}.`,
+			text: `在 ${totalRefs} 处引用中发现 ${this.matches.length} 个地点名称变体。`,
 			cls: 'crc-text--muted'
 		});
 		descriptionEl.createEl('p', {
-			text: 'Select which variants to standardize. You can also choose a different canonical form for each.',
+			text: '选择要标准化的变体，也可为每个变体指定不同的规范形式。',
 			cls: 'crc-text--muted crc-text--small'
 		});
 
@@ -195,17 +195,17 @@ export class StandardizePlaceVariantsModal extends Modal {
 		const filterRow = contentEl.createDiv({ cls: 'crc-batch-filter-row' });
 		const searchInput = filterRow.createEl('input', {
 			type: 'text',
-			placeholder: 'Filter variants...',
+			placeholder: '筛选变体…',
 			cls: 'crc-filter-input'
 		});
 
 		// Select all / deselect all buttons
 		const selectAllBtn = filterRow.createEl('button', {
-			text: 'Select all',
+			text: '全选',
 			cls: 'crc-btn crc-btn--small'
 		});
 		const deselectAllBtn = filterRow.createEl('button', {
-			text: 'Deselect all',
+			text: '取消全选',
 			cls: 'crc-btn crc-btn--small'
 		});
 
@@ -216,10 +216,10 @@ export class StandardizePlaceVariantsModal extends Modal {
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
 		headerRow.createEl('th', { text: '', cls: 'crc-th--checkbox' });
-		headerRow.createEl('th', { text: 'Current value' });
-		headerRow.createEl('th', { text: 'Standardize to' });
-		headerRow.createEl('th', { text: 'References' });
-		headerRow.createEl('th', { text: 'Actions', cls: 'crc-th--actions' });
+		headerRow.createEl('th', { text: '当前值' });
+		headerRow.createEl('th', { text: '标准化为' });
+		headerRow.createEl('th', { text: '引用数' });
+		headerRow.createEl('th', { text: '操作', cls: 'crc-th--actions' });
 
 		const tbody = table.createEl('tbody');
 
@@ -273,7 +273,7 @@ export class StandardizePlaceVariantsModal extends Modal {
 				if (match.variant !== match.canonical) {
 					const variantOpt = canonicalSelect.createEl('option', {
 						value: match.variant,
-						text: `${match.variant} (keep as-is)`
+						text: `${match.variant}（保持原样）`
 					});
 					variantOpt.selected = this.canonicalOverrides.get(match) === match.variant;
 				}
@@ -309,7 +309,7 @@ export class StandardizePlaceVariantsModal extends Modal {
 				if (match.files.length > 0) {
 					const openTabBtn = actionsCell.createEl('button', {
 						cls: 'crc-batch-action-btn clickable-icon',
-						attr: { 'aria-label': 'Open note in new tab' }
+						attr: { 'aria-label': '在新标签页中打开笔记' }
 					});
 					setLucideIcon(openTabBtn, 'file-text');
 					openTabBtn.addEventListener('click', () => {
@@ -318,7 +318,7 @@ export class StandardizePlaceVariantsModal extends Modal {
 
 					const openWindowBtn = actionsCell.createEl('button', {
 						cls: 'crc-batch-action-btn clickable-icon',
-						attr: { 'aria-label': 'Open note in new window' }
+						attr: { 'aria-label': '在新窗口中打开笔记' }
 					});
 					setLucideIcon(openWindowBtn, 'external-link');
 					openWindowBtn.addEventListener('click', () => {
@@ -354,24 +354,24 @@ export class StandardizePlaceVariantsModal extends Modal {
 		const warningIcon = createLucideIcon('alert-triangle', 16);
 		warning.appendChild(warningIcon);
 		warning.createSpan({
-			text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+			text: ' 继续操作前请备份你的库。此操作会修改现有笔记。'
 		});
 
 		// Buttons
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => this.close());
 
 		const applyBtn = new ButtonComponent(buttonContainer)
-			.setButtonText(`Standardize ${this.selectedMatches.size} variant${this.selectedMatches.size !== 1 ? 's' : ''}`)
+			.setButtonText(`标准化 ${this.selectedMatches.size} 个变体`)
 			.setCta()
 			.onClick(() => void this.applyStandardization());
 
 		const updateApplyButton = () => {
 			const count = this.selectedMatches.size;
-			applyBtn.setButtonText(`Standardize ${count} variant${count !== 1 ? 's' : ''}`);
+			applyBtn.setButtonText(`标准化 ${count} 个变体`);
 			applyBtn.setDisabled(count === 0);
 		};
 
@@ -403,17 +403,17 @@ export class StandardizePlaceVariantsModal extends Modal {
 				const updated = await this.updatePlaceReferences(match.variant, targetCanonical, match.files);
 				totalUpdated += updated;
 			} catch (error) {
-				errors.push(`${match.variant}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+				errors.push(`${match.variant}: ${error instanceof Error ? error.message : '未知错误'}`);
 			}
 		}
 
 		if (errors.length > 0) {
 			console.error('Errors during variant standardization:', errors);
-			new Notice(`Updated ${totalUpdated} references. ${errors.length} errors occurred.`);
+			new Notice(`已更新 ${totalUpdated} 处引用，发生 ${errors.length} 个错误。`);
 		} else if (totalUpdated > 0) {
-			new Notice(`Updated ${totalUpdated} place reference${totalUpdated !== 1 ? 's' : ''}`);
+			new Notice(`已更新 ${totalUpdated} 处地点引用`);
 		} else {
-			new Notice('No changes were needed');
+			new Notice('无需更改');
 		}
 
 		if (this.onComplete) {

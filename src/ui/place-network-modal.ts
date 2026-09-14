@@ -7,7 +7,6 @@ import { App, Modal, DropdownComponent, ToggleComponent } from 'obsidian';
 import { createLucideIcon } from './lucide-icons';
 import { PlaceGraphService } from '../core/place-graph';
 import { PlaceNode, PlaceCategory } from '../models/place';
-import { capitalize, pluralize } from '../utils/format-utils';
 
 interface NetworkNode {
 	id: string;
@@ -35,6 +34,24 @@ interface MigrationFlow {
 
 type ViewMode = 'hierarchy' | 'radial' | 'force';
 type ColorMode = 'category' | 'type' | 'depth';
+
+/** Chinese display labels for the legend (values stay as slugs). */
+const CATEGORY_LABELS: Record<PlaceCategory, string> = {
+	real: '真实',
+	historical: '历史',
+	disputed: '存疑',
+	legendary: '传说',
+	mythological: '神话',
+	fictional: '虚构'
+};
+
+const TYPE_LABELS: Record<string, string> = {
+	country: '国家',
+	state: '州',
+	city: '城市',
+	town: '城镇',
+	village: '村庄'
+};
 
 /**
  * Modal displaying a place network visualization
@@ -152,17 +169,17 @@ export class PlaceNetworkModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('git-branch', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText('Place hierarchy');
+		titleContainer.appendText('地点层级');
 
 		// Description
 		contentEl.createEl('p', {
-			text: 'Visualizing place hierarchy and connections. Larger nodes indicate more associated people.',
+			text: '可视化地点层级与连接。节点越大表示关联的人物越多。',
 			cls: 'crc-text--muted'
 		});
 
 		if (this.nodes.length === 0) {
 			contentEl.createEl('p', {
-				text: 'No place notes found. Create place notes to see the hierarchy.',
+				text: '未找到地点笔记。创建地点笔记即可查看层级。',
 				cls: 'crc-text--muted crc-mt-3'
 			});
 			return;
@@ -177,10 +194,10 @@ export class PlaceNetworkModal extends Modal {
 
 		// Layout selector
 		const layoutGroup = controlsRow.createDiv({ cls: 'crc-network-control' });
-		layoutGroup.createSpan({ cls: 'crc-network-control-label', text: 'Layout' });
+		layoutGroup.createSpan({ cls: 'crc-network-control-label', text: '布局' });
 		new DropdownComponent(layoutGroup)
-			.addOption('hierarchy', 'Tree')
-			.addOption('radial', 'Radial')
+			.addOption('hierarchy', '树形')
+			.addOption('radial', '放射状')
 			.setValue(this.viewMode)
 			.onChange((value: string) => {
 				this.viewMode = value as ViewMode;
@@ -189,11 +206,11 @@ export class PlaceNetworkModal extends Modal {
 
 		// Color mode selector
 		const colorGroup = controlsRow.createDiv({ cls: 'crc-network-control' });
-		colorGroup.createSpan({ cls: 'crc-network-control-label', text: 'Color by' });
+		colorGroup.createSpan({ cls: 'crc-network-control-label', text: '着色依据' });
 		new DropdownComponent(colorGroup)
-			.addOption('category', 'Category')
-			.addOption('type', 'Place type')
-			.addOption('depth', 'Depth')
+			.addOption('category', '分类')
+			.addOption('type', '地点类型')
+			.addOption('depth', '深度')
 			.setValue(this.colorMode)
 			.onChange((value: string) => {
 				this.colorMode = value as ColorMode;
@@ -206,7 +223,7 @@ export class PlaceNetworkModal extends Modal {
 		// Show migrations toggle (only if there are migration flows)
 		if (this.migrationFlows.length > 0) {
 			const migrationGroup = controlsRow.createDiv({ cls: 'crc-network-control' });
-			migrationGroup.createSpan({ cls: 'crc-network-control-label', text: 'Show migrations' });
+			migrationGroup.createSpan({ cls: 'crc-network-control-label', text: '显示迁移' });
 			new ToggleComponent(migrationGroup)
 				.setValue(this.showMigrations)
 				.onChange((value: boolean) => {
@@ -471,7 +488,7 @@ export class PlaceNetworkModal extends Modal {
 		path.setAttribute('class', 'crc-migration-flow');
 
 		// Add tooltip data
-		path.setAttribute('data-tooltip', `${fromNode.name} → ${toNode.name}: ${flow.count} ${pluralize(flow.count, 'person', 'people')}`);
+		path.setAttribute('data-tooltip', `${fromNode.name} → ${toNode.name}：${flow.count} 位人物`);
 
 		svg.appendChild(path);
 	}
@@ -585,12 +602,12 @@ export class PlaceNetworkModal extends Modal {
 	private getTooltipText(node: NetworkNode): string {
 		const parts = [node.name];
 		if (node.placeType) {
-			parts.push(`Type: ${node.placeType}`);
+			parts.push(`类型：${node.placeType}`);
 		}
-		parts.push(`Category: ${node.category}`);
-		parts.push(`People: ${node.personCount}`);
+		parts.push(`分类：${CATEGORY_LABELS[node.category] ?? node.category}`);
+		parts.push(`人物：${node.personCount}`);
 		if (node.children.length > 0) {
-			parts.push(`Children: ${node.children.length}`);
+			parts.push(`子地点：${node.children.length}`);
 		}
 		return parts.join('\n');
 	}
@@ -617,7 +634,7 @@ export class PlaceNetworkModal extends Modal {
 				const item = legend.createDiv({ cls: 'crc-network-legend-item' });
 				const dot = item.createSpan({ cls: 'crc-network-legend-dot' });
 				dot.style.setProperty('background-color', this.getCategoryColor(cat));
-				item.createSpan({ text: capitalize(cat) });
+				item.createSpan({ text: CATEGORY_LABELS[cat] ?? cat });
 			}
 		} else if (this.colorMode === 'type') {
 			const types = ['country', 'state', 'city', 'town', 'village'];
@@ -625,17 +642,17 @@ export class PlaceNetworkModal extends Modal {
 				const item = legend.createDiv({ cls: 'crc-network-legend-item' });
 				const dot = item.createSpan({ cls: 'crc-network-legend-dot' });
 				dot.style.setProperty('background-color', this.getTypeColor(type));
-				item.createSpan({ text: capitalize(type) });
+				item.createSpan({ text: TYPE_LABELS[type] ?? type });
 			}
 		} else {
 			const gradientItem = legend.createDiv({ cls: 'crc-network-legend-item' });
 			gradientItem.createSpan({ cls: 'crc-network-legend-gradient' });
-			gradientItem.appendText(' Shallow → Deep');
+			gradientItem.appendText(' 浅 → 深');
 		}
 
 		// Size explanation
 		const sizeExplanation = legend.createDiv({ cls: 'crc-network-legend-item crc-mt-2' });
-		sizeExplanation.createSpan({ cls: 'crc-text--muted', text: 'Node size indicates number of associated people' });
+		sizeExplanation.createSpan({ cls: 'crc-text--muted', text: '节点大小表示关联的人物数量' });
 	}
 
 	/**

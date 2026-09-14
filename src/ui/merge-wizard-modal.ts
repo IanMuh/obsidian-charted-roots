@@ -48,7 +48,7 @@ export class MergeWizardModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl, titleEl } = this;
-		titleEl.setText('Merge records');
+		titleEl.setText('合并记录');
 		contentEl.addClass('cr-merge-wizard');
 
 		this.renderContent();
@@ -65,17 +65,17 @@ export class MergeWizardModal extends Modal {
 		// Header info
 		const headerEl = contentEl.createDiv({ cls: 'cr-merge-header' });
 		headerEl.createEl('p', {
-			text: `Merging data from staging into main tree record.`,
+			text: `正在将暂存数据合并到主树记录中。`,
 			cls: 'cr-merge-header__desc'
 		});
 
 		const filesEl = headerEl.createDiv({ cls: 'cr-merge-files' });
 		filesEl.createDiv({
-			text: `Staging: ${this.stagingFile.basename}`,
+			text: `暂存：${this.stagingFile.basename}`,
 			cls: 'cr-merge-files__staging'
 		});
 		filesEl.createDiv({
-			text: `Main: ${this.mainFile.basename}`,
+			text: `主记录：${this.mainFile.basename}`,
 			cls: 'cr-merge-files__main'
 		});
 
@@ -84,10 +84,10 @@ export class MergeWizardModal extends Modal {
 
 		// Table header
 		const headerRow = tableEl.createDiv({ cls: 'cr-merge-row cr-merge-row--header' });
-		headerRow.createDiv({ text: 'Field', cls: 'cr-merge-cell cr-merge-cell--field' });
-		headerRow.createDiv({ text: 'Staging', cls: 'cr-merge-cell cr-merge-cell--staging' });
-		headerRow.createDiv({ text: 'Main', cls: 'cr-merge-cell cr-merge-cell--main' });
-		headerRow.createDiv({ text: 'Use', cls: 'cr-merge-cell cr-merge-cell--choice' });
+		headerRow.createDiv({ text: '字段', cls: 'cr-merge-cell cr-merge-cell--field' });
+		headerRow.createDiv({ text: '暂存', cls: 'cr-merge-cell cr-merge-cell--staging' });
+		headerRow.createDiv({ text: '主记录', cls: 'cr-merge-cell cr-merge-cell--main' });
+		headerRow.createDiv({ text: '采用', cls: 'cr-merge-cell cr-merge-cell--choice' });
 
 		// Field rows
 		for (const diff of this.differences) {
@@ -97,31 +97,31 @@ export class MergeWizardModal extends Modal {
 		// Info section
 		const infoEl = contentEl.createDiv({ cls: 'cr-merge-info' });
 		infoEl.createEl('p', {
-			text: 'After merge:',
+			text: '合并后：',
 			cls: 'cr-merge-info__title'
 		});
 		const infoList = infoEl.createEl('ul', { cls: 'cr-merge-info__list' });
-		infoList.createEl('li', { text: 'The staging file will be deleted' });
-		infoList.createEl('li', { text: 'The main file will be updated with merged data' });
-		infoList.createEl('li', { text: 'Relationships pointing to staging will be updated' });
+		infoList.createEl('li', { text: '暂存文件将被删除' });
+		infoList.createEl('li', { text: '主文件将用合并后的数据更新' });
+		infoList.createEl('li', { text: '指向暂存的关系将被更新' });
 
 		// Action buttons
 		const actionsEl = contentEl.createDiv({ cls: 'cr-merge-actions' });
 
 		const cancelBtn = actionsEl.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'cr-merge-btn cr-merge-btn--secondary'
 		});
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const previewBtn = actionsEl.createEl('button', {
-			text: 'Preview',
+			text: '预览',
 			cls: 'cr-merge-btn cr-merge-btn--secondary'
 		});
 		previewBtn.addEventListener('click', () => this.showPreview());
 
 		const mergeBtn = actionsEl.createEl('button', {
-			text: 'Merge',
+			text: '合并',
 			cls: 'cr-merge-btn mod-cta'
 		});
 		mergeBtn.addEventListener('click', () => void this.executeMerge());
@@ -161,11 +161,11 @@ export class MergeWizardModal extends Modal {
 		} else {
 			const select = choiceCell.createEl('select', { cls: 'cr-merge-select' });
 
-			select.createEl('option', { value: 'main', text: 'Main' });
-			select.createEl('option', { value: 'staging', text: 'Staging' });
+			select.createEl('option', { value: 'main', text: '主记录' });
+			select.createEl('option', { value: 'staging', text: '暂存' });
 
 			if (diff.canCombine) {
-				select.createEl('option', { value: 'both', text: 'Both' });
+				select.createEl('option', { value: 'both', text: '两者' });
 			}
 
 			// Set current choice
@@ -179,7 +179,7 @@ export class MergeWizardModal extends Modal {
 
 	private formatValue(value: string | string[] | undefined): string {
 		if (value === undefined) {
-			return '(empty)';
+			return '（空）';
 		}
 		if (Array.isArray(value)) {
 			return value.join(', ');
@@ -193,7 +193,7 @@ export class MergeWizardModal extends Modal {
 		const preview = this.mergeService.previewMerge(this.stagingFile, this.mainFile, choices);
 
 		if (!preview) {
-			new Notice('Could not generate preview');
+			new Notice('无法生成预览');
 			return;
 		}
 
@@ -228,9 +228,9 @@ export class MergeWizardModal extends Modal {
 			);
 
 			if (result.success) {
-				let message = 'Records merged successfully';
+				let message = '记录合并成功';
 				if (result.relationshipsUpdated > 0) {
-					message += ` (${result.relationshipsUpdated} relationships updated)`;
+					message += `（已更新 ${result.relationshipsUpdated} 个关系）`;
 				}
 				new Notice(message);
 				this.close();
@@ -239,12 +239,12 @@ export class MergeWizardModal extends Modal {
 					this.onMergeComplete();
 				}
 			} else {
-				new Notice(`Merge failed: ${result.error}`);
+				new Notice(`合并失败：${result.error}`);
 			}
 		} catch (error) {
 			const msg = error instanceof Error ? error.message : String(error);
 			logger.error('merge', `Merge execution failed: ${msg}`);
-			new Notice(`Merge failed: ${msg}`);
+			new Notice(`合并失败：${msg}`);
 		}
 	}
 }
@@ -259,11 +259,11 @@ class MergePreviewModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl, titleEl } = this;
-		titleEl.setText('Merge preview');
+		titleEl.setText('合并预览');
 		contentEl.addClass('cr-merge-preview');
 
 		contentEl.createEl('p', {
-			text: 'This is what the merged record will look like:',
+			text: '合并后的记录将如下所示：',
 			cls: 'cr-merge-preview__desc'
 		});
 
@@ -271,16 +271,16 @@ class MergePreviewModal extends Modal {
 
 		// Show key fields
 		const fields = [
-			{ key: 'name', label: 'Name' },
-			{ key: 'born', label: 'Birth date' },
-			{ key: 'died', label: 'Death date' },
-			{ key: 'birth_place', label: 'Birth place' },
-			{ key: 'death_place', label: 'Death place' },
-			{ key: 'sex', label: 'Sex' },
-			{ key: 'father', label: 'Father' },
-			{ key: 'mother', label: 'Mother' },
-			{ key: 'spouse', label: `${getSpouseLabel(this.settings)}(s)` },
-			{ key: 'child', label: 'Children' }
+			{ key: 'name', label: '名称' },
+			{ key: 'born', label: '出生日期' },
+			{ key: 'died', label: '去世日期' },
+			{ key: 'birth_place', label: '出生地点' },
+			{ key: 'death_place', label: '去世地点' },
+			{ key: 'sex', label: '性别' },
+			{ key: 'father', label: '父亲' },
+			{ key: 'mother', label: '母亲' },
+			{ key: 'spouse', label: `${getSpouseLabel(this.settings)}（们）` },
+			{ key: 'child', label: '子女' }
 		];
 
 		for (const { key, label } of fields) {
@@ -296,7 +296,7 @@ class MergePreviewModal extends Modal {
 		}
 
 		const closeBtn = contentEl.createEl('button', {
-			text: 'Close',
+			text: '关闭',
 			cls: 'mod-cta'
 		});
 		closeBtn.addEventListener('click', () => this.close());

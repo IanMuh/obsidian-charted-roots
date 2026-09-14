@@ -44,7 +44,7 @@ export class DuplicateDetectionModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl, titleEl } = this;
-		titleEl.setText('Duplicate detection');
+		titleEl.setText('重复检测');
 		contentEl.empty();
 		contentEl.addClass('cr-duplicate-modal');
 
@@ -70,8 +70,8 @@ export class DuplicateDetectionModal extends Modal {
 
 		// Minimum confidence threshold
 		new Setting(optionsSection)
-			.setName('Minimum confidence')
-			.setDesc('Only show matches above this confidence level (0-100)')
+			.setName('最低置信度')
+			.setDesc('仅显示高于此置信度的匹配（0-100）')
 			.addSlider(slider => slider
 				.setLimits(40, 90, 5)
 				.setValue(60)
@@ -82,8 +82,8 @@ export class DuplicateDetectionModal extends Modal {
 
 		// Minimum name similarity
 		new Setting(optionsSection)
-			.setName('Minimum name similarity')
-			.setDesc('Required name match percentage (0-100)')
+			.setName('最低姓名相似度')
+			.setDesc('要求的姓名匹配百分比（0-100）')
 			.addSlider(slider => slider
 				.setLimits(50, 95, 5)
 				.setValue(70)
@@ -94,8 +94,8 @@ export class DuplicateDetectionModal extends Modal {
 
 		// Max year difference
 		new Setting(optionsSection)
-			.setName('Maximum year difference')
-			.setDesc('How many years apart dates can be to still match')
+			.setName('最大年份差')
+			.setDesc('日期相差多少年以内仍视为匹配')
 			.addSlider(slider => slider
 				.setLimits(1, 20, 1)
 				.setValue(5)
@@ -106,8 +106,8 @@ export class DuplicateDetectionModal extends Modal {
 
 		// Same collection only toggle
 		new Setting(optionsSection)
-			.setName('Same collection only')
-			.setDesc('Only compare people within the same collection')
+			.setName('仅限同一合集')
+			.setDesc('仅比较同一合集内的人物')
 			.addToggle(toggle => toggle
 				.setValue(false)
 				.onChange(value => {
@@ -120,15 +120,15 @@ export class DuplicateDetectionModal extends Modal {
 		const dismissedCount = this.plugin?.settings.dismissedDuplicatePairs?.length ?? 0;
 		if (this.plugin && dismissedCount > 0) {
 			new Setting(optionsSection)
-				.setName('Dismissed pairs')
-				.setDesc(`${dismissedCount} pair${dismissedCount === 1 ? '' : 's'} marked "not a duplicate" and hidden from results.`)
-				.addButton(button => setButtonDestructive(button.setButtonText('Clear dismissed'))
+				.setName('已忽略的对')
+				.setDesc(`已标记为"非重复"并已从结果中隐藏：${dismissedCount} 对。`)
+				.addButton(button => setButtonDestructive(button.setButtonText('清除已忽略'))
 					.onClick(async () => {
 						if (!this.plugin) return;
 						this.plugin.settings.dismissedDuplicatePairs = [];
 						await this.plugin.saveSettings();
-						button.setButtonText('Cleared').setDisabled(true);
-						new Notice('Cleared dismissed pairs — rescan to see them again');
+						button.setButtonText('已清除').setDisabled(true);
+						new Notice('已清除忽略的对 — 重新扫描即可再次看到');
 					})
 				);
 		}
@@ -137,7 +137,7 @@ export class DuplicateDetectionModal extends Modal {
 		const buttonContainer = optionsSection.createDiv({ cls: 'cr-duplicate-button-container' });
 		const scanBtn = buttonContainer.createEl('button', {
 			cls: 'mod-cta',
-			text: 'Scan for duplicates'
+			text: '扫描重复项'
 		});
 		scanBtn.addEventListener('click', () => {
 			void this.runScan();
@@ -153,7 +153,7 @@ export class DuplicateDetectionModal extends Modal {
 
 		const emptyState = this.resultsContainer.createDiv({ cls: 'cr-duplicate-empty' });
 		emptyState.createEl('p', {
-			text: 'Configure options above and click "Scan for duplicates" to find potential duplicate person records.',
+			text: '请在上方配置选项，然后点击"扫描重复项"以查找可能重复的人物记录。',
 			cls: 'setting-item-description'
 		});
 	}
@@ -167,7 +167,7 @@ export class DuplicateDetectionModal extends Modal {
 		// Show loading state
 		this.resultsContainer.empty();
 		const loadingEl = this.resultsContainer.createDiv({ cls: 'cr-duplicate-loading' });
-		loadingEl.createEl('p', { text: 'Scanning for duplicates...' });
+		loadingEl.createEl('p', { text: '正在扫描重复项…' });
 
 		// Run detection (use setTimeout to allow UI to update)
 		await new Promise(resolve => window.setTimeout(resolve, 50));
@@ -181,7 +181,7 @@ export class DuplicateDetectionModal extends Modal {
 			logger.error('scan', 'Duplicate scan failed', error);
 			this.resultsContainer.empty();
 			this.resultsContainer.createEl('p', {
-				text: `Scan failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+				text: `扫描失败：${error instanceof Error ? error.message : '未知错误'}`,
 				cls: 'cr-error-text'
 			});
 		}
@@ -200,30 +200,30 @@ export class DuplicateDetectionModal extends Modal {
 
 		if (this.matches.length === 0) {
 			summaryEl.createEl('p', {
-				text: 'No potential duplicates found. Your data appears to be clean!',
+				text: '未发现潜在重复项。你的数据看起来很干净！',
 				cls: 'cr-success-text'
 			});
 			return;
 		}
 
-		summaryEl.createEl('h4', { text: `Found ${summary.totalMatches} potential duplicate(s)` });
+		summaryEl.createEl('h4', { text: `发现 ${summary.totalMatches} 个潜在重复项` });
 
 		const statsEl = summaryEl.createDiv({ cls: 'cr-duplicate-stats' });
 		if (summary.highConfidence > 0) {
 			statsEl.createSpan({
-				text: `${summary.highConfidence} high confidence`,
+				text: `${summary.highConfidence} 个高置信度`,
 				cls: 'cr-badge cr-badge--danger'
 			});
 		}
 		if (summary.mediumConfidence > 0) {
 			statsEl.createSpan({
-				text: `${summary.mediumConfidence} medium confidence`,
+				text: `${summary.mediumConfidence} 个中置信度`,
 				cls: 'cr-badge cr-badge--warning'
 			});
 		}
 		if (summary.lowConfidence > 0) {
 			statsEl.createSpan({
-				text: `${summary.lowConfidence} low confidence`,
+				text: `${summary.lowConfidence} 个低置信度`,
 				cls: 'cr-badge cr-badge--info'
 			});
 		}
@@ -248,7 +248,7 @@ export class DuplicateDetectionModal extends Modal {
 
 		const headerEl = itemEl.createDiv({ cls: 'cr-duplicate-item-header' });
 		headerEl.createSpan({
-			text: `${match.confidence}% confidence`,
+			text: `置信度 ${match.confidence}%`,
 			cls: `cr-badge ${confidenceClass}`
 		});
 
@@ -257,38 +257,38 @@ export class DuplicateDetectionModal extends Modal {
 
 		// Person 1
 		const person1El = comparisonEl.createDiv({ cls: 'cr-duplicate-person' });
-		person1El.createEl('strong', { text: match.person1.name || 'Unknown' });
+		person1El.createEl('strong', { text: match.person1.name || '未知' });
 		if (match.person1.birthDate || match.person1.deathDate) {
 			const datesEl = person1El.createEl('small', { cls: 'cr-text-muted' });
 			const dates: string[] = [];
-			if (match.person1.birthDate) dates.push(`b. ${match.person1.birthDate}`);
-			if (match.person1.deathDate) dates.push(`d. ${match.person1.deathDate}`);
+			if (match.person1.birthDate) dates.push(`生于 ${match.person1.birthDate}`);
+			if (match.person1.deathDate) dates.push(`逝于 ${match.person1.deathDate}`);
 			datesEl.textContent = ` (${dates.join(', ')})`;
 		}
 		const file1Btn = person1El.createEl('button', {
 			cls: 'cr-btn-link',
-			text: 'Open note'
+			text: '打开笔记'
 		});
 		file1Btn.addEventListener('click', () => {
 			void this.openPersonNote(match.person1.file);
 		});
 
 		// VS separator
-		comparisonEl.createSpan({ text: 'vs', cls: 'cr-duplicate-vs' });
+		comparisonEl.createSpan({ text: '对比', cls: 'cr-duplicate-vs' });
 
 		// Person 2
 		const person2El = comparisonEl.createDiv({ cls: 'cr-duplicate-person' });
-		person2El.createEl('strong', { text: match.person2.name || 'Unknown' });
+		person2El.createEl('strong', { text: match.person2.name || '未知' });
 		if (match.person2.birthDate || match.person2.deathDate) {
 			const datesEl = person2El.createEl('small', { cls: 'cr-text-muted' });
 			const dates: string[] = [];
-			if (match.person2.birthDate) dates.push(`b. ${match.person2.birthDate}`);
-			if (match.person2.deathDate) dates.push(`d. ${match.person2.deathDate}`);
+			if (match.person2.birthDate) dates.push(`生于 ${match.person2.birthDate}`);
+			if (match.person2.deathDate) dates.push(`逝于 ${match.person2.deathDate}`);
 			datesEl.textContent = ` (${dates.join(', ')})`;
 		}
 		const file2Btn = person2El.createEl('button', {
 			cls: 'cr-btn-link',
-			text: 'Open note'
+			text: '打开笔记'
 		});
 		file2Btn.addEventListener('click', () => {
 			void this.openPersonNote(match.person2.file);
@@ -297,7 +297,7 @@ export class DuplicateDetectionModal extends Modal {
 		// Match details
 		const detailsEl = itemEl.createDiv({ cls: 'cr-duplicate-details' });
 		detailsEl.createEl('small', {
-			text: `Name similarity: ${match.nameSimilarity}% | Date proximity: ${match.dateProximity}%`,
+			text: `姓名相似度：${match.nameSimilarity}% | 日期接近度：${match.dateProximity}%`,
 			cls: 'cr-text-muted'
 		});
 
@@ -317,7 +317,7 @@ export class DuplicateDetectionModal extends Modal {
 		if (this.settings) {
 			const mergeBtn = actionsEl.createEl('button', {
 				cls: 'mod-cta',
-				text: 'Merge'
+				text: '合并'
 			});
 			mergeBtn.addEventListener('click', () => {
 				this.openMergeWizard(match, itemEl);
@@ -326,7 +326,7 @@ export class DuplicateDetectionModal extends Modal {
 
 		const dismissBtn = actionsEl.createEl('button', {
 			cls: 'cr-btn-secondary',
-			text: 'Not a duplicate'
+			text: '非重复'
 		});
 		dismissBtn.addEventListener('click', () => {
 			void this.dismissMatch(match, itemEl);
@@ -351,7 +351,7 @@ export class DuplicateDetectionModal extends Modal {
 			}
 		}
 
-		new Notice('Match dismissed');
+		new Notice('已忽略该匹配');
 	}
 
 	/**

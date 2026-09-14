@@ -1,7 +1,6 @@
 import { App, ButtonComponent, Modal } from 'obsidian';
 import { ValidationResult } from '../core/relationship-validator';
 import { createLucideIcon } from './lucide-icons';
-import { pluralize } from '../utils/format-utils';
 
 /**
  * Modal to display relationship validation results
@@ -23,7 +22,7 @@ export class ValidationResultsModal extends Modal {
 
 		// Title
 		contentEl.createEl('h2', {
-			text: `Validation: ${this.result.personName}`,
+			text: `验证：${this.result.personName}`,
 			cls: 'crc-modal-title'
 		});
 
@@ -35,7 +34,7 @@ export class ValidationResultsModal extends Modal {
 			successIcon.addClass('cr-icon--success');
 			summary.appendChild(successIcon);
 			summary.createEl('span', {
-				text: ' No issues found',
+				text: ' 未发现问题',
 				cls: 'cr-validation-summary__text'
 			});
 			summary.addClass('cr-text--success');
@@ -44,7 +43,7 @@ export class ValidationResultsModal extends Modal {
 			errorIcon.addClass('cr-icon--error');
 			summary.appendChild(errorIcon);
 			summary.createEl('span', {
-				text: ` Found ${this.result.issues.length} ${pluralize(this.result.issues.length, 'issue')}`,
+				text: ` 发现 ${this.result.issues.length} 个问题`,
 				cls: 'cr-validation-summary__text'
 			});
 			summary.addClass('cr-text--error');
@@ -63,7 +62,7 @@ export class ValidationResultsModal extends Modal {
 				warningIcon.addClass('cr-icon--warning');
 				issueHeader.appendChild(warningIcon);
 				issueHeader.createEl('span', {
-					text: ` Issue ${index + 1}`,
+					text: ` 问题 ${index + 1}`,
 					cls: 'cr-validation-issue__number'
 				});
 
@@ -76,13 +75,13 @@ export class ValidationResultsModal extends Modal {
 				});
 
 				issueBody.createEl('div', {
-					text: `Field: ${issue.field}`,
+					text: `字段：${issue.field}`,
 					cls: 'cr-validation-issue__field'
 				});
 
 				if (issue.referencedCrId) {
 					issueBody.createEl('div', {
-						text: `Referenced cr_id: ${issue.referencedCrId}`,
+						text: `引用的 cr_id：${issue.referencedCrId}`,
 						cls: 'cr-validation-issue__ref'
 					});
 				}
@@ -98,7 +97,7 @@ export class ValidationResultsModal extends Modal {
 		// Close button
 		const buttonContainer = contentEl.createDiv({ cls: 'cr-modal-buttons' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.setCta()
 			.onClick(() => {
 				this.close();
@@ -115,13 +114,13 @@ export class ValidationResultsModal extends Modal {
 	 */
 	private getIssueTypeLabel(type: string): string {
 		const labels: Record<string, string> = {
-			'broken-father-ref': 'Broken father reference',
-			'broken-mother-ref': 'Broken mother reference',
-			'broken-spouse-ref': 'Broken spouse reference',
-			'broken-child-ref': 'Broken child reference',
-			'missing-bidirectional-parent': 'Missing bidirectional (parent)',
-			'missing-bidirectional-spouse': 'Missing bidirectional (spouse)',
-			'missing-bidirectional-child': 'Missing bidirectional (child)'
+			'broken-father-ref': '损坏的父亲引用',
+			'broken-mother-ref': '损坏的母亲引用',
+			'broken-spouse-ref': '损坏的配偶引用',
+			'broken-child-ref': '损坏的子女引用',
+			'missing-bidirectional-parent': '缺少双向关系（父母）',
+			'missing-bidirectional-spouse': '缺少双向关系（配偶）',
+			'missing-bidirectional-child': '缺少双向关系（子女）'
 		};
 		return labels[type] || type;
 	}

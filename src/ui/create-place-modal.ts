@@ -473,23 +473,23 @@ export class CreatePlaceModal extends Modal {
 	 */
 	private formatPlaceType(type: string): string {
 		const names: Record<string, string> = {
-			planet: 'Planets',
-			continent: 'Continents',
-			country: 'Countries',
-			state: 'States',
-			province: 'Provinces',
-			region: 'Regions',
-			county: 'Counties',
-			city: 'Cities',
-			town: 'Towns',
-			village: 'Villages',
-			district: 'Districts',
-			parish: 'Parishes',
-			castle: 'Castles',
-			estate: 'Estates',
-			cemetery: 'Cemeteries',
-			church: 'Churches',
-			other: 'Other'
+			planet: '行星',
+			continent: '大洲',
+			country: '国家',
+			state: '州',
+			province: '省',
+			region: '地区',
+			county: '郡',
+			city: '城市',
+			town: '城镇',
+			village: '村庄',
+			district: '区',
+			parish: '教区',
+			castle: '城堡',
+			estate: '庄园',
+			cemetery: '墓地',
+			church: '教堂',
+			other: '其他'
 		};
 		// Custom types aren't in the built-in plural map — resolve their display
 		// name from the registry (honoring customizations) so the group header
@@ -524,12 +524,12 @@ export class CreatePlaceModal extends Modal {
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		const icon = createLucideIcon('map-pin', 24);
 		titleContainer.appendChild(icon);
-		titleContainer.appendText(this.editMode ? 'Edit place note' : 'Create place note');
+		titleContainer.appendText(this.editMode ? '编辑地点笔记' : '创建地点笔记');
 
 		// Add "Look up" button in header (only in create mode)
 		if (!this.editMode) {
 			const lookupBtn = header.createEl('button', {
-				text: 'Look up place',
+				text: '查找地点',
 				cls: 'crc-btn crc-btn--secondary crc-header-action'
 			});
 			const lookupIcon = createLucideIcon('search', 16);
@@ -571,10 +571,10 @@ export class CreatePlaceModal extends Modal {
 
 		// Name (required)
 		new Setting(form)
-			.setName('Name')
-			.setDesc('The primary name of the place')
+			.setName('名称')
+			.setDesc('地点的主要名称')
 			.addText(text => text
-				.setPlaceholder('e.g., London')
+				.setPlaceholder('例如：London')
 				.setValue(this.placeData.name)
 				.onChange(value => {
 					this.placeData.name = value;
@@ -582,15 +582,15 @@ export class CreatePlaceModal extends Modal {
 
 		// Category
 		new Setting(form)
-			.setName('Category')
-			.setDesc('Classification of the place')
+			.setName('分类')
+			.setDesc('地点的分类')
 			.addDropdown(dropdown => dropdown
-				.addOption('real', 'Real - verified real-world location')
-				.addOption('historical', 'Historical - real place that no longer exists')
-				.addOption('disputed', 'Disputed - location debated by historians')
-				.addOption('legendary', 'Legendary - may have historical basis')
-				.addOption('mythological', 'Mythological - place from mythology')
-				.addOption('fictional', 'Fictional - invented for a story')
+				.addOption('real', '真实 - 已核实的现实世界地点')
+				.addOption('historical', '历史 - 现已不存在的真实地点')
+				.addOption('disputed', '存疑 - 历史学家有争议的地点')
+				.addOption('legendary', '传说 - 可能有历史依据')
+				.addOption('mythological', '神话 - 来自神话的地点')
+				.addOption('fictional', '虚构 - 为故事虚构的地点')
 				.setValue(this.placeData.placeCategory || 'real')
 				.onChange(value => {
 					this.placeData.placeCategory = value as PlaceCategory;
@@ -609,12 +609,12 @@ export class CreatePlaceModal extends Modal {
 
 		// Place type
 		const typeSetting = new Setting(form)
-			.setName('Type')
-			.setDesc('Type of place in the hierarchy');
+			.setName('类型')
+			.setDesc('地点在层级中的类型');
 
 		typeSetting.addDropdown(dropdown => {
 			this.typeDropdownEl = dropdown.selectEl;
-			dropdown.addOption('', '(Select type)');
+			dropdown.addOption('', '（选择类型）');
 
 			// Get place types from settings (respects customizations, hidden types, custom types)
 			const placeTypes = getAllPlaceTypesWithCustomizations(
@@ -630,7 +630,7 @@ export class CreatePlaceModal extends Modal {
 			}
 
 			// Always add "Other..." option for truly custom types
-			dropdown.addOption('__custom__', 'Other...');
+			dropdown.addOption('__custom__', '其他……');
 
 			// Check if initial value is in the dropdown options or is a custom type
 			const initialType = this.placeData.placeType;
@@ -670,7 +670,7 @@ export class CreatePlaceModal extends Modal {
 		// Add text input for custom type (hidden by default unless editing a custom type)
 		typeSetting.addText(text => {
 			this.customTypeInputEl = text.inputEl;
-			text.setPlaceholder('Enter custom type (e.g., galaxy, star-system)')
+			text.setPlaceholder('输入自定义类型（例如：galaxy、star-system）')
 				.onChange(value => {
 					// Store custom type as-is, lowercase for consistency
 					const customType = value.trim().toLowerCase().replace(/\s+/g, '-');
@@ -700,10 +700,10 @@ export class CreatePlaceModal extends Modal {
 
 		// Universe (for fictional/mythological/legendary places)
 		const universeSetting = new Setting(form)
-			.setName('Universe')
-			.setDesc('For fictional/mythological places: the world or story it belongs to')
+			.setName('宇宙')
+			.setDesc('对于虚构/神话地点：其所属的世界或故事')
 			.addText(text => text
-				.setPlaceholder('e.g., Middle-earth, A Song of Ice and Fire')
+				.setPlaceholder('例如：Middle-earth、A Song of Ice and Fire')
 				.setValue(this.placeData.universe || '')
 				.onChange(value => {
 					this.placeData.universe = value || undefined;
@@ -712,8 +712,8 @@ export class CreatePlaceModal extends Modal {
 
 		// Parent place - dropdown if places exist, text input otherwise
 		const parentPlaceSetting = new Setting(form)
-			.setName('Parent place')
-			.setDesc('The parent location in the hierarchy (e.g., England for London)');
+			.setName('父级地点')
+			.setDesc('层级中的上级地点（例如 London 的上级为 England）');
 		this.parentPlaceSettingEl = parentPlaceSetting.settingEl;
 
 		if (this.parentPlaceOptions.size > 0) {
@@ -770,7 +770,7 @@ export class CreatePlaceModal extends Modal {
 			// Add text input for manual entry (hidden by default)
 			parentPlaceSetting.addText(text => {
 				customParentInput = text.inputEl;
-				text.setPlaceholder('e.g., England or [[England]]')
+				text.setPlaceholder('例如：England 或 [[England]]')
 					.onChange(value => {
 						this.placeData.parentPlace = value || undefined;
 						this.placeData.parentPlaceId = undefined; // Clear ID when using manual entry
@@ -783,7 +783,7 @@ export class CreatePlaceModal extends Modal {
 		} else {
 			// No existing places, just show text input
 			parentPlaceSetting.addText(text => text
-				.setPlaceholder('e.g., England or [[England]]')
+				.setPlaceholder('例如：England 或 [[England]]')
 				.setValue(this.placeData.parentPlace || '')
 				.onChange(value => {
 					this.placeData.parentPlace = value || undefined;
@@ -794,10 +794,10 @@ export class CreatePlaceModal extends Modal {
 
 		// Aliases
 		new Setting(form)
-			.setName('Aliases')
-			.setDesc('Alternative names, comma-separated')
+			.setName('别名')
+			.setDesc('其他名称，以逗号分隔')
 			.addText(text => text
-				.setPlaceholder('e.g., City of London, Londinium')
+				.setPlaceholder('例如：City of London、Londinium')
 				.setValue(this.placeData.aliases?.join(', ') || '')
 				.onChange(value => {
 					if (value) {
@@ -809,8 +809,8 @@ export class CreatePlaceModal extends Modal {
 
 		// Collection - dropdown with existing + text for custom
 		const collectionSetting = new Setting(form)
-			.setName('Collection')
-			.setDesc('Group with related person notes');
+			.setName('合集')
+			.setDesc('与相关的人物笔记归为一组');
 
 		if (this.existingCollections.length > 0) {
 			// Show dropdown with existing collections + "New collection..." option
@@ -818,8 +818,8 @@ export class CreatePlaceModal extends Modal {
 
 			collectionSetting.addDropdown(dropdown => {
 				dropdown
-					.addOption('', '(None)')
-					.addOption('__custom__', '+ New collection...');
+					.addOption('', '（无）')
+					.addOption('__custom__', '+ 新建合集……');
 
 				for (const coll of this.existingCollections) {
 					dropdown.addOption(coll, coll);
@@ -848,7 +848,7 @@ export class CreatePlaceModal extends Modal {
 			// Add text input for custom collection (hidden by default)
 			collectionSetting.addText(text => {
 				customInput = text.inputEl;
-				text.setPlaceholder('Enter new collection name')
+				text.setPlaceholder('输入新合集名称')
 					.onChange(value => {
 						this.placeData.collection = value || undefined;
 					});
@@ -858,7 +858,7 @@ export class CreatePlaceModal extends Modal {
 		} else {
 			// No existing collections, just show text input
 			collectionSetting.addText(text => text
-				.setPlaceholder('e.g., Smith Family')
+				.setPlaceholder('例如：Smith 家族')
 				.setValue(this.placeData.collection || '')
 				.onChange(value => {
 					this.placeData.collection = value || undefined;
@@ -876,22 +876,22 @@ export class CreatePlaceModal extends Modal {
 		const dmsEnabled = this.settings?.enableDMSCoordinates ?? false;
 
 		const coordSetting = new Setting(this.coordSectionEl)
-			.setName('Coordinates')
+			.setName('坐标')
 			.setDesc(hasPrefilledGeoCoords
-				? 'Coordinates from map click (read-only)'
-				: 'Real-world coordinates (for real, historical, disputed places)');
+				? '来自地图点击的坐标（只读）'
+				: '现实世界坐标（用于真实、历史、存疑地点）');
 		coordSetting.settingEl.addClass('crc-coord-pair-row');
 
 		const coordPair = coordSetting.controlEl.createDiv({ cls: 'crc-coord-pair-inputs' });
 
 		// Latitude
 		const latPair = coordPair.createDiv({ cls: 'crc-coord-pair' });
-		latPair.createEl('label', { text: 'Lat', cls: 'crc-coord-pair-label' });
+		latPair.createEl('label', { text: '纬度', cls: 'crc-coord-pair-label' });
 		this.latInputEl = latPair.createEl('input', {
 			type: 'text',
-			placeholder: dmsEnabled ? "33.8522 or 33°51'08\"N" : '-90 to 90',
+			placeholder: dmsEnabled ? "33.8522 或 33°51'08\"N" : '-90 到 90',
 			cls: 'crc-coord-pair-input crc-coord-pair-input--geo',
-			attr: { 'aria-label': 'Latitude' },
+			attr: { 'aria-label': '纬度' },
 		});
 		this.latInputEl.addEventListener('input', () => {
 			this.updateCoordinates('lat', this.latInputEl!.value);
@@ -906,12 +906,12 @@ export class CreatePlaceModal extends Modal {
 
 		// Longitude
 		const longPair = coordPair.createDiv({ cls: 'crc-coord-pair' });
-		longPair.createEl('label', { text: 'Long', cls: 'crc-coord-pair-label' });
+		longPair.createEl('label', { text: '经度', cls: 'crc-coord-pair-label' });
 		this.longInputEl = longPair.createEl('input', {
 			type: 'text',
-			placeholder: dmsEnabled ? "83.6183 or 83°37'06\"W" : '-180 to 180',
+			placeholder: dmsEnabled ? "83.6183 或 83°37'06\"W" : '-180 到 180',
 			cls: 'crc-coord-pair-input crc-coord-pair-input--geo',
-			attr: { 'aria-label': 'Longitude' },
+			attr: { 'aria-label': '经度' },
 		});
 		this.longInputEl.addEventListener('input', () => {
 			this.updateCoordinates('long', this.longInputEl!.value);
@@ -927,8 +927,8 @@ export class CreatePlaceModal extends Modal {
 		// Geocoding lookup button (only if not prefilled)
 		if (!hasPrefilledGeoCoords) {
 			coordSetting.addButton(btn => {
-				btn.setButtonText('Look up')
-					.setTooltip('Look up coordinates by place name (uses OpenStreetMap)')
+				btn.setButtonText('查找')
+					.setTooltip('按地点名称查找坐标（使用 OpenStreetMap）')
 					.onClick(() => {
 						void this.lookupCoordinates();
 					});
@@ -943,10 +943,10 @@ export class CreatePlaceModal extends Modal {
 		const hasPrefilledPixelCoords = this.prefilledCoordinates?.isPixelMap;
 
 		const pixelCoordSetting = new Setting(this.pixelCoordSectionEl)
-			.setName('Pixel coordinates')
+			.setName('像素坐标')
 			.setDesc(hasPrefilledPixelCoords
-				? 'Coordinates from map click (read-only)'
-				: 'For places on pixel-based custom maps (e.g., fantasy worlds)');
+				? '来自地图点击的坐标（只读）'
+				: '用于基于像素的自定义地图上的地点（例如奇幻世界）');
 		pixelCoordSetting.settingEl.addClass('crc-coord-pair-row');
 
 		const pixelPair = pixelCoordSetting.controlEl.createDiv({ cls: 'crc-coord-pair-inputs' });
@@ -958,7 +958,7 @@ export class CreatePlaceModal extends Modal {
 			type: 'text',
 			placeholder: '0',
 			cls: 'crc-coord-pair-input crc-coord-pair-input--pixel',
-			attr: { 'aria-label': 'Pixel X coordinate' },
+			attr: { 'aria-label': '像素 X 坐标' },
 		});
 		this.pixelXInputEl.addEventListener('input', () => {
 			this.updatePixelCoordinates('x', this.pixelXInputEl!.value);
@@ -978,7 +978,7 @@ export class CreatePlaceModal extends Modal {
 			type: 'text',
 			placeholder: '0',
 			cls: 'crc-coord-pair-input crc-coord-pair-input--pixel',
-			attr: { 'aria-label': 'Pixel Y coordinate' },
+			attr: { 'aria-label': '像素 Y 坐标' },
 		});
 		this.pixelYInputEl.addEventListener('input', () => {
 			this.updatePixelCoordinates('y', this.pixelYInputEl!.value);
@@ -1000,8 +1000,8 @@ export class CreatePlaceModal extends Modal {
 
 		if (this.availableMaps.length > 0) {
 			new Setting(this.mapsSectionEl)
-				.setName('Restrict to maps')
-				.setDesc('Only show this place on selected maps (leave empty for all maps)');
+				.setName('限制到地图')
+				.setDesc('仅在所选地图上显示此地点（留空表示所有地图）');
 
 			// Create a container for checkboxes
 			const mapsContainer = this.mapsSectionEl.createDiv({ cls: 'crc-maps-checkboxes' });
@@ -1016,7 +1016,7 @@ export class CreatePlaceModal extends Modal {
 
 			if (relevantMaps.length === 0) {
 				mapsContainer.createEl('span', {
-					text: 'No maps available for this universe',
+					text: '此宇宙没有可用的地图',
 					cls: 'crc-text-muted'
 				});
 			} else {
@@ -1041,7 +1041,7 @@ export class CreatePlaceModal extends Modal {
 					// Highlight current map if this is the one being viewed
 					if (map.id === this.currentMapId) {
 						label.addClass('crc-maps-current');
-						label.appendText(' (current)');
+						label.appendText('（当前）');
 					}
 				}
 			}
@@ -1053,12 +1053,12 @@ export class CreatePlaceModal extends Modal {
 		// Directory setting (only show in create mode)
 		if (!this.editMode) {
 			new Setting(form)
-				.setName('Directory')
-				.setDesc('Where to create the place note')
+				.setName('文件夹')
+				.setDesc('在何处创建地点笔记')
 				.addText(text => {
 					this.directoryInputEl = text.inputEl;
 					text
-						.setPlaceholder('e.g., Places')
+						.setPlaceholder('例如：Places')
 						.setValue(this.directory)
 						.onChange(value => {
 							this.directory = value;
@@ -1073,13 +1073,13 @@ export class CreatePlaceModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				this.close();
 			});
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText(this.editMode ? 'Save changes' : 'Create place')
+			.setButtonText(this.editMode ? '保存更改' : '创建地点')
 			.setCta()
 			.onClick(() => {
 				if (this.editMode) {
@@ -1151,8 +1151,8 @@ export class CreatePlaceModal extends Modal {
 		selectEl.empty();
 
 		// Add default options
-		selectEl.createEl('option', { value: '', text: '(None)' });
-		selectEl.createEl('option', { value: '__custom__', text: '+ Enter manually...' });
+		selectEl.createEl('option', { value: '', text: '（无）' });
+		selectEl.createEl('option', { value: '__custom__', text: '+ 手动输入……' });
 
 		// Get filtered options
 		const filteredOptions = this.getFilteredParentOptions(filterByType);
@@ -1168,7 +1168,7 @@ export class CreatePlaceModal extends Modal {
 			);
 			const noOptionsEl = selectEl.createEl('option', {
 				value: '__no_options__',
-				text: `── No valid parent types for ${typeLabel} ──`
+				text: `── ${typeLabel} 没有有效的父级类型 ──`
 			});
 			noOptionsEl.disabled = true;
 			return;
@@ -1398,11 +1398,11 @@ export class CreatePlaceModal extends Modal {
 
 			// Validate ranges for plain decimal input
 			if (field === 'lat' && (num < -90 || num > 90)) {
-				new Notice('Latitude must be between -90 and 90');
+				new Notice('纬度必须在 -90 到 90 之间');
 				return;
 			}
 			if (field === 'long' && (num < -180 || num > 180)) {
-				new Notice('Longitude must be between -180 and 180');
+				new Notice('经度必须在 -180 到 180 之间');
 				return;
 			}
 		}
@@ -1453,7 +1453,7 @@ export class CreatePlaceModal extends Modal {
 
 		// Pixel coordinates should be non-negative
 		if (num < 0) {
-			new Notice('Pixel coordinates must be non-negative');
+			new Notice('像素坐标必须为非负数');
 			return;
 		}
 
@@ -1477,14 +1477,14 @@ export class CreatePlaceModal extends Modal {
 		const placeName = this.placeData.name?.trim();
 
 		if (!placeName) {
-			new Notice('Please enter a place name first');
+			new Notice('请先输入地点名称');
 			return;
 		}
 
 		const geocodingService = new GeocodingService(this.app);
 		const isHierarchicalName = placeName.includes(',');
 
-		new Notice(`Looking up coordinates for "${placeName}"...`);
+		new Notice(`正在查找「${placeName}」的坐标……`);
 
 		// Strategy 1: Try the full name as-is (works well for simple names or well-formatted hierarchical names)
 		let result = await geocodingService.geocodeSingle(
@@ -1514,9 +1514,9 @@ export class CreatePlaceModal extends Modal {
 				this.longInputEl.value = result.coordinates.long.toFixed(6);
 			}
 
-			new Notice(`Found: ${result.displayName}\nCoordinates: ${result.coordinates.lat.toFixed(4)}, ${result.coordinates.long.toFixed(4)}`);
+			new Notice(`已找到：${result.displayName}\n坐标：${result.coordinates.lat.toFixed(4)}, ${result.coordinates.long.toFixed(4)}`);
 		} else {
-			new Notice(`No coordinates found for "${placeName}". ${result.error || 'Try a more specific name.'}`);
+			new Notice(`未找到「${placeName}」的坐标。${result.error || '请尝试更具体的名称。'}`);
 		}
 	}
 
@@ -1526,7 +1526,7 @@ export class CreatePlaceModal extends Modal {
 	private async createPlace(): Promise<void> {
 		// Validate required fields
 		if (!this.placeData.name.trim()) {
-			new Notice('Please enter a name for the place');
+			new Notice('请输入地点名称');
 			return;
 		}
 
@@ -1546,7 +1546,7 @@ export class CreatePlaceModal extends Modal {
 				propertyAliases: this.settings?.propertyAliases || {}
 			});
 
-			new Notice(`Created place note: ${file.basename}`);
+			new Notice(`已创建地点笔记：${file.basename}`);
 
 			// Mark as saved successfully and clear persisted state
 			this.savedSuccessfully = true;
@@ -1569,7 +1569,7 @@ export class CreatePlaceModal extends Modal {
 			}
 		} catch (error) {
 			console.error('Failed to create place note:', error);
-			new Notice(`Failed to create place note: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建地点笔记失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -1621,7 +1621,7 @@ export class CreatePlaceModal extends Modal {
 	 */
 	private openParentCreationModal(parentName: string): void {
 		// Show notice about the missing parent
-		new Notice(`Parent place "${parentName}" doesn't exist. Opening dialog to create it...`);
+		new Notice(`父级地点「${parentName}」不存在。正在打开对话框创建……`);
 
 		// Suggest a type for the parent based on the child's type
 		const suggestedType = suggestParentType(this.placeData.placeType);
@@ -1643,7 +1643,7 @@ export class CreatePlaceModal extends Modal {
 				settings: this.settings,
 				plugin: this.plugin,
 				onCreated: (file) => {
-					new Notice(`Created parent place: ${file.basename}`);
+					new Notice(`已创建父级地点：${file.basename}`);
 				}
 			}).open();
 		}, 100);
@@ -1655,12 +1655,12 @@ export class CreatePlaceModal extends Modal {
 	private async updatePlace(): Promise<void> {
 		// Validate required fields
 		if (!this.placeData.name.trim()) {
-			new Notice('Please enter a name for the place');
+			new Notice('请输入地点名称');
 			return;
 		}
 
 		if (!this.editingFile) {
-			new Notice('No file to update');
+			new Notice('没有可更新的文件');
 			return;
 		}
 
@@ -1690,7 +1690,7 @@ export class CreatePlaceModal extends Modal {
 			await this.completeUpdate();
 		} catch (error) {
 			console.error('Failed to update place note:', error);
-			new Notice(`Failed to update place note: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`更新地点笔记失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -1708,18 +1708,18 @@ export class CreatePlaceModal extends Modal {
 			if (targetFolder) {
 				const newFile = await this.moveFileToFolder(this.editingFile, targetFolder);
 				if (newFile) {
-					new Notice(`Updated and moved place note to: ${targetFolder}`);
+					new Notice(`已更新并将地点笔记移动到：${targetFolder}`);
 					if (this.onUpdated) {
 						this.onUpdated(newFile);
 					}
 				} else {
-					new Notice(`Updated place note (move failed): ${this.editingFile.basename}`);
+					new Notice(`已更新地点笔记（移动失败）：${this.editingFile.basename}`);
 					if (this.onUpdated) {
 						this.onUpdated(this.editingFile);
 					}
 				}
 			} else {
-				new Notice(`Updated place note: ${this.editingFile.basename}`);
+				new Notice(`已更新地点笔记：${this.editingFile.basename}`);
 				if (this.onUpdated) {
 					this.onUpdated(this.editingFile);
 				}
@@ -1728,7 +1728,7 @@ export class CreatePlaceModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to update place note:', error);
-			new Notice(`Failed to update place note: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`更新地点笔记失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 
@@ -1740,28 +1740,28 @@ export class CreatePlaceModal extends Modal {
 
 		// Create a simple confirmation modal
 		const modal = new Modal(this.app);
-		modal.titleEl.setText('Move place to category folder?');
+		modal.titleEl.setText('将地点移动到分类文件夹？');
 
 		const content = modal.contentEl;
 		content.createEl('p', {
-			text: `Category changed to "${categoryLabel}". Would you like to move this place to the matching folder?`
+			text: `分类已更改为「${categoryLabel}」。是否要将此地点移动到匹配的文件夹？`
 		});
 		content.createEl('p', {
 			cls: 'crc-text-muted',
-			text: `Target: ${targetFolder}/`
+			text: `目标：${targetFolder}/`
 		});
 
 		const buttonContainer = content.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Keep here')
+			.setButtonText('保留原处')
 			.onClick(() => {
 				modal.close();
 				callback(false);
 			});
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Move')
+			.setButtonText('移动')
 			.setCta()
 			.onClick(() => {
 				modal.close();
@@ -1791,7 +1791,7 @@ export class CreatePlaceModal extends Modal {
 			// Check if file already exists at target
 			const existingFile = this.app.vault.getAbstractFileByPath(newPath);
 			if (existingFile) {
-				new Notice(`A file already exists at ${newPath}`);
+				new Notice(`文件已存在于 ${newPath}`);
 				return null;
 			}
 
@@ -1803,7 +1803,7 @@ export class CreatePlaceModal extends Modal {
 			return movedFile instanceof TFile ? movedFile : null;
 		} catch (error) {
 			console.error('Failed to move file:', error);
-			new Notice(`Failed to move file: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`移动文件失败：${error instanceof Error ? error.message : '未知错误'}`);
 			return null;
 		}
 	}
@@ -1897,7 +1897,7 @@ export class CreatePlaceModal extends Modal {
 		}
 
 		// Show success message
-		new Notice(`Populated from ${result.source}: ${result.standardizedName}`);
+		new Notice(`已从 ${result.source} 填充：${result.standardizedName}`);
 
 		// Re-render the form to show updated values
 		const { contentEl } = this;

@@ -143,7 +143,7 @@ export class SplitWizardModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl, titleEl } = this;
-		titleEl.setText('Split canvas wizard');
+		titleEl.setText('拆分画布向导');
 		contentEl.addClass('crc-split-wizard');
 
 		// Load family tree data
@@ -237,7 +237,7 @@ export class SplitWizardModal extends Modal {
 	private renderProgressIndicator(): void {
 		const { contentEl } = this;
 		const steps: WizardStep[] = ['method', 'configure', 'preview', 'complete'];
-		const stepLabels = ['Choose method', 'Configure', 'Preview', 'Complete'];
+		const stepLabels = ['选择方式', '配置', '预览', '完成'];
 
 		const progressEl = contentEl.createDiv({ cls: 'crc-wizard-progress-steps' });
 
@@ -271,7 +271,7 @@ export class SplitWizardModal extends Modal {
 		const stepContainer = contentEl.createDiv({ cls: 'crc-split-wizard-step' });
 		stepContainer.createDiv({
 			cls: 'crc-split-wizard-step-header',
-			text: 'Choose how to split your family tree canvas'
+			text: '选择如何拆分你的家族树画布'
 		});
 
 		const methods: Array<{
@@ -282,38 +282,38 @@ export class SplitWizardModal extends Modal {
 		}> = [
 			{
 				id: 'generation',
-				label: 'By generation',
-				desc: 'Split every N generations into separate canvases',
+				label: '按世代',
+				desc: '每 N 个世代拆分为独立画布',
 				icon: 'layers'
 			},
 			{
 				id: 'branch',
-				label: 'By branch',
-				desc: 'Separate paternal and maternal lines',
+				label: '按分支',
+				desc: '分离父系和母系',
 				icon: 'git-branch'
 			},
 			{
 				id: 'lineage',
-				label: 'Single lineage',
-				desc: 'Extract a direct line between two people',
+				label: '单一直系',
+				desc: '提取两人之间的直系血脉',
 				icon: 'arrow-down'
 			},
 			{
 				id: 'collection',
-				label: 'By collection',
-				desc: 'One canvas per user-defined collection',
+				label: '按合集',
+				desc: '每个用户定义的合集一个画布',
 				icon: 'folder'
 			},
 			{
 				id: 'ancestor-descendant',
-				label: 'Ancestor + descendant pair',
-				desc: 'Create linked ancestor and descendant canvases',
+				label: '祖先 + 后代配对',
+				desc: '创建相互关联的祖先和后代画布',
 				icon: 'arrow-up-down'
 			},
 			{
 				id: 'surname',
-				label: 'By surname',
-				desc: 'Extract all people with a given surname (even without connections)',
+				label: '按姓氏',
+				desc: '提取所有使用指定姓氏的人物（即使无关联）',
 				icon: 'users'
 			}
 		];
@@ -394,18 +394,18 @@ export class SplitWizardModal extends Modal {
 	private renderGenerationConfig(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'crc-split-wizard-step-header',
-			text: 'Configure generation-based split'
+			text: '配置按世代拆分'
 		});
 
 		const configSection = container.createDiv({ cls: 'crc-split-config-section' });
 
 		// Root person selection
 		new Setting(configSection)
-			.setName('Root person')
-			.setDesc('The person to start counting generations from')
+			.setName('根人物')
+			.setDesc('开始计算世代的起始人物')
 			.addButton(btn => {
 				btn
-					.setButtonText(this.selectedRootPerson?.name || 'Select person')
+					.setButtonText(this.selectedRootPerson?.name || '选择人物')
 					.onClick(() => {
 						new PersonPickerModal(this.app, (person: PersonInfo) => {
 							this.selectedRootPerson = { crId: person.crId, name: person.name };
@@ -416,8 +416,8 @@ export class SplitWizardModal extends Modal {
 
 		// Generations per canvas
 		new Setting(configSection)
-			.setName('Generations per canvas')
-			.setDesc('How many generations to include in each canvas')
+			.setName('每个画布的世代数')
+			.setDesc('每个画布包含多少个世代')
 			.addSlider(slider => {
 				slider
 					.setLimits(2, 10, 1)
@@ -429,12 +429,12 @@ export class SplitWizardModal extends Modal {
 
 		// Generation direction
 		new Setting(configSection)
-			.setName('Direction')
-			.setDesc('Count generations upward (ancestors) or downward (descendants)')
+			.setName('方向')
+			.setDesc('向上（祖先）或向下（后代）计算世代')
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('up', 'Ancestors (upward)')
-					.addOption('down', 'Descendants (downward)')
+					.addOption('up', '祖先（向上）')
+					.addOption('down', '后代（向下）')
 					.setValue(this.generationDirection)
 					.onChange(value => {
 						this.generationDirection = value as 'up' | 'down';
@@ -448,18 +448,18 @@ export class SplitWizardModal extends Modal {
 	private renderBranchConfig(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'crc-split-wizard-step-header',
-			text: 'Configure branch-based split'
+			text: '配置按分支拆分'
 		});
 
 		const configSection = container.createDiv({ cls: 'crc-split-config-section' });
 
 		// Anchor person selection
 		new Setting(configSection)
-			.setName('Anchor person')
-			.setDesc('The person whose family branches will be split')
+			.setName('锚点人物')
+			.setDesc('将要拆分其家族分支的人物')
 			.addButton(btn => {
 				btn
-					.setButtonText(this.branchAnchorPerson?.name || 'Select person')
+					.setButtonText(this.branchAnchorPerson?.name || '选择人物')
 					.onClick(() => {
 						new PersonPickerModal(this.app, (person: PersonInfo) => {
 							this.branchAnchorPerson = { crId: person.crId, name: person.name };
@@ -470,8 +470,8 @@ export class SplitWizardModal extends Modal {
 
 		// Branch toggles
 		new Setting(configSection)
-			.setName('Include paternal line')
-			.setDesc("Father's ancestors")
+			.setName('包含父系')
+			.setDesc('父亲的祖先')
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.includePaternal)
@@ -481,8 +481,8 @@ export class SplitWizardModal extends Modal {
 			});
 
 		new Setting(configSection)
-			.setName('Include maternal line')
-			.setDesc("Mother's ancestors")
+			.setName('包含母系')
+			.setDesc('母亲的祖先')
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.includeMaternal)
@@ -492,8 +492,8 @@ export class SplitWizardModal extends Modal {
 			});
 
 		new Setting(configSection)
-			.setName('Include descendants')
-			.setDesc('Create canvases for descendant lines')
+			.setName('包含后代')
+			.setDesc('为后代分支创建画布')
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.includeDescendants)
@@ -504,11 +504,11 @@ export class SplitWizardModal extends Modal {
 
 		// Max generations
 		new Setting(configSection)
-			.setName('Maximum generations')
-			.setDesc('Limit how many generations to include (leave empty for all)')
+			.setName('最大世代数')
+			.setDesc('限制包含的世代数（留空表示全部）')
 			.addText(text => {
 				text
-					.setPlaceholder('Unlimited')
+					.setPlaceholder('不限')
 					.setValue(this.branchMaxGenerations?.toString() || '')
 					.onChange(value => {
 						const num = parseInt(value, 10);
@@ -523,18 +523,18 @@ export class SplitWizardModal extends Modal {
 	private renderLineageConfig(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'crc-split-wizard-step-header',
-			text: 'Configure lineage extraction'
+			text: '配置直系提取'
 		});
 
 		const configSection = container.createDiv({ cls: 'crc-split-config-section' });
 
 		// Start person
 		new Setting(configSection)
-			.setName('Start person')
-			.setDesc('The older person in the lineage (e.g., oldest ancestor)')
+			.setName('起始人物')
+			.setDesc('直系中较年长的人物（例：最早的祖先）')
 			.addButton(btn => {
 				btn
-					.setButtonText(this.lineageStartPerson?.name || 'Select person')
+					.setButtonText(this.lineageStartPerson?.name || '选择人物')
 					.onClick(() => {
 						new PersonPickerModal(this.app, (person: PersonInfo) => {
 							this.lineageStartPerson = { crId: person.crId, name: person.name };
@@ -545,11 +545,11 @@ export class SplitWizardModal extends Modal {
 
 		// End person
 		new Setting(configSection)
-			.setName('End person')
-			.setDesc('The younger person in the lineage (e.g., youngest descendant)')
+			.setName('结束人物')
+			.setDesc('直系中较年轻的人物（例：最年轻的后代）')
 			.addButton(btn => {
 				btn
-					.setButtonText(this.lineageEndPerson?.name || 'Select person')
+					.setButtonText(this.lineageEndPerson?.name || '选择人物')
 					.onClick(() => {
 						new PersonPickerModal(this.app, (person: PersonInfo) => {
 							this.lineageEndPerson = { crId: person.crId, name: person.name };
@@ -560,8 +560,8 @@ export class SplitWizardModal extends Modal {
 
 		// Include spouses
 		new Setting(configSection)
-			.setName(`Include ${getSpouseLabel(this.settings, { plural: true, lowercase: true })}`)
-			.setDesc(`Include ${getSpouseLabel(this.settings, { plural: true, lowercase: true })} of people on the lineage`)
+			.setName(`包含${getSpouseLabel(this.settings, { plural: true, lowercase: true })}`)
+			.setDesc(`包含直系上人物的${getSpouseLabel(this.settings, { plural: true, lowercase: true })}`)
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.lineageIncludeSpouses)
@@ -572,8 +572,8 @@ export class SplitWizardModal extends Modal {
 
 		// Include siblings
 		new Setting(configSection)
-			.setName('Include siblings')
-			.setDesc('Include siblings at each generation')
+			.setName('包含兄弟姐妹')
+			.setDesc('包含每个世代的兄弟姐妹')
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.lineageIncludeSiblings)
@@ -589,7 +589,7 @@ export class SplitWizardModal extends Modal {
 	private renderCollectionConfig(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'crc-split-wizard-step-header',
-			text: 'Configure collection-based split'
+			text: '配置按合集拆分'
 		});
 
 		const configSection = container.createDiv({ cls: 'crc-split-config-section' });
@@ -597,7 +597,7 @@ export class SplitWizardModal extends Modal {
 		if (this.availableCollections.length === 0) {
 			configSection.createDiv({
 				cls: 'crc-split-info',
-				text: 'No collections found. Add the "collection" property to person notes to use this feature.'
+				text: '未找到合集。请向人物笔记添加"collection"属性以使用此功能。'
 			});
 			return;
 		}
@@ -605,7 +605,7 @@ export class SplitWizardModal extends Modal {
 		// Collection selection
 		configSection.createDiv({
 			cls: 'crc-split-config-section-header',
-			text: 'Select collections to include'
+			text: '选择要包含的合集'
 		});
 
 		const collectionList = configSection.createDiv({ cls: 'crc-collection-list' });
@@ -637,8 +637,8 @@ export class SplitWizardModal extends Modal {
 
 		// Bridge people option
 		new Setting(configSection)
-			.setName('Include bridge people')
-			.setDesc('Include people who appear in multiple collections on each canvas')
+			.setName('包含桥接人物')
+			.setDesc('在每个画布上包含出现在多个合集中的人物')
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.collectionIncludeBridgePeople)
@@ -654,18 +654,18 @@ export class SplitWizardModal extends Modal {
 	private renderAncestorDescendantConfig(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'crc-split-wizard-step-header',
-			text: 'Configure ancestor-descendant pair'
+			text: '配置祖先-后代配对'
 		});
 
 		const configSection = container.createDiv({ cls: 'crc-split-config-section' });
 
 		// Root person selection
 		new Setting(configSection)
-			.setName('Center person')
-			.setDesc('The person at the center - ancestors go up, descendants go down')
+			.setName('中心人物')
+			.setDesc('处于中心的人物——祖先向上、后代向下')
 			.addButton(btn => {
 				btn
-					.setButtonText(this.ancestorDescendantRoot?.name || 'Select person')
+					.setButtonText(this.ancestorDescendantRoot?.name || '选择人物')
 					.onClick(() => {
 						new PersonPickerModal(this.app, (person: PersonInfo) => {
 							this.ancestorDescendantRoot = { crId: person.crId, name: person.name };
@@ -676,8 +676,8 @@ export class SplitWizardModal extends Modal {
 
 		// Include spouses
 		new Setting(configSection)
-			.setName(`Include ${getSpouseLabel(this.settings, { plural: true, lowercase: true })}`)
-			.setDesc(`Include ${getSpouseLabel(this.settings, { plural: true, lowercase: true })} in both canvases`)
+			.setName(`包含${getSpouseLabel(this.settings, { plural: true, lowercase: true })}`)
+			.setDesc(`在两个画布中都包含${getSpouseLabel(this.settings, { plural: true, lowercase: true })}`)
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.ancestorDescendantIncludeSpouses)
@@ -688,11 +688,11 @@ export class SplitWizardModal extends Modal {
 
 		// Max ancestor generations
 		new Setting(configSection)
-			.setName('Maximum ancestor generations')
-			.setDesc('Limit ancestor depth (leave empty for all)')
+			.setName('最大祖先世代数')
+			.setDesc('限制祖先深度（留空表示全部）')
 			.addText(text => {
 				text
-					.setPlaceholder('Unlimited')
+					.setPlaceholder('不限')
 					.setValue(this.ancestorDescendantMaxAncestors?.toString() || '')
 					.onChange(value => {
 						const num = parseInt(value, 10);
@@ -702,11 +702,11 @@ export class SplitWizardModal extends Modal {
 
 		// Max descendant generations
 		new Setting(configSection)
-			.setName('Maximum descendant generations')
-			.setDesc('Limit descendant depth (leave empty for all)')
+			.setName('最大后代世代数')
+			.setDesc('限制后代深度（留空表示全部）')
 			.addText(text => {
 				text
-					.setPlaceholder('Unlimited')
+					.setPlaceholder('不限')
 					.setValue(this.ancestorDescendantMaxDescendants?.toString() || '')
 					.onChange(value => {
 						const num = parseInt(value, 10);
@@ -721,7 +721,7 @@ export class SplitWizardModal extends Modal {
 	private renderSurnameConfig(container: HTMLElement): void {
 		container.createDiv({
 			cls: 'crc-split-wizard-step-header',
-			text: 'Configure surname-based extraction'
+			text: '配置按姓氏提取'
 		});
 
 		const configSection = container.createDiv({ cls: 'crc-split-config-section' });
@@ -734,7 +734,7 @@ export class SplitWizardModal extends Modal {
 		if (this.availableSurnames.length === 0) {
 			configSection.createDiv({
 				cls: 'crc-split-info',
-				text: 'No people found. Ensure person notes exist in your vault.'
+				text: '未找到人物。请确认库中存在人物笔记。'
 			});
 			return;
 		}
@@ -742,7 +742,7 @@ export class SplitWizardModal extends Modal {
 		// Surname selection
 		configSection.createDiv({
 			cls: 'crc-split-config-section-header',
-			text: `Select surnames to extract (${this.availableSurnames.length} found)`
+			text: `选择要提取的姓氏（找到 ${this.availableSurnames.length} 个）`
 		});
 
 		const surnameList = configSection.createDiv({ cls: 'crc-collection-list' });
@@ -777,14 +777,14 @@ export class SplitWizardModal extends Modal {
 		// Additional options
 		configSection.createDiv({
 			cls: 'crc-split-config-section-header',
-			text: 'Options',
+			text: '选项',
 			attr: { style: 'margin-top: var(--size-4-3);' }
 		});
 
 		// Include spouses
 		new Setting(configSection)
-			.setName(`Include ${getSpouseLabel(this.settings, { plural: true, lowercase: true })}`)
-			.setDesc(`Include ${getSpouseLabel(this.settings, { plural: true, lowercase: true })} of matching people (with different surnames)`)
+			.setName(`包含${getSpouseLabel(this.settings, { plural: true, lowercase: true })}`)
+			.setDesc(`包含匹配人物的${getSpouseLabel(this.settings, { plural: true, lowercase: true })}（姓氏不同者）`)
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.surnameIncludeSpouses)
@@ -795,8 +795,8 @@ export class SplitWizardModal extends Modal {
 
 		// Include maiden names
 		new Setting(configSection)
-			.setName('Include maiden names')
-			.setDesc('Also match people whose maiden name matches the surname')
+			.setName('包含婚前姓')
+			.setDesc('同时匹配婚前姓与姓氏相同的人物')
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.surnameIncludeMaidenNames)
@@ -807,8 +807,8 @@ export class SplitWizardModal extends Modal {
 
 		// Handle variants
 		new Setting(configSection)
-			.setName('Handle name variants')
-			.setDesc('Treat similar spellings as the same surname (e.g., Smith/Smythe)')
+			.setName('处理姓名变体')
+			.setDesc('将相似拼写视为同一姓氏（例：Smith/Smythe）')
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.surnameHandleVariants)
@@ -819,8 +819,8 @@ export class SplitWizardModal extends Modal {
 
 		// Separate canvases per surname
 		new Setting(configSection)
-			.setName('Separate canvas per surname')
-			.setDesc('Create one canvas per surname (off = combine all into one)')
+			.setName('每个姓氏单独画布')
+			.setDesc('为每个姓氏创建一个画布（关闭则全部合并为一个）')
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.surnameSeparateCanvases)
@@ -897,16 +897,16 @@ export class SplitWizardModal extends Modal {
 		const outputSection = container.createDiv({ cls: 'crc-split-config-section' });
 		outputSection.createDiv({
 			cls: 'crc-split-config-section-header',
-			text: 'Output options'
+			text: '输出选项'
 		});
 
 		// Output folder
 		new Setting(outputSection)
-			.setName('Output folder')
-			.setDesc('Where to save generated canvases')
+			.setName('输出文件夹')
+			.setDesc('生成画布的保存位置')
 			.addText(text => {
 				text
-					.setPlaceholder('Root folder')
+					.setPlaceholder('根文件夹')
 					.setValue(this.outputFolder)
 					.onChange(value => {
 						this.outputFolder = value;
@@ -915,7 +915,7 @@ export class SplitWizardModal extends Modal {
 			.addExtraButton(btn => {
 				btn
 					.setIcon('folder')
-					.setTooltip('Browse folders')
+					.setTooltip('浏览文件夹')
 					.onClick(() => {
 						this.browseFolder();
 					});
@@ -923,8 +923,8 @@ export class SplitWizardModal extends Modal {
 
 		// Filename prefix
 		new Setting(outputSection)
-			.setName('Filename prefix')
-			.setDesc('Prefix for generated canvas files')
+			.setName('文件名前缀')
+			.setDesc('生成画布文件的前缀')
 			.addText(text => {
 				text
 					.setPlaceholder('family-tree')
@@ -936,8 +936,8 @@ export class SplitWizardModal extends Modal {
 
 		// Navigation nodes
 		new Setting(outputSection)
-			.setName('Include navigation nodes')
-			.setDesc('Add portal nodes linking between canvases')
+			.setName('包含导航节点')
+			.setDesc('添加在画布之间链接的入口节点')
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.includeNavigationNodes)
@@ -948,8 +948,8 @@ export class SplitWizardModal extends Modal {
 
 		// Overview canvas
 		new Setting(outputSection)
-			.setName('Generate overview canvas')
-			.setDesc('Create a master canvas showing relationships between generated canvases')
+			.setName('生成总览画布')
+			.setDesc('创建一个显示各生成画布之间关系的主画布')
 			.addToggle(toggle => {
 				toggle
 					.setValue(this.generateOverview)
@@ -968,7 +968,7 @@ export class SplitWizardModal extends Modal {
 		const stepContainer = contentEl.createDiv({ cls: 'crc-split-wizard-step' });
 		stepContainer.createDiv({
 			cls: 'crc-split-wizard-step-header',
-			text: 'Preview'
+			text: '预览'
 		});
 
 		// Generate preview data
@@ -977,7 +977,7 @@ export class SplitWizardModal extends Modal {
 		if (!this.previewData) {
 			stepContainer.createDiv({
 				cls: 'crc-split-warning',
-				text: 'Could not generate preview. Please check your configuration.'
+				text: '无法生成预览。请检查你的配置。'
 			});
 			return;
 		}
@@ -987,15 +987,15 @@ export class SplitWizardModal extends Modal {
 
 		previewSection.createDiv({
 			cls: 'crc-split-preview-header',
-			text: 'This configuration will create:'
+			text: '此配置将创建：'
 		});
 
 		const statsEl = previewSection.createDiv({ cls: 'crc-split-preview-stats' });
 		statsEl.createDiv({
-			text: `${this.previewData.canvasCount} canvas file${this.previewData.canvasCount !== 1 ? 's' : ''}`
+			text: `${this.previewData.canvasCount} 个画布文件`
 		});
 		statsEl.createDiv({
-			text: `${this.previewData.totalPeople} people total`
+			text: `共 ${this.previewData.totalPeople} 位人物`
 		});
 
 		if (this.previewData.details.length > 0) {
@@ -1010,7 +1010,7 @@ export class SplitWizardModal extends Modal {
 			const resultsSection = stepContainer.createDiv({ cls: 'crc-split-preview' });
 			resultsSection.createDiv({
 				cls: 'crc-split-preview-header',
-				text: 'Generation results:'
+				text: '生成结果：'
 			});
 
 			const successCount = this.generationResults.filter(r => r.success).length;
@@ -1020,13 +1020,13 @@ export class SplitWizardModal extends Modal {
 
 			if (successCount > 0) {
 				resultsEl.createDiv({
-					text: `${successCount} canvas file${successCount !== 1 ? 's' : ''} created successfully`
+					text: `成功创建 ${successCount} 个画布文件`
 				});
 			}
 
 			if (failCount > 0) {
 				resultsEl.createDiv({
-					text: `${failCount} failed`,
+					text: `${failCount} 个失败`,
 					cls: 'crc-split-warning'
 				});
 
@@ -1051,7 +1051,7 @@ export class SplitWizardModal extends Modal {
 			const infoEl = stepContainer.createDiv({ cls: 'crc-split-info' });
 			const infoIcon = createLucideIcon('refresh-cw', 16);
 			infoEl.appendChild(infoIcon);
-			infoEl.createSpan({ text: 'Generating canvas files...' });
+			infoEl.createSpan({ text: '正在生成画布文件…' });
 		}
 	}
 
@@ -1066,7 +1066,7 @@ export class SplitWizardModal extends Modal {
 		const stepContainer = contentEl.createDiv({ cls: 'crc-split-wizard-step' });
 
 		if (!this.generationResults) {
-			stepContainer.createEl('p', { text: 'No results available.' });
+			stepContainer.createEl('p', { text: '没有可用的结果。' });
 			return;
 		}
 
@@ -1079,17 +1079,17 @@ export class SplitWizardModal extends Modal {
 			const icon = createLucideIcon('check', 24);
 			icon.addClass('crc-split-complete-icon', 'mod-success');
 			headerEl.appendChild(icon);
-			headerEl.createEl('h3', { text: 'Generation complete' });
+			headerEl.createEl('h3', { text: '生成完成' });
 		} else if (successCount > 0 && failCount > 0) {
 			const icon = createLucideIcon('alert-triangle', 24);
 			icon.addClass('crc-split-complete-icon', 'mod-warning');
 			headerEl.appendChild(icon);
-			headerEl.createEl('h3', { text: 'Generation completed with errors' });
+			headerEl.createEl('h3', { text: '生成完成，但有错误' });
 		} else {
 			const icon = createLucideIcon('alert-circle', 24);
 			icon.addClass('crc-split-complete-icon', 'mod-error');
 			headerEl.appendChild(icon);
-			headerEl.createEl('h3', { text: 'Generation failed' });
+			headerEl.createEl('h3', { text: '生成失败' });
 		}
 
 		// Summary stats
@@ -1097,20 +1097,20 @@ export class SplitWizardModal extends Modal {
 		if (successCount > 0) {
 			statsEl.createDiv({
 				cls: 'crc-split-complete-stat mod-success',
-				text: `${successCount} canvas file${successCount !== 1 ? 's' : ''} created`
+				text: `已创建 ${successCount} 个画布文件`
 			});
 		}
 		if (failCount > 0) {
 			statsEl.createDiv({
 				cls: 'crc-split-complete-stat mod-error',
-				text: `${failCount} failed`
+				text: `${failCount} 个失败`
 			});
 		}
 
 		// List created files
 		if (successCount > 0) {
 			const filesSection = stepContainer.createDiv({ cls: 'crc-split-complete-section' });
-			filesSection.createEl('h4', { text: 'Created files:' });
+			filesSection.createEl('h4', { text: '已创建的文件：' });
 			const filesList = filesSection.createDiv({ cls: 'crc-split-complete-files' });
 			for (const result of this.generationResults.filter(r => r.success)) {
 				const fileItem = filesList.createDiv({ cls: 'crc-split-complete-file' });
@@ -1123,25 +1123,25 @@ export class SplitWizardModal extends Modal {
 		// List errors if any
 		if (failCount > 0) {
 			const errorsSection = stepContainer.createDiv({ cls: 'crc-split-complete-section' });
-			errorsSection.createEl('h4', { text: 'Errors:' });
+			errorsSection.createEl('h4', { text: '错误：' });
 			const errorsList = errorsSection.createDiv({ cls: 'crc-split-complete-errors' });
 			for (const result of this.generationResults.filter(r => !r.success)) {
 				const errorItem = errorsList.createDiv({ cls: 'crc-split-complete-error' });
-				errorItem.createSpan({ text: result.path || 'Unknown', cls: 'crc-split-complete-error-path' });
-				errorItem.createSpan({ text: result.error || 'Unknown error', cls: 'crc-split-complete-error-message' });
+				errorItem.createSpan({ text: result.path || '未知', cls: 'crc-split-complete-error-path' });
+				errorItem.createSpan({ text: result.error || '未知错误', cls: 'crc-split-complete-error-message' });
 			}
 		}
 
 		// Method summary
 		const summarySection = stepContainer.createDiv({ cls: 'crc-split-complete-section' });
-		summarySection.createEl('h4', { text: 'Configuration used:' });
+		summarySection.createEl('h4', { text: '使用的配置：' });
 		const summaryList = summarySection.createEl('ul', { cls: 'crc-split-complete-summary' });
-		summaryList.createEl('li', { text: `Method: ${this.getMethodLabel(this.selectedMethod)}` });
+		summaryList.createEl('li', { text: `方式：${this.getMethodLabel(this.selectedMethod)}` });
 		if (this.outputFolder) {
-			summaryList.createEl('li', { text: `Output folder: ${this.outputFolder}` });
+			summaryList.createEl('li', { text: `输出文件夹：${this.outputFolder}` });
 		}
 		if (this.filenamePrefix) {
-			summaryList.createEl('li', { text: `Filename prefix: ${this.filenamePrefix}` });
+			summaryList.createEl('li', { text: `文件名前缀：${this.filenamePrefix}` });
 		}
 	}
 
@@ -1150,13 +1150,13 @@ export class SplitWizardModal extends Modal {
 	 */
 	private getMethodLabel(method: SplitMethod | null): string {
 		switch (method) {
-			case 'generation': return 'Split by generation';
-			case 'branch': return 'Split by branch';
-			case 'lineage': return 'Single lineage extraction';
-			case 'collection': return 'Split by collection';
-			case 'ancestor-descendant': return 'Ancestor + descendant pair';
-			case 'surname': return 'Split by surname';
-			default: return 'Unknown';
+			case 'generation': return '按世代拆分';
+			case 'branch': return '按分支拆分';
+			case 'lineage': return '单一直系提取';
+			case 'collection': return '按合集拆分';
+			case 'ancestor-descendant': return '祖先 + 后代配对';
+			case 'surname': return '按姓氏拆分';
+			default: return '未知';
 		}
 	}
 
@@ -1213,7 +1213,7 @@ export class SplitWizardModal extends Modal {
 			this.previewData = {
 				canvasCount: 0,
 				totalPeople: 0,
-				details: ['Could not build family tree for selected person']
+				details: ['无法为所选人物构建家族树']
 			};
 			return;
 		}
@@ -1232,7 +1232,7 @@ export class SplitWizardModal extends Modal {
 			totalPeople: preview.totalPeople,
 			details: preview.ranges.map(r => {
 				const count = preview.peopleCounts.get(r.label) || 0;
-				return `${prefix}-gen-${r.start}-${r.end}.canvas (${count} people)`;
+				return `${prefix}-gen-${r.start}-${r.end}.canvas（${count} 位人物）`;
 			})
 		};
 
@@ -1255,7 +1255,7 @@ export class SplitWizardModal extends Modal {
 			this.previewData = {
 				canvasCount: 0,
 				totalPeople: 0,
-				details: ['Could not build family tree for selected person']
+				details: ['无法为所选人物构建家族树']
 			};
 			return;
 		}
@@ -1273,7 +1273,7 @@ export class SplitWizardModal extends Modal {
 			canvasCount,
 			totalPeople: preview.totalPeople,
 			details: preview.branches.map(b =>
-				`${prefix}-${b.definition.label}.canvas (${b.peopleCount} people)`
+				`${prefix}-${b.definition.label}.canvas（${b.peopleCount} 位人物）`
 			)
 		};
 
@@ -1340,7 +1340,7 @@ export class SplitWizardModal extends Modal {
 			this.previewData = {
 				canvasCount: 0,
 				totalPeople: 0,
-				details: ['Could not build family tree for selected person']
+				details: ['无法为所选人物构建家族树']
 			};
 			return;
 		}
@@ -1357,7 +1357,7 @@ export class SplitWizardModal extends Modal {
 			this.previewData = {
 				canvasCount: 0,
 				totalPeople: 0,
-				details: ['No path found between selected people', 'They may not be directly related through parent-child relationships']
+				details: ['未找到所选人物之间的路径', '他们可能并非通过父母子女关系直接相关']
 			};
 			return;
 		}
@@ -1370,9 +1370,9 @@ export class SplitWizardModal extends Modal {
 			totalPeople: preview.totalCount,
 			details: [
 				`${prefix}.canvas`,
-				`Path: ${preview.generationCount} generations`,
-				`Direct line: ${preview.lineageCount} people`,
-				`Total with spouses/siblings: ${preview.totalCount} people`
+				`路径：${preview.generationCount} 个世代`,
+				`直系：${preview.lineageCount} 位人物`,
+				`含配偶/兄弟姐妹共 ${preview.totalCount} 位人物`
 			]
 		};
 	}
@@ -1398,13 +1398,13 @@ export class SplitWizardModal extends Modal {
 			canvasCount,
 			totalPeople: preview.totalPeople,
 			details: preview.collections.map(c =>
-				`${prefix}-${c.name.replace(/\s+/g, '-')}.canvas (${c.peopleCount} people)`
+				`${prefix}-${c.name.replace(/\s+/g, '-')}.canvas（${c.peopleCount} 位人物）`
 			)
 		};
 
 		if (preview.totalBridgePeople > 0) {
 			this.previewData.details.push(
-				`${preview.totalBridgePeople} bridge people appear in multiple canvases`
+				`${preview.totalBridgePeople} 位桥接人物出现在多个画布中`
 			);
 		}
 
@@ -1427,7 +1427,7 @@ export class SplitWizardModal extends Modal {
 			this.previewData = {
 				canvasCount: 0,
 				totalPeople: 0,
-				details: ['Could not build family tree for selected person']
+				details: ['无法为所选人物构建家族树']
 			};
 			return;
 		}
@@ -1447,8 +1447,8 @@ export class SplitWizardModal extends Modal {
 			canvasCount,
 			totalPeople: preview.totalUniquePeople,
 			details: [
-				`${prefix}-ancestors.canvas (${preview.ancestorCount} people, ${preview.ancestorGenerations} generations)`,
-				`${prefix}-descendants.canvas (${preview.descendantCount} people, ${preview.descendantGenerations} generations)`
+				`${prefix}-ancestors.canvas（${preview.ancestorCount} 位人物，${preview.ancestorGenerations} 个世代）`,
+				`${prefix}-descendants.canvas（${preview.descendantCount} 位人物，${preview.descendantGenerations} 个世代）`
 			]
 		};
 
@@ -1490,21 +1490,21 @@ export class SplitWizardModal extends Modal {
 		if (this.surnameSeparateCanvases) {
 			// One canvas per surname
 			for (const { name, count } of preview.surnames) {
-				details.push(`${prefix}-${name.replace(/\s+/g, '-')}.canvas (${count} people)`);
+				details.push(`${prefix}-${name.replace(/\s+/g, '-')}.canvas（${count} 位人物）`);
 			}
 		} else {
 			// Combined canvas
 			const surnameList = preview.surnames.map(s => s.name).join(', ');
-			details.push(`${prefix}-combined.canvas (${preview.totalPeople} people)`);
-			details.push(`Surnames: ${surnameList}`);
+			details.push(`${prefix}-combined.canvas（${preview.totalPeople} 位人物）`);
+			details.push(`姓氏：${surnameList}`);
 		}
 
 		if (this.surnameIncludeSpouses) {
-			details.push(`${getSpouseLabel(this.settings, { plural: true })} will be included`);
+			details.push(`将包含${getSpouseLabel(this.settings, { plural: true })}`);
 		}
 
 		if (this.surnameIncludeMaidenNames) {
-			details.push('Maiden names will be matched');
+			details.push('将匹配婚前姓');
 		}
 
 		this.previewData = {
@@ -1525,7 +1525,7 @@ export class SplitWizardModal extends Modal {
 		// Complete step only has Done button
 		if (this.currentStep === 'complete') {
 			const doneBtn = buttonsEl.createEl('button', {
-				text: 'Done',
+				text: '完成',
 				cls: 'crc-wizard-btn mod-cta'
 			});
 			doneBtn.addEventListener('click', () => this.close());
@@ -1534,7 +1534,7 @@ export class SplitWizardModal extends Modal {
 
 		// Cancel button
 		const cancelBtn = buttonsEl.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-wizard-btn'
 		});
 		cancelBtn.addEventListener('click', () => this.close());
@@ -1542,7 +1542,7 @@ export class SplitWizardModal extends Modal {
 		// Back button (not on first step)
 		if (this.currentStep !== 'method') {
 			const backBtn = buttonsEl.createEl('button', {
-				text: 'Back',
+				text: '上一步',
 				cls: 'crc-wizard-btn'
 			});
 			backBtn.addEventListener('click', () => this.goBack());
@@ -1551,7 +1551,7 @@ export class SplitWizardModal extends Modal {
 		// Next/Generate button
 		if (this.currentStep === 'preview') {
 			const generateBtn = buttonsEl.createEl('button', {
-				text: this.isGenerating ? 'Generating...' : 'Generate',
+				text: this.isGenerating ? '正在生成…' : '生成',
 				cls: 'crc-wizard-btn mod-cta'
 			});
 
@@ -1562,7 +1562,7 @@ export class SplitWizardModal extends Modal {
 			generateBtn.addEventListener('click', () => void this.executeGeneration());
 		} else {
 			const nextBtn = buttonsEl.createEl('button', {
-				text: 'Next',
+				text: '下一步',
 				cls: 'crc-wizard-btn mod-cta'
 			});
 			nextBtn.addEventListener('click', () => this.goNext());
@@ -1596,7 +1596,7 @@ export class SplitWizardModal extends Modal {
 		const disabledBtn = this.contentEl.querySelector('.crc-wizard-btn.mod-cta[disabled]') as HTMLButtonElement;
 		const btn = nextBtn || disabledBtn;
 
-		if (btn && btn.textContent === 'Next') {
+		if (btn && btn.textContent === '下一步') {
 			btn.disabled = !this.canProceed();
 		}
 	}
@@ -1724,7 +1724,7 @@ export class SplitWizardModal extends Modal {
 
 		} catch (error) {
 			logger.error('executeGeneration', 'Generation failed', error);
-			new Notice(`Canvas generation failed: ${error instanceof Error ? error.message : String(error)}`);
+			new Notice(`画布生成失败：${error instanceof Error ? error.message : String(error)}`);
 			this.isGenerating = false;
 			this.render();
 		}
@@ -1735,12 +1735,12 @@ export class SplitWizardModal extends Modal {
 	 */
 	private async executeGenerationSplit(): Promise<CanvasWriteResult[]> {
 		if (!this.selectedRootPerson) {
-			return [{ success: false, path: '', error: 'No root person selected' }];
+			return [{ success: false, path: '', error: '未选择根人物' }];
 		}
 
 		const tree = this.getTreeContainingPerson(this.selectedRootPerson.crId);
 		if (!tree) {
-			return [{ success: false, path: '', error: 'Could not build family tree' }];
+			return [{ success: false, path: '', error: '无法构建家族树' }];
 		}
 
 		const options: GenerationSplitOptions = {
@@ -1766,12 +1766,12 @@ export class SplitWizardModal extends Modal {
 	 */
 	private async executeBranchSplit(): Promise<CanvasWriteResult[]> {
 		if (!this.branchAnchorPerson) {
-			return [{ success: false, path: '', error: 'No anchor person selected' }];
+			return [{ success: false, path: '', error: '未选择锚点人物' }];
 		}
 
 		const tree = this.getTreeContainingPerson(this.branchAnchorPerson.crId);
 		if (!tree) {
-			return [{ success: false, path: '', error: 'Could not build family tree' }];
+			return [{ success: false, path: '', error: '无法构建家族树' }];
 		}
 
 		const options: BranchSplitOptions = {
@@ -1796,12 +1796,12 @@ export class SplitWizardModal extends Modal {
 	 */
 	private async executeLineageSplit(): Promise<CanvasWriteResult[]> {
 		if (!this.lineageStartPerson || !this.lineageEndPerson) {
-			return [{ success: false, path: '', error: 'Start and end persons required' }];
+			return [{ success: false, path: '', error: '需要起始人物和结束人物' }];
 		}
 
 		const tree = this.getTreeContainingPerson(this.lineageStartPerson.crId);
 		if (!tree) {
-			return [{ success: false, path: '', error: 'Could not build family tree' }];
+			return [{ success: false, path: '', error: '无法构建家族树' }];
 		}
 
 		const options: LineageSplitOptions = {
@@ -1831,7 +1831,7 @@ export class SplitWizardModal extends Modal {
 	 */
 	private async executeCollectionSplit(): Promise<CanvasWriteResult[]> {
 		if (!this.tree || this.selectedCollections.length === 0) {
-			return [{ success: false, path: '', error: 'No collections selected' }];
+			return [{ success: false, path: '', error: '未选择合集' }];
 		}
 
 		const options: CollectionSplitOptions = {
@@ -1856,12 +1856,12 @@ export class SplitWizardModal extends Modal {
 	 */
 	private async executeAncestorDescendantSplit(): Promise<CanvasWriteResult[]> {
 		if (!this.ancestorDescendantRoot) {
-			return [{ success: false, path: '', error: 'No center person selected' }];
+			return [{ success: false, path: '', error: '未选择中心人物' }];
 		}
 
 		const tree = this.getTreeContainingPerson(this.ancestorDescendantRoot.crId);
 		if (!tree) {
-			return [{ success: false, path: '', error: 'Could not build family tree' }];
+			return [{ success: false, path: '', error: '无法构建家族树' }];
 		}
 
 		const options: AncestorDescendantSplitOptions = {
@@ -1892,7 +1892,7 @@ export class SplitWizardModal extends Modal {
 	 */
 	private async executeSurnameSplit(): Promise<CanvasWriteResult[]> {
 		if (this.selectedSurnames.length === 0) {
-			return [{ success: false, path: '', error: 'No surnames selected' }];
+			return [{ success: false, path: '', error: '未选择姓氏' }];
 		}
 
 		const results: CanvasWriteResult[] = [];
@@ -1901,7 +1901,7 @@ export class SplitWizardModal extends Modal {
 		const peopleByFile = this.findPeopleBySurname(this.selectedSurnames);
 
 		if (peopleByFile.size === 0) {
-			return [{ success: false, path: '', error: 'No people found with selected surnames' }];
+			return [{ success: false, path: '', error: '未找到使用所选姓氏的人物' }];
 		}
 
 		// Group by surname if separateCanvases is enabled
@@ -2001,7 +2001,7 @@ export class SplitWizardModal extends Modal {
 			return {
 				success: false,
 				path: '',
-				error: `No valid cr_id found for surname: ${label}`
+				error: `未找到姓氏${label}对应的有效 cr_id`
 			};
 		}
 
@@ -2012,7 +2012,7 @@ export class SplitWizardModal extends Modal {
 			return {
 				success: false,
 				path: '',
-				error: `Could not build tree for surname: ${label}`
+				error: `无法为姓氏${label}构建家族树`
 			};
 		}
 
@@ -2042,7 +2042,7 @@ export class SplitWizardModal extends Modal {
 			return {
 				success: false,
 				path: '',
-				error: `Failed to generate canvas for surname: ${label}`
+				error: `无法为姓氏${label}生成画布`
 			};
 		}
 
@@ -2099,14 +2099,14 @@ class FolderPickerModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl, titleEl } = this;
-		titleEl.setText('Select folder');
+		titleEl.setText('选择文件夹');
 
 		const listEl = contentEl.createDiv({ cls: 'crc-folder-list' });
 
 		this.folders.forEach(folder => {
 			const item = listEl.createDiv({ cls: 'crc-folder-item' });
 			item.appendChild(createLucideIcon('folder', 16));
-			item.createSpan({ text: folder.path || '(Root)' });
+			item.createSpan({ text: folder.path || '（根目录）' });
 
 			item.addEventListener('click', () => {
 				this.onSelect(folder);

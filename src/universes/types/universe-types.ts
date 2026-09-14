@@ -14,6 +14,16 @@ import type { TFile } from 'obsidian';
 export type UniverseStatus = 'active' | 'draft' | 'archived';
 
 /**
+ * Human-readable labels for universe status values (display only; the
+ * underlying status enum is unchanged).
+ */
+export const UNIVERSE_STATUS_LABELS: Record<UniverseStatus, string> = {
+	active: '活跃',
+	draft: '草稿',
+	archived: '已归档'
+};
+
+/**
  * Parsed universe information from a note
  */
 export interface UniverseInfo {

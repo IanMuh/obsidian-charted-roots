@@ -190,7 +190,7 @@ export class DateService {
 		return {
 			years,
 			isExact,
-			display: `${years} years`
+			display: `${years} 岁`
 		};
 	}
 
@@ -307,7 +307,7 @@ export class DateService {
 			}
 		}
 		if (earliest) {
-			return `${earliest.epoch - year} before ${earliest.abbrev}`;
+			return `早于 ${earliest.abbrev} ${earliest.epoch - year} 年`;
 		}
 
 		return String(year);

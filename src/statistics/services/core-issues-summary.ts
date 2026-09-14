@@ -23,16 +23,14 @@ export interface CoreIssuesSummary {
  */
 export function summarizeCoreIssues(counts: CoreIssueCounts): CoreIssuesSummary {
 	const parts: Array<{ count: number; label: string }> = [
-		{ count: counts.missingBirthDate, label: 'missing births' },
-		{ count: counts.orphanedPeople, label: 'orphans' },
-		{ count: counts.unsourcedEvents, label: 'unsourced events' },
+		{ count: counts.missingBirthDate, label: '缺少出生日期' },
+		{ count: counts.orphanedPeople, label: '孤立人物' },
+		{ count: counts.unsourcedEvents, label: '无来源事件' },
 	];
 
 	const count = parts.reduce((sum, part) => sum + part.count, 0);
 	const joined = parts.filter(part => part.count > 0).map(part => part.label).join(' + ');
-	const subtitle = joined.length > 0
-		? joined.charAt(0).toUpperCase() + joined.slice(1)
-		: 'No core issues';
+	const subtitle = joined.length > 0 ? joined : '无核心问题';
 
 	return { count, subtitle };
 }

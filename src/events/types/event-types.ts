@@ -131,8 +131,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	// Vital events (birth, death, marriage, divorce)
 	{
 		id: 'birth',
-		name: 'Birth',
-		description: 'Birth of a person',
+		name: '出生',
+		description: '人物的出生',
 		icon: 'baby',
 		color: '#4ade80',
 		category: 'vital',
@@ -140,8 +140,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'death',
-		name: 'Death',
-		description: 'Death of a person',
+		name: '去世',
+		description: '人物的去世',
 		icon: 'skull',
 		color: '#6b7280',
 		category: 'vital',
@@ -149,8 +149,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'marriage',
-		name: 'Marriage',
-		description: 'Marriage ceremony',
+		name: '婚姻',
+		description: '婚姻仪式',
 		icon: 'heart',
 		color: '#f472b6',
 		category: 'vital',
@@ -158,8 +158,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'divorce',
-		name: 'Divorce',
-		description: 'Divorce or annulment',
+		name: '离婚',
+		description: '离婚或婚姻无效',
 		icon: 'heart-off',
 		color: '#ef4444',
 		category: 'vital',
@@ -167,8 +167,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'adoption',
-		name: 'Adoption',
-		description: 'Adoption of a person',
+		name: '收养',
+		description: '人物的收养',
 		icon: 'heart-handshake',
 		color: '#fb923c',
 		category: 'vital',
@@ -178,8 +178,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	// Life events (common non-vital life events)
 	{
 		id: 'residence',
-		name: 'Residence',
-		description: 'Change of residence',
+		name: '居住',
+		description: '居住地变更',
 		icon: 'home',
 		color: '#60a5fa',
 		category: 'life',
@@ -187,8 +187,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'census',
-		name: 'Census',
-		description: 'Census record documenting household',
+		name: '人口普查',
+		description: '记录家庭的人口普查',
 		icon: 'clipboard-list',
 		color: '#8b5cf6',
 		category: 'life',
@@ -196,8 +196,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'occupation',
-		name: 'Occupation',
-		description: 'Employment or career change',
+		name: '职业',
+		description: '就业或职业变更',
 		icon: 'hammer',
 		color: '#a78bfa',
 		category: 'life',
@@ -205,8 +205,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'military',
-		name: 'Military',
-		description: 'Military service event',
+		name: '兵役',
+		description: '兵役事件',
 		icon: 'shield',
 		color: '#2e8b57',
 		category: 'life',
@@ -214,8 +214,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'immigration',
-		name: 'Immigration',
-		description: 'Immigration or emigration',
+		name: '移民',
+		description: '迁入或迁出',
 		icon: 'ship',
 		color: '#4169e1',
 		category: 'life',
@@ -223,8 +223,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'education',
-		name: 'Education',
-		description: 'Educational milestone',
+		name: '教育',
+		description: '教育里程碑',
 		icon: 'graduation-cap',
 		color: '#fbbf24',
 		category: 'life',
@@ -232,8 +232,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'burial',
-		name: 'Burial',
-		description: 'Burial or interment',
+		name: '安葬',
+		description: '安葬或下葬',
 		icon: 'map-pin',
 		color: '#78716c',
 		category: 'life',
@@ -241,8 +241,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'baptism',
-		name: 'Baptism',
-		description: 'Baptism or christening',
+		name: '洗礼',
+		description: '洗礼或命名',
 		icon: 'droplets',
 		color: '#38bdf8',
 		category: 'life',
@@ -250,8 +250,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'confirmation',
-		name: 'Confirmation',
-		description: 'Religious confirmation',
+		name: '坚振',
+		description: '宗教坚振礼',
 		icon: 'church',
 		color: '#9b59b6',
 		category: 'life',
@@ -259,8 +259,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'ordination',
-		name: 'Ordination',
-		description: 'Religious ordination',
+		name: '圣职授任',
+		description: '宗教圣职授任',
 		icon: 'book-open',
 		color: '#7c3aed',
 		category: 'life',
@@ -268,8 +268,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'transfer',
-		name: 'Transfer',
-		description: 'Transfer of ownership, property, or status (inheritance, sale, gift, etc.)',
+		name: '转让',
+		description: '所有权、财产或身份的转让（继承、买卖、赠与等）',
 		icon: 'arrow-right-left',
 		color: '#f97316',
 		category: 'life',
@@ -279,8 +279,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	// Narrative events (for storytelling and worldbuilding)
 	{
 		id: 'anecdote',
-		name: 'Anecdote',
-		description: 'Family story or personal event',
+		name: '轶事',
+		description: '家族故事或个人事件',
 		icon: 'mic',
 		color: '#fb923c',
 		category: 'narrative',
@@ -288,8 +288,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'lore_event',
-		name: 'Lore event',
-		description: 'Worldbuilding canonical event',
+		name: '设定事件',
+		description: '世界构建的经典事件',
 		icon: 'scroll',
 		color: '#daa520',
 		category: 'narrative',
@@ -297,8 +297,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'plot_point',
-		name: 'Plot point',
-		description: 'Key story beat or turning point',
+		name: '情节节点',
+		description: '关键情节或转折点',
 		icon: 'bookmark',
 		color: '#eab308',
 		category: 'narrative',
@@ -306,8 +306,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'flashback',
-		name: 'Flashback',
-		description: 'Event referenced in non-chronological narrative',
+		name: '闪回',
+		description: '在非时间顺序叙事中提及的事件',
 		icon: 'history',
 		color: '#a3a3a3',
 		category: 'narrative',
@@ -315,8 +315,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'foreshadowing',
-		name: 'Foreshadowing',
-		description: 'Event that sets up future developments',
+		name: '伏笔',
+		description: '为后续发展埋下伏笔的事件',
 		icon: 'eye',
 		color: '#c084fc',
 		category: 'narrative',
@@ -324,8 +324,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'backstory',
-		name: 'Backstory',
-		description: 'Pre-narrative event that informs character/plot',
+		name: '背景故事',
+		description: '为人物或情节提供背景的前置事件',
 		icon: 'history',
 		color: '#94a3b8',
 		category: 'narrative',
@@ -333,8 +333,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'climax',
-		name: 'Climax',
-		description: 'Peak dramatic moment',
+		name: '高潮',
+		description: '戏剧冲突的顶点',
 		icon: 'zap',
 		color: '#f43f5e',
 		category: 'narrative',
@@ -342,8 +342,8 @@ export const EVENT_TYPE_DEFINITIONS: EventTypeDefinition[] = [
 	},
 	{
 		id: 'resolution',
-		name: 'Resolution',
-		description: 'Story conclusion event',
+		name: '结局',
+		description: '故事收尾事件',
 		icon: 'check',
 		color: '#22c55e',
 		category: 'narrative',
@@ -362,23 +362,23 @@ export const EVENT_TYPE_LABELS: Record<string, string> = Object.fromEntries(
  * Human-readable labels for date precision
  */
 export const DATE_PRECISION_LABELS: Record<DatePrecision, string> = {
-	exact: 'Exact date',
-	month: 'Month only',
-	year: 'Year only',
-	decade: 'Decade',
-	estimated: 'Estimated',
-	range: 'Date range',
-	unknown: 'Unknown'
+	exact: '精确日期',
+	month: '仅月份',
+	year: '仅年份',
+	decade: '年代',
+	estimated: '约计',
+	range: '日期范围',
+	unknown: '未知'
 };
 
 /**
  * Human-readable labels for confidence levels
  */
 export const CONFIDENCE_LABELS: Record<EventConfidence, string> = {
-	high: 'High',
-	medium: 'Medium',
-	low: 'Low',
-	unknown: 'Unknown'
+	high: '高',
+	medium: '中',
+	low: '低',
+	unknown: '未知'
 };
 
 /**
@@ -630,9 +630,9 @@ export function getEventTypesByCategory(
  * Built-in category definitions
  */
 export const BUILT_IN_CATEGORIES: EventCategoryDefinition[] = [
-	{ id: 'vital', name: 'Vital events', sortOrder: 0 },
-	{ id: 'life', name: 'Life events', sortOrder: 1 },
-	{ id: 'narrative', name: 'Narrative events', sortOrder: 2 }
+	{ id: 'vital', name: '重要事件', sortOrder: 0 },
+	{ id: 'life', name: '生活事件', sortOrder: 1 },
+	{ id: 'narrative', name: '叙事事件', sortOrder: 2 }
 ];
 
 /**

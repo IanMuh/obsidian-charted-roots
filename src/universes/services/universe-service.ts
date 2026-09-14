@@ -350,7 +350,7 @@ export class UniverseService {
 		// something else triggers a reload.
 		await this.reloadCache([file]);
 
-		new Notice(`Created universe: ${data.name}`);
+		new Notice(`已创建宇宙：${data.name}`);
 		return file;
 	}
 
@@ -467,7 +467,7 @@ export class UniverseService {
 						'updateUniverse',
 						`Renamed universe note failed; frontmatter saved but basename out of sync: ${error instanceof Error ? error.message : String(error)}`
 					);
-					new Notice(`Universe saved, but file rename failed — entities may not pick up the new name`);
+					new Notice(`宇宙已保存，但文件重命名失败——实体可能不会采用新名称`);
 				}
 			}
 		}
@@ -477,7 +477,7 @@ export class UniverseService {
 		// this, the cached entry retains pre-edit state.
 		await this.reloadCache([file]);
 
-		new Notice(`Updated universe: ${name}`);
+		new Notice(`已更新宇宙：${name}`);
 	}
 
 	/**

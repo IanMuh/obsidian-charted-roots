@@ -1,0 +1,14 @@
+{
+	"id": "charted-roots",
+	"name": "Charted Roots",
+	"version": "0.22.76",
+	"minAppVersion": "1.7.2",
+	"description": "Family tree visualization for genealogists and worldbuilders. Interactive charts, geographic maps, evidence tracking, GEDCOM support, and fictional calendars.",
+	"author": "banisterious",
+	"authorUrl": "https://github.com/banisterious",
+	"isDesktopOnly": false,
+	"fundingUrl": {
+		"Buy Me a Coffee": "https://www.buymeacoffee.com/banisterious",
+		"GitHub Sponsor": "https://github.com/sponsors/banisterious"
+	}
+}

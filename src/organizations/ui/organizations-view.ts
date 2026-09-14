@@ -36,7 +36,7 @@ export class OrganizationsView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Organizations';
+		return '组织';
 	}
 
 	getIcon(): string {
@@ -87,13 +87,13 @@ export class OrganizationsView extends ItemView {
 	private buildHeader(container: HTMLElement): void {
 		const header = container.createDiv({ cls: 'cr-ov-header' });
 
-		header.createEl('h2', { text: 'Organizations', cls: 'cr-ov-title' });
+		header.createEl('h2', { text: '组织', cls: 'cr-ov-title' });
 
 		const actions = header.createDiv({ cls: 'cr-ov-actions' });
 
 		const refreshBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.refresh());

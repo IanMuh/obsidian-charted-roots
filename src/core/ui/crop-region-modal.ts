@@ -56,9 +56,9 @@ export class CropRegionModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass('cr-crop-modal');
 
-		contentEl.createEl('h2', { text: 'Select crop region' });
+		contentEl.createEl('h2', { text: '选择裁剪区域' });
 		contentEl.createEl('p', {
-			text: `Select the region of "${this.imageFile.basename}" to use as the thumbnail.`,
+			text: `选择「${this.imageFile.basename}」中要用作缩略图的区域。`,
 			cls: 'cr-crop-modal__desc'
 		});
 
@@ -72,18 +72,18 @@ export class CropRegionModal extends Modal {
 		const footer = contentEl.createDiv({ cls: 'cr-crop-modal__footer' });
 
 		const previewContainer = footer.createDiv({ cls: 'cr-crop-modal__preview' });
-		previewContainer.createEl('span', { text: 'Preview:', cls: 'cr-crop-modal__preview-label' });
+		previewContainer.createEl('span', { text: '预览：', cls: 'cr-crop-modal__preview-label' });
 		const previewImg = previewContainer.createEl('img', {
 			cls: 'cr-crop-modal__preview-img',
-			attr: { alt: 'Crop preview' }
+			attr: { alt: '裁剪预览' }
 		});
 
 		const buttons = footer.createDiv({ cls: 'cr-crop-modal__buttons' });
 
-		const cancelBtn = buttons.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttons.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
-		const saveBtn = buttons.createEl('button', { text: 'Save crop', cls: 'mod-cta' });
+		const saveBtn = buttons.createEl('button', { text: '保存裁剪', cls: 'mod-cta' });
 		saveBtn.addEventListener('click', () => {
 			this.saveCrop();
 		});
@@ -142,7 +142,7 @@ export class CropRegionModal extends Modal {
 		};
 
 		img.onerror = () => {
-			container.createEl('p', { text: 'Failed to load image', cls: 'cr-crop-modal__error' });
+			container.createEl('p', { text: '图片加载失败', cls: 'cr-crop-modal__error' });
 		};
 
 		img.src = resourcePath;
@@ -285,7 +285,7 @@ export class CropRegionModal extends Modal {
 			image: this.imageFile.name,
 			crop: { ...this.cropRect }
 		});
-		new Notice(`Crop region saved for ${this.imageFile.basename}`);
+		new Notice(`已保存 ${this.imageFile.basename} 的裁剪区域`);
 		this.close();
 	}
 

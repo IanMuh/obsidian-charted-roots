@@ -11,7 +11,6 @@ import { FamilyChartLayoutEngine } from './family-chart-layout';
 import { TimelineLayoutEngine } from './timeline-layout';
 import { HourglassLayoutEngine } from './hourglass-layout';
 import { getLogger } from './logging';
-import { pluralize } from '../utils/format-utils';
 import type { PrivacyService, PrivacyResult } from './privacy-service';
 import type { ArrowStyle, SpouseEdgeLabelFormat } from '../settings';
 import type { SpouseRelationship } from '../models/person';
@@ -807,10 +806,10 @@ export class CanvasGenerator {
 
 			// Create group node
 			const label = generation === 0
-				? 'Root Generation'
+				? '根世代'
 				: generation > 0
-					? `Generation +${generation}`
-					: `Generation ${generation}`;
+					? `第+${generation}代`
+					: `第${generation}代`;
 
 			groups.push({
 				id: this.generateId(),
@@ -873,7 +872,7 @@ export class CanvasGenerator {
 				const name2 = person2?.name?.split(' ').pop() || '';
 				const label = name1 && name2
 					? `${name1} & ${name2}`
-					: name1 || name2 || 'Couple';
+					: name1 || name2 || '夫妻';
 
 				groups.push({
 					id: this.generateId(),
@@ -908,7 +907,7 @@ export class CanvasGenerator {
 		for (const [crId, person] of familyTree.nodes) {
 			if (!nodeMap.has(crId)) continue;
 
-			const collection = person.collection || 'Uncategorized';
+			const collection = person.collection || '未分类';
 			if (!byCollection.has(collection)) {
 				byCollection.set(collection, []);
 			}
@@ -1346,7 +1345,7 @@ export class CanvasGenerator {
 			return {
 				id: canvasId,
 				type: 'text',
-				text: `**${privacyResult.displayName}**\n\n[[${fileName}]]\n\n_Privacy protected_`,
+				text: `**${privacyResult.displayName}**\n\n[[${fileName}]]\n\n_隐私已保护_`,
 				x,
 				y,
 				width,
@@ -1488,7 +1487,7 @@ export class CanvasGenerator {
 			const date = spouseRelationship.marriageDate;
 			const yearMatch = date.match(/^(\d{4})/);
 			const formattedDate = yearMatch ? yearMatch[1] : date;
-			parts.push(`m. ${formattedDate}`);
+			parts.push(`婚 ${formattedDate}`);
 		}
 
 		// For 'date-only', stop here
@@ -1512,7 +1511,7 @@ export class CanvasGenerator {
 				const date = spouseRelationship.divorceDate;
 				const yearMatch = date.match(/^(\d{4})/);
 				const formattedDate = yearMatch ? yearMatch[1] : date;
-				parts.push(`div. ${formattedDate}`);
+				parts.push(`离 ${formattedDate}`);
 			} else if (spouseRelationship.marriageStatus && spouseRelationship.marriageStatus !== 'current') {
 				parts.push(spouseRelationship.marriageStatus);
 			}
@@ -1551,15 +1550,15 @@ export class CanvasGenerator {
 
 		// Create legend node first
 		const legendId = this.generateId();
-		const legendText = `# Collection Overview
+		const legendText = `# 合集概览
 
-This canvas shows all collections in your vault.
+此画布展示你库中的所有合集。
 
-**Collections:** Family groups or custom collections
-**Connections:** Lines show relationships between collections
-**Statistics:** Person count and representative shown for each
+**合集：** 家族群组或自定义合集
+**连接：** 线条表示合集之间的关系
+**统计：** 显示每个合集的人物数与代表
 
-Generated: ${new Date().toLocaleString()}`;
+生成时间：${new Date().toLocaleString()}`;
 
 		canvasNodes.push({
 			id: legendId,
@@ -1583,10 +1582,10 @@ Generated: ${new Date().toLocaleString()}`;
 
 			// Build collection text content
 			let nodeText = `# ${collection.name}\n\n`;
-			nodeText += `**People:** ${collection.size}\n\n`;
+			nodeText += `**人物：** ${collection.size}\n\n`;
 
 			if (collection.representative) {
-				nodeText += `**Representative:**\n${collection.representative.name}`;
+				nodeText += `**代表：**\n${collection.representative.name}`;
 				if (collection.representative.birthDate) {
 					nodeText += `\n📅 ${collection.representative.birthDate}`;
 				}
@@ -1625,7 +1624,7 @@ Generated: ${new Date().toLocaleString()}`;
 
 				if (fromNodeId && toNodeId) {
 					const edgeId = this.generateId();
-					const label = `${connection.bridgePeople.length} bridge ${pluralize(connection.bridgePeople.length, 'person', 'people')}`;
+					const label = `${connection.bridgePeople.length} 位桥接人物`;
 
 					canvasEdges.push({
 						id: edgeId,

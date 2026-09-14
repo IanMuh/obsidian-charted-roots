@@ -58,7 +58,7 @@ describe('FictionalDateParser — custom system preferred over built-in (#650)',
 		const result = new FictionalDateParser([STAR_WARS_CALENDAR]).parse('BBY 100', 'Star Wars');
 		expect(result.success).toBe(true);
 		if (!result.success) return;
-		expect(result.date?.system.name).toBe('Galactic Standard Calendar');
+		expect(result.date?.system.name).toBe('银河标准历法');
 	});
 
 	it('without a universe, attribution stays with the abbreviation index (built-in first)', () => {
@@ -69,6 +69,6 @@ describe('FictionalDateParser — custom system preferred over built-in (#650)',
 		const result = makeParser().parse('BBY 100');
 		expect(result.success).toBe(true);
 		if (!result.success) return;
-		expect(result.date?.system.name).toBe('Galactic Standard Calendar');
+		expect(result.date?.system.name).toBe('银河标准历法');
 	});
 });

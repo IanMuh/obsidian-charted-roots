@@ -25,7 +25,7 @@ export class RegenerateOptionsModal extends Modal {
 
 		// Title
 		contentEl.createEl('h2', {
-			text: 'Regenerate canvas',
+			text: '重新生成画布',
 			cls: 'crc-modal-title'
 		});
 
@@ -38,8 +38,8 @@ export class RegenerateOptionsModal extends Modal {
 
 			if ((metadata?.plugin === 'charted-roots' || metadata?.plugin === 'canvas-roots') && metadata.generation) {
 				const gen = metadata.generation;
-				originalSettings = `Originally generated as "${gen.treeType}" tree from ${gen.rootPersonName} ` +
-					`with direction: ${gen.direction}`;
+				originalSettings = `原先生成为「${gen.treeType}」树，根人物为 ${gen.rootPersonName}，` +
+					`方向为：${gen.direction}`;
 			}
 		} catch {
 			// Ignore errors - we'll just not show original settings
@@ -52,12 +52,12 @@ export class RegenerateOptionsModal extends Modal {
 				cls: 'crc-text-muted'
 			});
 			contentEl.createEl('p', {
-				text: 'Choose the new layout direction (other settings will be preserved):',
+				text: '选择新的布局方向（其他设置将被保留）：',
 				cls: 'crc-text-muted'
 			});
 		} else {
 			contentEl.createEl('p', {
-				text: 'Choose the layout direction for this family tree canvas.',
+				text: '选择此家谱画布的布局方向。',
 				cls: 'crc-text-muted'
 			});
 		}
@@ -66,7 +66,7 @@ export class RegenerateOptionsModal extends Modal {
 		const directionGroup = contentEl.createDiv({ cls: 'crc-form-group' });
 		directionGroup.createEl('label', {
 			cls: 'crc-form-label',
-			text: 'Tree direction'
+			text: '树方向'
 		});
 
 		this.directionSelect = directionGroup.createEl('select', {
@@ -74,8 +74,8 @@ export class RegenerateOptionsModal extends Modal {
 		});
 
 		[
-			{ value: 'vertical', label: 'Vertical (top to bottom)' },
-			{ value: 'horizontal', label: 'Horizontal (left to right)' }
+			{ value: 'vertical', label: '垂直（从上到下）' },
+			{ value: 'horizontal', label: '水平（从左到右）' }
 		].forEach(option => {
 			this.directionSelect!.createEl('option', {
 				value: option.value,
@@ -90,13 +90,13 @@ export class RegenerateOptionsModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				this.close();
 			});
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Regenerate')
+			.setButtonText('重新生成')
 			.setCta()
 			.onClick(() => {
 				void (async () => {

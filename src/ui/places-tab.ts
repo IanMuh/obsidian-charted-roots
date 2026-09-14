@@ -16,7 +16,6 @@ import { waitForCacheRefresh } from '../utils/cache-utils';
 import type { PlaceCategory } from '../models/place';
 import { CreatePlaceModal } from './create-place-modal';
 import { CreateMissingPlacesModal } from './create-missing-places-modal';
-import { pluralize } from '../utils/format-utils';
 import { createStatisticsService } from '../statistics';
 import { StandardizePlacesModal, findPlaceNameVariations } from './standardize-places-modal';
 import { MergeDuplicatePlacesModal, findDuplicatePlaceNotes } from './merge-duplicate-places-modal';
@@ -57,18 +56,18 @@ export function renderPlacesTab(
 ): void {
 	// 1. Actions Card - create and manage places
 	const actionsCard = createCard({
-		title: 'Actions',
+		title: '操作',
 		icon: 'plus',
-		subtitle: 'Create and manage place notes'
+		subtitle: '创建和管理地点笔记'
 	});
 
 	const actionsContent = actionsCard.querySelector('.crc-card__content') as HTMLElement;
 
 	new Setting(actionsContent)
-		.setName('Create place note')
-		.setDesc('Create a new place note with geographic information')
+		.setName('创建地点笔记')
+		.setDesc('创建包含地理信息的新地点笔记')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.setCta()
 			.onClick(() => {
 				new CreatePlaceModal(plugin.app, {
@@ -82,19 +81,19 @@ export function renderPlacesTab(
 			}));
 
 	new Setting(actionsContent)
-		.setName('Templater templates')
-		.setDesc('Copy ready-to-use templates for Templater integration')
+		.setName('Templater 模板')
+		.setDesc('复制现成的模板以集成 Templater')
 		.addButton(button => button
-			.setButtonText('View templates')
+			.setButtonText('查看模板')
 			.onClick(() => {
 				new TemplateSnippetsModal(plugin.app, 'place', plugin.settings.propertyAliases).open();
 			}));
 
 	new Setting(actionsContent)
-		.setName('Create Places base')
-		.setDesc('Create an Obsidian base for managing Place notes. After creating, click "Properties" to enable columns like Name, Category, Coordinates, and Contained by.')
+		.setName('创建地点 Base')
+		.setDesc('为管理地点笔记创建一个 Obsidian Base。创建后，点击「属性」以启用名称、分类、坐标和所属上级等列。')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.onClick(() => {
 				plugin.app.commands.executeCommandById('charted-roots:create-places-base-template');
 			}));
@@ -104,25 +103,25 @@ export function renderPlacesTab(
 	const clipperIcon = clipperNote.createSpan({ cls: 'cr-info-box-icon' });
 	setIcon(clipperIcon, 'globe');
 	const clipperText = clipperNote.createSpan();
-	clipperText.appendText('Import places from the web using ');
+	clipperText.appendText('使用 ');
 	clipperText.createEl('a', {
-		text: 'Web Clipper templates',
+		text: 'Web Clipper 模板',
 		href: 'https://github.com/banisterious/obsidian-charted-roots/wiki/Web-Clipper-Integration#ready-to-use-templates'
 	});
-	clipperText.appendText(' (Wikidata, Find a Grave, and more).');
+	clipperText.appendText(' 从网络导入地点（Wikidata、Find a Grave 等）。');
 
 	container.appendChild(actionsCard);
 
 	// 2. Data Quality Card (unified issues + actions)
 	const dataQualityCard = createCard({
-		title: 'Data quality',
+		title: '数据质量',
 		icon: 'alert-triangle',
-		subtitle: 'Place-related issues and fixes'
+		subtitle: '地点相关问题与修复'
 	});
 
 	const dataQualityContent = dataQualityCard.querySelector('.crc-card__content') as HTMLElement;
 	dataQualityContent.createEl('p', {
-		text: 'Loading issues...',
+		text: '正在加载问题……',
 		cls: 'crc-text--muted'
 	});
 
@@ -133,15 +132,15 @@ export function renderPlacesTab(
 
 	// 3. Place List Card - browse/edit
 	const listCard = createCard({
-		title: 'Place notes',
+		title: '地点笔记',
 		icon: 'globe',
-		subtitle: 'Defined place notes in your vault'
+		subtitle: '库中已定义的地点笔记'
 	});
 	addPlacesDockButton(listCard, plugin);
 
 	const listContent = listCard.querySelector('.crc-card__content') as HTMLElement;
 	listContent.createEl('p', {
-		text: 'Loading places...',
+		text: '正在加载地点……',
 		cls: 'crc-text--muted'
 	});
 
@@ -157,14 +156,14 @@ export function renderPlacesTab(
 
 	// 5. Place Statistics Card - reference info, last
 	const statsCard = createCard({
-		title: 'Place statistics',
+		title: '地点统计',
 		icon: 'bar-chart',
-		subtitle: 'Geographic data overview'
+		subtitle: '地理数据概览'
 	});
 
 	const statsContent = statsCard.querySelector('.crc-card__content') as HTMLElement;
 	statsContent.createEl('p', {
-		text: 'Loading statistics...',
+		text: '正在加载统计……',
 		cls: 'crc-text--muted'
 	});
 
@@ -187,10 +186,10 @@ function loadDataQualityCard(
 	// Navigation guidance
 	const navInfo = container.createEl('p', {
 		cls: 'crc-text-muted',
-		text: 'These data quality checks are specific to place notes. For comprehensive data quality analysis across all entities, see the '
+		text: '这些数据质量检查针对地点笔记。如需对所有实体进行全面数据质量分析，请参见'
 	});
 	const dataQualityLink = navInfo.createEl('a', {
-		text: 'Data Quality tab',
+		text: '数据质量标签页',
 		href: '#',
 		cls: 'crc-text-link'
 	});
@@ -198,7 +197,7 @@ function loadDataQualityCard(
 		e.preventDefault();
 		showTab('data-quality');
 	});
-	navInfo.appendText('.');
+	navInfo.appendText('。');
 
 	const placeService = plugin.createPlaceGraphService();
 	void placeService.reloadCache();
@@ -274,7 +273,7 @@ function loadDataQualityCard(
 		icon.addClass('crc-text--success');
 		successState.appendChild(icon);
 		successState.createEl('p', {
-			text: 'No data quality issues found!',
+			text: '未发现数据质量问题！',
 			cls: 'crc-text--success crc-mt-2'
 		});
 
@@ -292,7 +291,7 @@ function loadDataQualityCard(
 		cls: 'crc-dq-summary__count crc-dq-summary__count--warning'
 	});
 	issuesSummary.createEl('span', {
-		text: 'issues found',
+		text: '发现的问题',
 		cls: 'crc-dq-summary__label'
 	});
 
@@ -302,7 +301,7 @@ function loadDataQualityCard(
 		cls: 'crc-dq-summary__count'
 	});
 	categoriesSummary.createEl('span', {
-		text: pluralize(categoryCount, 'category', 'categories'),
+		text: '个分类',
 		cls: 'crc-dq-summary__label'
 	});
 
@@ -316,20 +315,20 @@ function loadDataQualityCard(
 	if (missingPlaces.length > 0) {
 		renderIssueSection(sectionsContainer, {
 			icon: 'file-plus',
-			title: 'Missing place notes',
+			title: '缺失的地点笔记',
 			count: missingPlaces.length,
 			expanded: expandedCount < 2,
 			items: missingPlaces.slice(0, 4).map(place => ({
 				name: place.name,
-				detail: `Referenced by ${place.count} ${pluralize(place.count, 'person', 'people')}`,
+				detail: `被 ${place.count} 位人物引用`,
 				action: {
-					label: 'Create',
+					label: '创建',
 					primary: true,
 					onClick: () => showQuickCreatePlaceModal(plugin, place.name, showTab)
 				}
 			})),
 			batchAction: {
-				label: 'Create all missing places',
+				label: '创建所有缺失的地点',
 				onClick: () => showCreateMissingPlacesModal(plugin, showTab)
 			}
 		});
@@ -341,19 +340,19 @@ function loadDataQualityCard(
 	if (missingCoords.length > 0) {
 		renderIssueSection(sectionsContainer, {
 			icon: 'globe',
-			title: 'Real places missing coordinates',
+			title: '缺少坐标的真实地点',
 			count: missingCoords.length,
 			expanded: expandedCount < 2,
 			items: missingCoords.slice(0, 4).map(issue => ({
-				name: issue.placeName || 'Unknown place',
-				detail: 'Real place with no coordinates',
+				name: issue.placeName || '未知地点',
+				detail: '没有坐标的真实地点',
 				action: {
-					label: 'Edit',
+					label: '编辑',
 					onClick: () => openPlaceForEditing(plugin, issue.filePath, placeService, showTab)
 				}
 			})),
 			batchAction: {
-				label: 'Bulk geocode all',
+				label: '批量地理编码',
 				onClick: () => {
 					const placeGraph = plugin.createPlaceGraphService();
 					void placeGraph.reloadCache();
@@ -371,10 +370,10 @@ function loadDataQualityCard(
 	if (orphanRealPlaces.length > 0) {
 		renderSimplifiedIssueRow(sectionsContainer, {
 			icon: 'alert-circle',
-			title: `${orphanRealPlaces.length} orphan place${orphanRealPlaces.length !== 1 ? 's' : ''}`,
-			description: 'Geocode places and auto-create parent place notes (city → county → state → country)',
+			title: `${orphanRealPlaces.length} 个孤立地点`,
+			description: '对地点进行地理编码并自动创建父级地点笔记（城市 → 郡 → 州 → 国家）',
 			action: {
-				label: 'Enrich hierarchy',
+				label: '丰富层级',
 				onClick: () => {
 					const placeGraph = plugin.createPlaceGraphService();
 					void placeGraph.reloadCache();
@@ -391,10 +390,10 @@ function loadDataQualityCard(
 	if (duplicateGroups.length > 0) {
 		renderSimplifiedIssueRow(sectionsContainer, {
 			icon: 'copy',
-			title: `${duplicateGroups.length} potential duplicate${duplicateGroups.length !== 1 ? 's' : ''}`,
-			description: 'Place notes that may represent the same location',
+			title: `${duplicateGroups.length} 个可能的重复项`,
+			description: '可能代表同一地点的地点笔记',
 			action: {
-				label: 'Merge duplicates',
+				label: '合并重复项',
 				onClick: () => showMergeDuplicatePlacesModal(plugin, showTab)
 			}
 		});
@@ -406,10 +405,10 @@ function loadDataQualityCard(
 		const totalVariations = variationGroups.reduce((sum, g) => sum + g.variations.length, 0);
 		renderSimplifiedIssueRow(sectionsContainer, {
 			icon: 'edit',
-			title: `${totalVariations} name variation${totalVariations !== 1 ? 's' : ''} in ${variationGroups.length} group${variationGroups.length !== 1 ? 's' : ''}`,
-			description: 'Unify place name spelling across person notes',
+			title: `${totalVariations} 个名称变体（共 ${variationGroups.length} 组）`,
+			description: '统一人物笔记中的地点名称拼写',
 			action: {
-				label: 'Standardize names',
+				label: '标准化名称',
 				onClick: () => showStandardizePlacesModal(plugin, showTab)
 			}
 		});
@@ -421,10 +420,10 @@ function loadDataQualityCard(
 		const totalVariantRefs = placeVariants.reduce((sum, v) => sum + v.count, 0);
 		renderSimplifiedIssueRow(sectionsContainer, {
 			icon: 'globe',
-			title: `${placeVariants.length} place variant${placeVariants.length !== 1 ? 's' : ''} (${totalVariantRefs} ref${totalVariantRefs !== 1 ? 's' : ''})`,
-			description: 'Standardize abbreviations: USA vs United States, CA vs California',
+			title: `${placeVariants.length} 个地点变体（${totalVariantRefs} 处引用）`,
+			description: '标准化缩写：USA 与 United States、CA 与 California',
 			action: {
-				label: 'Standardize variants',
+				label: '标准化变体',
 				onClick: () => showStandardizePlaceVariantsModal(plugin, showTab)
 			}
 		});
@@ -434,10 +433,10 @@ function loadDataQualityCard(
 	if (nonStandardTypePlaces.length > 0) {
 		renderSimplifiedIssueRow(sectionsContainer, {
 			icon: 'map-pin',
-			title: `${nonStandardTypePlaces.length} place${nonStandardTypePlaces.length !== 1 ? 's' : ''} with generic types`,
-			description: 'Convert "locality" and other generic types to city/town/village',
+			title: `${nonStandardTypePlaces.length} 个地点使用了通用类型`,
+			description: '将「locality」及其他通用类型转换为城市/城镇/村庄',
 			action: {
-				label: 'Standardize types',
+				label: '标准化类型',
 				onClick: () => {
 					new StandardizePlaceTypesModal(plugin.app, placeService, {
 						onComplete: () => showTab('places')
@@ -452,14 +451,14 @@ function loadDataQualityCard(
 	if (wrongFolderPlaces.length > 0 && plugin.settings.useCategorySubfolders) {
 		renderSimplifiedIssueRow(sectionsContainer, {
 			icon: 'folder',
-			title: `${wrongFolderPlaces.length} place${wrongFolderPlaces.length !== 1 ? 's' : ''} in wrong folder`,
-			description: 'Places not stored in their category-appropriate subfolder',
+			title: `${wrongFolderPlaces.length} 个地点位于错误的文件夹`,
+			description: '地点未存储在其分类对应的子文件夹中',
 			action: {
-				label: 'Organize places',
+				label: '整理地点',
 				onClick: () => {
 					const misplacedPlaces = findMisplacedPlaces(placeService, plugin.settings);
 					if (misplacedPlaces.length === 0) {
-						new Notice('All places are in their correct folders!');
+						new Notice('所有地点都位于正确的文件夹中！');
 						return;
 					}
 					new OrganizePlacesModal(plugin.app, misplacedPlaces, {
@@ -476,14 +475,14 @@ function loadDataQualityCard(
 	if (circular.length > 0) {
 		renderIssueSection(sectionsContainer, {
 			icon: 'refresh-cw',
-			title: 'Circular hierarchies',
+			title: '循环层级',
 			count: circular.length,
 			expanded: expandedCount < 2,
 			items: circular.slice(0, 4).map(issue => ({
-				name: issue.placeName || 'Unknown place',
-				detail: 'Circular parent reference detected',
+				name: issue.placeName || '未知地点',
+				detail: '检测到循环的父级引用',
 				action: {
-					label: 'Fix',
+					label: '修复',
 					onClick: () => openPlaceForEditing(plugin, issue.filePath, placeService, showTab)
 				}
 			})),
@@ -497,14 +496,14 @@ function loadDataQualityCard(
 	if (fictionalWithCoords.length > 0) {
 		renderIssueSection(sectionsContainer, {
 			icon: 'unlink',
-			title: 'Fictional places with coordinates',
+			title: '带坐标的虚构地点',
 			count: fictionalWithCoords.length,
 			expanded: expandedCount < 2,
 			items: fictionalWithCoords.slice(0, 4).map(issue => ({
-				name: issue.placeName || 'Unknown place',
-				detail: 'Fictional place should not have real coordinates',
+				name: issue.placeName || '未知地点',
+				detail: '虚构地点不应有真实坐标',
 				action: {
-					label: 'Fix',
+					label: '修复',
 					onClick: () => openPlaceForEditing(plugin, issue.filePath, placeService, showTab)
 				}
 			})),
@@ -518,14 +517,14 @@ function loadDataQualityCard(
 	if (invalidCategory.length > 0) {
 		renderIssueSection(sectionsContainer, {
 			icon: 'help-circle',
-			title: 'Invalid categories',
+			title: '无效分类',
 			count: invalidCategory.length,
 			expanded: expandedCount < 2,
 			items: invalidCategory.slice(0, 4).map(issue => ({
-				name: issue.placeName || 'Unknown place',
-				detail: 'Unrecognized place category',
+				name: issue.placeName || '未知地点',
+				detail: '无法识别的分类',
 				action: {
-					label: 'Fix',
+					label: '修复',
 					onClick: () => openPlaceForEditing(plugin, issue.filePath, placeService, showTab)
 				}
 			})),
@@ -680,7 +679,7 @@ function renderOtherTools(
 ): void {
 	// Divider
 	const divider = container.createDiv({ cls: 'crc-dq-divider' });
-	divider.createEl('span', { text: 'Other tools' });
+	divider.createEl('span', { text: '其他工具' });
 
 	// Tools list
 	const toolsList = container.createDiv({ cls: 'crc-dq-tools' });
@@ -688,18 +687,18 @@ function renderOtherTools(
 	// Normalize place name formatting
 	const normalizeTool = toolsList.createDiv({ cls: 'crc-dq-tool' });
 	const normalizeInfo = normalizeTool.createDiv({ cls: 'crc-dq-tool__info' });
-	normalizeInfo.createEl('h4', { text: 'Normalize place name formatting' });
-	normalizeInfo.createEl('p', { text: 'Standardize capitalization: "NEW YORK" → "New York", handle prefixes like van, de' });
+	normalizeInfo.createEl('h4', { text: '规范化地点名称格式' });
+	normalizeInfo.createEl('p', { text: '标准化大小写：将「NEW YORK」→「New York」，并处理 van、de 等前缀' });
 	const normalizeActions = normalizeTool.createDiv({ cls: 'crc-dq-tool__actions' });
 	const previewBtn = normalizeActions.createEl('button', {
-		text: 'Preview',
+		text: '预览',
 		cls: 'crc-btn'
 	});
 	previewBtn.addEventListener('click', () => {
 		showNormalizePlaceNamesPreview(plugin, showTab);
 	});
 	new ButtonComponent(normalizeActions)
-		.setButtonText('Apply')
+		.setButtonText('应用')
 		.setCta()
 		.onClick(() => {
 			showNormalizePlaceNamesApply(plugin, showTab);
@@ -757,11 +756,11 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 	if (stats.totalPlaces === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No place notes found in your vault.',
+			text: '库中未找到地点笔记。',
 			cls: 'crc-text--muted'
 		});
 		emptyState.createEl('p', {
-			text: 'Place notes use cr_type: place in their frontmatter. Create place notes to track geographic locations associated with your family tree.',
+			text: '地点笔记在 frontmatter 中使用 cr_type: place。创建地点笔记以追踪与家谱相关的地理位置。',
 			cls: 'crc-text--muted crc-text--small'
 		});
 		return;
@@ -774,11 +773,11 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 		? Math.round((stats.withCoordinates / stats.totalPlaces) * 100)
 		: 0;
 
-	summaryRow.createEl('span', { text: `${stats.totalPlaces} places` });
+	summaryRow.createEl('span', { text: `${stats.totalPlaces} 个地点` });
 	summaryRow.createEl('span', { text: ' · ', cls: 'crc-text--muted' });
-	summaryRow.createEl('span', { text: `${coordPercent}% geocoded`, cls: coordPercent === 100 ? 'crc-text--success' : '' });
+	summaryRow.createEl('span', { text: `${coordPercent}% 已地理编码`, cls: coordPercent === 100 ? 'crc-text--success' : '' });
 	summaryRow.createEl('span', { text: ' · ', cls: 'crc-text--muted' });
-	summaryRow.createEl('span', { text: `${stats.maxHierarchyDepth} levels deep` });
+	summaryRow.createEl('span', { text: `最深 ${stats.maxHierarchyDepth} 层` });
 
 	// By type breakdown (inline badges)
 	const typeRow = container.createDiv({ cls: 'crc-stats-type-row crc-mt-2' });
@@ -799,7 +798,7 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 			cls: 'crc-stats-type-badge'
 		});
 		const typeLabel = type === 'untyped'
-			? 'Untyped'
+			? '未分类'
 			: getPlaceTypeDisplayName(type, plugin.settings.customPlaceTypes, plugin.settings.placeTypeCustomizations);
 		badge.createEl('span', { text: typeLabel, cls: 'crc-stats-type-name' });
 		badge.createEl('span', { text: count.toString(), cls: 'crc-stats-type-count' });
@@ -815,7 +814,7 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 	});
 	const toggleIcon = createLucideIcon('chevron-right', 14);
 	toggleBtn.appendChild(toggleIcon);
-	toggleBtn.createEl('span', { text: 'Show detailed statistics' });
+	toggleBtn.createEl('span', { text: '显示详细统计' });
 
 	let detailsExpanded = false;
 
@@ -825,7 +824,7 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 		toggleBtn.empty();
 		const newIcon = createLucideIcon(detailsExpanded ? 'chevron-down' : 'chevron-right', 14);
 		toggleBtn.appendChild(newIcon);
-		toggleBtn.createEl('span', { text: detailsExpanded ? 'Hide detailed statistics' : 'Show detailed statistics' });
+		toggleBtn.createEl('span', { text: detailsExpanded ? '隐藏详细统计' : '显示详细统计' });
 	});
 
 	// Detailed content (hidden by default)
@@ -837,7 +836,7 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 
 	if (nonZeroCategories.length > 0) {
 		const categorySection = detailsContent.createDiv({ cls: 'crc-stats-section' });
-		categorySection.createEl('h5', { text: 'By category', cls: 'crc-stats-section-title' });
+		categorySection.createEl('h5', { text: '按分类', cls: 'crc-stats-section-title' });
 
 		const categoryList = categorySection.createDiv({ cls: 'crc-stats-inline-list' });
 		for (const category of nonZeroCategories) {
@@ -853,7 +852,7 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 	const universeCount = Object.keys(stats.byUniverse).length;
 	if (universeCount > 0) {
 		const universeSection = detailsContent.createDiv({ cls: 'crc-stats-section' });
-		universeSection.createEl('h5', { text: 'Fictional universes', cls: 'crc-stats-section-title' });
+		universeSection.createEl('h5', { text: '虚构宇宙', cls: 'crc-stats-section-title' });
 
 		const universeList = universeSection.createDiv({ cls: 'crc-stats-inline-list' });
 		for (const [universe, count] of Object.entries(stats.byUniverse).sort((a, b) => b[1] - a[1]).slice(0, 5)) {
@@ -867,7 +866,7 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 	// Top birth places
 	if (stats.topBirthPlaces.length > 0) {
 		const birthSection = detailsContent.createDiv({ cls: 'crc-stats-section' });
-		birthSection.createEl('h5', { text: 'Top birth places', cls: 'crc-stats-section-title' });
+		birthSection.createEl('h5', { text: '出生地点排行', cls: 'crc-stats-section-title' });
 
 		const birthList = birthSection.createDiv({ cls: 'crc-stats-inline-list' });
 		for (const place of stats.topBirthPlaces.slice(0, 5)) {
@@ -881,7 +880,7 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 	// Top death places
 	if (stats.topDeathPlaces.length > 0) {
 		const deathSection = detailsContent.createDiv({ cls: 'crc-stats-section' });
-		deathSection.createEl('h5', { text: 'Top death places', cls: 'crc-stats-section-title' });
+		deathSection.createEl('h5', { text: '去世地点排行', cls: 'crc-stats-section-title' });
 
 		const deathList = deathSection.createDiv({ cls: 'crc-stats-inline-list' });
 		for (const place of stats.topDeathPlaces.slice(0, 5)) {
@@ -899,7 +898,7 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 	const migration = createStatisticsService(plugin.app, plugin.settings, plugin).getMigrationAnalysis();
 	if (migration.topRoutes.length > 0) {
 		const migrationSection = detailsContent.createDiv({ cls: 'crc-stats-section' });
-		migrationSection.createEl('h5', { text: 'Migration patterns', cls: 'crc-stats-section-title' });
+		migrationSection.createEl('h5', { text: '迁移模式', cls: 'crc-stats-section-title' });
 
 		const migrationList = migrationSection.createDiv({ cls: 'crc-stats-inline-list' });
 		for (const route of migration.topRoutes.slice(0, 5)) {
@@ -912,7 +911,7 @@ function loadPlaceStatistics(container: HTMLElement, plugin: CanvasRootsPlugin, 
 
 	// View full statistics link
 	const statsLink = container.createDiv({ cls: 'cr-stats-link' });
-	const link = statsLink.createEl('a', { text: 'View full statistics →', cls: 'crc-text-muted' });
+	const link = statsLink.createEl('a', { text: '查看完整统计 →', cls: 'crc-text-muted' });
 	link.addEventListener('click', (e) => {
 		e.preventDefault();
 		closeModal();
@@ -946,10 +945,10 @@ function loadPlaceList(
 	const allPlaces = placeService.getAllPlaces();
 
 	if (allPlaces.length === 0) {
-		container.createEl('p', {
-			text: 'No place notes found. Create place notes with cr_type: place in frontmatter.',
-			cls: 'crc-text--muted'
-		});
+	container.createEl('p', {
+		text: '未找到地点笔记。请在 frontmatter 中使用 cr_type: place 创建地点笔记。',
+		cls: 'crc-text--muted'
+	});
 		return;
 	}
 
@@ -972,15 +971,15 @@ function loadPlaceList(
 	const filterSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 
 	const filterOptions: Array<{ value: PlaceFilter; label: string }> = [
-		{ value: 'all', label: 'All places' },
-		{ value: 'real', label: 'Real' },
-		{ value: 'historical', label: 'Historical' },
-		{ value: 'disputed', label: 'Disputed' },
-		{ value: 'legendary', label: 'Legendary' },
-		{ value: 'mythological', label: 'Mythological' },
-		{ value: 'fictional', label: 'Fictional' },
-		{ value: 'has_coordinates', label: 'Has coordinates' },
-		{ value: 'no_coordinates', label: 'No coordinates' }
+		{ value: 'all', label: '所有地点' },
+		{ value: 'real', label: '真实' },
+		{ value: 'historical', label: '历史' },
+		{ value: 'disputed', label: '存疑' },
+		{ value: 'legendary', label: '传说' },
+		{ value: 'mythological', label: '神话' },
+		{ value: 'fictional', label: '虚构' },
+		{ value: 'has_coordinates', label: '有坐标' },
+		{ value: 'no_coordinates', label: '无坐标' }
 	];
 
 	for (const opt of filterOptions) {
@@ -991,12 +990,12 @@ function loadPlaceList(
 	const sortSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 
 	const sortOptions: Array<{ value: PlaceSort; label: string }> = [
-		{ value: 'name_asc', label: 'Name (A–Z)' },
-		{ value: 'name_desc', label: 'Name (Z–A)' },
-		{ value: 'people_desc', label: 'People (most)' },
-		{ value: 'people_asc', label: 'People (least)' },
-		{ value: 'category', label: 'Category' },
-		{ value: 'type', label: 'Type' }
+		{ value: 'name_asc', label: '名称（A–Z）' },
+		{ value: 'name_desc', label: '名称（Z–A）' },
+		{ value: 'people_desc', label: '人物数（多到少）' },
+		{ value: 'people_asc', label: '人物数（少到多）' },
+		{ value: 'category', label: '分类' },
+		{ value: 'type', label: '类型' }
 	];
 
 	for (const opt of sortOptions) {
@@ -1009,7 +1008,7 @@ function loadPlaceList(
 		cls: 'crc-filter-input',
 		attr: {
 			type: 'text',
-			placeholder: `Search ${allPlaces.length} places...`
+			placeholder: `搜索 ${allPlaces.length} 个地点……`
 		}
 	});
 
@@ -1074,7 +1073,7 @@ function loadPlaceList(
 
 		if (filtered.length === 0) {
 			tableContainer.createEl('p', {
-				text: 'No places match the current filter.',
+				text: '没有符合当前筛选条件的地点。',
 				cls: 'crc-text-muted crc-text-center'
 			});
 			return;
@@ -1082,7 +1081,7 @@ function loadPlaceList(
 
 		// Hint text
 		const hint = tableContainer.createEl('p', { cls: 'crc-text-muted crc-text-small crc-mb-2' });
-		hint.appendText('Click a row to edit. Use icons to open in new tab or window.');
+		hint.appendText('点击行以编辑。使用图标在新标签页或新窗口中打开。');
 
 		// Table
 		const table = tableContainer.createEl('table', { cls: 'crc-place-table' });
@@ -1090,12 +1089,12 @@ function loadPlaceList(
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name' });
-		headerRow.createEl('th', { text: 'Category' });
-		headerRow.createEl('th', { text: 'Type' });
-		headerRow.createEl('th', { text: 'Coordinates' });
-		headerRow.createEl('th', { text: 'People' });
-		headerRow.createEl('th', { text: 'Media', cls: 'crc-place-th--center' });
+		headerRow.createEl('th', { text: '名称' });
+		headerRow.createEl('th', { text: '分类' });
+		headerRow.createEl('th', { text: '类型' });
+		headerRow.createEl('th', { text: '坐标' });
+		headerRow.createEl('th', { text: '人物数' });
+		headerRow.createEl('th', { text: '媒体', cls: 'crc-place-th--center' });
 		headerRow.createEl('th', { text: '', cls: 'crc-place-th--actions' });
 
 		// Body
@@ -1130,7 +1129,7 @@ function loadPlaceList(
 
 				menu.addItem((item) => {
 					item
-						.setTitle('Open note')
+						.setTitle('打开笔记')
 						.setIcon('file')
 						.onClick(async () => {
 							await plugin.trackRecentFile(file, 'place');
@@ -1140,7 +1139,7 @@ function loadPlaceList(
 
 				menu.addItem((item) => {
 					item
-						.setTitle('Open in new tab')
+						.setTitle('在新标签页中打开')
 						.setIcon('file-plus')
 						.onClick(async () => {
 							await plugin.trackRecentFile(file, 'place');
@@ -1154,7 +1153,7 @@ function loadPlaceList(
 				const mediaCount = place.media?.length || 0;
 				menu.addItem((item) => {
 					item
-						.setTitle('Link media...')
+						.setTitle('链接媒体……')
 						.setIcon('image-plus')
 						.onClick(() => {
 							plugin.openLinkMediaModal(file, 'place', place.name);
@@ -1164,7 +1163,7 @@ function loadPlaceList(
 				if (mediaCount > 0) {
 					menu.addItem((item) => {
 						item
-							.setTitle(`Manage media (${mediaCount})...`)
+							.setTitle(`管理媒体（${mediaCount}）……`)
 							.setIcon('images')
 							.onClick(() => {
 								openManageMediaModal(plugin, file, 'place', place.name);
@@ -1216,7 +1215,7 @@ function loadPlaceList(
 				// Map button
 				const mapBtn = coordsWrapper.createEl('button', {
 					cls: 'crc-place-map-btn clickable-icon',
-					attr: { 'aria-label': 'Show on map' }
+					attr: { 'aria-label': '在地图上显示' }
 				});
 				const mapIcon = createLucideIcon('map', 14);
 				mapBtn.appendChild(mapIcon);
@@ -1247,7 +1246,7 @@ function loadPlaceList(
 			if (mediaCount > 0) {
 				const mediaBadge = mediaCell.createEl('span', {
 					cls: 'crc-person-list-badge crc-person-list-badge--media',
-					attr: { title: `${mediaCount} media file${mediaCount !== 1 ? 's' : ''}` }
+					attr: { title: `${mediaCount} 个媒体文件` }
 				});
 				const mediaIcon = createLucideIcon('image', 12);
 				mediaBadge.appendChild(mediaIcon);
@@ -1271,7 +1270,7 @@ function loadPlaceList(
 			// Open in new tab button
 			const openTabBtn = actionsCell.createEl('button', {
 				cls: 'crc-place-open-btn clickable-icon',
-				attr: { 'aria-label': 'Open note in new tab' }
+					attr: { 'aria-label': '在新标签页中打开笔记' }
 			});
 			const tabIcon = createLucideIcon('file-text', 14);
 			openTabBtn.appendChild(tabIcon);
@@ -1289,7 +1288,7 @@ function loadPlaceList(
 			// Open in new window button
 			const openWindowBtn = actionsCell.createEl('button', {
 				cls: 'crc-place-open-btn clickable-icon',
-				attr: { 'aria-label': 'Open note in new window' }
+					attr: { 'aria-label': '在新窗口中打开笔记' }
 			});
 			const windowIcon = createLucideIcon('external-link', 14);
 			openWindowBtn.appendChild(windowIcon);
@@ -1311,11 +1310,11 @@ function loadPlaceList(
 		const countText = footer.createEl('span', {
 			cls: 'crc-text-muted crc-text-small'
 		});
-		countText.textContent = `Showing ${displayedPlaces.length} of ${filtered.length} place${filtered.length !== 1 ? 's' : ''}`;
+		countText.textContent = `显示 ${displayedPlaces.length} / ${filtered.length} 个地点`;
 
 		if (filtered.length > displayLimit) {
 			const loadMoreBtn = footer.createEl('button', {
-				text: `Load more (${Math.min(25, filtered.length - displayLimit)} more)`,
+				text: `加载更多（再加载 ${Math.min(25, filtered.length - displayLimit)} 个）`,
 				cls: 'crc-btn crc-btn--small crc-ml-2'
 			});
 			loadMoreBtn.addEventListener('click', () => {
@@ -1352,12 +1351,12 @@ function loadPlaceList(
  */
 function formatPlaceCategoryName(category: PlaceCategory): string {
 	const names: Record<PlaceCategory, string> = {
-		real: 'Real',
-		historical: 'Historical',
-		disputed: 'Disputed',
-		legendary: 'Legendary',
-		mythological: 'Mythological',
-		fictional: 'Fictional'
+		real: '真实',
+		historical: '历史',
+		disputed: '存疑',
+		legendary: '传说',
+		mythological: '神话',
+		fictional: '虚构'
 	};
 	return names[category] || category;
 }
@@ -1383,7 +1382,7 @@ function showCreateMissingPlacesModal(plugin: CanvasRootsPlugin, showTab: (tabId
 	unlinked.sort((a, b) => b.count - a.count);
 
 	if (unlinked.length === 0) {
-		new Notice('All referenced places already have notes!');
+		new Notice('所有被引用的地点均已创建笔记！');
 		return;
 	}
 
@@ -1417,7 +1416,7 @@ function showQuickCreatePlaceModal(
 		settings: plugin.settings,
 		plugin,
 		onCreated: () => {
-			new Notice(`Created place note: ${placeName}`);
+			new Notice(`已创建地点笔记：${placeName}`);
 			// Refresh the Places tab
 			showTab('places');
 		}
@@ -1433,7 +1432,7 @@ function showStandardizePlacesModal(plugin: CanvasRootsPlugin, showTab: (tabId: 
 	const variationGroups = findPlaceNameVariations(plugin.app);
 
 	if (variationGroups.length === 0) {
-		new Notice('No place name variations found. Your place names are already consistent!');
+		new Notice('未发现地点名称变体。你的地点名称已经一致！');
 		return;
 	}
 
@@ -1456,7 +1455,7 @@ function showStandardizePlaceVariantsModal(plugin: CanvasRootsPlugin, showTab: (
 	const variants = findPlaceNameVariants(plugin.app);
 
 	if (variants.length === 0) {
-		new Notice('No place name variants found. Your place names are already standardized!');
+		new Notice('未发现地点名称变体。你的地点名称已经标准化！');
 		return;
 	}
 
@@ -1482,7 +1481,7 @@ function showMergeDuplicatePlacesModal(plugin: CanvasRootsPlugin, showTab: (tabI
 	});
 
 	if (duplicateGroups.length === 0) {
-		new Notice('No duplicate place notes found. Your places are unique!');
+		new Notice('未发现重复的地点笔记。你的地点都是唯一的！');
 		return;
 	}
 
@@ -1593,21 +1592,21 @@ function showNormalizePlaceNamesPreview(plugin: CanvasRootsPlugin, showTab: (tab
 	}
 
 	if (changes.length === 0) {
-		new Notice('No place names need normalization');
+		new Notice('没有需要规范化的地点名称');
 		return;
 	}
 
 	// Show preview modal
 	const modal = new Modal(plugin.app);
 	modal.modalEl.addClass('crc-batch-preview-modal');
-	modal.titleEl.setText('Preview: Normalize place name formatting');
+	modal.titleEl.setText('预览：规范化地点名称格式');
 
 	const { contentEl } = modal;
 
 	// Description
 	const description = contentEl.createDiv({ cls: 'crc-batch-description' });
 	description.createEl('p', {
-		text: `Found ${changes.length} ${pluralize(changes.length, 'place name')} that will be normalized.`
+		text: `发现 ${changes.length} 个将被规范化的地点名称。`
 	});
 
 	// Table
@@ -1616,8 +1615,8 @@ function showNormalizePlaceNamesPreview(plugin: CanvasRootsPlugin, showTab: (tab
 
 	const thead = table.createEl('thead');
 	const headerRow = thead.createEl('tr');
-	headerRow.createEl('th', { text: 'Old Name' });
-	headerRow.createEl('th', { text: 'New Name' });
+	headerRow.createEl('th', { text: '旧名称' });
+	headerRow.createEl('th', { text: '新名称' });
 
 	const tbody = table.createEl('tbody');
 	for (const change of changes.slice(0, 100)) { // Limit display to 100 rows
@@ -1629,7 +1628,7 @@ function showNormalizePlaceNamesPreview(plugin: CanvasRootsPlugin, showTab: (tab
 	if (changes.length > 100) {
 		const row = tbody.createEl('tr');
 		const cell = row.createEl('td', {
-			text: `... and ${changes.length - 100} more`,
+			text: `……以及另外 ${changes.length - 100} 个`,
 			cls: 'crc-text--muted'
 		});
 		cell.colSpan = 2;
@@ -1640,20 +1639,20 @@ function showNormalizePlaceNamesPreview(plugin: CanvasRootsPlugin, showTab: (tab
 	const warningIcon = createLucideIcon('alert-triangle', 16);
 	warning.appendChild(warningIcon);
 	warning.createSpan({
-		text: ' Backup your vault before proceeding. This operation will modify existing notes.'
+		text: ' 继续操作前请备份库。此操作将修改现有笔记。'
 	});
 
 	// Buttons
 	const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 	const cancelButton = buttonContainer.createEl('button', {
-		text: 'Cancel',
+		text: '取消',
 		cls: 'crc-btn-secondary'
 	});
 	cancelButton.addEventListener('click', () => modal.close());
 
 	const applyButton = buttonContainer.createEl('button', {
-		text: `Apply ${changes.length} ${pluralize(changes.length, 'change')}`,
+		text: `应用 ${changes.length} 项更改`,
 		cls: 'mod-cta'
 	});
 	applyButton.addEventListener('click', () => {
@@ -1672,7 +1671,7 @@ function showNormalizePlaceNamesApply(plugin: CanvasRootsPlugin, showTab: (tabId
 	let modified = 0;
 	const errors: Array<{ file: string; error: string }> = [];
 
-	new Notice('Normalizing place names...');
+	new Notice('正在规范化地点名称……');
 
 	// Normalization function (same as preview)
 	const normalizePlaceName = (name: string): string | null => {
@@ -1743,13 +1742,13 @@ function showNormalizePlaceNamesApply(plugin: CanvasRootsPlugin, showTab: (tabId
 		}
 
 		if (modified > 0) {
-			new Notice(`✓ Normalized ${modified} ${pluralize(modified, 'place name')}`);
+			new Notice(`✓ 已规范化 ${modified} 个地点名称`);
 		} else {
-			new Notice('No place names needed normalization');
+			new Notice('没有需要规范化的地点名称');
 		}
 
 		if (errors.length > 0) {
-			new Notice(`⚠ ${errors.length} errors occurred. Check console for details.`);
+			new Notice(`⚠ 发生 ${errors.length} 个错误。详情请查看控制台。`);
 			console.error('Normalize place names errors:', errors);
 		}
 
@@ -1772,7 +1771,7 @@ function addPlacesDockButton(card: HTMLElement, plugin: CanvasRootsPlugin): void
 
 	const dockBtn = activeDocument.createElement('button');
 	dockBtn.className = 'crc-card__dock-btn clickable-icon';
-	dockBtn.setAttribute('aria-label', 'Open in sidebar');
+	dockBtn.setAttribute('aria-label', '在侧边栏中打开');
 	setIcon(dockBtn, 'panel-right');
 	dockBtn.addEventListener('click', (e) => {
 		e.stopPropagation();
@@ -1803,11 +1802,11 @@ export function renderPlacesList(options: PlacesListOptions): void {
 	if (allPlaces.length === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No place notes found.',
+			text: '未找到地点笔记。',
 			cls: 'crc-text-muted'
 		});
 		emptyState.createEl('p', {
-			text: 'Create place notes to see them here.',
+			text: '在此创建地点笔记即可显示。',
 			cls: 'crc-text-muted'
 		});
 		return;
@@ -1832,15 +1831,15 @@ export function renderPlacesList(options: PlacesListOptions): void {
 	// Filter dropdown
 	const filterSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 	const filterOptions: Array<{ value: PlaceListFilter; label: string }> = [
-		{ value: 'all', label: 'All places' },
-		{ value: 'real', label: 'Real' },
-		{ value: 'historical', label: 'Historical' },
-		{ value: 'disputed', label: 'Disputed' },
-		{ value: 'legendary', label: 'Legendary' },
-		{ value: 'mythological', label: 'Mythological' },
-		{ value: 'fictional', label: 'Fictional' },
-		{ value: 'has_coordinates', label: 'Has coordinates' },
-		{ value: 'no_coordinates', label: 'No coordinates' }
+		{ value: 'all', label: '所有地点' },
+		{ value: 'real', label: '真实' },
+		{ value: 'historical', label: '历史' },
+		{ value: 'disputed', label: '存疑' },
+		{ value: 'legendary', label: '传说' },
+		{ value: 'mythological', label: '神话' },
+		{ value: 'fictional', label: '虚构' },
+		{ value: 'has_coordinates', label: '有坐标' },
+		{ value: 'no_coordinates', label: '无坐标' }
 	];
 	for (const opt of filterOptions) {
 		const el = filterSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -1851,12 +1850,12 @@ export function renderPlacesList(options: PlacesListOptions): void {
 	// Sort dropdown
 	const sortSelect = controlsRow.createEl('select', { cls: 'dropdown' });
 	const sortOptions: Array<{ value: PlaceListSort; label: string }> = [
-		{ value: 'name_asc', label: 'Name (A–Z)' },
-		{ value: 'name_desc', label: 'Name (Z–A)' },
-		{ value: 'people_desc', label: 'People (most)' },
-		{ value: 'people_asc', label: 'People (least)' },
-		{ value: 'category', label: 'Category' },
-		{ value: 'type', label: 'Type' }
+		{ value: 'name_asc', label: '名称（A–Z）' },
+		{ value: 'name_desc', label: '名称（Z–A）' },
+		{ value: 'people_desc', label: '人物数（多到少）' },
+		{ value: 'people_asc', label: '人物数（少到多）' },
+		{ value: 'category', label: '分类' },
+		{ value: 'type', label: '类型' }
 	];
 	for (const opt of sortOptions) {
 		const el = sortSelect.createEl('option', { value: opt.value, text: opt.label });
@@ -1869,7 +1868,7 @@ export function renderPlacesList(options: PlacesListOptions): void {
 		cls: 'crc-filter-input',
 		attr: {
 			type: 'text',
-			placeholder: `Search ${allPlaces.length} places...`
+			placeholder: `搜索 ${allPlaces.length} 个地点……`
 		}
 	});
 	searchInput.value = currentSearch;
@@ -1939,7 +1938,7 @@ export function renderPlacesList(options: PlacesListOptions): void {
 
 		if (filtered.length === 0) {
 			tableContainer.createEl('p', {
-				text: 'No places match the current filter.',
+				text: '没有符合当前筛选条件的地点。',
 				cls: 'crc-text-muted crc-text-center'
 			});
 			return;
@@ -1950,12 +1949,12 @@ export function renderPlacesList(options: PlacesListOptions): void {
 		// Header
 		const thead = table.createEl('thead');
 		const headerRow = thead.createEl('tr');
-		headerRow.createEl('th', { text: 'Name' });
-		headerRow.createEl('th', { text: 'Category' });
-		headerRow.createEl('th', { text: 'Type' });
-		headerRow.createEl('th', { text: 'Coordinates' });
-		headerRow.createEl('th', { text: 'People' });
-		headerRow.createEl('th', { text: 'Media', cls: 'crc-place-th--center' });
+		headerRow.createEl('th', { text: '名称' });
+		headerRow.createEl('th', { text: '分类' });
+		headerRow.createEl('th', { text: '类型' });
+		headerRow.createEl('th', { text: '坐标' });
+		headerRow.createEl('th', { text: '人物数' });
+		headerRow.createEl('th', { text: '媒体', cls: 'crc-place-th--center' });
 		headerRow.createEl('th', { text: '', cls: 'crc-place-th--actions' });
 
 		// Body
@@ -1975,7 +1974,7 @@ export function renderPlacesList(options: PlacesListOptions): void {
 
 				menu.addItem((item) => {
 					item
-						.setTitle('Open note')
+						.setTitle('打开笔记')
 						.setIcon('file')
 						.onClick(async () => {
 							await plugin.trackRecentFile(file, 'place');
@@ -1985,7 +1984,7 @@ export function renderPlacesList(options: PlacesListOptions): void {
 
 				menu.addItem((item) => {
 					item
-						.setTitle('Open in new tab')
+						.setTitle('在新标签页中打开')
 						.setIcon('file-plus')
 						.onClick(async () => {
 							await plugin.trackRecentFile(file, 'place');
@@ -2036,7 +2035,7 @@ export function renderPlacesList(options: PlacesListOptions): void {
 				// Map button
 				const mapBtn = coordsWrapper.createEl('button', {
 					cls: 'crc-place-map-btn clickable-icon',
-					attr: { 'aria-label': 'Show on map' }
+					attr: { 'aria-label': '在地图上显示' }
 				});
 				const mapIcon = createLucideIcon('map', 14);
 				mapBtn.appendChild(mapIcon);
@@ -2067,7 +2066,7 @@ export function renderPlacesList(options: PlacesListOptions): void {
 			if (mediaCount > 0) {
 				const mediaBadge = mediaCell.createEl('span', {
 					cls: 'crc-person-list-badge crc-person-list-badge--media',
-					attr: { title: `${mediaCount} media file${mediaCount !== 1 ? 's' : ''}` }
+					attr: { title: `${mediaCount} 个媒体文件` }
 				});
 				const mediaIcon = createLucideIcon('image', 12);
 				mediaBadge.appendChild(mediaIcon);
@@ -2080,7 +2079,7 @@ export function renderPlacesList(options: PlacesListOptions): void {
 			const actionsCell = row.createEl('td', { cls: 'crc-place-cell-actions' });
 			const openBtn = actionsCell.createEl('button', {
 				cls: 'crc-place-open-btn clickable-icon',
-				attr: { 'aria-label': 'Open note' }
+					attr: { 'aria-label': '打开笔记' }
 			});
 			const fileIcon = createLucideIcon('file-text', 14);
 			openBtn.appendChild(fileIcon);
@@ -2102,11 +2101,11 @@ export function renderPlacesList(options: PlacesListOptions): void {
 		const countText = footer.createEl('span', {
 			cls: 'crc-text-muted crc-text-small'
 		});
-		countText.textContent = `Showing ${displayedPlaces.length} of ${filtered.length} place${filtered.length !== 1 ? 's' : ''}`;
+		countText.textContent = `显示 ${displayedPlaces.length} / ${filtered.length} 个地点`;
 
 		if (filtered.length > displayLimit) {
 			const loadMoreBtn = footer.createEl('button', {
-				text: `Load more (${Math.min(25, filtered.length - displayLimit)} more)`,
+				text: `加载更多（再加载 ${Math.min(25, filtered.length - displayLimit)} 个）`,
 				cls: 'crc-btn crc-btn--small crc-ml-2'
 			});
 			loadMoreBtn.addEventListener('click', () => {

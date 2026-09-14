@@ -11,7 +11,7 @@ import { generateCrId } from '../core/uuid';
 import { createLucideIcon } from './lucide-icons';
 import { PersonInfo } from './person-picker';
 import type CanvasRootsPlugin from '../../main';
-import { capitalize } from '../utils/format-utils';
+import { getRelationshipTypeLabel } from '../utils/terminology';
 
 /**
  * Context passed when creating a person inline from a relationship field
@@ -95,7 +95,7 @@ export class QuickCreatePersonModal extends Modal {
 		// Subtitle explaining this is inline creation
 		if (this.context?.relationshipType) {
 			const subtitle = header.createDiv({ cls: 'crc-modal-subtitle' });
-			subtitle.setText(`Creating a new ${this.context.relationshipType} to link`);
+			subtitle.setText(`正在新建${getRelationshipTypeLabel(this.context.relationshipType)}以便关联`);
 		}
 
 		// Form
@@ -103,11 +103,11 @@ export class QuickCreatePersonModal extends Modal {
 
 		// Name (required)
 		new Setting(form)
-			.setName('Name')
-			.setDesc('Full name of the person (required)')
+			.setName('姓名')
+			.setDesc('人物全名（必填）')
 			.addText(text => {
 				text
-					.setPlaceholder('e.g., John Robert Smith')
+					.setPlaceholder('例如：张三')
 					.setValue(this.name)
 					.onChange(value => {
 						this.name = value;
@@ -118,10 +118,10 @@ export class QuickCreatePersonModal extends Modal {
 
 		// Nickname (optional)
 		new Setting(form)
-			.setName('Nickname')
-			.setDesc('Informal name or alias (optional)')
+			.setName('昵称')
+			.setDesc('非正式名或别名（可选）')
 			.addText(text => text
-				.setPlaceholder('e.g., Bobby, Gram')
+				.setPlaceholder('例如：小明、阿婆')
 				.setValue(this.nickname)
 				.onChange(value => {
 					this.nickname = value;
@@ -129,13 +129,13 @@ export class QuickCreatePersonModal extends Modal {
 
 		// Sex (pre-filled if context provides suggestedSex)
 		new Setting(form)
-			.setName('Sex')
-			.setDesc('Sex (pre-filled based on relationship type)')
+			.setName('性别')
+			.setDesc('性别（已根据关系类型预填）')
 			.addDropdown(dropdown => dropdown
-				.addOption('', '(Unknown)')
-				.addOption('male', 'Male')
-				.addOption('female', 'Female')
-				.addOption('nonbinary', 'Non-binary')
+				.addOption('', '（未知）')
+				.addOption('male', '男性')
+				.addOption('female', '女性')
+				.addOption('nonbinary', '非二元')
 				.setValue(this.sex)
 				.onChange(value => {
 					this.sex = value;
@@ -143,10 +143,10 @@ export class QuickCreatePersonModal extends Modal {
 
 		// Birth date (optional)
 		new Setting(form)
-			.setName('Birth date')
-			.setDesc('Date of birth (optional, YYYY-MM-DD recommended)')
+			.setName('出生日期')
+			.setDesc('出生日期（可选，建议 YYYY-MM-DD）')
 			.addText(text => text
-				.setPlaceholder('e.g., 1888-05-15')
+				.setPlaceholder('例如：1888-05-15')
 				.setValue(this.birthDate)
 				.onChange(value => {
 					this.birthDate = value;
@@ -156,13 +156,13 @@ export class QuickCreatePersonModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				this.close();
 			});
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Create and link')
+			.setButtonText('创建并关联')
 			.setCta()
 			.onClick(() => {
 				void this.createPerson();
@@ -179,13 +179,10 @@ export class QuickCreatePersonModal extends Modal {
 	 */
 	private getTitleFromContext(): string {
 		if (!this.context?.relationshipType) {
-			return 'Quick create person';
+			return '快速新建人物';
 		}
 
-		// Capitalize first letter of relationship type
-		const relType = this.context.relationshipType;
-		const capitalizedType = capitalize(relType);
-		return `Create new ${capitalizedType.toLowerCase()}`;
+		return `新建${getRelationshipTypeLabel(this.context.relationshipType)}`;
 	}
 
 	/**
@@ -194,7 +191,7 @@ export class QuickCreatePersonModal extends Modal {
 	private async createPerson(): Promise<void> {
 		// Validate required fields
 		if (!this.name.trim()) {
-			new Notice('Please enter a name for the person');
+			new Notice('请输入人物姓名');
 			return;
 		}
 
@@ -254,7 +251,7 @@ export class QuickCreatePersonModal extends Modal {
 				file: file
 			};
 
-			new Notice(`Created person: ${file.basename}`);
+			new Notice(`已创建人物：${file.basename}`);
 
 			// Call the onCreated callback
 			if (this.onCreated) {
@@ -264,7 +261,7 @@ export class QuickCreatePersonModal extends Modal {
 			this.close();
 		} catch (error) {
 			console.error('Failed to create person note:', error);
-			new Notice(`Failed to create person: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			new Notice(`创建人物失败：${error instanceof Error ? error.message : '未知错误'}`);
 		}
 	}
 }

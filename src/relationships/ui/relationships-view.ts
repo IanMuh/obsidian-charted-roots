@@ -33,7 +33,7 @@ export class RelationshipsView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Relationships';
+		return '关系';
 	}
 
 	getIcon(): string {
@@ -82,13 +82,13 @@ export class RelationshipsView extends ItemView {
 	private buildHeader(container: HTMLElement): void {
 		const header = container.createDiv({ cls: 'cr-rv-header' });
 
-		header.createEl('h2', { text: 'Relationships', cls: 'cr-rv-title' });
+		header.createEl('h2', { text: '关系', cls: 'cr-rv-title' });
 
 		const actions = header.createDiv({ cls: 'cr-rv-actions' });
 
 		const refreshBtn = actions.createEl('button', {
 			cls: 'clickable-icon',
-			attr: { 'aria-label': 'Refresh' }
+			attr: { 'aria-label': '刷新' }
 		});
 		setIcon(refreshBtn, 'refresh-cw');
 		refreshBtn.addEventListener('click', () => this.refresh());

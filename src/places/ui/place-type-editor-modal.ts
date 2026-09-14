@@ -100,26 +100,26 @@ export class PlaceTypeEditorModal extends Modal {
 		contentEl.addClass('cr-event-type-editor-modal');
 
 		const title = this.customizeMode
-			? `Customize "${this.builtInDefaults?.name}"`
+			? `自定义"${this.builtInDefaults?.name}"`
 			: this.editMode
-				? 'Edit place type'
-				: 'Create place type';
+				? '编辑地点类型'
+				: '创建地点类型';
 		contentEl.createEl('h2', { text: title });
 
 		if (this.customizeMode) {
 			const info = contentEl.createDiv({ cls: 'cr-modal-info' });
 			info.createEl('p', {
-				text: 'Customize this built-in type. Changes only affect display; existing notes still work.',
+				text: '自定义此内置类型。更改仅影响显示；现有笔记仍然有效。',
 				cls: 'crc-text-muted'
 			});
 		}
 
 		// Name
 		new Setting(contentEl)
-			.setName('Name')
-			.setDesc('Display name for this place type')
+			.setName('名称')
+			.setDesc('此地点类型的显示名称')
 			.addText(text => text
-				.setPlaceholder('e.g., Township')
+				.setPlaceholder('例如：乡镇')
 				.setValue(this.name)
 				.onChange(value => {
 					this.name = value;
@@ -133,7 +133,7 @@ export class PlaceTypeEditorModal extends Modal {
 		if (!this.editMode && !this.customizeMode) {
 			new Setting(contentEl)
 				.setName('ID')
-				.setDesc('Unique identifier (used in frontmatter)')
+				.setDesc('唯一标识符（用于 frontmatter）')
 				.addText(text => text
 					.setPlaceholder('township')
 					.setValue(this.id)
@@ -142,10 +142,10 @@ export class PlaceTypeEditorModal extends Modal {
 
 		// Description
 		new Setting(contentEl)
-			.setName('Description')
-			.setDesc('Brief description of this place type')
+			.setName('描述')
+			.setDesc('此地点类型的简要描述')
 			.addText(text => text
-				.setPlaceholder('e.g., Administrative subdivision')
+				.setPlaceholder('例如：行政区划')
 				.setValue(this.description)
 				.onChange(value => this.description = value));
 
@@ -157,8 +157,8 @@ export class PlaceTypeEditorModal extends Modal {
 		);
 
 		new Setting(contentEl)
-			.setName('Category')
-			.setDesc('Group this place type belongs to')
+			.setName('分类')
+			.setDesc('此地点类型所属的分组')
 			.addDropdown(dropdown => {
 				for (const cat of categories) {
 					dropdown.addOption(cat.id, cat.name);
@@ -169,8 +169,8 @@ export class PlaceTypeEditorModal extends Modal {
 
 		// Hierarchy level with explanation
 		const hierarchySetting = new Setting(contentEl)
-			.setName('Hierarchy level')
-			.setDesc('Determines valid parent-child relationships. Lower levels can be parents of higher levels.');
+			.setName('层级')
+			.setDesc('决定有效的父子关系。较低层级可以作为较高层级的父级。');
 
 		// Hierarchy info display (example parents/children)
 		const hierarchyInfo = contentEl.createDiv({ cls: 'cr-hierarchy-info' });
@@ -196,13 +196,13 @@ export class PlaceTypeEditorModal extends Modal {
 
 			if (exampleParents.length > 0) {
 				hierarchyInfo.createEl('div', {
-					text: `Can be child of: ${exampleParents.map(t => t.name).join(', ')}`,
+					text: `可作为以下类型的子级：${exampleParents.map(t => t.name).join('、')}`,
 					cls: 'crc-text-muted cr-hierarchy-example'
 				});
 			}
 			if (exampleChildren.length > 0) {
 				hierarchyInfo.createEl('div', {
-					text: `Can be parent of: ${exampleChildren.map(t => t.name).join(', ')}`,
+					text: `可作为以下类型的父级：${exampleChildren.map(t => t.name).join('、')}`,
 					cls: 'crc-text-muted cr-hierarchy-example'
 				});
 			}
@@ -246,17 +246,17 @@ export class PlaceTypeEditorModal extends Modal {
 
 		// Quick level presets
 		const presetsContainer = contentEl.createDiv({ cls: 'cr-level-presets' });
-		presetsContainer.createEl('span', { text: 'Quick presets:', cls: 'crc-text-muted' });
+		presetsContainer.createEl('span', { text: '快速预设：', cls: 'crc-text-muted' });
 
 		const presets = [
-			{ label: 'Geographic (0-1)', level: 1 },
-			{ label: 'Country (2)', level: 2 },
-			{ label: 'State/Province (3)', level: 3 },
-			{ label: 'County (5)', level: 5 },
-			{ label: 'City (7)', level: 7 },
-			{ label: 'Town (8)', level: 8 },
-			{ label: 'Village (9)', level: 9 },
-			{ label: 'Structure (11-12)', level: 11 }
+			{ label: '地理（0-1）', level: 1 },
+			{ label: '国家（2）', level: 2 },
+			{ label: '州/省（3）', level: 3 },
+			{ label: '县（5）', level: 5 },
+			{ label: '城市（7）', level: 7 },
+			{ label: '镇（8）', level: 8 },
+			{ label: '村庄（9）', level: 9 },
+			{ label: '建筑（11-12）', level: 11 }
 		];
 
 		for (const preset of presets) {
@@ -275,15 +275,15 @@ export class PlaceTypeEditorModal extends Modal {
 
 		// Reset button for customizations
 		if (this.customizeMode) {
-			const resetBtn = buttonContainer.createEl('button', { text: 'Reset to default' });
+			const resetBtn = buttonContainer.createEl('button', { text: '重置为默认' });
 			resetBtn.addEventListener('click', () => void this.resetToDefault());
 		}
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const saveBtn = buttonContainer.createEl('button', {
-			text: this.customizeMode ? 'Save customization' : this.editMode ? 'Save changes' : 'Create type',
+			text: this.customizeMode ? '保存自定义' : this.editMode ? '保存更改' : '创建类型',
 			cls: 'mod-cta'
 		});
 		saveBtn.addEventListener('click', () => void this.saveType());
@@ -297,12 +297,12 @@ export class PlaceTypeEditorModal extends Modal {
 	private async saveType(): Promise<void> {
 		// Validation
 		if (!this.name.trim()) {
-			new Notice('Please enter a name');
+			new Notice('请输入名称');
 			return;
 		}
 
 		if (!this.customizeMode && !this.id.trim()) {
-			new Notice('Please enter an ID');
+			new Notice('请输入 ID');
 			return;
 		}
 
@@ -334,7 +334,7 @@ export class PlaceTypeEditorModal extends Modal {
 			this.close();
 			this.onSave();
 		} catch (error) {
-			new Notice(`Failed to save place type: ${error}`);
+			new Notice(`保存地点类型失败：${error}`);
 		}
 	}
 
@@ -374,22 +374,22 @@ export class PlaceTypeEditorModal extends Modal {
 			};
 
 			const modal = new Modal(this.app);
-			modal.titleEl.setText('Level already in use');
+			modal.titleEl.setText('层级已被占用');
 			modal.contentEl.createEl('p', {
-				text: `Level ${level} is already used by "${occupantName}" in this category. How should this type's level be applied?`
+				text: `层级 ${level} 已被此分类中的"${occupantName}"使用。应如何应用此类型的层级？`
 			});
 			const buttons = modal.contentEl.createDiv({ cls: 'cr-modal-buttons' });
 
 			const insertBtn = buttons.createEl('button', {
-				text: 'Insert above (push lower types down)',
+				text: '插入到上方（将较低类型下移）',
 				cls: 'mod-cta'
 			});
 			insertBtn.addEventListener('click', () => { settle('insert-above'); modal.close(); });
 
-			const tieBtn = buttons.createEl('button', { text: `Keep at level ${level} (tie)` });
+			const tieBtn = buttons.createEl('button', { text: `保持在层级 ${level}（并列）` });
 			tieBtn.addEventListener('click', () => { settle('tied'); modal.close(); });
 
-			const cancelBtn = buttons.createEl('button', { text: 'Cancel' });
+			const cancelBtn = buttons.createEl('button', { text: '取消' });
 			cancelBtn.addEventListener('click', () => { settle('cancel'); modal.close(); });
 
 			// Dismissing via Escape / click-outside settles cancel.
@@ -451,7 +451,7 @@ export class PlaceTypeEditorModal extends Modal {
 		}
 
 		await this.plugin.saveSettings();
-		new Notice('Place type customized');
+		new Notice('地点类型已自定义');
 	}
 
 	private async updateUserType(): Promise<void> {
@@ -470,7 +470,7 @@ export class PlaceTypeEditorModal extends Modal {
 		}
 
 		await this.plugin.saveSettings();
-		new Notice('Place type updated');
+		new Notice('地点类型已更新');
 	}
 
 	private async createUserType(): Promise<void> {
@@ -480,7 +480,7 @@ export class PlaceTypeEditorModal extends Modal {
 		const customConflict = existingTypes.find(t => t.id === this.id);
 
 		if (builtInConflict || customConflict) {
-			new Notice('A place type with this ID already exists');
+			new Notice('已存在使用此 ID 的地点类型');
 			return;
 		}
 
@@ -495,7 +495,7 @@ export class PlaceTypeEditorModal extends Modal {
 
 		existingTypes.push(typeDef);
 		await this.plugin.saveSettings();
-		new Notice('Place type created');
+		new Notice('地点类型已创建');
 	}
 
 	private async resetToDefault(): Promise<void> {
@@ -507,7 +507,7 @@ export class PlaceTypeEditorModal extends Modal {
 		}
 
 		await this.plugin.saveSettings();
-		new Notice('Reset to default');
+		new Notice('已重置为默认');
 		this.close();
 		this.onSave();
 	}

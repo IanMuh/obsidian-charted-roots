@@ -31,18 +31,18 @@ export function renderPlaceTypeManagerCard(
 	onRefresh: () => void
 ): void {
 	const card = createCard({
-		title: 'Manage place types',
+		title: '管理地点类型',
 		icon: 'sliders',
-		subtitle: 'Customize, hide, or create place types'
+		subtitle: '自定义、隐藏或创建地点类型'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	// Create place type button
 	new Setting(content)
-		.setName('Create place type')
-		.setDesc('Define a new custom place type')
+		.setName('创建地点类型')
+		.setDesc('定义新的自定义地点类型')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.setCta()
 			.onClick(() => {
 				const modal = new PlaceTypeEditorModal(plugin.app, plugin, {
@@ -56,10 +56,10 @@ export function renderPlaceTypeManagerCard(
 
 	// Add category button
 	new Setting(content)
-		.setName('Add category')
-		.setDesc('Create a new category to organize place types')
+		.setName('添加分类')
+		.setDesc('创建新分类以组织地点类型')
 		.addButton(button => button
-			.setButtonText('Add')
+			.setButtonText('添加')
 			.onClick(() => {
 				openCategoryEditor(plugin, null, false, () => {
 					renderTypeList();
@@ -69,8 +69,8 @@ export function renderPlaceTypeManagerCard(
 
 	// Toggle built-in types
 	new Setting(content)
-		.setName('Show built-in types')
-		.setDesc('Toggle visibility of default place types')
+		.setName('显示内置类型')
+		.setDesc('切换默认地点类型的可见性')
 		.addToggle(toggle => toggle
 			.setValue(plugin.settings.showBuiltInPlaceTypes !== false)
 			.onChange(async (value) => {
@@ -140,7 +140,7 @@ export function renderPlaceTypeManagerCard(
 			// Show customized badge for built-in categories
 			if (isBuiltIn && isCatCustomized) {
 				headingEl.createEl('span', {
-					text: ' (customized)',
+					text: '（已自定义）',
 					cls: 'crc-text-muted crc-type-category-badge'
 				});
 			}
@@ -160,7 +160,7 @@ export function renderPlaceTypeManagerCard(
 			const moveUpBtn = actionsContainer.createEl('button', {
 				text: '↑',
 				cls: 'crc-btn crc-btn--small',
-				attr: { 'aria-label': 'Move category up' }
+				attr: { 'aria-label': '上移分类' }
 			});
 			moveUpBtn.disabled = categoryIndex === 0;
 			moveUpBtn.addEventListener('click', () => moveCategory('up'));
@@ -168,14 +168,14 @@ export function renderPlaceTypeManagerCard(
 			const moveDownBtn = actionsContainer.createEl('button', {
 				text: '↓',
 				cls: 'crc-btn crc-btn--small',
-				attr: { 'aria-label': 'Move category down' }
+				attr: { 'aria-label': '下移分类' }
 			});
 			moveDownBtn.disabled = categoryIndex === categories.length - 1;
 			moveDownBtn.addEventListener('click', () => moveCategory('down'));
 
 			// Icon (gear for Customize, pencil for Edit) with a tooltip, to keep
 			// the action row from feeling cluttered (#734 follow-up).
-			const editCatLabel = isBuiltIn ? 'Customize' : 'Edit';
+			const editCatLabel = isBuiltIn ? '自定义' : '编辑';
 			const editCatBtn = actionsContainer.createEl('button', {
 				cls: 'crc-btn crc-btn--small',
 				attr: { 'aria-label': editCatLabel, title: editCatLabel }
@@ -188,7 +188,7 @@ export function renderPlaceTypeManagerCard(
 				});
 			});
 
-			const deleteCatLabel = isBuiltIn ? 'Hide' : 'Delete';
+			const deleteCatLabel = isBuiltIn ? '隐藏' : '删除';
 			const deleteCatBtn = actionsContainer.createEl('button', {
 				cls: 'crc-btn crc-btn--small',
 				attr: { 'aria-label': deleteCatLabel, title: deleteCatLabel }
@@ -204,7 +204,7 @@ export function renderPlaceTypeManagerCard(
 			// Add a type directly into this category, pre-selecting it and
 			// defaulting to a sensible hierarchy level (#734).
 			const addTypeBtn = actionsContainer.createEl('button', {
-				text: '+ Add type',
+				text: '+ 添加类型',
 				cls: 'crc-btn crc-btn--small'
 			});
 			addTypeBtn.addEventListener('click', () => {
@@ -252,7 +252,7 @@ export function renderPlaceTypeManagerCard(
 				}
 			} else {
 				categorySection.createEl('p', {
-					text: 'No types in this category',
+					text: '此分类中没有类型',
 					cls: 'crc-text-muted crc-type-empty-category'
 				});
 			}
@@ -262,12 +262,12 @@ export function renderPlaceTypeManagerCard(
 		if (hiddenCats.size > 0) {
 			const hiddenCatsInfo = listContainer.createDiv({ cls: 'crc-hidden-types-info' });
 			hiddenCatsInfo.createEl('span', {
-				text: `${hiddenCats.size} categor${hiddenCats.size !== 1 ? 'ies' : 'y'} hidden`,
+				text: `${hiddenCats.size} 个分类已隐藏`,
 				cls: 'crc-text-muted'
 			});
 
 			const showAllCatsBtn = hiddenCatsInfo.createEl('button', {
-				text: 'Show all',
+				text: '全部显示',
 				cls: 'crc-btn-link'
 			});
 			showAllCatsBtn.addEventListener('click', () => {
@@ -284,12 +284,12 @@ export function renderPlaceTypeManagerCard(
 		if (hiddenTypes.size > 0) {
 			const hiddenInfo = listContainer.createDiv({ cls: 'crc-hidden-types-info' });
 			hiddenInfo.createEl('span', {
-				text: `${hiddenTypes.size} type${hiddenTypes.size !== 1 ? 's' : ''} hidden`,
+				text: `${hiddenTypes.size} 个类型已隐藏`,
 				cls: 'crc-text-muted'
 			});
 
 			const showAllBtn = hiddenInfo.createEl('button', {
-				text: 'Show all',
+				text: '全部显示',
 				cls: 'crc-btn-link'
 			});
 			showAllBtn.addEventListener('click', () => {
@@ -327,7 +327,7 @@ function renderTypeRow(
 	const levelCell = row.createEl('td', { cls: 'crc-type-cell-level' });
 	const levelBadge = levelCell.createSpan({ cls: 'crc-place-level-badge' });
 	levelBadge.textContent = `L${type.hierarchyLevel}`;
-	levelBadge.setAttribute('title', `Hierarchy level ${type.hierarchyLevel}`);
+	levelBadge.setAttribute('title', `层级 ${type.hierarchyLevel}`);
 
 	// Name cell
 	const nameCell = row.createEl('td', { cls: 'crc-type-cell-name' });
@@ -339,10 +339,10 @@ function renderTypeRow(
 	// Status cell (badges)
 	const statusCell = row.createEl('td', { cls: 'crc-type-cell-status' });
 	if (isCustomized) {
-		statusCell.createEl('span', { text: 'Customized', cls: 'crc-type-badge crc-type-badge--customized' });
+		statusCell.createEl('span', { text: '已自定义', cls: 'crc-type-badge crc-type-badge--customized' });
 	}
 	if (isHidden) {
-		statusCell.createEl('span', { text: 'Hidden', cls: 'crc-type-badge crc-type-badge--hidden' });
+		statusCell.createEl('span', { text: '已隐藏', cls: 'crc-type-badge crc-type-badge--hidden' });
 	}
 
 	// Actions cell
@@ -355,7 +355,7 @@ function renderTypeRow(
 		const upBtn = actionsWrapper.createEl('button', {
 			text: '↑',
 			cls: 'crc-btn crc-btn--small',
-			attr: { 'aria-label': 'Move type up (shallower)' }
+			attr: { 'aria-label': '上移类型（更浅层）' }
 		});
 		upBtn.disabled = !reorder.canMoveUp;
 		upBtn.addEventListener('click', (e) => {
@@ -366,7 +366,7 @@ function renderTypeRow(
 		const downBtn = actionsWrapper.createEl('button', {
 			text: '↓',
 			cls: 'crc-btn crc-btn--small',
-			attr: { 'aria-label': 'Move type down (deeper)' }
+			attr: { 'aria-label': '下移类型（更深层）' }
 		});
 		downBtn.disabled = !reorder.canMoveDown;
 		downBtn.addEventListener('click', (e) => {
@@ -376,7 +376,7 @@ function renderTypeRow(
 	}
 
 	// Edit/Customize button — icon + tooltip to reduce row clutter (#734 follow-up).
-	const editLabel = type.builtIn ? 'Customize' : 'Edit';
+	const editLabel = type.builtIn ? '自定义' : '编辑';
 	const editBtn = actionsWrapper.createEl('button', {
 		cls: 'crc-btn crc-btn--small',
 		attr: { 'aria-label': editLabel, title: editLabel }
@@ -403,7 +403,7 @@ function renderTypeRow(
 	});
 
 	// Hide/Show button — icon + tooltip to reduce row clutter (#734 follow-up).
-	const hideLabel = isHidden ? 'Show' : 'Hide';
+	const hideLabel = isHidden ? '显示' : '隐藏';
 	const hideBtn = actionsWrapper.createEl('button', {
 		cls: 'crc-btn crc-btn--small',
 		attr: { 'aria-label': hideLabel, title: hideLabel }
@@ -429,7 +429,7 @@ function renderTypeRow(
 	if (type.builtIn && isCustomized) {
 		const resetBtn = actionsWrapper.createEl('button', {
 			cls: 'crc-btn crc-btn--small',
-			attr: { 'aria-label': 'Reset to default', title: 'Reset to default' }
+			attr: { 'aria-label': '重置为默认', title: '重置为默认' }
 		});
 		setIcon(resetBtn, 'rotate-ccw');
 		resetBtn.addEventListener('click', (e) => {
@@ -449,7 +449,7 @@ function renderTypeRow(
 	if (!type.builtIn) {
 		const deleteBtn = actionsWrapper.createEl('button', {
 			cls: 'crc-btn crc-btn--small',
-			attr: { 'aria-label': 'Delete', title: 'Delete' }
+			attr: { 'aria-label': '删除', title: '删除' }
 		});
 		setIcon(deleteBtn, 'trash-2');
 		deleteBtn.addEventListener('click', (e) => {
@@ -468,18 +468,18 @@ function confirmDeleteType(
 	onUpdate: () => void
 ): void {
 	const modal = new Modal(plugin.app);
-	modal.titleEl.setText('Delete place type');
+	modal.titleEl.setText('删除地点类型');
 	modal.contentEl.createEl('p', {
-		text: `Are you sure you want to delete "${type.name}"? Existing place notes using this type will still work, but the type will no longer appear in dropdowns.`
+		text: `确定要删除"${type.name}"吗？使用此类型的现有地点笔记仍然有效，但该类型将不再出现在下拉菜单中。`
 	});
 
 	const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
 
-	const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+	const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 	cancelBtn.addEventListener('click', () => modal.close());
 
 	const deleteBtn = buttonContainer.createEl('button', {
-		text: 'Delete',
+		text: '删除',
 		cls: 'mod-warning'
 	});
 	deleteBtn.addEventListener('click', () => {
@@ -493,7 +493,7 @@ function confirmDeleteType(
 			);
 			await plugin.saveSettings();
 			modal.close();
-			new Notice(`Deleted "${type.name}"`);
+			new Notice(`已删除"${type.name}"`);
 			onUpdate();
 		})();
 	});
@@ -603,16 +603,16 @@ function openCategoryEditor(
 
 	modal.titleEl.setText(
 		isBuiltIn
-			? `Customize "${category?.name}"`
+			? `自定义"${category?.name}"`
 			: isEditing
-				? 'Edit category'
-				: 'Create category'
+				? '编辑分类'
+				: '创建分类'
 	);
 
 	if (isBuiltIn) {
 		const info = modal.contentEl.createDiv({ cls: 'cr-modal-info' });
 		info.createEl('p', {
-			text: 'Customize this built-in category. You can rename it or change its position.',
+			text: '自定义此内置分类。你可以重命名它或更改其位置。',
 			cls: 'crc-text-muted'
 		});
 	}
@@ -621,12 +621,12 @@ function openCategoryEditor(
 	const nameRow = modal.contentEl.createDiv({ cls: 'setting-item' });
 	nameRow.createDiv({ cls: 'setting-item-info' }).createDiv({
 		cls: 'setting-item-name',
-		text: 'Name'
+		text: '名称'
 	});
 	const nameInput = nameRow.createDiv({ cls: 'setting-item-control' }).createEl('input', {
 		type: 'text',
 		value: category?.name || '',
-		placeholder: 'e.g., Bodies of water'
+		placeholder: '例如：水域'
 	});
 	nameInput.addClass('crc-form-input');
 
@@ -634,7 +634,7 @@ function openCategoryEditor(
 	const orderRow = modal.contentEl.createDiv({ cls: 'setting-item' });
 	orderRow.createDiv({ cls: 'setting-item-info' }).createDiv({
 		cls: 'setting-item-name',
-		text: 'Sort order'
+		text: '排序顺序'
 	});
 	const orderInput = orderRow.createDiv({ cls: 'setting-item-control' }).createEl('input', {
 		type: 'number',
@@ -649,7 +649,7 @@ function openCategoryEditor(
 	if (isBuiltIn && category) {
 		const hasCustomization = plugin.settings.placeTypeCategoryCustomizations?.[category.id];
 		if (hasCustomization) {
-			const resetBtn = buttonContainer.createEl('button', { text: 'Reset to default' });
+			const resetBtn = buttonContainer.createEl('button', { text: '重置为默认' });
 			resetBtn.addEventListener('click', () => {
 				void (async () => {
 					if (plugin.settings.placeTypeCategoryCustomizations) {
@@ -657,25 +657,25 @@ function openCategoryEditor(
 					}
 					await plugin.saveSettings();
 					modal.close();
-					new Notice('Reset to default');
+					new Notice('已重置为默认');
 					onSave();
 				})();
 			});
 		}
 	}
 
-	const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+	const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 	cancelBtn.addEventListener('click', () => modal.close());
 
 	const saveBtn = buttonContainer.createEl('button', {
-		text: isBuiltIn ? 'Save customization' : isEditing ? 'Save' : 'Create',
+		text: isBuiltIn ? '保存自定义' : isEditing ? '保存' : '创建',
 		cls: 'mod-cta'
 	});
 	saveBtn.addEventListener('click', () => {
 		void (async () => {
 			const name = nameInput.value.trim();
 			if (!name) {
-				new Notice('Category name is required');
+				new Notice('分类名称为必填项');
 				return;
 			}
 
@@ -704,7 +704,7 @@ function openCategoryEditor(
 
 				await plugin.saveSettings();
 				modal.close();
-				new Notice('Category customized');
+				new Notice('分类已自定义');
 				onSave();
 			} else if (isEditing && category) {
 				// Update existing custom category
@@ -714,7 +714,7 @@ function openCategoryEditor(
 				);
 				await plugin.saveSettings();
 				modal.close();
-				new Notice(`Updated "${name}"`);
+				new Notice(`已更新"${name}"`);
 				onSave();
 			} else {
 				// Create new custom category
@@ -724,14 +724,14 @@ function openCategoryEditor(
 				const existing = plugin.settings.customPlaceTypeCategories || [];
 				const builtInConflict = BUILT_IN_PLACE_TYPE_CATEGORIES.some(c => c.id === id);
 				if (builtInConflict || existing.some(c => c.id === id)) {
-					new Notice('A category with this ID already exists');
+					new Notice('已存在使用此 ID 的分类');
 					return;
 				}
 
 				plugin.settings.customPlaceTypeCategories = [...existing, { id, name, sortOrder }];
 				await plugin.saveSettings();
 				modal.close();
-				new Notice(`Created "${name}"`);
+				new Notice(`已创建"${name}"`);
 				onSave();
 			}
 		})();
@@ -752,34 +752,34 @@ function confirmDeleteCategory(
 	onDelete: () => void
 ): void {
 	const modal = new Modal(plugin.app);
-	modal.titleEl.setText(isBuiltIn ? 'Hide category' : 'Delete category');
+	modal.titleEl.setText(isBuiltIn ? '隐藏分类' : '删除分类');
 
 	if (typeCount > 0) {
 		modal.contentEl.createEl('p', {
-			text: `This category contains ${typeCount} type${typeCount !== 1 ? 's' : ''}. You must move or delete all types before ${isBuiltIn ? 'hiding' : 'deleting'} the category.`
+			text: `此分类包含 ${typeCount} 个类型。你必须先移动或删除所有类型，才能${isBuiltIn ? '隐藏' : '删除'}该分类。`
 		});
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
-		const okBtn = buttonContainer.createEl('button', { text: 'OK', cls: 'mod-cta' });
+		const okBtn = buttonContainer.createEl('button', { text: '确定', cls: 'mod-cta' });
 		okBtn.addEventListener('click', () => modal.close());
 	} else {
 		if (isBuiltIn) {
 			modal.contentEl.createEl('p', {
-				text: `Are you sure you want to hide the category "${category.name}"? You can restore it later from the settings.`
+				text: `确定要隐藏分类"${category.name}"吗？稍后可以在设置中恢复它。`
 			});
 		} else {
 			modal.contentEl.createEl('p', {
-				text: `Are you sure you want to delete the category "${category.name}"?`
+				text: `确定要删除分类"${category.name}"吗？`
 			});
 		}
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'modal-button-container' });
 
-		const cancelBtn = buttonContainer.createEl('button', { text: 'Cancel' });
+		const cancelBtn = buttonContainer.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => modal.close());
 
 		const deleteBtn = buttonContainer.createEl('button', {
-			text: isBuiltIn ? 'Hide' : 'Delete',
+			text: isBuiltIn ? '隐藏' : '删除',
 			cls: 'mod-warning'
 		});
 		deleteBtn.addEventListener('click', () => {
@@ -799,7 +799,7 @@ function confirmDeleteCategory(
 				}
 				await plugin.saveSettings();
 				modal.close();
-				new Notice(isBuiltIn ? `Hidden "${category.name}"` : `Deleted "${category.name}"`);
+				new Notice(isBuiltIn ? `已隐藏"${category.name}"` : `已删除"${category.name}"`);
 				onDelete();
 			})();
 		});

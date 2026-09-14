@@ -29,14 +29,14 @@ export class SortOrderResultModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'crc-modal-header' });
 		const titleContainer = header.createDiv({ cls: 'crc-modal-title' });
 		titleContainer.appendChild(createLucideIcon('arrow-up-down', 24));
-		titleContainer.appendText('Compute sort order');
+		titleContainer.appendText('计算排序顺序');
 
 		// Summary line — updated count, or a clear "nothing to update" state.
 		const summary = contentEl.createEl('p', { cls: 'crc-sort-order-result-summary' });
 		if (this.result.updatedCount > 0) {
-			summary.appendText(`Updated ${this.result.updatedCount} event${this.result.updatedCount === 1 ? '' : 's'}.`);
+			summary.appendText(`已更新 ${this.result.updatedCount} 个事件。`);
 		} else {
-			summary.appendText('Nothing to update — every event was already in order.');
+			summary.appendText('无需更新——所有事件均已按顺序排列。');
 		}
 
 		// Errors section (currently only ever surfaced via a toast).
@@ -49,7 +49,7 @@ export class SortOrderResultModal extends Modal {
 			this.renderCycles(contentEl);
 		} else if (this.result.errors.length === 0) {
 			contentEl.createEl('p', {
-				text: 'No cycles detected — all before/after relationships resolved.',
+				text: '未检测到循环——所有前后关系均已解决。',
 				cls: 'crc-sort-order-result-clean'
 			});
 		}
@@ -58,7 +58,7 @@ export class SortOrderResultModal extends Modal {
 		// isn't lost — re-running Compute sort order brings it back (#723).
 		if (this.result.cycleEventNotes.length > 0) {
 			contentEl.createEl('p', {
-				text: 'Opening a note closes this dialog. Re-run Compute sort order to show this list again.',
+				text: '打开笔记会关闭此对话框。重新运行"计算排序顺序"可再次显示此列表。',
 				cls: 'crc-sort-order-result-hint'
 			});
 		}
@@ -66,7 +66,7 @@ export class SortOrderResultModal extends Modal {
 		// Close button
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Close')
+			.setButtonText('关闭')
 			.setCta()
 			.onClick(() => this.close());
 	}
@@ -74,7 +74,7 @@ export class SortOrderResultModal extends Modal {
 	private renderErrors(contentEl: HTMLElement) {
 		const section = contentEl.createDiv({ cls: 'crc-sort-order-result-section' });
 		section.createEl('h4', {
-			text: `${this.result.errors.length} error${this.result.errors.length === 1 ? '' : 's'} while updating`,
+			text: `更新时出现 ${this.result.errors.length} 个错误`,
 			cls: 'crc-sort-order-result-heading'
 		});
 		const list = section.createEl('ul', { cls: 'crc-sort-order-result-errors' });
@@ -87,11 +87,11 @@ export class SortOrderResultModal extends Modal {
 		const count = this.result.cycleEventNotes.length;
 		const section = contentEl.createDiv({ cls: 'crc-sort-order-result-section' });
 		section.createEl('h4', {
-			text: `${count} event${count === 1 ? '' : 's'} couldn't be ordered`,
+			text: `${count} 个事件无法排序`,
 			cls: 'crc-sort-order-result-heading'
 		});
 		section.createEl('p', {
-			text: 'These events form a before/after loop. Open each one and adjust its "Occurs before/after" to break the cycle.',
+			text: '这些事件构成了前后关系循环。请打开每个事件并调整其"发生于……之前/之后"以打破循环。',
 			cls: 'crc-text--muted'
 		});
 

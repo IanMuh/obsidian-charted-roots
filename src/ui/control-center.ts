@@ -7,7 +7,6 @@ import { FamilyGraphService, TreeOptions } from '../core/family-graph';
 import { CanvasGenerator } from '../core/canvas-generator';
 import { getLogger } from '../core/logging';
 import { getErrorMessage } from '../core/error-utils';
-import { pluralize } from '../utils/format-utils';
 import type { RecentTreeInfo } from '../settings';
 import { ConfirmationModal } from './data-quality-modals';
 import { renderDataQualityTab } from './data-quality-tab';
@@ -210,7 +209,7 @@ export class ControlCenterModal extends Modal {
 		const titleSection = this.appBar.createDiv({ cls: 'crc-header-title' });
 		const titleIcon = createLucideIcon('git-branch', 20);
 		titleSection.appendChild(titleIcon);
-		titleSection.appendText('Charted Roots Control Center');
+		titleSection.appendText('Charted Roots 控制中心');
 
 		// Action buttons section
 		const actionsSection = this.appBar.createDiv({ cls: 'crc-header-actions' });
@@ -264,7 +263,7 @@ export class ControlCenterModal extends Modal {
 		// Drawer header
 		const header = this.drawer.createDiv({ cls: 'crc-drawer__header' });
 		const headerTitle = header.createDiv({ cls: 'crc-drawer__title' });
-		headerTitle.textContent = 'Navigation';
+		headerTitle.textContent = '导航';
 
 		// Drawer content
 		const content = this.drawer.createDiv({ cls: 'crc-drawer__content' });
@@ -368,7 +367,7 @@ export class ControlCenterModal extends Modal {
 
 		// Group label
 		const labelEl = groupEl.createDiv({ cls: 'crc-nav-group__label' });
-		labelEl.textContent = 'Tools';
+		labelEl.textContent = '工具';
 
 		// Create list for tool entries
 		const list = groupEl.createEl('ul', { cls: 'crc-nav-list' });
@@ -530,7 +529,7 @@ export class ControlCenterModal extends Modal {
 		// Get person info from file metadata
 		const cache = this.app.metadataCache.getFileCache(file);
 		if (!cache?.frontmatter) {
-			new Notice('Unable to read person data from file');
+			new Notice('无法从文件读取人物数据');
 			return;
 		}
 
@@ -538,7 +537,7 @@ export class ControlCenterModal extends Modal {
 		const name = cache.frontmatter.name || file.basename;
 
 		if (!crId) {
-			new Notice('This note does not have a cr_id field');
+			new Notice('此笔记没有 cr_id 字段');
 			return;
 		}
 
@@ -579,16 +578,16 @@ export class ControlCenterModal extends Modal {
 
 			// Find all family components
 			logger.info('generate-all-trees', 'Finding all family components in vault');
-			new Notice('Scanning vault for family groups...');
+			new Notice('正在扫描库中的家族分组…');
 			const components = graphService.findAllFamilyComponents();
 
 			if (components.length === 0) {
-				new Notice('No family trees found in vault. Please add some person notes first.');
+				new Notice('库中未找到家谱。请先添加一些人物笔记。');
 				return;
 			}
 
 			if (components.length === 1) {
-				new Notice('Only one family tree found. Use "Generate tree" instead.');
+				new Notice('仅找到一棵家谱。请改用"生成树"。');
 				return;
 			}
 
@@ -596,7 +595,7 @@ export class ControlCenterModal extends Modal {
 				sizes: components.map(c => c.size)
 			});
 
-			new Notice(`Found ${components.length} family groups. Generating trees...`);
+			new Notice(`找到 ${components.length} 个家族分组。正在生成树…`);
 
 			// Generate a tree for each component
 			for (let i = 0; i < components.length; i++) {
@@ -604,7 +603,7 @@ export class ControlCenterModal extends Modal {
 				const rep = component.representative;
 
 				// Update progress
-				new Notice(`Generating tree ${i + 1}/${components.length}: ${rep.name}...`, 2000);
+				new Notice(`正在生成树 ${i + 1}/${components.length}：${rep.name}…`, 2000);
 
 				logger.info('generate-all-trees', `Generating tree ${i + 1}/${components.length}`, {
 					representative: rep.name,
@@ -628,7 +627,7 @@ export class ControlCenterModal extends Modal {
 							success: false,
 							familyName: component.collectionName || rep.name,
 							peopleCount: component.size,
-							error: 'Root person not found'
+							error: '未找到根人物'
 						});
 						continue;
 					}
@@ -765,13 +764,13 @@ export class ControlCenterModal extends Modal {
 
 		// Title
 		this.contentContainer.createEl('h2', {
-			text: 'Generate all trees - Results',
+				text: '生成所有树 - 结果',
 			cls: 'cr-card-title--no-margin'
 		});
 
 		// Summary stats
 		const summaryCard = this.createCard({
-			title: 'Summary',
+			title: '摘要',
 			icon: 'check'
 		});
 
@@ -781,7 +780,7 @@ export class ControlCenterModal extends Modal {
 
 		// Success count
 		const successStat = statsGrid.createDiv({ cls: 'crc-stat' });
-		successStat.createDiv({ cls: 'crc-stat__label', text: 'Successfully generated' });
+		successStat.createDiv({ cls: 'crc-stat__label', text: '成功生成' });
 		successStat.createDiv({
 			cls: 'crc-stat__value',
 			text: String(successCount)
@@ -790,7 +789,7 @@ export class ControlCenterModal extends Modal {
 		// Failure count (if any)
 		if (failureCount > 0) {
 			const failureStat = statsGrid.createDiv({ cls: 'crc-stat' });
-			failureStat.createDiv({ cls: 'crc-stat__label', text: 'Failed' });
+			failureStat.createDiv({ cls: 'crc-stat__label', text: '失败' });
 			failureStat.createDiv({
 				cls: 'crc-stat__value',
 				text: String(failureCount)
@@ -799,7 +798,7 @@ export class ControlCenterModal extends Modal {
 
 		// Total trees
 		const totalStat = statsGrid.createDiv({ cls: 'crc-stat' });
-		totalStat.createDiv({ cls: 'crc-stat__label', text: 'Total family groups' });
+		totalStat.createDiv({ cls: 'crc-stat__label', text: '家族分组总数' });
 		totalStat.createDiv({
 			cls: 'crc-stat__value',
 			text: String(results.length)
@@ -812,18 +811,18 @@ export class ControlCenterModal extends Modal {
 			const successMsg = this.contentContainer.createEl('p', {
 				cls: 'crc-text-success crc-mt-3'
 			});
-			successMsg.createEl('strong', { text: '✓ All trees generated successfully!' });
+			successMsg.createEl('strong', { text: '✓ 所有树均已成功生成！' });
 		} else {
 			const warningMsg = this.contentContainer.createEl('p', {
 				cls: 'crc-text-warning crc-mt-3'
 			});
-			warningMsg.createEl('strong', { text: `⚠ ${failureCount} ${pluralize(failureCount, 'tree')} failed to generate.` });
-			warningMsg.appendText(' See details below.');
+			warningMsg.createEl('strong', { text: `⚠ ${failureCount} 棵树生成失败。` });
+			warningMsg.appendText(' 详见下方。');
 		}
 
 		// Details card
 		const detailsCard = this.createCard({
-			title: 'Generated trees',
+			title: '已生成的树',
 			icon: 'file'
 		});
 
@@ -850,7 +849,7 @@ export class ControlCenterModal extends Modal {
 
 			resultHeader.createSpan({
 				cls: 'crc-result-item__count',
-				text: `${result.peopleCount} people`
+				text: `${result.peopleCount} 位人物`
 			});
 
 			// Success: show file name and action buttons
@@ -867,7 +866,7 @@ export class ControlCenterModal extends Modal {
 
 				const openBtn = actions.createEl('button', {
 					cls: 'crc-btn crc-btn--small',
-					text: 'Open canvas'
+					text: '打开画布'
 				});
 				const openIcon = createLucideIcon('external-link', 14);
 				openBtn.prepend(openIcon);
@@ -883,7 +882,7 @@ export class ControlCenterModal extends Modal {
 
 				const relayoutBtn = actions.createEl('button', {
 					cls: 'crc-btn crc-btn--small crc-btn--secondary',
-					text: 'Re-layout'
+					text: '重新布局'
 				});
 				const relayoutIcon = createLucideIcon('refresh-cw', 14);
 				relayoutBtn.prepend(relayoutIcon);
@@ -903,7 +902,7 @@ export class ControlCenterModal extends Modal {
 
 				resultBody.createEl('p', {
 					cls: 'crc-text-error',
-					text: `Error: ${result.error}`
+					text: `错误：${result.error}`
 				});
 			}
 		});
@@ -913,7 +912,7 @@ export class ControlCenterModal extends Modal {
 		// Back button
 		const backBtn = this.contentContainer.createEl('button', {
 			cls: 'crc-btn crc-btn--secondary crc-btn--block crc-mt-3',
-			text: 'Back to tree output'
+			text: '返回树输出'
 		});
 		const backIcon = createLucideIcon('chevron-right', 16);
 		backBtn.prepend(backIcon);
@@ -923,9 +922,9 @@ export class ControlCenterModal extends Modal {
 
 		// Final success notice
 		if (failureCount === 0) {
-			new Notice(`Successfully generated ${successCount} family trees!`, 5000);
+			new Notice(`成功生成 ${successCount} 棵家谱！`, 5000);
 		} else {
-			new Notice(`Generated ${successCount} of ${results.length} trees. ${failureCount} failed.`, 5000);
+			new Notice(`已生成 ${successCount}/${results.length} 棵树。${failureCount} 棵失败。`, 5000);
 		}
 	}
 
@@ -959,13 +958,13 @@ export class ControlCenterModal extends Modal {
 		const days = Math.floor(hours / 24);
 
 		if (days > 0) {
-			return days === 1 ? '1 day ago' : `${days} days ago`;
+			return days === 1 ? '1 天前' : `${days} 天前`;
 		} else if (hours > 0) {
-			return hours === 1 ? '1 hour ago' : `${hours} hours ago`;
+			return hours === 1 ? '1 小时前' : `${hours} 小时前`;
 		} else if (minutes > 0) {
-			return minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`;
+			return minutes === 1 ? '1 分钟前' : `${minutes} 分钟前`;
 		} else {
-			return 'just now';
+			return '刚刚';
 		}
 	}
 
@@ -1080,7 +1079,7 @@ export class ControlCenterModal extends Modal {
 			settings: this.plugin.settings,
 			plugin: this.plugin,
 			onCreated: () => {
-				new Notice(`Created place note: ${placeName}`);
+					new Notice(`已创建地点笔记：${placeName}`);
 				// Refresh the Places tab
 				this.showTab('places');
 			}
@@ -1097,7 +1096,7 @@ export class ControlCenterModal extends Modal {
 		eventService: EventService
 	): void {
 		const modal = new Modal(this.app);
-		modal.titleEl.setText(`Timeline: ${personName}`);
+		modal.titleEl.setText(`时间轴：${personName}`);
 		modal.modalEl.addClass('crc-person-timeline-modal');
 
 		const content = modal.contentEl.createDiv({ cls: 'crc-person-timeline-modal__content' });
@@ -1133,7 +1132,7 @@ export class ControlCenterModal extends Modal {
 		familyGraph: FamilyGraphService
 	): void {
 		const modal = new Modal(this.app);
-		modal.titleEl.setText(`Family timeline: ${personName}`);
+		modal.titleEl.setText(`家族时间轴：${personName}`);
 		modal.modalEl.addClass('crc-family-timeline-modal');
 
 		const content = modal.contentEl.createDiv({ cls: 'crc-family-timeline-modal__content' });
@@ -1255,13 +1254,13 @@ export class ControlCenterModal extends Modal {
 		const tabConfig = TAB_CONFIGS.find(t => t.id === tabId);
 
 		const card = this.createCard({
-			title: tabConfig?.name || 'Coming soon',
+			title: tabConfig?.name || '即将推出',
 			icon: tabConfig?.icon || 'info'
 		});
 
 		const content = card.querySelector('.crc-card__content') as HTMLElement;
 		content.createEl('p', {
-			text: tabConfig?.description || 'This tab is under construction.',
+			text: tabConfig?.description || '此标签页正在建设中。',
 			cls: 'crc-text-muted'
 		});
 
@@ -1344,7 +1343,7 @@ export class ControlCenterModal extends Modal {
 			await leaf.openFile(file);
 			this.close();
 		} else {
-			new Notice(`Canvas file not found: ${canvasPath}`);
+			new Notice(`未找到画布文件：${canvasPath}`);
 		}
 	}
 
@@ -1356,7 +1355,7 @@ export class ControlCenterModal extends Modal {
 
 		// Open in new tab
 		menu.addItem((item) => {
-			item.setTitle('Open')
+			item.setTitle('打开')
 				.setIcon('external-link')
 				.onClick(() => {
 					void this.openCanvasTree(tree.canvasPath);
@@ -1365,7 +1364,7 @@ export class ControlCenterModal extends Modal {
 
 		// Open in new tab
 		menu.addItem((item) => {
-			item.setTitle('Open in new tab')
+			item.setTitle('在新标签页中打开')
 				.setIcon('plus')
 				.onClick(() => {
 					void (async () => {
@@ -1374,7 +1373,7 @@ export class ControlCenterModal extends Modal {
 							const leaf = this.app.workspace.getLeaf('tab');
 							await leaf.openFile(file);
 						} else {
-							new Notice(`Canvas file not found: ${tree.canvasPath}`);
+							new Notice(`未找到画布文件：${tree.canvasPath}`);
 						}
 					})();
 				});
@@ -1384,16 +1383,16 @@ export class ControlCenterModal extends Modal {
 
 		// Regenerate canvas
 		menu.addItem((item) => {
-			item.setTitle('Regenerate')
+			item.setTitle('重新生成')
 				.setIcon('refresh-cw')
 				.onClick(() => {
 					void (async () => {
 						const file = this.app.vault.getAbstractFileByPath(tree.canvasPath);
 						if (file instanceof TFile) {
 							await this.plugin.regenerateCanvas(file);
-							new Notice('Canvas regenerated');
+							new Notice('画布已重新生成');
 						} else {
-							new Notice(`Canvas file not found: ${tree.canvasPath}`);
+							new Notice(`未找到画布文件：${tree.canvasPath}`);
 						}
 					})();
 				});
@@ -1401,7 +1400,7 @@ export class ControlCenterModal extends Modal {
 
 		// Reveal in navigation
 		menu.addItem((item) => {
-			item.setTitle('Reveal in navigation')
+			item.setTitle('在导航中显示')
 				.setIcon('folder')
 				.onClick(() => {
 					const file = this.app.vault.getAbstractFileByPath(tree.canvasPath);
@@ -1419,7 +1418,7 @@ export class ControlCenterModal extends Modal {
 							}
 						}
 					} else {
-						new Notice(`Canvas file not found: ${tree.canvasPath}`);
+						new Notice(`未找到画布文件：${tree.canvasPath}`);
 					}
 				});
 		});
@@ -1428,7 +1427,7 @@ export class ControlCenterModal extends Modal {
 
 		// Remove from recent
 		menu.addItem((item) => {
-			item.setTitle('Remove from recent')
+			item.setTitle('从最近中移除')
 				.setIcon('x')
 				.onClick(() => {
 					void (async () => {
@@ -1439,7 +1438,7 @@ export class ControlCenterModal extends Modal {
 							await this.plugin.saveSettings();
 							// Refresh the tab
 							this.showTab(this.activeTab);
-							new Notice('Removed from recent trees');
+							new Notice('已从最近的家谱中移除');
 						}
 					})();
 				});
@@ -1447,7 +1446,7 @@ export class ControlCenterModal extends Modal {
 
 		// Delete canvas file
 		menu.addItem((item) => {
-			item.setTitle('Delete canvas')
+			item.setTitle('删除画布')
 				.setIcon('trash-2')
 				.onClick(() => {
 					void (async () => {
@@ -1457,8 +1456,8 @@ export class ControlCenterModal extends Modal {
 							const confirmed = await new Promise<boolean>((resolve) => {
 								const modal = new ConfirmationModal(
 									this.app,
-									'Delete Canvas Tree',
-									`Are you sure you want to delete "${tree.canvasName}"? This action cannot be undone.`,
+									'删除画布树',
+									`确定要删除"${tree.canvasName}"吗？此操作无法撤销。`,
 									(result) => resolve(result)
 								);
 								modal.open();
@@ -1475,10 +1474,10 @@ export class ControlCenterModal extends Modal {
 								}
 								// Refresh the tab
 								this.showTab(this.activeTab);
-								new Notice('Canvas deleted');
+								new Notice('画布已删除');
 							}
 						} else {
-							new Notice(`Canvas file not found: ${tree.canvasPath}`);
+							new Notice(`未找到画布文件：${tree.canvasPath}`);
 						}
 					})();
 				});

@@ -53,7 +53,7 @@ export class TransfersProcessor {
 			// If cr_id not found, the metadata cache may not be ready yet
 			// Show loading state and wait for the 'changed' event to re-render
 			if (!context.crId) {
-				renderBlockLoading(el, 'Waiting for metadata...');
+				renderBlockLoading(el, '等待元数据…');
 
 				// Register for metadata changes - will re-render when cache is ready
 				const metadataHandler = async (changedFile: TFile) => {
@@ -66,7 +66,7 @@ export class TransfersProcessor {
 						if (freshContext.crId) {
 							await this.renderer.render(el, freshContext, config, component);
 						} else {
-							renderBlockError(el, 'This note does not have a cr_id. Transfer history can only be rendered in person notes.');
+							renderBlockError(el, '此笔记没有 cr_id。转移历史只能在人物笔记中渲染。');
 						}
 					}
 				};
@@ -131,7 +131,7 @@ export class TransfersProcessor {
 
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			renderBlockError(el, `Error rendering transfer history: ${message}`);
+			renderBlockError(el, `渲染转移历史失败：${message}`);
 		}
 	}
 

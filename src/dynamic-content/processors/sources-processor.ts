@@ -79,7 +79,7 @@ export class SourcesProcessor {
 
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			renderBlockError(el, `Error rendering sources: ${message}`);
+			renderBlockError(el, `渲染来源失败：${message}`);
 		}
 	}
 

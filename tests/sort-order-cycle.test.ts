@@ -100,11 +100,11 @@ describe('computeSortOrder cycle handling (#721)', () => {
 
 describe('formatCycleEvents (#721)', () => {
 	it('quotes and joins a short list', () => {
-		expect(formatCycleEvents(['Scarring', 'Battle'])).toBe('"Scarring", "Battle"');
+		expect(formatCycleEvents(['Scarring', 'Battle'])).toBe('"Scarring"、"Battle"');
 	});
 
 	it('caps the list with an "and N more" overflow', () => {
 		expect(formatCycleEvents(['a', 'b', 'c', 'd', 'e', 'f', 'g'], 5))
-			.toBe('"a", "b", "c", "d", "e", and 2 more');
+			.toBe('"a"、"b"、"c"、"d"、"e" 等另外 2 个');
 	});
 });

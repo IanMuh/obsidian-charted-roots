@@ -152,24 +152,24 @@ export class ModalStatePersistence<T extends object> {
 	 * Get a human-readable time string for how long ago the state was saved
 	 *
 	 * @param state - The persisted state
-	 * @returns A string like "5 minutes ago" or "2 hours ago"
+	 * @returns A string like "5 分钟前" or "2 小时前"
 	 */
 	getTimeAgoString(state: CreateEntityPersistedState): string {
 		const ageMs = Date.now() - state.savedAt;
 		const minutes = Math.floor(ageMs / (1000 * 60));
 
 		if (minutes < 1) {
-			return 'just now';
+			return '刚刚';
 		} else if (minutes === 1) {
-			return '1 minute ago';
+			return '1 分钟前';
 		} else if (minutes < 60) {
-			return `${minutes} minutes ago`;
+			return `${minutes} 分钟前`;
 		} else {
 			const hours = Math.floor(minutes / 60);
 			if (hours === 1) {
-				return '1 hour ago';
+				return '1 小时前';
 			} else {
-				return `${hours} hours ago`;
+				return `${hours} 小时前`;
 			}
 		}
 	}
@@ -225,14 +225,14 @@ export function renderResumePromptBanner(
 	messageDiv.createSpan({ cls: 'cr-modal-resume-banner__icon', text: '⏱️' });
 	messageDiv.createSpan({
 		cls: 'cr-modal-resume-banner__text',
-		text: `Resume previous session? You have unsaved data from ${timeAgo}.`
+		text: `是否恢复上次会话？你有来自 ${timeAgo} 的未保存数据。`
 	});
 
 	const buttonsDiv = banner.createDiv({ cls: 'cr-modal-resume-banner__buttons' });
 
 	const discardBtn = buttonsDiv.createEl('button', {
 		cls: 'cr-modal-resume-banner__btn cr-modal-resume-banner__btn--discard',
-		text: 'Discard'
+		text: '放弃'
 	});
 	discardBtn.addEventListener('click', (e) => {
 		e.preventDefault();
@@ -241,7 +241,7 @@ export function renderResumePromptBanner(
 
 	const restoreBtn = buttonsDiv.createEl('button', {
 		cls: 'cr-modal-resume-banner__btn cr-modal-resume-banner__btn--restore',
-		text: 'Restore'
+		text: '恢复'
 	});
 	restoreBtn.addEventListener('click', (e) => {
 		e.preventDefault();

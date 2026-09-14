@@ -46,7 +46,7 @@ export class BulkMediaLinkProgressModal extends Modal {
 
 		// Title
 		contentEl.createEl('h2', {
-			text: 'Linking Media',
+			text: '正在链接媒体',
 			cls: 'crc-modal-title'
 		});
 
@@ -56,7 +56,7 @@ export class BulkMediaLinkProgressModal extends Modal {
 		setIcon(this.phaseIcon, 'image-plus');
 		this.phaseLabel = phaseContainer.createEl('span', {
 			cls: 'cr-import-phase__label',
-			text: 'Linking media to entities…'
+			text: '正在将媒体链接到实体…'
 		});
 
 		// Progress bar container
@@ -68,7 +68,7 @@ export class BulkMediaLinkProgressModal extends Modal {
 		// Progress text
 		this.progressText = contentEl.createDiv({
 			cls: 'cr-import-progress__text',
-			text: 'Starting…'
+			text: '正在开始…'
 		});
 
 		// Stats container (shows running totals)
@@ -78,14 +78,14 @@ export class BulkMediaLinkProgressModal extends Modal {
 		// Cancel button
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-modal-buttons' });
 		this.cancelButton = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'mod-warning'
 		});
 		this.cancelButton.addEventListener('click', () => {
 			this.isCancelled = true;
 			if (this.cancelButton) {
 				this.cancelButton.disabled = true;
-				this.cancelButton.textContent = 'Cancelling...';
+				this.cancelButton.textContent = '正在取消…';
 			}
 		});
 	}
@@ -116,9 +116,9 @@ export class BulkMediaLinkProgressModal extends Modal {
 
 		// Update progress text
 		if (progress.currentEntityName) {
-			this.progressText.textContent = `${progress.current} of ${progress.total}: ${progress.currentEntityName}`;
+			this.progressText.textContent = `${progress.current} / ${progress.total}：${progress.currentEntityName}`;
 		} else {
-			this.progressText.textContent = `${progress.current} of ${progress.total}`;
+			this.progressText.textContent = `${progress.current} / ${progress.total}`;
 		}
 	}
 
@@ -149,17 +149,17 @@ export class BulkMediaLinkProgressModal extends Modal {
 		this.phaseIcon.addClass('cr-icon--success');
 
 		if (this.isCancelled) {
-			this.phaseLabel.textContent = 'Cancelled';
-			this.progressText.textContent = 'Operation cancelled by user';
+			this.phaseLabel.textContent = '已取消';
+			this.progressText.textContent = '操作已被用户取消';
 		} else {
-			this.phaseLabel.textContent = 'Complete';
+			this.phaseLabel.textContent = '完成';
 			this.progressBar.setCssProps({ '--progress-width': '100%' });
-			this.progressText.textContent = 'Done!';
+			this.progressText.textContent = '已完成！';
 		}
 
 		// Change cancel button to close button
 		if (this.cancelButton) {
-			this.cancelButton.textContent = 'Close';
+			this.cancelButton.textContent = '关闭';
 			this.cancelButton.disabled = false;
 			this.cancelButton.removeClass('mod-warning');
 			this.cancelButton.onclick = () => this.close();
@@ -177,20 +177,20 @@ export class BulkMediaLinkProgressModal extends Modal {
 		// Media files being linked
 		const mediaStatEl = this.statsContainer.createDiv({ cls: 'cr-import-stat' });
 		setIcon(mediaStatEl.createSpan(), 'image');
-		mediaStatEl.createEl('span', { text: `${this.mediaCount} media file${this.mediaCount !== 1 ? 's' : ''}` });
+		mediaStatEl.createEl('span', { text: `${this.mediaCount} 个媒体文件` });
 
 		// Success count
 		if (this.successCount > 0) {
 			const successStatEl = this.statsContainer.createDiv({ cls: 'cr-import-stat' });
 			setIcon(successStatEl.createSpan(), 'check');
-			successStatEl.createEl('span', { text: `${this.successCount} linked` });
+			successStatEl.createEl('span', { text: `已链接 ${this.successCount} 个` });
 		}
 
 		// Error count
 		if (this.errorCount > 0) {
 			const errorStatEl = this.statsContainer.createDiv({ cls: 'cr-import-stat' });
 			setIcon(errorStatEl.createSpan(), 'alert-circle');
-			errorStatEl.createEl('span', { text: `${this.errorCount} failed` });
+			errorStatEl.createEl('span', { text: `${this.errorCount} 个失败` });
 		}
 	}
 }

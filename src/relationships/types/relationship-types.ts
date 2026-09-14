@@ -170,13 +170,13 @@ export interface RelationshipValidationResult {
  * Human-readable category names for display
  */
 export const RELATIONSHIP_CATEGORY_NAMES: Record<RelationshipCategory, string> = {
-	family: 'Family',
-	legal: 'Legal/Guardianship',
-	religious: 'Religious/Spiritual',
-	professional: 'Professional',
-	social: 'Social',
-	feudal: 'Feudal/World-building',
-	dna: 'DNA/Genetic'
+	family: '家族',
+	legal: '法律/监护',
+	religious: '宗教/灵性',
+	professional: '职业',
+	social: '社交',
+	feudal: '封建/世界观',
+	dna: 'DNA/遗传'
 };
 
 /**

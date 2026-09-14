@@ -165,14 +165,14 @@ export class GedcomXExporter {
 			: null;
 
 		try {
-			new Notice('Reading person notes...');
+			new Notice('正在读取人物笔记…');
 
 			// Load all people using the family graph service
 			this.graphService['loadPersonCache']();
 			const allPeople = Array.from(this.graphService['personCache'].values());
 
 			if (allPeople.length === 0) {
-				throw new Error(`No person notes found in folder: ${options.peopleFolder}`);
+				throw new Error(`在文件夹中未找到人物笔记：${options.peopleFolder}`);
 			}
 
 			logger.info('export', `Loaded ${allPeople.length} people`);
@@ -187,7 +187,7 @@ export class GedcomXExporter {
 				logger.info('export', `Filtered to ${filteredPeople.length} people in collection: ${options.collectionFilter}`);
 
 				if (filteredPeople.length === 0) {
-					throw new Error(`No people found in collection "${options.collectionFilter}".`);
+					throw new Error(`合集 "${options.collectionFilter}" 中未找到人物。`);
 				}
 			}
 
@@ -203,7 +203,7 @@ export class GedcomXExporter {
 				logger.info('export', `Filtered to ${filteredPeople.length} people in ${options.branchDirection} branch`);
 
 				if (filteredPeople.length === 0) {
-					throw new Error(`No people found in ${options.branchDirection} branch.`);
+					throw new Error(`在 ${options.branchDirection} 分支中未找到人物。`);
 				}
 			}
 
@@ -243,7 +243,7 @@ export class GedcomXExporter {
 			// Load events if event service is available
 			let allEvents: EventNote[] = [];
 			if (this.eventService) {
-				new Notice('Loading event notes...');
+				new Notice('正在加载事件笔记…');
 				allEvents = this.eventService.getAllEvents();
 				logger.info('export', `Loaded ${allEvents.length} events`);
 			}
@@ -251,7 +251,7 @@ export class GedcomXExporter {
 			// Load sources if source service is available
 			let allSources: SourceNote[] = [];
 			if (this.sourceService) {
-				new Notice('Loading source notes...');
+				new Notice('正在加载来源笔记…');
 				allSources = this.sourceService.getAllSources();
 				logger.info('export', `Loaded ${allSources.length} sources`);
 			}
@@ -259,13 +259,13 @@ export class GedcomXExporter {
 			// Load places if place graph service is available
 			let allPlaces: PlaceNode[] = [];
 			if (this.placeGraphService) {
-				new Notice('Loading place notes...');
+				new Notice('正在加载地点笔记…');
 				allPlaces = this.placeGraphService.getAllPlaces();
 				logger.info('export', `Loaded ${allPlaces.length} places`);
 			}
 
 			// Build GEDCOM X document
-			new Notice('Generating GEDCOM X data...');
+			new Notice('正在生成 GEDCOM X 数据…');
 			const document = this.buildGedcomXDocument(
 				filteredPeople,
 				allEvents,
@@ -281,13 +281,13 @@ export class GedcomXExporter {
 			result.relationshipsExported = document.relationships?.length || 0;
 			result.success = true;
 
-			new Notice(`Export complete: ${result.personsExported} people exported`);
+			new Notice(`导出完成：已导出 ${result.personsExported} 人`);
 
 		} catch (error: unknown) {
 			const errorMsg = getErrorMessage(error);
-			result.errors.push(`Export failed: ${errorMsg}`);
+			result.errors.push(`导出失败：${errorMsg}`);
 			logger.error('export', 'Export failed', error);
-			new Notice(`Export failed: ${errorMsg}`);
+			new Notice(`导出失败：${errorMsg}`);
 		}
 
 		return result;

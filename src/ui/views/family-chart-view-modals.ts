@@ -42,20 +42,20 @@ export class DeletePersonConfirmModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl, titleEl } = this;
-		titleEl.setText('Delete person from chart?');
+		titleEl.setText('从图表中删除人物？');
 
 		contentEl.createEl('p', {
-			text: `Are you sure you want to remove "${this.personName}" from the chart?`
+			text: `确定要从图表中移除"${this.personName}"吗？`
 		});
 		contentEl.createEl('p', {
-			text: 'The person note file will not be deleted, only their entry in the chart.',
+			text: '人物笔记文件不会被删除，仅移除其在图表中的条目。',
 			cls: 'mod-muted'
 		});
 
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelBtn = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelBtn.addEventListener('click', () => {
@@ -64,7 +64,7 @@ export class DeletePersonConfirmModal extends Modal {
 		});
 
 		const confirmBtn = buttonContainer.createEl('button', {
-			text: 'Delete',
+			text: '删除',
 			cls: 'mod-warning'
 		});
 		confirmBtn.addEventListener('click', () => {
@@ -109,24 +109,24 @@ export class FamilyChartStyleModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl, titleEl, modalEl } = this;
-		titleEl.setText('Chart Colors');
+		titleEl.setText('图表颜色');
 		modalEl.addClass('cr-fcv-style-modal');
 
 		// Card colors section
 		const cardSection = contentEl.createDiv({ cls: 'cr-fcv-color-section' });
-		cardSection.createEl('h3', { text: 'Card Colors' });
+		cardSection.createEl('h3', { text: '卡片颜色' });
 
-		this.createColorRow(cardSection, 'Female', this.colors.femaleColor, (val) => {
+		this.createColorRow(cardSection, 'female', '女性', this.colors.femaleColor, (val) => {
 			this.colors.femaleColor = val;
 			this.previewColors();
 		});
 
-		this.createColorRow(cardSection, 'Male', this.colors.maleColor, (val) => {
+		this.createColorRow(cardSection, 'male', '男性', this.colors.maleColor, (val) => {
 			this.colors.maleColor = val;
 			this.previewColors();
 		});
 
-		this.createColorRow(cardSection, 'Unknown', this.colors.unknownColor, (val) => {
+		this.createColorRow(cardSection, 'unknown', '未知', this.colors.unknownColor, (val) => {
 			this.colors.unknownColor = val;
 			this.previewColors();
 		});
@@ -134,23 +134,23 @@ export class FamilyChartStyleModal extends Modal {
 		// Background section
 		const bgSection = contentEl.createDiv({ cls: 'cr-fcv-color-section' });
 		const isDark = activeDocument.body.classList.contains('theme-dark');
-		bgSection.createEl('h3', { text: `Background (${isDark ? 'dark' : 'light'} theme)` });
+		bgSection.createEl('h3', { text: `背景（${isDark ? '深色' : '浅色'}主题）` });
 
 		if (isDark) {
-			this.createColorRow(bgSection, 'Background', this.colors.backgroundDark, (val) => {
+			this.createColorRow(bgSection, 'background', '背景', this.colors.backgroundDark, (val) => {
 				this.colors.backgroundDark = val;
 				this.previewColors();
 			});
-			this.createColorRow(bgSection, 'Text', this.colors.textDark, (val) => {
+			this.createColorRow(bgSection, 'text', '文本', this.colors.textDark, (val) => {
 				this.colors.textDark = val;
 				this.previewColors();
 			});
 		} else {
-			this.createColorRow(bgSection, 'Background', this.colors.backgroundLight, (val) => {
+			this.createColorRow(bgSection, 'background', '背景', this.colors.backgroundLight, (val) => {
 				this.colors.backgroundLight = val;
 				this.previewColors();
 			});
-			this.createColorRow(bgSection, 'Text', this.colors.textLight, (val) => {
+			this.createColorRow(bgSection, 'text', '文本', this.colors.textLight, (val) => {
 				this.colors.textLight = val;
 				this.previewColors();
 			});
@@ -158,7 +158,7 @@ export class FamilyChartStyleModal extends Modal {
 
 		// Presets section
 		const presetsSection = contentEl.createDiv({ cls: 'cr-fcv-color-section' });
-		presetsSection.createEl('h3', { text: 'Presets' });
+		presetsSection.createEl('h3', { text: '预设' });
 		const presetsRow = presetsSection.createDiv({ cls: 'cr-fcv-presets-row' });
 
 		for (const [, preset] of Object.entries(this.themePresets)) {
@@ -177,7 +177,7 @@ export class FamilyChartStyleModal extends Modal {
 		const buttonRow = contentEl.createDiv({ cls: 'cr-fcv-button-row' });
 
 		const resetBtn = buttonRow.createEl('button', {
-			text: 'Reset',
+			text: '重置',
 			cls: 'cr-fcv-btn-secondary'
 		});
 		resetBtn.addEventListener('click', () => {
@@ -190,7 +190,7 @@ export class FamilyChartStyleModal extends Modal {
 		buttonRow.createDiv({ cls: 'cr-fcv-button-spacer' });
 
 		const cancelBtn = buttonRow.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'cr-fcv-btn-secondary'
 		});
 		cancelBtn.addEventListener('click', () => {
@@ -206,7 +206,7 @@ export class FamilyChartStyleModal extends Modal {
 		});
 
 		const applyBtn = buttonRow.createEl('button', {
-			text: 'Apply',
+			text: '应用',
 			cls: 'mod-cta'
 		});
 		applyBtn.addEventListener('click', () => {
@@ -214,7 +214,7 @@ export class FamilyChartStyleModal extends Modal {
 				// Save colors
 				this.plugin.settings.familyChartColors = { ...this.colors };
 				await this.plugin.saveSettings();
-				new Notice('Colors applied');
+				new Notice('颜色已应用');
 				this.close();
 			})();
 		});
@@ -225,6 +225,7 @@ export class FamilyChartStyleModal extends Modal {
 	 */
 	private createColorRow(
 		container: HTMLElement,
+		field: string,
 		label: string,
 		value: string,
 		onChange: (value: string) => void
@@ -240,7 +241,7 @@ export class FamilyChartStyleModal extends Modal {
 			cls: 'cr-fcv-color-input',
 			value: this.toHex(value)
 		});
-		colorInput.dataset.field = label.toLowerCase();
+		colorInput.dataset.field = field;
 
 		const hexDisplay = inputContainer.createEl('span', {
 			text: this.toHex(value),
@@ -359,10 +360,10 @@ export class HighlightGroupsModal extends Modal {
 	onOpen(): void {
 		const { contentEl, titleEl } = this;
 		this.modalEl.addClass('cr-highlight-groups-modal');
-		titleEl.setText('Highlight groups');
+		titleEl.setText('高亮分组');
 
 		contentEl.createEl('p', {
-			text: 'Highlight Family Chart cards by a property value. Non-matching cards are dimmed. Up to three groups can be active at once; when a card matches multiple groups, the first group in the list wins.',
+			text: '按属性值高亮家谱卡片。不匹配的卡片会变暗。最多可同时启用三个分组；当一张卡片匹配多个分组时，列表中最靠前的分组优先。',
 			cls: 'cr-highlight-groups-modal__desc'
 		});
 
@@ -382,7 +383,7 @@ export class HighlightGroupsModal extends Modal {
 
 		if (this.groups.length === 0) {
 			this.listEl.createEl('p', {
-				text: 'No highlight groups yet. Click "Add group" to create one.',
+				text: '暂无高亮分组。点击"添加分组"创建一个。',
 				cls: 'cr-highlight-groups-list__empty'
 			});
 		} else {
@@ -391,10 +392,10 @@ export class HighlightGroupsModal extends Modal {
 
 		const actionsEl = this.listEl.createDiv({ cls: 'cr-highlight-groups-list__actions' });
 
-		const addBtn = actionsEl.createEl('button', { text: 'Add group' });
+		const addBtn = actionsEl.createEl('button', { text: '添加分组' });
 		addBtn.disabled = this.groups.length >= MAX_HIGHLIGHT_GROUPS;
 		if (addBtn.disabled) {
-			addBtn.setAttr('title', `Limit of ${MAX_HIGHLIGHT_GROUPS} groups reached`);
+			addBtn.setAttr('title', `已达${MAX_HIGHLIGHT_GROUPS}个分组上限`);
 		}
 		addBtn.addEventListener('click', () => {
 			this.groups.push(this.makeNewGroup());
@@ -418,7 +419,7 @@ export class HighlightGroupsModal extends Modal {
 		swatch.style.setProperty('background-color', swatchColor);
 
 		new Setting(rowEl)
-			.setName('Field')
+			.setName('字段')
 			.addDropdown(dd => {
 				for (const f of HIGHLIGHT_FIELDS) dd.addOption(f.value, f.label);
 				dd.setValue(group.field);
@@ -428,18 +429,18 @@ export class HighlightGroupsModal extends Modal {
 			});
 
 		new Setting(rowEl)
-			.setName('Value')
-			.setDesc('Exact match (case-insensitive)')
+			.setName('值')
+			.setDesc('精确匹配（不区分大小写）')
 			.addText(text => {
 				text.setValue(group.value);
-				text.setPlaceholder('e.g. Magician');
+				text.setPlaceholder('例如：魔术师');
 				text.onChange(value => {
 					group.value = value;
 				});
 			});
 
 		new Setting(rowEl)
-			.setName('Color')
+			.setName('颜色')
 			.addDropdown(dd => {
 				for (const c of HIGHLIGHT_COLORS) dd.addOption(c.value, c.label);
 				dd.setValue(group.color);
@@ -452,7 +453,7 @@ export class HighlightGroupsModal extends Modal {
 		const controlsEl = rowEl.createDiv({ cls: 'cr-highlight-group-row__controls' });
 
 		new Setting(controlsEl)
-			.setName('Enabled')
+			.setName('启用')
 			.addToggle(tg => {
 				tg.setValue(group.enabled);
 				tg.onChange(value => {
@@ -460,7 +461,7 @@ export class HighlightGroupsModal extends Modal {
 				});
 			});
 
-		const deleteBtn = controlsEl.createEl('button', { text: 'Delete', cls: 'mod-warning' });
+		const deleteBtn = controlsEl.createEl('button', { text: '删除', cls: 'mod-warning' });
 		deleteBtn.addEventListener('click', () => {
 			this.groups.splice(index, 1);
 			this.refreshGroupsList();
@@ -473,7 +474,7 @@ export class HighlightGroupsModal extends Modal {
 
 		// Left-side destructive action
 		const leftEl = footerEl.createDiv({ cls: 'cr-highlight-groups-modal__footer-left' });
-		this.clearBtn = leftEl.createEl('button', { text: 'Clear all', cls: 'mod-warning' });
+		this.clearBtn = leftEl.createEl('button', { text: '全部清除', cls: 'mod-warning' });
 		this.clearBtn.addEventListener('click', () => {
 			this.groups = [];
 			this.refreshGroupsList();
@@ -483,14 +484,14 @@ export class HighlightGroupsModal extends Modal {
 		// Right-side primary actions
 		const rightEl = footerEl.createDiv({ cls: 'cr-highlight-groups-modal__footer-right' });
 
-		const cancelBtn = rightEl.createEl('button', { text: 'Cancel' });
+		const cancelBtn = rightEl.createEl('button', { text: '取消' });
 		cancelBtn.addEventListener('click', () => this.close());
 
-		const saveBtn = rightEl.createEl('button', { text: 'Save', cls: 'mod-cta' });
+		const saveBtn = rightEl.createEl('button', { text: '保存', cls: 'mod-cta' });
 		saveBtn.addEventListener('click', () => {
 			const invalid = this.groups.find(g => g.enabled && g.value.trim() === '');
 			if (invalid) {
-				new Notice('Enabled groups must have a value');
+				new Notice('已启用的分组必须填写值');
 				return;
 			}
 			this.callbacks.saveGroups(this.groups);

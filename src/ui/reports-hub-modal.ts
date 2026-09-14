@@ -30,7 +30,7 @@ export class ReportsHubModal extends Modal {
 		const header = contentEl.createDiv({ cls: 'crc-reports-hub-header' });
 		const headerIcon = header.createDiv({ cls: 'crc-reports-hub-header-icon' });
 		setIcon(headerIcon, 'bar-chart');
-		header.createEl('h2', { text: 'Reports' });
+		header.createEl('h2', { text: '报告' });
 
 		// Action cards grid
 		const grid = contentEl.createDiv({ cls: 'crc-reports-hub-grid' });
@@ -39,8 +39,8 @@ export class ReportsHubModal extends Modal {
 		this.renderActionCard(grid, {
 			icon: 'file-text',
 			iconClass: 'narrative',
-			title: 'Narrative Reports',
-			description: 'Generate text-based reports like ancestor narratives, descendant reports, and family group sheets.',
+			title: '叙事报告',
+			description: '生成基于文本的报告，如祖先叙事、后代报告和家族群组表。',
 			onClick: () => this.openReportType('narrative')
 		});
 
@@ -48,8 +48,8 @@ export class ReportsHubModal extends Modal {
 		this.renderActionCard(grid, {
 			icon: 'git-branch',
 			iconClass: 'visual',
-			title: 'Visual Charts',
-			description: 'Create pedigree charts, descendant trees, fan charts, and other visual family tree diagrams.',
+			title: '可视图表',
+			description: '创建谱系图、后代树、扇形图及其他家谱可视化图表。',
 			onClick: () => this.openReportType('visual')
 		});
 	}

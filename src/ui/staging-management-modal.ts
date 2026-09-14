@@ -160,7 +160,7 @@ export class StagingManagementModal extends Modal {
 		const header = container.createDiv({ cls: 'crc-staging-header' });
 		const headerIcon = header.createDiv({ cls: 'crc-staging-header-icon' });
 		setIcon(headerIcon, 'archive');
-		header.createEl('h2', { text: 'Staging Manager' });
+		header.createEl('h2', { text: '暂存管理器' });
 	}
 
 	/**
@@ -168,13 +168,13 @@ export class StagingManagementModal extends Modal {
 	 */
 	private renderFilterToggles(container: HTMLElement): void {
 		const filterContainer = container.createDiv({ cls: 'crc-staging-filter' });
-		filterContainer.createSpan({ text: 'Show: ', cls: 'crc-staging-filter-label' });
+		filterContainer.createSpan({ text: '显示：', cls: 'crc-staging-filter-label' });
 
 		const buttonGroup = filterContainer.createDiv({ cls: 'crc-staging-filter-buttons' });
 
 		// All button
 		const allBtn = buttonGroup.createEl('button', {
-			text: 'All',
+			text: '全部',
 			cls: this.filterMode === 'all' ? 'crc-staging-filter-btn crc-staging-filter-btn-active' : 'crc-staging-filter-btn'
 		});
 		allBtn.addEventListener('click', () => {
@@ -184,7 +184,7 @@ export class StagingManagementModal extends Modal {
 
 		// Clipped button
 		const clippedBtn = buttonGroup.createEl('button', {
-			text: 'Clipped',
+			text: '剪藏',
 			cls: this.filterMode === 'clipped' ? 'crc-staging-filter-btn crc-staging-filter-btn-active' : 'crc-staging-filter-btn'
 		});
 		clippedBtn.addEventListener('click', () => {
@@ -194,7 +194,7 @@ export class StagingManagementModal extends Modal {
 
 		// Other button
 		const otherBtn = buttonGroup.createEl('button', {
-			text: 'Other',
+			text: '其他',
 			cls: this.filterMode === 'imports' ? 'crc-staging-filter-btn crc-staging-filter-btn-active' : 'crc-staging-filter-btn'
 		});
 		otherBtn.addEventListener('click', () => {
@@ -211,13 +211,13 @@ export class StagingManagementModal extends Modal {
 		const icon = empty.createDiv({ cls: 'crc-staging-empty-icon' });
 		setIcon(icon, 'settings');
 
-		empty.createEl('h3', { text: 'Staging not configured' });
+		empty.createEl('h3', { text: '暂存未配置' });
 		empty.createEl('p', {
-			text: 'Enable staging isolation and configure a staging folder in settings to use this feature.'
+			text: '在设置中启用暂存隔离并配置暂存文件夹以使用此功能。'
 		});
 
 		const openSettings = empty.createEl('button', {
-			text: 'Open Settings',
+			text: '打开设置',
 			cls: 'mod-cta'
 		});
 		openSettings.addEventListener('click', () => {
@@ -238,21 +238,21 @@ export class StagingManagementModal extends Modal {
 		const icon = empty.createDiv({ cls: 'crc-staging-empty-icon' });
 		setIcon(icon, 'inbox');
 
-		empty.createEl('h3', { text: 'No staged imports' });
+		empty.createEl('h3', { text: '无暂存导入' });
 		empty.createEl('p', {
-			text: 'Use the Import Wizard to import data to staging, or configure Web Clipper to save clips here.'
+			text: '使用导入向导将数据导入暂存，或配置 Web Clipper 将剪藏保存到此处。'
 		});
 
 		const stagingPath = this.stagingService.getStagingFolder();
 		if (stagingPath) {
 			empty.createDiv({
 				cls: 'crc-staging-path',
-				text: `Staging folder: ${stagingPath}`
+				text: `暂存文件夹：${stagingPath}`
 			});
 		}
 
 		const openImport = empty.createEl('button', {
-			text: 'Open Import Wizard',
+			text: '打开导入向导',
 			cls: 'mod-cta'
 		});
 		openImport.addEventListener('click', () => {
@@ -281,25 +281,25 @@ export class StagingManagementModal extends Modal {
 		const stagingPath = this.stagingService.getStagingFolder();
 		overview.createDiv({
 			cls: 'crc-staging-info',
-			text: `Staging folder: ${stagingPath}`
+			text: `暂存文件夹：${stagingPath}`
 		});
 
 		// Stats grid
 		const statsGrid = overview.createDiv({ cls: 'crc-staging-stats' });
 
 		// Total entities
-		this.renderStatCard(statsGrid, 'users', stats.totalEntities.toString(), 'Total Entities');
+		this.renderStatCard(statsGrid, 'users', stats.totalEntities.toString(), '实体总数');
 
 		// Entity breakdown
 		const breakdown = overview.createDiv({ cls: 'crc-staging-breakdown' });
-		breakdown.createEl('span', { text: 'By type: ', cls: 'crc-staging-breakdown-label' });
+		breakdown.createEl('span', { text: '按类型：', cls: 'crc-staging-breakdown-label' });
 
 		const counts: Array<{ type: string; count: number; icon: string }> = [
-			{ type: 'People', count: stats.entityCounts.person, icon: 'user' },
-			{ type: 'Places', count: stats.entityCounts.place, icon: 'map-pin' },
-			{ type: 'Sources', count: stats.entityCounts.source, icon: 'book-open' },
-			{ type: 'Events', count: stats.entityCounts.event, icon: 'calendar' },
-			{ type: 'Organizations', count: stats.entityCounts.organization, icon: 'building' }
+			{ type: '人物', count: stats.entityCounts.person, icon: 'user' },
+			{ type: '地点', count: stats.entityCounts.place, icon: 'map-pin' },
+			{ type: '来源', count: stats.entityCounts.source, icon: 'book-open' },
+			{ type: '事件', count: stats.entityCounts.event, icon: 'calendar' },
+			{ type: '组织', count: stats.entityCounts.organization, icon: 'building' }
 		];
 
 		const nonZeroCounts = counts.filter(c => c.count > 0);
@@ -317,7 +317,7 @@ export class StagingManagementModal extends Modal {
 			if (nonZeroCounts.length > 0) {
 				breakdown.createSpan({ text: ', ', cls: 'crc-staging-separator' });
 			}
-			breakdown.createSpan({ text: `${stats.entityCounts.other} other` });
+			breakdown.createSpan({ text: `其他 ${stats.entityCounts.other}` });
 		}
 	}
 
@@ -397,7 +397,7 @@ export class StagingManagementModal extends Modal {
 		// Stats line
 		const statsText = this.formatEntityCounts(subfolder.entityCounts);
 		const modifiedText = subfolder.modifiedDate
-			? `Modified: ${this.formatDate(subfolder.modifiedDate)}`
+			? `修改于：${this.formatDate(subfolder.modifiedDate)}`
 			: '';
 
 		const statsLine = info.createDiv({ cls: 'crc-staging-item-stats' });
@@ -426,10 +426,10 @@ export class StagingManagementModal extends Modal {
 		// Check duplicates button
 		const checkBtn = actions.createEl('button', {
 			cls: 'crc-staging-btn crc-staging-btn-check',
-			attr: { 'aria-label': 'Check duplicates' }
+			attr: { 'aria-label': '检查重复项' }
 		});
 		setIcon(checkBtn, 'search');
-		checkBtn.createSpan({ text: 'Check duplicates' });
+		checkBtn.createSpan({ text: '检查重复项' });
 		checkBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			this.handleCheckDuplicates(subfolder.path);
@@ -438,10 +438,10 @@ export class StagingManagementModal extends Modal {
 		// Promote button
 		const promoteBtn = actions.createEl('button', {
 			cls: 'crc-staging-btn crc-staging-btn-promote',
-			attr: { 'aria-label': 'Promote' }
+			attr: { 'aria-label': '提升' }
 		});
 		setIcon(promoteBtn, 'arrow-up-right');
-		promoteBtn.createSpan({ text: 'Promote' });
+		promoteBtn.createSpan({ text: '提升' });
 		promoteBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			void this.handlePromoteSubfolder(subfolder);
@@ -450,7 +450,7 @@ export class StagingManagementModal extends Modal {
 		// Delete button
 		const deleteBtn = actions.createEl('button', {
 			cls: 'crc-staging-btn crc-staging-btn-delete',
-			attr: { 'aria-label': 'Delete' }
+			attr: { 'aria-label': '删除' }
 		});
 		setIcon(deleteBtn, 'trash-2');
 		deleteBtn.addEventListener('click', (e) => {
@@ -558,7 +558,7 @@ export class StagingManagementModal extends Modal {
 		stats: { totalEntities: number }
 	): void {
 		const actions = container.createDiv({ cls: 'crc-staging-actions' });
-		actions.createEl('h3', { text: 'Bulk Actions', cls: 'crc-staging-actions-header' });
+		actions.createEl('h3', { text: '批量操作', cls: 'crc-staging-actions-header' });
 
 		const buttonRow = actions.createDiv({ cls: 'crc-staging-actions-row' });
 
@@ -567,7 +567,7 @@ export class StagingManagementModal extends Modal {
 			cls: 'crc-staging-btn crc-staging-btn-check'
 		});
 		setIcon(checkAllBtn, 'search');
-		checkAllBtn.createSpan({ text: 'Check all duplicates' });
+		checkAllBtn.createSpan({ text: '检查所有重复项' });
 		checkAllBtn.addEventListener('click', () => { this.handleCheckDuplicates(); });
 
 		// Promote all
@@ -575,7 +575,7 @@ export class StagingManagementModal extends Modal {
 			cls: 'crc-staging-btn crc-staging-btn-promote'
 		});
 		setIcon(promoteAllBtn, 'arrow-up-right');
-		promoteAllBtn.createSpan({ text: 'Promote all' });
+		promoteAllBtn.createSpan({ text: '全部提升' });
 		promoteAllBtn.addEventListener('click', () => { void this.handlePromoteAll(stats.totalEntities); });
 
 		// Delete all
@@ -583,7 +583,7 @@ export class StagingManagementModal extends Modal {
 			cls: 'crc-staging-btn crc-staging-btn-delete'
 		});
 		setIcon(deleteAllBtn, 'trash-2');
-		deleteAllBtn.createSpan({ text: 'Delete all' });
+		deleteAllBtn.createSpan({ text: '全部删除' });
 		deleteAllBtn.addEventListener('click', () => { void this.handleDeleteAll(stats.totalEntities); });
 	}
 
@@ -606,12 +606,12 @@ export class StagingManagementModal extends Modal {
 		const matches = this.crossImportService.findCrossImportMatches(subfolderPath);
 
 		if (matches.length === 0) {
-			new Notice('No duplicates found. All staging data appears unique.');
+			new Notice('未发现重复项。所有暂存数据看起来都是唯一的。');
 			return;
 		}
 
 		// TODO: Open CrossImportReviewModal when implemented
-		new Notice(`Found ${matches.length} potential duplicate(s). Review modal coming soon.`);
+		new Notice(`发现 ${matches.length} 个潜在重复项。审查弹窗即将推出。`);
 	}
 
 	/**
@@ -620,8 +620,8 @@ export class StagingManagementModal extends Modal {
 	private async handlePromoteSubfolder(subfolder: StagingSubfolderInfo): Promise<void> {
 		const totalEntities = this.getTotalEntities(subfolder.entityCounts);
 		const confirmed = await this.confirmAction(
-			'Promote Staging Data',
-			`This will move ${totalEntities} entities from "${subfolder.name}" to your main folder. Continue?`
+			'提升暂存数据',
+			`这会将 ${totalEntities} 个实体从"${subfolder.name}"移动到主文件夹。是否继续？`
 		);
 
 		if (!confirmed) return;
@@ -638,16 +638,16 @@ export class StagingManagementModal extends Modal {
 		const result = await this.stagingService.promoteSubfolder(subfolder.path, { shouldSkip });
 
 		if (result.success) {
-			let message = `Promoted ${result.filesPromoted} entities to main tree`;
+			let message = `已将 ${result.filesPromoted} 个实体提升到主树`;
 			if (result.filesSkipped > 0) {
-				message += ` (${result.filesSkipped} skipped as duplicates)`;
+				message += `（${result.filesSkipped} 个因重复而跳过）`;
 			}
 			if (result.filesRenamed > 0) {
-				message += ` (${result.filesRenamed} renamed to avoid conflicts)`;
+				message += `（${result.filesRenamed} 个因避免冲突而重命名）`;
 			}
 			new Notice(message);
 		} else {
-			new Notice(`Promote failed: ${result.errors.join(', ')}`);
+			new Notice(`提升失败：${result.errors.join(', ')}`);
 		}
 
 		// Refresh UI
@@ -659,8 +659,8 @@ export class StagingManagementModal extends Modal {
 	 */
 	private async handlePromoteAll(totalEntities: number): Promise<void> {
 		const confirmed = await this.confirmAction(
-			'Promote All Staging Data',
-			`This will move ${totalEntities} entities from staging to your main folder. Files marked as 'same entity' will be skipped. Continue?`
+			'提升所有暂存数据',
+			`这会将 ${totalEntities} 个实体从暂存移动到主文件夹。标记为"同一实体"的文件将被跳过。是否继续？`
 		);
 
 		if (!confirmed) return;
@@ -677,16 +677,16 @@ export class StagingManagementModal extends Modal {
 		const result = await this.stagingService.promoteAll({ shouldSkip });
 
 		if (result.success) {
-			let message = `Promoted ${result.filesPromoted} entities to main tree`;
+			let message = `已将 ${result.filesPromoted} 个实体提升到主树`;
 			if (result.filesSkipped > 0) {
-				message += ` (${result.filesSkipped} skipped as duplicates)`;
+				message += `（${result.filesSkipped} 个因重复而跳过）`;
 			}
 			if (result.filesRenamed > 0) {
-				message += ` (${result.filesRenamed} renamed to avoid conflicts)`;
+				message += `（${result.filesRenamed} 个因避免冲突而重命名）`;
 			}
 			new Notice(message);
 		} else {
-			new Notice(`Promote failed: ${result.errors.join(', ')}`);
+			new Notice(`提升失败：${result.errors.join(', ')}`);
 		}
 
 		// Refresh UI
@@ -699,8 +699,8 @@ export class StagingManagementModal extends Modal {
 	private async handleDeleteSubfolder(subfolder: StagingSubfolderInfo): Promise<void> {
 		const totalEntities = this.getTotalEntities(subfolder.entityCounts);
 		const confirmed = await this.confirmAction(
-			'Delete Staging Data',
-			`This will permanently delete ${totalEntities} entities from "${subfolder.name}". This cannot be undone. Continue?`
+			'删除暂存数据',
+			`这将永久删除"${subfolder.name}"中的 ${totalEntities} 个实体。此操作无法撤销。是否继续？`
 		);
 
 		if (!confirmed) return;
@@ -708,9 +708,9 @@ export class StagingManagementModal extends Modal {
 		const result = await this.stagingService.deleteSubfolder(subfolder.path);
 
 		if (result.success) {
-			new Notice(`Deleted ${result.filesDeleted} files from staging`);
+			new Notice(`已从暂存删除 ${result.filesDeleted} 个文件`);
 		} else {
-			new Notice(`Delete failed: ${result.error}`);
+			new Notice(`删除失败：${result.error}`);
 		}
 
 		// Refresh UI
@@ -722,8 +722,8 @@ export class StagingManagementModal extends Modal {
 	 */
 	private async handleDeleteAll(totalEntities: number): Promise<void> {
 		const confirmed = await this.confirmAction(
-			'Delete All Staging Data',
-			`This will permanently delete ${totalEntities} entities from staging. This cannot be undone. Continue?`
+			'删除所有暂存数据',
+			`这将永久删除暂存中的 ${totalEntities} 个实体。此操作无法撤销。是否继续？`
 		);
 
 		if (!confirmed) return;
@@ -731,9 +731,9 @@ export class StagingManagementModal extends Modal {
 		const result = await this.stagingService.deleteAllStaging();
 
 		if (result.success) {
-			new Notice(`Deleted ${result.filesDeleted} files from staging`);
+			new Notice(`已从暂存删除 ${result.filesDeleted} 个文件`);
 		} else {
-			new Notice(`Delete failed: ${result.error}`);
+			new Notice(`删除失败：${result.error}`);
 		}
 
 		// Refresh UI
@@ -756,14 +756,14 @@ export class StagingManagementModal extends Modal {
 	private formatEntityCounts(counts: EntityTypeCounts): string {
 		const parts: string[] = [];
 
-		if (counts.person > 0) parts.push(`${counts.person} people`);
-		if (counts.place > 0) parts.push(`${counts.place} places`);
-		if (counts.source > 0) parts.push(`${counts.source} sources`);
-		if (counts.event > 0) parts.push(`${counts.event} events`);
-		if (counts.organization > 0) parts.push(`${counts.organization} organizations`);
-		if (counts.other > 0) parts.push(`${counts.other} other`);
+		if (counts.person > 0) parts.push(`${counts.person} 人物`);
+		if (counts.place > 0) parts.push(`${counts.place} 地点`);
+		if (counts.source > 0) parts.push(`${counts.source} 来源`);
+		if (counts.event > 0) parts.push(`${counts.event} 事件`);
+		if (counts.organization > 0) parts.push(`${counts.organization} 组织`);
+		if (counts.other > 0) parts.push(`其他 ${counts.other}`);
 
-		return parts.length > 0 ? parts.join(', ') : 'Empty';
+		return parts.length > 0 ? parts.join(', ') : '空';
 	}
 
 	/**
@@ -810,7 +810,7 @@ class ConfirmationModal extends Modal {
 		const buttonContainer = contentEl.createDiv({ cls: 'crc-confirmation-buttons' });
 
 		const cancelBtn = buttonContainer.createEl('button', {
-			text: 'Cancel',
+			text: '取消',
 			cls: 'crc-btn-secondary'
 		});
 		cancelBtn.addEventListener('click', () => {
@@ -819,7 +819,7 @@ class ConfirmationModal extends Modal {
 		});
 
 		const confirmBtn = buttonContainer.createEl('button', {
-			text: 'Continue',
+			text: '继续',
 			cls: 'mod-warning'
 		});
 		confirmBtn.addEventListener('click', () => {

@@ -10,6 +10,7 @@ import type { SectionToggleFn, EntityLinkClickFn, SectionState } from '../profil
 import { renderProfileSection } from './section-base';
 import type { CitationNote } from '../../sources/types/citation-types';
 import { CITATION_QUALITY_LABELS } from '../../sources/types/citation-types';
+import { FACT_KEY_LABELS, type FactKey } from '../../sources/types/source-types';
 
 interface CitationsSectionOptions {
 	sectionStates: SectionState;
@@ -25,11 +26,11 @@ export function renderCitationsSection(
 ): void {
 	const sectionId = 'citations';
 	const count = citations.length;
-	const summary = `${count} citation${count !== 1 ? 's' : ''}`;
+	const summary = `${count} 条引文`;
 
 	const content = renderProfileSection(parent, {
 		sectionId,
-		title: 'Citations',
+		title: '引文',
 		summary,
 		expanded: options.sectionStates[sectionId] ?? false,
 		onToggle: options.onToggle,
@@ -41,7 +42,7 @@ export function renderCitationsSection(
 	// Group citations by source
 	const bySource = new Map<string, CitationNote[]>();
 	for (const citation of citations) {
-		const sourceKey = citation.source || 'Unknown source';
+		const sourceKey = citation.source || '未知来源';
 		const existing = bySource.get(sourceKey) || [];
 		existing.push(citation);
 		bySource.set(sourceKey, existing);
@@ -102,9 +103,7 @@ export function renderCitationsSection(
  * Convert a fact key to a human-readable label
  */
 function formatFactLabel(fact: string): string {
-	return fact
-		.replace(/_/g, ' ')
-		.replace(/\b\w/g, c => c.toUpperCase());
+	return FACT_KEY_LABELS[fact as FactKey] ?? fact.replace(/_/g, ' ');
 }
 
 /**

@@ -20,16 +20,16 @@ export const DEFAULT_PLACE_TYPES: PlaceTypeDefinition[] = [
 	// Geographic (0-1)
 	{
 		id: 'planet',
-		name: 'Planet',
-		description: 'Celestial body (for sci-fi or mythological worlds)',
+		name: '星球',
+		description: '天体（用于科幻或神话世界）',
 		hierarchyLevel: 0,
 		category: 'geographic',
 		builtIn: true
 	},
 	{
 		id: 'continent',
-		name: 'Continent',
-		description: 'Major landmass',
+		name: '大陆',
+		description: '主要陆地',
 		hierarchyLevel: 1,
 		category: 'geographic',
 		builtIn: true
@@ -38,48 +38,48 @@ export const DEFAULT_PLACE_TYPES: PlaceTypeDefinition[] = [
 	// Political divisions (2-5)
 	{
 		id: 'country',
-		name: 'Country',
-		description: 'Sovereign nation or kingdom',
+		name: '国家',
+		description: '主权国家或王国',
 		hierarchyLevel: 2,
 		category: 'political',
 		builtIn: true
 	},
 	{
 		id: 'state',
-		name: 'State',
-		description: 'First-level administrative division (US states, German Länder)',
+		name: '州',
+		description: '一级行政区划（美国州、德国联邦州）',
 		hierarchyLevel: 3,
 		category: 'political',
 		builtIn: true
 	},
 	{
 		id: 'province',
-		name: 'Province',
-		description: 'First-level administrative division (Canadian provinces)',
+		name: '省',
+		description: '一级行政区划（加拿大省份）',
 		hierarchyLevel: 3,
 		category: 'political',
 		builtIn: true
 	},
 	{
 		id: 'region',
-		name: 'Region',
-		description: 'Geographic or administrative region',
+		name: '地区',
+		description: '地理或行政区域',
 		hierarchyLevel: 4,
 		category: 'political',
 		builtIn: true
 	},
 	{
 		id: 'county',
-		name: 'County',
-		description: 'Administrative subdivision (US counties, UK counties)',
+		name: '县',
+		description: '行政区划（美国县、英国郡）',
 		hierarchyLevel: 5,
 		category: 'political',
 		builtIn: true
 	},
 	{
 		id: 'township',
-		name: 'Township',
-		description: 'Civil township (US Midwest/Northeast administrative division)',
+		name: '乡镇',
+		description: '民政乡镇（美国中西部/东北部行政区划）',
 		hierarchyLevel: 6,
 		category: 'political',
 		builtIn: true
@@ -88,32 +88,32 @@ export const DEFAULT_PLACE_TYPES: PlaceTypeDefinition[] = [
 	// Settlements (6-9)
 	{
 		id: 'district',
-		name: 'District',
-		description: 'Urban district or borough',
+		name: '区',
+		description: '城区或自治市镇',
 		hierarchyLevel: 6,
 		category: 'settlement',
 		builtIn: true
 	},
 	{
 		id: 'city',
-		name: 'City',
-		description: 'Large urban settlement',
+		name: '城市',
+		description: '大型城市聚落',
 		hierarchyLevel: 7,
 		category: 'settlement',
 		builtIn: true
 	},
 	{
 		id: 'town',
-		name: 'Town',
-		description: 'Medium-sized settlement',
+		name: '镇',
+		description: '中型聚落',
 		hierarchyLevel: 8,
 		category: 'settlement',
 		builtIn: true
 	},
 	{
 		id: 'village',
-		name: 'Village',
-		description: 'Small rural settlement',
+		name: '村庄',
+		description: '小型乡村聚落',
 		hierarchyLevel: 9,
 		category: 'settlement',
 		builtIn: true
@@ -122,8 +122,8 @@ export const DEFAULT_PLACE_TYPES: PlaceTypeDefinition[] = [
 	// Subdivisions (10)
 	{
 		id: 'parish',
-		name: 'Parish',
-		description: 'Ecclesiastical or civil parish',
+		name: '教区',
+		description: '教会或民政教区',
 		hierarchyLevel: 10,
 		category: 'subdivision',
 		builtIn: true
@@ -132,32 +132,32 @@ export const DEFAULT_PLACE_TYPES: PlaceTypeDefinition[] = [
 	// Structures (11-12)
 	{
 		id: 'estate',
-		name: 'Estate',
-		description: 'Large property or manor',
+		name: '庄园',
+		description: '大型地产或庄园',
 		hierarchyLevel: 11,
 		category: 'structure',
 		builtIn: true
 	},
 	{
 		id: 'castle',
-		name: 'Castle',
-		description: 'Fortified residence',
+		name: '城堡',
+		description: '设防住所',
 		hierarchyLevel: 11,
 		category: 'structure',
 		builtIn: true
 	},
 	{
 		id: 'church',
-		name: 'Church',
-		description: 'Religious building',
+		name: '教堂',
+		description: '宗教建筑',
 		hierarchyLevel: 12,
 		category: 'structure',
 		builtIn: true
 	},
 	{
 		id: 'cemetery',
-		name: 'Cemetery',
-		description: 'Burial ground',
+		name: '墓地',
+		description: '安葬地',
 		hierarchyLevel: 12,
 		category: 'structure',
 		builtIn: true

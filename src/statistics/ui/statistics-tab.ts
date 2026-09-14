@@ -13,7 +13,6 @@ import { formatDateRangeLine } from '../../core/collection-date-range';
 import { createUniverseService } from '../../universes/services/universe-service';
 import { UniverseWizardModal } from '../../universes/ui/universe-wizard';
 import type { StatisticsData, TopListItem } from '../types/statistics-types';
-import { pluralize } from '../../utils/format-utils';
 import { VIEW_TYPE_STATISTICS } from '../constants/statistics-constants';
 
 /**
@@ -57,9 +56,9 @@ function renderOverviewCard(
 	createCard: (options: { title: string; icon?: LucideIconName; subtitle?: string }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Overview',
+		title: '概览',
 		icon: 'bar-chart-2',
-		subtitle: `Last updated: ${formatTime(stats.lastUpdated)}`
+		subtitle: `上次更新：${formatTime(stats.lastUpdated)}`
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
@@ -74,18 +73,18 @@ function renderOverviewCard(
 		item.createDiv({ cls: 'cr-stat-label', text: label });
 	};
 
-	createStatItem('People', stats.entityCounts.people, 'users');
-	createStatItem('Events', stats.entityCounts.events, 'calendar');
-	createStatItem('Places', stats.entityCounts.places, 'map-pin');
-	createStatItem('Sources', stats.entityCounts.sources, 'archive');
-	createStatItem('Organizations', stats.entityCounts.organizations, 'building');
-	createStatItem('Canvases', stats.entityCounts.canvases, 'file');
+	createStatItem('人物', stats.entityCounts.people, 'users');
+	createStatItem('事件', stats.entityCounts.events, 'calendar');
+	createStatItem('地点', stats.entityCounts.places, 'map-pin');
+	createStatItem('来源', stats.entityCounts.sources, 'archive');
+	createStatItem('组织', stats.entityCounts.organizations, 'building');
+	createStatItem('画布', stats.entityCounts.canvases, 'file');
 
 	// Date range — per-universe and era-aware (#719)
 	const ranges = stats.dateRange.byUniverse;
 	if (ranges.length > 0) {
 		const dateRangeDiv = content.createDiv({ cls: 'cr-date-range' });
-		dateRangeDiv.createEl('span', { cls: 'cr-date-range-label', text: 'Date range: ' });
+		dateRangeDiv.createEl('span', { cls: 'cr-date-range-label', text: '日期范围：' });
 		if (ranges.length === 1) {
 			dateRangeDiv.createEl('span', { cls: 'cr-date-range-value', text: formatDateRangeLine(ranges[0], false) });
 		} else {
@@ -108,7 +107,7 @@ function renderCompletenessCard(
 	createCard: (options: { title: string; icon?: LucideIconName }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Data completeness',
+		title: '数据完整度',
 		icon: 'check-circle'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
@@ -124,19 +123,19 @@ function renderCompletenessCard(
 		progressBar.style.width = `${percent}%`;
 	};
 
-	createProgressRow('With birth date', stats.completeness.withBirthDate, getProgressColor(stats.completeness.withBirthDate));
-	createProgressRow('With death date', stats.completeness.withDeathDate, getProgressColor(stats.completeness.withDeathDate));
-	createProgressRow('With sources', stats.completeness.withSources, getProgressColor(stats.completeness.withSources));
-	createProgressRow('With father', stats.completeness.withFather, getProgressColor(stats.completeness.withFather));
-	createProgressRow('With mother', stats.completeness.withMother, getProgressColor(stats.completeness.withMother));
-	createProgressRow('With spouse', stats.completeness.withSpouse, getProgressColor(stats.completeness.withSpouse));
+	createProgressRow('有出生日期', stats.completeness.withBirthDate, getProgressColor(stats.completeness.withBirthDate));
+	createProgressRow('有去世日期', stats.completeness.withDeathDate, getProgressColor(stats.completeness.withDeathDate));
+	createProgressRow('有来源', stats.completeness.withSources, getProgressColor(stats.completeness.withSources));
+	createProgressRow('有父亲', stats.completeness.withFather, getProgressColor(stats.completeness.withFather));
+	createProgressRow('有母亲', stats.completeness.withMother, getProgressColor(stats.completeness.withMother));
+	createProgressRow('有配偶', stats.completeness.withSpouse, getProgressColor(stats.completeness.withSpouse));
 
 	// Gender distribution
 	const { male, female, other, unknown } = stats.genderDistribution;
 	const total = male + female + other + unknown;
 	if (total > 0) {
 		const genderSection = content.createDiv({ cls: 'cr-gender-section' });
-		genderSection.createEl('h4', { text: 'Sex & gender distribution', cls: 'cr-subsection-heading' });
+		genderSection.createEl('h4', { text: '性别分布', cls: 'cr-subsection-heading' });
 
 		const genderGrid = genderSection.createDiv({ cls: 'cr-gender-grid' });
 		const createGenderItem = (label: string, count: number, colorClass: string) => {
@@ -146,10 +145,10 @@ function renderCompletenessCard(
 			item.createSpan({ cls: 'cr-gender-percent crc-text-muted', text: `${Math.round((count / total) * 100)}%` });
 		};
 
-		createGenderItem('Male', male, 'cr-gender-male');
-		createGenderItem('Female', female, 'cr-gender-female');
-		if (other > 0) createGenderItem('Other', other, 'cr-gender-other');
-		if (unknown > 0) createGenderItem('Unknown', unknown, 'cr-gender-unknown');
+		createGenderItem('男性', male, 'cr-gender-male');
+		createGenderItem('女性', female, 'cr-gender-female');
+		if (other > 0) createGenderItem('其他', other, 'cr-gender-other');
+		if (unknown > 0) createGenderItem('未知', unknown, 'cr-gender-unknown');
 	}
 
 	container.appendChild(card);
@@ -174,7 +173,7 @@ function renderQualityCard(
 	showTab: (tabId: string) => void
 ): void {
 	const card = createCard({
-		title: 'Data quality',
+		title: '数据质量',
 		icon: 'shield-check'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
@@ -190,7 +189,7 @@ function renderQualityCard(
 	if (!hasIssues) {
 		const successMsg = content.createDiv({ cls: 'cr-quality-success' });
 		setIcon(successMsg.createSpan({ cls: 'cr-quality-success-icon' }), 'check-circle');
-		successMsg.createSpan({ text: 'No data quality issues detected' });
+		successMsg.createSpan({ text: '未检测到数据质量问题' });
 	} else {
 		const alertsList = content.createDiv({ cls: 'cr-quality-alerts' });
 
@@ -203,21 +202,21 @@ function renderQualityCard(
 			alert.createSpan({ cls: 'cr-quality-alert-count', text: formatNumber(count) });
 		};
 
-		createAlert('alert-circle', 'Missing birth dates', quality.missingBirthDate, 'warning');
-		createAlert('link', 'Orphaned people (no relationships)', quality.orphanedPeople, 'warning');
-		createAlert('archive', 'Unsourced events', quality.unsourcedEvents, 'info');
-		createAlert('map-pin', 'Places without geographic or pixel coordinates', quality.placesWithoutCoordinates, 'info');
+		createAlert('alert-circle', '缺少出生日期', quality.missingBirthDate, 'warning');
+		createAlert('link', '孤立人物（无任何关系）', quality.orphanedPeople, 'warning');
+		createAlert('archive', '无来源事件', quality.unsourcedEvents, 'info');
+		createAlert('map-pin', '缺少地理或像素坐标的地点', quality.placesWithoutCoordinates, 'info');
 
 		// Living people is informational, not an alert
 		if (quality.livingPeople > 0) {
 			const infoDiv = content.createDiv({ cls: 'cr-quality-info-text' });
-			infoDiv.createSpan({ cls: 'crc-text-muted', text: `${formatNumber(quality.livingPeople)} people marked as living (birth date but no death date)` });
+			infoDiv.createSpan({ cls: 'crc-text-muted', text: `${formatNumber(quality.livingPeople)} 人被标记为在世（有出生日期但无去世日期）` });
 		}
 	}
 
 	// Link to Data Quality tab
 	const linkDiv = content.createDiv({ cls: 'cr-quality-link' });
-	const link = linkDiv.createEl('a', { text: 'Open Data quality tab for detailed analysis' });
+	const link = linkDiv.createEl('a', { text: '打开数据质量标签页查看详细分析' });
 	link.addEventListener('click', (e) => {
 		e.preventDefault();
 		showTab('data-quality');
@@ -235,7 +234,7 @@ function renderTopListsCard(
 	createCard: (options: { title: string; icon?: LucideIconName }) => HTMLElement
 ): void {
 	const card = createCard({
-		title: 'Top lists',
+		title: '排行榜',
 		icon: 'list-checks'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
@@ -272,16 +271,16 @@ function renderTopListsCard(
 		});
 	};
 
-	createTopListSection('Top surnames', stats.topSurnames, 'users');
-	createTopListSection('Top locations', stats.topLocations, 'map-pin');
-	createTopListSection('Top occupations', stats.topOccupations, 'briefcase');
-	createTopListSection('Most cited sources', stats.topSources, 'archive');
+	createTopListSection('常见姓氏', stats.topSurnames, 'users');
+	createTopListSection('常见地点', stats.topLocations, 'map-pin');
+	createTopListSection('常见职业', stats.topOccupations, 'briefcase');
+	createTopListSection('被引用最多的来源', stats.topSources, 'archive');
 
 	// Event types breakdown
 	const eventTypes = Object.entries(stats.eventsByType);
 	if (eventTypes.length > 0) {
 		createTopListSection(
-			'Events by type',
+			'按类型统计事件',
 			eventTypes.map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count),
 			'calendar'
 		);
@@ -300,16 +299,16 @@ function renderActionsCard(
 	closeModal?: () => void
 ): void {
 	const card = createCard({
-		title: 'Actions',
+		title: '操作',
 		icon: 'zap'
 	});
 	const content = card.querySelector('.crc-card__content') as HTMLElement;
 
 	new Setting(content)
-		.setName('Open statistics dashboard')
-		.setDesc('Open the full statistics dashboard in a new tab for detailed exploration')
+		.setName('打开统计仪表盘')
+		.setDesc('在新标签页中打开完整的统计仪表盘以进行详细探索')
 		.addButton(button => button
-			.setButtonText('Open dashboard')
+			.setButtonText('打开仪表盘')
 			.setCta()
 			.onClick(() => {
 				closeModal?.();
@@ -337,11 +336,11 @@ function renderUniversesCard(
 	const stats = universeService.getStats();
 
 	const subtitle = universes.length > 0
-		? `${universes.length} ${pluralize(universes.length, 'universe')}, ${stats.totalEntities} entities`
-		: 'Organize fictional worlds';
+		? `${universes.length} 个宇宙，${stats.totalEntities} 个实体`
+		: '组织你的虚构世界';
 
 	const card = createCard({
-		title: 'Universes',
+		title: '宇宙',
 		icon: 'globe',
 		subtitle
 	});
@@ -354,17 +353,17 @@ function renderUniversesCard(
 
 			// Build entity count description
 			const countParts: string[] = [];
-			if (counts.people > 0) countParts.push(`${counts.people} people`);
-			if (counts.places > 0) countParts.push(`${counts.places} places`);
-			if (counts.events > 0) countParts.push(`${counts.events} events`);
-			if (counts.organizations > 0) countParts.push(`${counts.organizations} organizations`);
-			const countText = countParts.length > 0 ? countParts.join(', ') : 'No entities yet';
+			if (counts.people > 0) countParts.push(`${counts.people} 个人物`);
+			if (counts.places > 0) countParts.push(`${counts.places} 个地点`);
+			if (counts.events > 0) countParts.push(`${counts.events} 个事件`);
+			if (counts.organizations > 0) countParts.push(`${counts.organizations} 个组织`);
+			const countText = countParts.length > 0 ? countParts.join('，') : '暂无实体';
 
 			new Setting(content)
 				.setName(universe.name)
 				.setDesc(countText)
 				.addButton(btn => btn
-					.setButtonText('Open')
+					.setButtonText('打开')
 					.onClick(async () => {
 						const leaf = plugin.app.workspace.getLeaf(false);
 						await leaf.openFile(universe.file);
@@ -373,10 +372,10 @@ function renderUniversesCard(
 
 		// Create universe action (Setting-style layout)
 		new Setting(content)
-			.setName('Create universe')
-			.setDesc('Launch the universe setup wizard')
+			.setName('创建宇宙')
+			.setDesc('启动宇宙设置向导')
 			.addButton(btn => btn
-				.setButtonText('Create')
+				.setButtonText('创建')
 				.setCta()
 				.onClick(() => {
 					new UniverseWizardModal(plugin, {
@@ -387,7 +386,7 @@ function renderUniversesCard(
 		// Manage link
 		const manageRow = content.createDiv({ cls: 'cr-universes-manage crc-mt-2' });
 		const manageLink = manageRow.createEl('a', {
-			text: 'Manage universes →',
+			text: '管理宇宙 →',
 			cls: 'crc-link'
 		});
 		manageLink.addEventListener('click', (e) => {
@@ -397,10 +396,10 @@ function renderUniversesCard(
 	} else {
 		// Empty state with Setting-style layout
 		new Setting(content)
-			.setName('Create universe')
-			.setDesc('Universes help you organize fictional worlds with custom calendars, maps, and validation rules')
+			.setName('创建宇宙')
+			.setDesc('宇宙帮助你用自定义历法、地图和验证规则来组织虚构世界')
 			.addButton(btn => btn
-				.setButtonText('Create')
+				.setButtonText('创建')
 				.setCta()
 				.onClick(() => {
 					new UniverseWizardModal(plugin, {
@@ -415,10 +414,10 @@ function renderUniversesCard(
 		const warningIcon = warning.createSpan({ cls: 'cr-warning-icon' });
 		setIcon(warningIcon, 'alert-triangle');
 		warning.createSpan({
-			text: `${orphans.length} orphan universe ${pluralize(orphans.length, 'value')} without ${pluralize(orphans.length, 'note')}`
+			text: `${orphans.length} 个孤立宇宙有值但没有对应笔记`
 		});
 		const fixLink = warning.createEl('a', {
-			text: 'Fix →',
+			text: '修复 →',
 			cls: 'crc-link crc-ml-2'
 		});
 		fixLink.addEventListener('click', (e) => {

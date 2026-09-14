@@ -8,7 +8,6 @@ import { App, ButtonComponent, Menu, MenuItem, Modal, Notice, Setting, TFile, se
 import type CanvasRootsPlugin from '../../../main';
 import { setLucideIcon, LucideIconName } from '../../ui/lucide-icons';
 import { createStatItem } from '../../ui/shared/card-component';
-import { pluralize } from '../../utils/format-utils';
 import { SchemaService } from '../services/schema-service';
 import { ValidationService } from '../services/validation-service';
 import type { SchemaNote, ValidationResult, ValidationSummary } from '../types/schema-types';
@@ -38,9 +37,9 @@ export async function renderSchemasTab(options: SchemasTabOptions): Promise<void
 
 	// Card 1: Validation
 	const validationCard = createCard({
-		title: 'Validate vault',
+		title: '校验库',
 		icon: 'clipboard-check',
-		subtitle: 'Check person notes against your schemas'
+		subtitle: '根据你的 schema 检查人物笔记'
 	});
 
 	const validationContent = validationCard.querySelector('.crc-card__content') as HTMLElement;
@@ -48,9 +47,9 @@ export async function renderSchemasTab(options: SchemasTabOptions): Promise<void
 	// Explanation for users
 	const explanation = validationContent.createDiv({ cls: 'crc-info-callout crc-mb-3' });
 	explanation.createEl('p', {
-		text: 'Schema validation checks your person notes against rules you define. ' +
-			'Use it to ensure required properties are filled in, values are the correct type, ' +
-			'and data follows your standards.',
+		text: 'Schema 校验会根据你定义的规则检查人物笔记。' +
+			'用它来确保必填属性已填写、值类型正确，' +
+			'并且数据符合你的标准。',
 		cls: 'crc-text--small'
 	});
 
@@ -60,7 +59,7 @@ export async function renderSchemasTab(options: SchemasTabOptions): Promise<void
 		const noSchemasNote = validationContent.createDiv({ cls: 'crc-empty-state crc-compact' });
 		setIcon(noSchemasNote.createSpan({ cls: 'crc-empty-icon' }), 'info');
 		noSchemasNote.createEl('p', {
-			text: 'No schemas defined yet. Create a schema below to start validating your data.',
+			text: '尚未定义 schema。在下方创建 schema 即可开始校验数据。',
 			cls: 'crc-text--muted'
 		});
 		container.appendChild(validationCard);
@@ -75,23 +74,23 @@ export async function renderSchemasTab(options: SchemasTabOptions): Promise<void
 
 			const statsRow = summaryDiv.createDiv({ cls: 'crc-stats-row' });
 			statsRow.createEl('span', {
-				text: `Last validated: ${summary.validatedAt.toLocaleString()}`,
+				text: `上次校验：${summary.validatedAt.toLocaleString()}`,
 				cls: 'crc-text--muted crc-text--small'
 			});
 
 			const statsGrid = summaryDiv.createDiv({ cls: 'crc-stats-grid crc-mt-2' });
-			createStatItem(statsGrid, 'People', summary.totalPeopleValidated.toString(), 'users');
-			createStatItem(statsGrid, 'Schemas', summary.totalSchemas.toString(), 'clipboard-check');
-			createStatItem(statsGrid, 'Errors', summary.totalErrors.toString(), summary.totalErrors > 0 ? 'alert-circle' : 'check');
-			createStatItem(statsGrid, 'Warnings', summary.totalWarnings.toString(), 'alert-triangle');
+			createStatItem(statsGrid, '人物', summary.totalPeopleValidated.toString(), 'users');
+			createStatItem(statsGrid, 'Schema', summary.totalSchemas.toString(), 'clipboard-check');
+			createStatItem(statsGrid, '错误', summary.totalErrors.toString(), summary.totalErrors > 0 ? 'alert-circle' : 'check');
+			createStatItem(statsGrid, '警告', summary.totalWarnings.toString(), 'alert-triangle');
 		}
 
 		// Validate vault button
 		new Setting(validationContent)
-			.setName('Run validation')
-			.setDesc('Check all person notes against your schemas')
+			.setName('运行校验')
+			.setDesc('根据你的 schema 检查所有人物笔记')
 			.addButton(button => button
-				.setButtonText('Validate')
+				.setButtonText('校验')
 				.setCta()
 				.onClick(() => void (async () => {
 			// Open progress modal
@@ -116,13 +115,13 @@ export async function renderSchemasTab(options: SchemasTabOptions): Promise<void
 
 				const errorCount = lastValidationSummary.totalErrors;
 				if (errorCount === 0) {
-					new Notice('✓ Validation passed! No schema violations found.');
+					new Notice('✓ 校验通过！未发现 schema 违规。');
 				} else {
-					new Notice(`Found ${errorCount} validation ${pluralize(errorCount, 'error')}`);
+					new Notice(`发现 ${errorCount} 个校验错误`);
 				}
 			} catch (error) {
 				progressModal.close();
-				new Notice('Validation failed: ' + getErrorMessage(error));
+				new Notice('校验失败：' + getErrorMessage(error));
 			}
 		})()));
 	}
@@ -131,19 +130,19 @@ export async function renderSchemasTab(options: SchemasTabOptions): Promise<void
 
 	// Card 2: Schemas Gallery
 	const schemasCard = createCard({
-		title: 'Schemas',
+		title: 'Schema',
 		icon: 'file-check',
-		subtitle: 'Define validation rules for person notes'
+		subtitle: '为人物笔记定义校验规则'
 	});
 
 	const schemasContent = schemasCard.querySelector('.crc-card__content') as HTMLElement;
 
 	// Create schema button
 	new Setting(schemasContent)
-		.setName('Create schema')
-		.setDesc('Define a new validation schema for person notes')
+		.setName('创建 schema')
+		.setDesc('为人物笔记定义新的校验 schema')
 		.addButton(button => button
-			.setButtonText('Create')
+			.setButtonText('创建')
 			.setCta()
 			.onClick(() => {
 				new CreateSchemaModal(app, plugin, {
@@ -155,21 +154,21 @@ export async function renderSchemasTab(options: SchemasTabOptions): Promise<void
 
 	// Import schema button
 	new Setting(schemasContent)
-		.setName('Import schema')
-		.setDesc('Import a schema from a JSON file')
+		.setName('导入 schema')
+		.setDesc('从 JSON 文件导入 schema')
 		.addButton(button => button
-			.setButtonText('Import')
+			.setButtonText('导入')
 			.onClick(() => {
 				importSchemaFromJson(app, plugin, schemaService, validationService, schemasGridContainer, closeModal);
 			}));
 
 	// Gallery section
 	const gallerySection = schemasContent.createDiv({ cls: 'cr-schema-gallery-section' });
-	gallerySection.createEl('h4', { text: 'Gallery', cls: 'cr-schema-gallery-heading' });
+	gallerySection.createEl('h4', { text: '图库', cls: 'cr-schema-gallery-heading' });
 
 	const schemasGridContainer = gallerySection.createDiv();
 	schemasGridContainer.createEl('p', {
-		text: 'Loading schemas...',
+		text: '正在加载 schema…',
 		cls: 'crc-text--muted'
 	});
 
@@ -181,9 +180,9 @@ export async function renderSchemasTab(options: SchemasTabOptions): Promise<void
 	// Card 3: Recent Violations
 	if (lastValidationResults.length > 0) {
 		const violationsCard = createCard({
-			title: 'Recent violations',
-			icon: 'alert-circle',
-			subtitle: 'Issues found in last validation'
+		title: '近期违规',
+		icon: 'alert-circle',
+		subtitle: '上次校验中发现的问题'
 		});
 
 		const violationsContent = violationsCard.querySelector('.crc-card__content') as HTMLElement;
@@ -194,9 +193,9 @@ export async function renderSchemasTab(options: SchemasTabOptions): Promise<void
 
 	// Card 4: Schema Statistics
 	const statsCard = createCard({
-		title: 'Statistics',
+		title: '统计',
 		icon: 'bar-chart',
-		subtitle: 'Schema overview'
+		subtitle: 'Schema 概览'
 	});
 
 	const statsContent = statsCard.querySelector('.crc-card__content') as HTMLElement;
@@ -223,11 +222,11 @@ async function loadSchemasGallery(
 	if (schemas.length === 0) {
 		const emptyState = container.createDiv({ cls: 'crc-empty-state' });
 		emptyState.createEl('p', {
-			text: 'No schemas found.',
+			text: '未找到 schema。',
 			cls: 'crc-text--muted'
 		});
 		emptyState.createEl('p', {
-			text: 'Create a schema to define validation rules for person notes.',
+			text: '创建 schema 以为人物笔记定义校验规则。',
 			cls: 'crc-text--muted crc-text--small'
 		});
 		return;
@@ -260,7 +259,7 @@ async function loadSchemasGallery(
 		const reqCount = schema.definition.requiredProperties.length;
 		const constraintCount = schema.definition.constraints.length;
 		info.createEl('div', {
-			text: `${propCount} properties, ${reqCount} required, ${constraintCount} constraints`,
+			text: `${propCount} 个属性，${reqCount} 个必填，${constraintCount} 个约束`,
 			cls: 'crc-text--muted crc-text--small'
 		});
 
@@ -270,7 +269,7 @@ async function loadSchemasGallery(
 		// Edit button
 		const editBtn = actions.createEl('button', {
 			cls: 'crc-btn crc-btn--icon',
-			attr: { 'aria-label': 'Edit schema' }
+			attr: { 'aria-label': '编辑 schema' }
 		});
 		setLucideIcon(editBtn, 'edit', 14);
 		editBtn.addEventListener('click', () => {
@@ -285,7 +284,7 @@ async function loadSchemasGallery(
 		// More options button
 		const moreBtn = actions.createEl('button', {
 			cls: 'crc-btn crc-btn--icon',
-			attr: { 'aria-label': 'More options' }
+			attr: { 'aria-label': '更多选项' }
 		});
 		setLucideIcon(moreBtn, 'more-vertical', 14);
 		moreBtn.addEventListener('click', (e) => {
@@ -310,13 +309,13 @@ async function loadSchemasGallery(
 function formatSchemaScope(schema: SchemaNote): string {
 	switch (schema.appliesToType) {
 		case 'all':
-			return 'All people';
+			return '所有人物';
 		case 'collection':
-			return `Collection: ${schema.appliesToValue}`;
+			return `合集：${schema.appliesToValue}`;
 		case 'folder':
-			return `Folder: ${schema.appliesToValue}`;
+			return `文件夹：${schema.appliesToValue}`;
 		case 'universe':
-			return `Universe: ${schema.appliesToValue}`;
+			return `宇宙：${schema.appliesToValue}`;
 		default:
 			return schema.appliesToType;
 	}
@@ -339,7 +338,7 @@ function showSchemaContextMenu(
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Edit schema')
+			.setTitle('编辑 schema')
 			.setIcon('edit')
 			.onClick(() => {
 				new CreateSchemaModal(app, plugin, {
@@ -353,7 +352,7 @@ function showSchemaContextMenu(
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Validate matching notes')
+			.setTitle('校验匹配的笔记')
 			.setIcon('play')
 			.onClick(async () => {
 				const progressModal = new SchemaValidationProgressModal(app);
@@ -374,43 +373,43 @@ function showSchemaContextMenu(
 
 					const errorCount = summary.totalErrors;
 					if (errorCount === 0) {
-						new Notice(`Schema "${schema.name}": no violations found.`);
+						new Notice(`Schema"${schema.name}"：未发现违规。`);
 					} else {
-						new Notice(`Schema "${schema.name}": ${errorCount} ${pluralize(errorCount, 'error')} found.`);
+						new Notice(`Schema"${schema.name}"：发现 ${errorCount} 个错误。`);
 					}
 				} catch (error) {
 					progressModal.close();
-					new Notice('Validation failed: ' + getErrorMessage(error));
+					new Notice('校验失败：' + getErrorMessage(error));
 				}
 			});
 	});
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Duplicate schema')
+			.setTitle('复制 schema')
 			.setIcon('copy')
 			.onClick(async () => {
 				try {
 					await schemaService.duplicateSchema(schema.cr_id);
-					new Notice(`Schema duplicated: ${schema.name} (Copy)`);
+					new Notice(`已复制 schema：${schema.name}（副本）`);
 					void loadSchemasGallery(app, plugin, schemaService, validationService, galleryContainer, closeModal);
 				} catch (error) {
-					new Notice('Failed to duplicate schema: ' + getErrorMessage(error));
+					new Notice('复制 schema 失败：' + getErrorMessage(error));
 				}
 			});
 	});
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Export to JSON')
+			.setTitle('导出为 JSON')
 			.setIcon('download')
 			.onClick(async () => {
 				try {
 					const json = await schemaService.exportSchemaAsJson(schema.cr_id);
 					await navigator.clipboard.writeText(json);
-					new Notice('Schema JSON copied to clipboard');
+					new Notice('Schema JSON 已复制到剪贴板');
 				} catch (error) {
-					new Notice('Failed to export schema: ' + getErrorMessage(error));
+					new Notice('导出 schema 失败：' + getErrorMessage(error));
 				}
 			});
 	});
@@ -419,7 +418,7 @@ function showSchemaContextMenu(
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Open note')
+			.setTitle('打开笔记')
 			.setIcon('file-text')
 			.onClick(async () => {
 				const file = app.vault.getAbstractFileByPath(schema.filePath);
@@ -432,17 +431,17 @@ function showSchemaContextMenu(
 
 	menu.addItem((item: MenuItem) => {
 		item
-			.setTitle('Delete schema')
+			.setTitle('删除 schema')
 			.setIcon('trash')
 			.onClick(async () => {
 				const confirmed = await confirmSchemaDelete(app, schema.name);
 				if (confirmed) {
 					try {
 						await schemaService.deleteSchema(schema.cr_id);
-						new Notice(`Schema deleted: ${schema.name}`);
+						new Notice(`已删除 schema：${schema.name}`);
 						void loadSchemasGallery(app, plugin, schemaService, validationService, galleryContainer, closeModal);
 					} catch (error) {
-						new Notice('Failed to delete schema: ' + getErrorMessage(error));
+						new Notice('删除 schema 失败：' + getErrorMessage(error));
 					}
 				}
 			});
@@ -457,27 +456,27 @@ function showSchemaContextMenu(
 async function confirmSchemaDelete(app: App, schemaName: string): Promise<boolean> {
 	return new Promise((resolve) => {
 		const modal = new Modal(app);
-		modal.titleEl.setText('Delete schema?');
+		modal.titleEl.setText('删除 schema？');
 
 		modal.contentEl.createEl('p', {
-			text: `Are you sure you want to delete the schema "${schemaName}"?`
+			text: `确定要删除 schema"${schemaName}"吗？`
 		});
 		modal.contentEl.createEl('p', {
-			text: 'This will delete the schema note file. This action cannot be undone.',
+			text: '这将删除 schema 笔记文件。此操作无法撤销。',
 			cls: 'crc-text--muted'
 		});
 
 		const buttonContainer = modal.contentEl.createDiv({ cls: 'crc-button-row crc-mt-3' });
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Cancel')
+			.setButtonText('取消')
 			.onClick(() => {
 				modal.close();
 				resolve(false);
 			});
 
 		const deleteBtn = buttonContainer.createEl('button', {
-			text: 'Delete',
+			text: '删除',
 			cls: 'mod-warning'
 		});
 		deleteBtn.addEventListener('click', () => {
@@ -501,12 +500,12 @@ function importSchemaFromJson(
 	closeModal: () => void
 ): void {
 	const modal = new Modal(app);
-	modal.titleEl.setText('Import schema from JSON');
+	modal.titleEl.setText('从 JSON 导入 schema');
 
 	const textarea = modal.contentEl.createEl('textarea', {
 		cls: 'crc-form-textarea crc-form-textarea--code',
 		attr: {
-			placeholder: 'Paste schema JSON here...',
+			placeholder: '在此粘贴 schema JSON…',
 			rows: '10'
 		}
 	});
@@ -514,26 +513,26 @@ function importSchemaFromJson(
 	const buttonContainer = modal.contentEl.createDiv({ cls: 'crc-button-row crc-mt-3' });
 
 	new ButtonComponent(buttonContainer)
-		.setButtonText('Cancel')
+		.setButtonText('取消')
 		.onClick(() => modal.close());
 
 	new ButtonComponent(buttonContainer)
-		.setButtonText('Import')
+		.setButtonText('导入')
 		.setCta()
 		.onClick(() => void (async () => {
 			const json = textarea.value.trim();
 			if (!json) {
-				new Notice('Please paste schema JSON');
+				new Notice('请粘贴 schema JSON');
 				return;
 			}
 
 			try {
 				await schemaService.importSchemaFromJson(json);
-				new Notice('Schema imported successfully');
+				new Notice('Schema 导入成功');
 				modal.close();
 				void loadSchemasGallery(app, plugin, schemaService, validationService, galleryContainer, closeModal);
 			} catch (error) {
-				new Notice('Failed to import schema: ' + getErrorMessage(error));
+				new Notice('导入 schema 失败：' + getErrorMessage(error));
 			}
 		})());
 
@@ -553,7 +552,7 @@ function renderRecentViolations(
 
 	if (invalidResults.length === 0) {
 		container.createEl('p', {
-			text: 'No violations found in last validation.',
+			text: '上次校验未发现违规。',
 			cls: 'crc-text--muted'
 		});
 		return;
@@ -583,7 +582,7 @@ function renderRecentViolations(
 
 		if (result.errors.length > 3) {
 			errorList.createEl('li', {
-				text: `... and ${result.errors.length - 3} more`,
+				text: `…另有 ${result.errors.length - 3} 条`,
 				cls: 'crc-text--muted crc-text--small'
 			});
 		}
@@ -600,7 +599,7 @@ function renderRecentViolations(
 
 	if (invalidResults.length > 10) {
 		container.createEl('p', {
-			text: `... and ${invalidResults.length - 10} more violations`,
+			text: `…另有 ${invalidResults.length - 10} 条违规`,
 			cls: 'crc-text--muted crc-mt-2'
 		});
 	}
@@ -608,7 +607,7 @@ function renderRecentViolations(
 	// Link to Data Quality tab
 	const linkDiv = container.createDiv({ cls: 'crc-mt-2' });
 	const viewAllLink = linkDiv.createEl('a', {
-		text: 'View all in data quality →',
+		text: '在数据质量中查看全部 →',
 		cls: 'crc-link'
 	});
 	viewAllLink.addEventListener('click', () => {
@@ -624,39 +623,39 @@ async function renderSchemaStatistics(container: HTMLElement, schemaService: Sch
 
 	const statsGrid = container.createDiv({ cls: 'crc-stats-grid' });
 
-	createStatItem(statsGrid, 'Total schemas', stats.totalSchemas.toString(), 'clipboard-check');
-	createStatItem(statsGrid, 'Global (all)', stats.byScope.all.toString(), 'globe');
-	createStatItem(statsGrid, 'By collection', stats.byScope.collection.toString(), 'folder');
-	createStatItem(statsGrid, 'By folder', stats.byScope.folder.toString(), 'folder');
-	createStatItem(statsGrid, 'By universe', stats.byScope.universe.toString(), 'globe');
+	createStatItem(statsGrid, 'Schema 总数', stats.totalSchemas.toString(), 'clipboard-check');
+	createStatItem(statsGrid, '全局（全部）', stats.byScope.all.toString(), 'globe');
+	createStatItem(statsGrid, '按合集', stats.byScope.collection.toString(), 'folder');
+	createStatItem(statsGrid, '按文件夹', stats.byScope.folder.toString(), 'folder');
+	createStatItem(statsGrid, '按宇宙', stats.byScope.universe.toString(), 'globe');
 
 	// Error breakdown from last validation
 	if (lastValidationSummary && lastValidationSummary.totalErrors > 0) {
-		container.createEl('h4', { text: 'Error types from last validation', cls: 'crc-section-title crc-mt-3' });
+		container.createEl('h4', { text: '上次校验的错误类型', cls: 'crc-section-title crc-mt-3' });
 
 		const errorGrid = container.createDiv({ cls: 'crc-stats-grid' });
 		const errorsByType = lastValidationSummary.errorsByType;
 
 		if (errorsByType.missing_required > 0) {
-			createStatItem(errorGrid, 'Missing required', errorsByType.missing_required.toString(), 'alert-circle');
+			createStatItem(errorGrid, '缺少必填项', errorsByType.missing_required.toString(), 'alert-circle');
 		}
 		if (errorsByType.invalid_type > 0) {
-			createStatItem(errorGrid, 'Invalid type', errorsByType.invalid_type.toString(), 'alert-circle');
+			createStatItem(errorGrid, '类型无效', errorsByType.invalid_type.toString(), 'alert-circle');
 		}
 		if (errorsByType.invalid_enum > 0) {
-			createStatItem(errorGrid, 'Invalid enum', errorsByType.invalid_enum.toString(), 'alert-circle');
+			createStatItem(errorGrid, '枚举值无效', errorsByType.invalid_enum.toString(), 'alert-circle');
 		}
 		if (errorsByType.out_of_range > 0) {
-			createStatItem(errorGrid, 'Out of range', errorsByType.out_of_range.toString(), 'alert-circle');
+			createStatItem(errorGrid, '超出范围', errorsByType.out_of_range.toString(), 'alert-circle');
 		}
 		if (errorsByType.constraint_failed > 0) {
-			createStatItem(errorGrid, 'Constraint failed', errorsByType.constraint_failed.toString(), 'alert-circle');
+			createStatItem(errorGrid, '约束失败', errorsByType.constraint_failed.toString(), 'alert-circle');
 		}
 		if (errorsByType.conditional_required > 0) {
-			createStatItem(errorGrid, 'Conditional required', errorsByType.conditional_required.toString(), 'alert-circle');
+			createStatItem(errorGrid, '条件必填', errorsByType.conditional_required.toString(), 'alert-circle');
 		}
 		if (errorsByType.invalid_wikilink_target > 0) {
-			createStatItem(errorGrid, 'Invalid wikilink', errorsByType.invalid_wikilink_target.toString(), 'alert-circle');
+			createStatItem(errorGrid, 'wikilink 无效', errorsByType.invalid_wikilink_target.toString(), 'alert-circle');
 		}
 	}
 }

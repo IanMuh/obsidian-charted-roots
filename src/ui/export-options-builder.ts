@@ -109,10 +109,10 @@ export class ExportOptionsBuilder {
 	 */
 	public buildCollectionFilter(container: HTMLElement): Setting {
 		const setting = new Setting(container)
-			.setName('Collection filter (optional)')
-			.setDesc('Only export people in a specific collection')
+			.setName('合集筛选（可选）')
+			.setDesc('仅导出特定合集中的人物')
 			.addDropdown(async dropdown => {
-				dropdown.addOption('', 'All people');
+				dropdown.addOption('', '所有人物');
 
 				// Load collections
 				const graphService = new (await import('../core/family-graph')).FamilyGraphService(this.app);
@@ -138,10 +138,10 @@ export class ExportOptionsBuilder {
 
 		// Person picker
 		const personBtn = new Setting(container)
-			.setName('Branch filter (optional)')
-			.setDesc('Export only ancestors or descendants of a specific person')
+			.setName('分支筛选（可选）')
+			.setDesc('仅导出特定人物的祖先或后代')
 			.addButton(btn => {
-				btn.setButtonText('Select person')
+				btn.setButtonText('选择人物')
 					.onClick(() => {
 						const picker = new PersonPickerModal(this.app, (info: PersonInfo) => {
 							this.options.branchRootCrId = info.crId;
@@ -155,12 +155,12 @@ export class ExportOptionsBuilder {
 
 		// Direction dropdown
 		const directionSetting = new Setting(container)
-			.setName('Branch direction')
-			.setDesc('Include ancestors (up) or descendants (down)')
+			.setName('分支方向')
+			.setDesc('包含祖先（向上）或后代（向下）')
 			.addDropdown(dropdown => {
-				dropdown.addOption('', 'No branch filter');
-				dropdown.addOption('ancestors', 'Ancestors only');
-				dropdown.addOption('descendants', 'Descendants only');
+				dropdown.addOption('', '无分支筛选');
+				dropdown.addOption('ancestors', '仅祖先');
+				dropdown.addOption('descendants', '仅后代');
 				dropdown.onChange(value => {
 					this.options.branchDirection = (value as 'ancestors' | 'descendants') || undefined;
 					this.notifyChange();
@@ -170,8 +170,8 @@ export class ExportOptionsBuilder {
 
 		// Include spouses toggle
 		const spousesSetting = new Setting(container)
-			.setName('Include spouses in descendants')
-			.setDesc('When exporting descendants, also include their spouses')
+			.setName('后代中包含配偶')
+			.setDesc('导出后代时也包含其配偶')
 			.addToggle(toggle => toggle
 				.setValue(false)
 				.onChange(value => {
@@ -192,8 +192,8 @@ export class ExportOptionsBuilder {
 
 		// Privacy override toggle
 		const overrideSetting = new Setting(container)
-			.setName('Override privacy settings')
-			.setDesc('Use different privacy settings for this export only')
+			.setName('覆盖隐私设置')
+			.setDesc('仅对此导出使用不同的隐私设置')
 			.addToggle(toggle => toggle
 				.setValue(false)
 				.onChange(value => {
@@ -207,8 +207,8 @@ export class ExportOptionsBuilder {
 
 		// Privacy protection toggle
 		const protectionSetting = new Setting(container)
-			.setName('Enable privacy protection')
-			.setDesc('Protect living persons in this export')
+			.setName('启用隐私保护')
+			.setDesc('在此导出中保护在世人物')
 			.addToggle(toggle => toggle
 				.setValue(this.options.privacyOverrideProtection)
 				.onChange(value => {
@@ -222,13 +222,13 @@ export class ExportOptionsBuilder {
 
 		// Privacy format dropdown
 		const formatSetting = new Setting(container)
-			.setName('Privacy display format')
-			.setDesc('How to display protected living persons')
+			.setName('隐私显示格式')
+			.setDesc('如何显示受保护的在世人物')
 			.addDropdown(dropdown => dropdown
-				.addOption('living', 'Living')
-				.addOption('private', 'Private')
-				.addOption('initials', 'Initials only')
-				.addOption('hidden', 'Exclude from export')
+				.addOption('living', '在世')
+				.addOption('private', '私密')
+				.addOption('initials', '仅首字母')
+				.addOption('hidden', '从导出中排除')
 				.setValue(this.options.privacyOverrideFormat)
 				.onChange(value => {
 					this.options.privacyOverrideFormat = value as 'living' | 'private' | 'initials' | 'hidden';
@@ -312,7 +312,7 @@ export class ExportOptionsBuilder {
 
 		container.createEl('div', {
 			cls: 'crc-export-stats-preview__title',
-			text: 'Export preview'
+			text: '导出预览'
 		});
 
 		const statsList = container.createEl('ul', {
@@ -321,27 +321,27 @@ export class ExportOptionsBuilder {
 
 		// People count with living status
 		const peopleText = stats.excludedPeople > 0
-			? `${stats.totalPeople - stats.excludedPeople} people (${stats.excludedPeople} living will be excluded)`
+			? `${stats.totalPeople - stats.excludedPeople} 位人物（将排除 ${stats.excludedPeople} 位在世者）`
 			: stats.livingPeople > 0
-			? `${stats.totalPeople} people (${stats.livingPeople} living will be protected)`
-			: `${stats.totalPeople} people`;
+			? `${stats.totalPeople} 位人物（将保护 ${stats.livingPeople} 位在世者）`
+			: `${stats.totalPeople} 位人物`;
 
 		statsList.createEl('li', { text: peopleText });
-		statsList.createEl('li', { text: `${stats.totalRelationships} relationships` });
-		statsList.createEl('li', { text: `${stats.totalEvents} events` });
-		statsList.createEl('li', { text: `${stats.totalSources} sources` });
-		statsList.createEl('li', { text: `${stats.totalPlaces} places` });
+		statsList.createEl('li', { text: `${stats.totalRelationships} 个关系` });
+		statsList.createEl('li', { text: `${stats.totalEvents} 个事件` });
+		statsList.createEl('li', { text: `${stats.totalSources} 个来源` });
+		statsList.createEl('li', { text: `${stats.totalPlaces} 个地点` });
 
 		container.createEl('div', {
 			cls: 'crc-export-stats-preview__size crc-text-muted crc-text-sm crc-mt-2',
-			text: `Estimated export size: ${ExportStatisticsService.formatBytes(stats.estimatedSize)}`
+			text: `预计导出大小：${ExportStatisticsService.formatBytes(stats.estimatedSize)}`
 		});
 
 		// Warning if no people selected
 		if (stats.totalPeople === 0 || stats.totalPeople - stats.excludedPeople === 0) {
 			container.createEl('div', {
 				cls: 'crc-export-stats-preview__warning crc-mt-2',
-				text: '⚠ No people will be exported with current filters'
+				text: '⚠ 当前筛选条件下不会导出任何人物'
 			});
 		}
 	}
@@ -353,8 +353,8 @@ export class ExportOptionsBuilder {
 		this.options.exportFileName = defaultName;
 
 		const setting = new Setting(container)
-			.setName('Export file name')
-			.setDesc(`Name for the exported ${fileExtension} file (without extension)`)
+			.setName('导出文件名')
+			.setDesc(`导出的 ${fileExtension} 文件名称（不含扩展名）`)
 			.addText(text => text
 				.setPlaceholder(defaultName)
 				.setValue(defaultName)
@@ -374,8 +374,8 @@ export class ExportOptionsBuilder {
 		this.options.gedcomVersion = this.settings.preferredGedcomVersion;
 
 		const versionSetting = new Setting(container)
-			.setName('GEDCOM version')
-			.setDesc('Choose the GEDCOM standard version for export');
+			.setName('GEDCOM 版本')
+			.setDesc('选择导出使用的 GEDCOM 标准版本');
 
 		// Create radio-style buttons for version selection
 		const versionContainer = versionSetting.settingEl.createDiv({ cls: 'crc-gedcom-version-selector' });
@@ -383,14 +383,14 @@ export class ExportOptionsBuilder {
 		const version551Button = versionContainer.createDiv({ cls: 'crc-version-option crc-version-option--selected' });
 		version551Button.createEl('div', { cls: 'crc-version-option__radio' });
 		const version551Content = version551Button.createDiv({ cls: 'crc-version-option__content' });
-		version551Content.createEl('div', { cls: 'crc-version-option__title', text: 'GEDCOM 5.5.1 (Legacy)' });
-		version551Content.createEl('div', { cls: 'crc-version-option__desc', text: 'Maximum compatibility with older software. Widely supported standard.' });
+		version551Content.createEl('div', { cls: 'crc-version-option__title', text: 'GEDCOM 5.5.1（旧版）' });
+		version551Content.createEl('div', { cls: 'crc-version-option__desc', text: '与旧版软件的最大兼容性。广泛支持的标准。' });
 
 		const version70Button = versionContainer.createDiv({ cls: 'crc-version-option crc-version-option--disabled' });
 		version70Button.createEl('div', { cls: 'crc-version-option__radio' });
 		const version70Content = version70Button.createDiv({ cls: 'crc-version-option__content' });
-		version70Content.createEl('div', { cls: 'crc-version-option__title', text: 'GEDCOM 7.0 (Coming Soon)' });
-		version70Content.createEl('div', { cls: 'crc-version-option__desc', text: 'Modern format with enhanced features. Not yet implemented.' });
+		version70Content.createEl('div', { cls: 'crc-version-option__title', text: 'GEDCOM 7.0（即将推出）' });
+		version70Content.createEl('div', { cls: 'crc-version-option__desc', text: '具有增强功能的现代格式。尚未实现。' });
 
 		// 5.5.1 click handler
 		version551Button.addEventListener('click', () => {
@@ -417,8 +417,8 @@ export class ExportOptionsBuilder {
 		this.options.includeCollectionCodes = true;
 
 		const setting = new Setting(container)
-			.setName('Include collection codes')
-			.setDesc('Preserve Charted Roots collection data in export')
+			.setName('包含合集代码')
+			.setDesc('在导出中保留 Charted Roots 合集数据')
 			.addToggle(toggle => toggle
 				.setValue(true)
 				.onChange(value => {
@@ -437,8 +437,8 @@ export class ExportOptionsBuilder {
 		this.options.includeCustomRelationships = true;
 
 		const setting = new Setting(container)
-			.setName('Include custom relationships')
-			.setDesc('Export custom relationships (godparent, witness, guardian, etc.) as ASSO records')
+			.setName('包含自定义关系')
+			.setDesc('将自定义关系（教父母、见证人、监护人等）导出为 ASSO 记录')
 			.addToggle(toggle => toggle
 				.setValue(true)
 				.onChange(value => {
@@ -458,15 +458,15 @@ export class ExportOptionsBuilder {
 
 		entitySection.createEl('div', {
 			cls: 'crc-entity-inclusion__title',
-			text: 'Include in export'
+			text: '包含在导出中'
 		});
 
 		const entityList = entitySection.createDiv({ cls: 'crc-entity-inclusion__list' });
 
 		// People checkbox
 		const peopleSetting = new Setting(entityList)
-			.setName('People')
-			.setDesc('Include person records')
+			.setName('人物')
+			.setDesc('包含人物记录')
 			.addToggle(toggle => toggle
 				.setValue(this.options.includeEntities.people)
 				.onChange(value => {
@@ -478,8 +478,8 @@ export class ExportOptionsBuilder {
 
 		// Events checkbox
 		const eventsSetting = new Setting(entityList)
-			.setName('Events')
-			.setDesc('Include event records')
+			.setName('事件')
+			.setDesc('包含事件记录')
 			.addToggle(toggle => toggle
 				.setValue(this.options.includeEntities.events)
 				.onChange(value => {
@@ -491,8 +491,8 @@ export class ExportOptionsBuilder {
 
 		// Sources checkbox
 		const sourcesSetting = new Setting(entityList)
-			.setName('Sources')
-			.setDesc('Include source records')
+			.setName('来源')
+			.setDesc('包含来源记录')
 			.addToggle(toggle => toggle
 				.setValue(this.options.includeEntities.sources)
 				.onChange(value => {
@@ -504,8 +504,8 @@ export class ExportOptionsBuilder {
 
 		// Places checkbox
 		const placesSetting = new Setting(entityList)
-			.setName('Places')
-			.setDesc('Include place records')
+			.setName('地点')
+			.setDesc('包含地点记录')
 			.addToggle(toggle => toggle
 				.setValue(this.options.includeEntities.places)
 				.onChange(value => {
@@ -526,7 +526,7 @@ export class ExportOptionsBuilder {
 
 		locationSection.createEl('div', {
 			cls: 'crc-output-location__title',
-			text: 'Output location'
+			text: '输出位置'
 		});
 
 		// Radio buttons for destination
@@ -537,20 +537,20 @@ export class ExportOptionsBuilder {
 		});
 		downloadOption.createEl('div', { cls: 'crc-output-option__radio' });
 		const downloadContent = downloadOption.createDiv({ cls: 'crc-output-option__content' });
-		downloadContent.createEl('div', { cls: 'crc-output-option__title', text: 'Download file' });
-		downloadContent.createEl('div', { cls: 'crc-output-option__desc', text: 'Save to your downloads folder' });
+		downloadContent.createEl('div', { cls: 'crc-output-option__title', text: '下载文件' });
+		downloadContent.createEl('div', { cls: 'crc-output-option__desc', text: '保存到你的下载文件夹' });
 
 		const vaultOption = destinationContainer.createDiv({ cls: 'crc-output-option' });
 		vaultOption.createEl('div', { cls: 'crc-output-option__radio' });
 		const vaultContent = vaultOption.createDiv({ cls: 'crc-output-option__content' });
-		vaultContent.createEl('div', { cls: 'crc-output-option__title', text: 'Save to vault' });
-		vaultContent.createEl('div', { cls: 'crc-output-option__desc', text: 'Save to a folder in your vault' });
+		vaultContent.createEl('div', { cls: 'crc-output-option__title', text: '保存到库' });
+		vaultContent.createEl('div', { cls: 'crc-output-option__desc', text: '保存到库中的某个文件夹' });
 
 		// Folder path input (hidden initially)
 		const folderPathContainer = locationSection.createDiv({ cls: 'crc-output-location__folder-path cr-hidden' });
 		new Setting(folderPathContainer)
-			.setName('Vault folder')
-			.setDesc('Path to folder in vault (leave empty for vault root)')
+			.setName('库文件夹')
+			.setDesc('库中文件夹的路径（留空表示库根目录）')
 			.addText(text => text
 				.setPlaceholder('exports')
 				.setValue(this.options.outputFolder)
@@ -601,22 +601,22 @@ export class ExportOptionsBuilder {
 
 		let timeAgo: string;
 		if (days > 0) {
-			timeAgo = `${days} day${days > 1 ? 's' : ''} ago`;
+			timeAgo = `${days} 天前`;
 		} else if (hours > 0) {
-			timeAgo = `${hours} hour${hours > 1 ? 's' : ''} ago`;
+			timeAgo = `${hours} 小时前`;
 		} else if (minutes > 0) {
-			timeAgo = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+			timeAgo = `${minutes} 分钟前`;
 		} else {
-			timeAgo = 'just now';
+			timeAgo = '刚刚';
 		}
 
 		// Build the info text
-		let infoText = `Last ${formatName} export: ${lastExport.peopleCount} people, ${timeAgo}`;
+		let infoText = `上次 ${formatName} 导出：${lastExport.peopleCount} 位人物，${timeAgo}`;
 		if (lastExport.destination === 'vault' && lastExport.filePath) {
-			infoText += ` (saved to ${lastExport.filePath})`;
+			infoText += `（已保存到 ${lastExport.filePath}）`;
 		}
 		if (lastExport.privacyExcluded && lastExport.privacyExcluded > 0) {
-			infoText += ` — ${lastExport.privacyExcluded} living excluded`;
+			infoText += ` — 已排除 ${lastExport.privacyExcluded} 位在世者`;
 		}
 
 		infoSection.createEl('div', {

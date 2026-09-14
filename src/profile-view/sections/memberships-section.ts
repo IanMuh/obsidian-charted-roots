@@ -51,10 +51,10 @@ export function renderMembershipsSection(
 	const count = memberships.length;
 	if (count === 0) return;
 
-	const summary = `${count} membership${count !== 1 ? 's' : ''}`;
+	const summary = `${count} 项成员身份`;
 	const content = renderProfileSection(parent, {
 		sectionId: 'memberships',
-		title: 'Memberships',
+		title: '成员身份',
 		summary,
 		expanded: options.sectionStates['memberships'] ?? true,
 		onToggle: options.onToggle,
@@ -70,7 +70,7 @@ export function renderMembershipsSection(
 		const row = item.createDiv({ cls: 'cr-profile__rel-row' });
 
 		row.createSpan({
-			text: memb.role || 'Member',
+			text: memb.role || '成员',
 			cls: 'cr-profile__rel-type-label'
 		});
 
@@ -96,7 +96,7 @@ export function renderMembershipsSection(
 
 		if (memb.isCurrent) {
 			row.createSpan({
-				text: 'Current',
+				text: '现任',
 				cls: 'cr-profile__member-badge cr-profile__member-badge--current'
 			});
 		}
